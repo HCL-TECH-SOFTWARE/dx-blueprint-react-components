@@ -8,3 +8,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ## 1.0.0
 
 Initial public release of the HCL DX Blueprint React component library.
+
