@@ -1,0 +1,25 @@
+.dxHeroBannerStacking {
+    --card-height: auto;
+
+    &__cardContainer {
+        list-style: none;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(var(--HBStacking_numcards), var(--card-height));
+        gap: var(--HBStacking-cardMargin);
+        padding: 0;
+        padding-bottom: calc(var(--HBStacking-numcards) * var(--HBStacking-stackTopOffset));
+        margin-bottom: var(--HBStacking-cardMargin);
+    }
+
+    &__card {
+        position: sticky;
+        top: 0;
+        padding-top: calc(var(--index) * var(--HBStacking-stackTopOffset));
+    }
+
+    &__content {
+        border-radius: 1em;
+        overflow: hidden;
+    }
+}

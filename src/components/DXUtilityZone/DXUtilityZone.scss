@@ -1,0 +1,65 @@
+@import "../../global/variables.scss";
+
+.dxUtilityZone {
+    &__buttonsContainer {
+        display: flex;
+    }
+
+    &__panelsContainer {
+        min-width: 768px;
+        height: 0;
+        background-color: var(--light-light);
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 500ms;
+        opacity: 0;
+
+        &.expanded {
+            z-index: $dropdownLevel;
+            border-top: 3px solid var(--primary-primary);
+            height: auto;
+            opacity: 1;
+            grid-template-rows: 1fr;
+            transition: grid-template-rows 500ms;
+        }
+
+        &>div {
+            overflow: hidden;
+            padding: 1.25rem;
+        }
+    }
+
+    &__indicator {
+        width: 0;
+        height: 0;
+        border-left: 1.11vw solid transparent;
+        border-right: 1.11vw solid transparent;
+        border-bottom: 1.5vw solid var(--primary-primary);
+        margin-inline: auto;
+    }
+
+    &__overlay {
+        height: 1px;
+        position: fixed;
+        opacity: 0;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: rgba(1, 1, 1, 0.5);
+        z-index: $dropdownLevel;
+        transition-property: opacity;
+        transition-duration: 0.1s;
+        transition-timing-function: ease;
+
+        &--state-active {
+            height: inherit;
+            opacity: 1;
+        }
+
+        &--state-hide {
+            height: inherit;
+            opacity: 0;
+        }
+    }
+}

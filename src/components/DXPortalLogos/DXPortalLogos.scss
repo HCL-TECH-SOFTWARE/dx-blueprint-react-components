@@ -1,0 +1,24 @@
+.dxPortalLogos {
+    height: 80px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    &__main,
+    &__secondary {
+        max-width: 170px;
+        padding: 0 10px;
+    }
+
+    img {
+        max-width: 150px;
+        max-height: 80px;
+        object-fit: contain;
+    }
+
+    span {
+        border: none;
+        border-left: 2px solid var(--primary-primary);
+        height: 50px;
+    }
+}

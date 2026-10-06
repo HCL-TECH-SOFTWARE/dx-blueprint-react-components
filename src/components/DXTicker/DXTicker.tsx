@@ -1,0 +1,144 @@
+import React, { ReactElement, useState } from "react";
+import "./DXTicker.scss";
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import DXButton from "../DXButton/DXButton";
+import { LinksProps, getIcon, getLinkTarget } from "../../utilities";
+import moment from "moment";
+import DXEmptyState, { EmptyStateProps } from "../DXEmptyState/DXEmptyState";
+
+export interface TickerProps {
+    items: TickerItem[];
+    currencySymbol?: string;
+    empty?: EmptyStateProps;
+    icons?: {
+        up?: string;
+        down?: string;
+        link?: string;
+    };
+}
+
+interface TickerItem {
+    name: string;
+    broker: string;
+    price: number;
+    percentage: number;
+    dateTime?: string;
+    link: LinksProps;
+}
+
+const DXTicker = ( props: TickerProps ) => {
+    const [selectedItem, setSelectedItem] = useState( 0 );
+    let percentageClass = "";
+    let iconClass = "";
+    let parsedDateTime = "";
+
+
+    if ( props.items.length ) {
+        if ( props.items[selectedItem].percentage > 0 ) {
+            percentageClass = "Up";
+            iconClass = getIcon( props.icons, "up", "ci-Arrow_Up_LG" );
+        } else if ( props.items[selectedItem].percentage < 0 ) {
+            percentageClass = "Down";
+            iconClass = getIcon( props.icons, "down", "ci-Arrow_Down_LG" );
+        }
+
+        if ( ( !moment( props.items[selectedItem].dateTime, moment.ISO_8601 ).isValid() ) ) {
+            console.warn( "Invalid value for DXTicker: Ticker dateTime doesn't comply with the ISO 8601 format" );
+        } else {
+            parsedDateTime = moment( props.items[selectedItem].dateTime, moment.ISO_8601 ).format( "MMMM Do YYYY HH:mm" );
+        }
+    }
+
+    const renderButtons = () => {
+        let elements: ReactElement[] = [];
+        var index = 0;
+        props.items.forEach( ( item ) => {
+            elements.push(
+                <DXButton
+                    displayType={index == selectedItem ? "primary" : "secondary"}
+                    data-testid="ticker__button"
+                    key={"dxTicker__" + index}
+                    className={index == selectedItem ? "dxTicker__active" : undefined}
+                    value={index}
+                    label={item.name}
+                    onClick={( e: React.FormEvent<HTMLInputElement> ) => {
+                        let value = Number( e.currentTarget.value );
+                        setSelectedItem( value );
+                    }} />
+            );
+            index++;
+        } );
+
+        return elements;
+    };
+
+    const renderEmptyView = () => {
+        let propsEmpty = props.empty ? props.empty : {
+            title: "Oh no! Service Unavailable",
+            text: "We are having connections issues. Please try again later.",
+        } as EmptyStateProps;
+
+        return (
+            <>
+                <DXEmptyState {...propsEmpty}></DXEmptyState>
+            </>
+        );
+    };
+
+    return (
+        <div className="dxTicker">
+            <div className="dxTicker__card">
+                {
+                    props.items.length > 0
+                        ?
+                        <>
+                            <div className="dxTicker__topRow">
+                                <ButtonGroup data-testid="ticker__btnGroup" className="dxTicker__buttonGroup">
+                                    {renderButtons()}
+                                </ButtonGroup>
+                            </div>
+                            <div className="dxTicker__mainContainer">
+                                <div className="dxTicker__info">
+                                    <div className="dxTicker__primary">
+                                        <div className="dxTicker__label" data-testid="ticker__label">
+                                            {props.items[selectedItem].broker}
+                                        </div>
+                                        <div className="dxTicker__price" data-testid="ticker__price">
+                                            {props.currencySymbol || "$"}{props.items[selectedItem].price.toFixed( 2 )}
+                                        </div>
+                                    </div>
+                                    <div className="dxTicker__secondary">
+                                        <div className="dxTicker__date" data-testid="ticker__date">
+                                            {parsedDateTime}
+                                        </div>
+                                        <div className={`dxTicker__percentage ${percentageClass ? "dxTicker__percentage--" + percentageClass : ""}`} data-testid="ticker__percentage">
+                                            {percentageClass && <i className={iconClass}></i>}
+                                            {
+                                                ( props.items[selectedItem].percentage < 0
+                                                    ? props.items[selectedItem].percentage * ( -1 )
+                                                    : props.items[selectedItem].percentage ).toFixed( 2 )
+                                            }%
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <a
+                                    href={props.items[selectedItem].link.url}
+                                    target={getLinkTarget( props.items[selectedItem].link.target )}
+                                    className="dxTicker__link"
+                                    title={( props.items[selectedItem].link.label && props.items[selectedItem].link.label != "" ) ? props.items[selectedItem].link.label : "View more"}
+                                    data-testid="ticker__moreLink"
+                                >
+                                    {<i className={getIcon( props.icons, "link", "ci-Chevron_Right" )}></i>}
+                                </a>
+                            </div>
+                        </>
+                        :
+                        renderEmptyView()
+                }
+            </div>
+        </div>
+    );
+};
+
+export default DXTicker;

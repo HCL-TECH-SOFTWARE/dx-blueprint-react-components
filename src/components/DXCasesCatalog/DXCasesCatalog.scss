@@ -1,0 +1,29 @@
+.dxCasesCatalog {
+    border-radius: 8px;
+
+    ul {
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+    }
+
+    &__header {
+        background-color: var(--light-light);
+        padding: 0.75rem;
+        border-radius: 8px 8px 0 0;
+    }
+
+    & .row p {
+        color: var(--secondary-secondary);
+        margin-bottom: 0;
+        font-family: var(--_14-primary-semibold-150-font-family);
+        font-size: var(--_14-primary-semibold-150-font-size);
+        font-weight: var(--_14-primary-semibold-150-font-weight);
+        line-height: var(--_14-primary-semibold-150-line-height);
+        letter-spacing: var(--_14-primary-semibold-150-letter-spacing);
+    }
+
+    & li:last-of-type .dxCaseCard {
+        border-radius: 0 0 8px 8px;
+    }
+}

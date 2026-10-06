@@ -1,0 +1,91 @@
+@import "../../global/breakpoints.scss";
+
+// Custom spinner dimensions and animation
+$dxTwitterFeedSpinnerSize: 1.8rem;
+$dxTwitterFeedSpinnerDuration: 1.0s;
+$dxTwitterFeedSpinnerRingWidth: 7px;
+
+.dxTwitterFeed {
+    height: -webkit-fill-available;
+    overflow: scroll;
+    /* IE and Edge */
+    -ms-overflow-style: none;
+    /* Firefox */
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    &__title {
+        font-family: var(--_24-primary-semibold-150-font-family);
+        font-size: var(--_24-primary-semibold-150-font-size);
+        letter-spacing: var(--_24-primary-semibold-150-letter-spacing);
+        line-height: var(--_24-primary-semibold-150-line-height);
+        font-weight: var(--_24-primary-semibold-150-font-weight);
+        color: var(--dark-dark-d2);
+    }
+
+    &__description {
+        font-family: var(--_16-regular-150-font-family);
+        font-size: var(--_16-regular-150-font-size);
+        letter-spacing: var(--_16-regular-150-letter-spacing);
+        line-height: var(--_16-regular-150-line-height);
+        font-weight: var(--_16-regular-150-font-weight);
+        color: var(--dark-dark-d2);
+    }
+
+    &__spinner {
+        // Center the spinner horizontally within the feed container
+        display: block;
+        margin: 0 auto;
+
+        &.spinner-border {
+            position: relative;
+            // Custom spinner dimensions (smaller than Bootstrap default 2rem)
+            width: $dxTwitterFeedSpinnerSize;
+            height: $dxTwitterFeedSpinnerSize;
+            // Slower animation for better visual effect (default is 0.75s)
+            animation-duration: $dxTwitterFeedSpinnerDuration;
+            // Remove Bootstrap's default border style
+            border: none;
+
+            // Create a gradient arc from transparent → blue → opaque with sharp color stop
+            // Arc begins at 90deg (top), fades in gradually, peaks at opaque blue around 72%,
+            // then snaps to transparent to create the "head" of the spinner
+            background: conic-gradient(
+                from 90deg,
+                transparent 0%,
+                rgba(var(--bs-primary-rgb, 13, 110, 253), 0.15) 8%,
+                rgba(var(--bs-primary-rgb, 13, 110, 253), 0.55) 35%,
+                rgba(var(--bs-primary-rgb, 13, 110, 253), 0.9) 60%,
+                rgb(var(--bs-primary-rgb, 13, 110, 253)) 72%,
+                transparent 73%
+            );
+
+            // Create a ring (donut) shape by masking out the center and edges
+            // Keeps only the middle ring visible
+            -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - #{$dxTwitterFeedSpinnerRingWidth + 0.5px}), white calc(100% - #{$dxTwitterFeedSpinnerRingWidth}));
+            mask: radial-gradient(farthest-side, transparent calc(100% - #{$dxTwitterFeedSpinnerRingWidth + 0.5px}), white calc(100% - #{$dxTwitterFeedSpinnerRingWidth}));
+
+            // Add a rounded cap (circular dot) at the arc's leading edge
+            // This pseudo-element rotates with the parent, creating a polished "head" effect
+            &::before {
+                content: '';
+                position: absolute;
+                width: $dxTwitterFeedSpinnerRingWidth;
+                height: $dxTwitterFeedSpinnerRingWidth;
+                border-radius: 50%;
+                background: rgb(var(--bs-primary-rgb, 13, 110, 253));
+                // Position at the top-center on the ring's outer edge
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        &--hidden {
+            display: none;
+        }
+    }
+}

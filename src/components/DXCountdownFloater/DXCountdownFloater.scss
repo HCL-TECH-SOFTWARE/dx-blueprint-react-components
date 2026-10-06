@@ -1,0 +1,244 @@
+@import "../../global/variables.scss";
+@import "../../global/breakpoints.scss";
+
+@keyframes flipTop {
+    0% { transform: perspective(300px) rotateX(0deg); }
+    100% { transform: perspective(300px) rotateX(-180deg); }
+}
+
+@keyframes flipTopBack {
+    0% { transform: perspective(300px) rotateX(180deg); }
+    100% { transform: perspective(300px) rotateX(0deg); }
+}
+
+.dxCountdown {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    container-name: countdown;
+    container-type: inline-size;
+
+    &__holder {
+        width: 100%;
+    }
+
+    &__container {
+        display: flex;
+        flex-flow: row nowrap;
+        width: 100%;
+        justify-content: space-around;
+    }
+
+    &__container p {
+        color: var(--dark-dark);
+        font-family: var(--_16-regular-150-font-family);
+        font-size: var(--_16-regular-150-font-size);
+        letter-spacing: var(--_16-regular-150-letter-spacing);
+        line-height: var(--_16-regular-150-line-height);
+        font-weight: var(--_16-regular-150-font-weight);
+        text-align: center;
+        text-transform: uppercase;
+        margin: 0;
+    }
+
+    &__top {
+        z-index: $firstLevel + 3;
+        background-color: var(--secondary-secondary-l1);
+        transform-origin: 50% 100%;
+        transform: perspective(200px);
+    }
+
+    &__timeElem {
+        color: var(--dark-dark);
+        position: relative;
+        height: 86px;
+        width: 100px;
+        background-color: var(--secondary-secondary-l2);
+        border-radius: 8px;
+        text-align: center;
+        font-family: var(--_54-primary-semibold-150-font-family);
+        font-size: var(--_54-primary-semibold-150-font-size);
+        letter-spacing: var(--_54-primary-semibold-150-letter-spacing);
+        line-height: var(--_54-primary-semibold-150-line-height);
+        font-weight: var(--_54-primary-semibold-150-font-weight);
+        overflow: hidden;
+        margin-right: .25rem;
+        margin-left: .25rem;
+
+        &::before,
+        &::after {
+            content: '';
+            position: absolute;
+            z-index: $secondLevel;
+            top: calc(50% - 8px);
+            background: var(--secondary-secondary);
+            border-radius: 50%;
+            width: 15px;
+            height: 15px;
+        }
+
+        &::before {
+            left: -8px;
+        }
+
+        &::after {
+            right: -8px;
+        }
+
+        &>span {
+            position: absolute;
+            left: 0;
+            right: 0;
+        }
+    }
+
+    &__timeElem .dxCountdown__top::after,
+    &__timeElem .dxCountdown__bottomBack::after {
+        content: '';
+        position: absolute;
+        z-index: $subLevel;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        border-bottom: 1px solid var(--secondary-secondary);
+    }
+
+    &__bottom {
+        z-index: $firstLevel;
+
+        &::before {
+            content: '';
+            position: absolute;
+            display: block;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background-color: var(--secondary-secondary-l2);
+        }
+    }
+
+    &__bottomBack {
+        z-index: $firstLevel + 2;
+        top: 0;
+        height: 50%;
+        overflow: hidden;
+        background-color: var(--secondary-secondary-l2);
+
+        span {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+        }
+    }
+
+    &__top,
+    &__topBack {
+        height: 50%;
+        overflow: hidden;
+        backface-visibility: hidden;
+    }
+
+    &__topBack {
+        z-index: $firstLevel + 4;
+        bottom: 0;
+        transform-origin: 50% 0;
+        background-color: var(--secondary-secondary-l2);
+        transform: perspective(200px) rotateX(180deg);
+
+        span {
+            position: absolute;
+            top: -100%;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+    }
+
+    &__top--flipping {
+        animation: flipTop 1s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+    }
+
+    &__topBack--flipping {
+        animation: flipTopBack 1s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+    }
+
+    @media (max-width: 441px) and (min-width: 390px) {
+        .dxCountdown__timeElem {
+            width: 90px;
+            height: 76px;
+            font-family: var(--_40-primary-semibold-150-font-family);
+            font-size: var(--_40-primary-semibold-150-font-size);
+            letter-spacing: var(--_40-primary-semibold-150-letter-spacing);
+            /*If the font size changes, you'll need to adjust this value too*/
+            line-height: 180%;
+            font-weight: var(--_40-primary-semibold-150-font-weight);
+        }
+    }
+
+    // Mobile
+    &--mobile {
+        justify-content: center;
+        width: 100%;
+        text-align: center;
+        display: none;
+
+        &__elem {
+            width: 25%;
+        }
+
+        &__elem span {
+            background-color: var(--secondary-secondary-l2);
+            display: block;
+            width: 100%;
+            height: 66px;
+            font-family: var(--_40-semibold-150-font-family);
+            font-size: var(--_40-semibold-150-font-size);
+            letter-spacing: var(--_40-semibold-150-letter-spacing);
+            line-height: var(--_40-semibold-150-line-height);
+            font-weight: var(--_40-semibold-150-font-weight);
+            padding-top: 3%;
+        }
+
+        p {
+            color: var(--dark-dark);
+            text-align: center;
+            text-transform: uppercase;
+            font-family: var(--_16-regular-150-font-family);
+            font-size: var(--_16-regular-150-font-size);
+            letter-spacing: var(--_16-regular-150-letter-spacing);
+            line-height: var(--_16-regular-150-line-height);
+            font-weight: var(--_16-regular-150-font-weight);
+            margin: 0;
+        }
+
+        &__elem:first-child {
+            span {
+                border-radius: .25rem 0 0 .25rem;
+            }
+        }
+
+        &__elem:last-child {
+            span {
+                border-radius: 0 .25rem .25rem 0;
+            }
+        }
+    }
+
+}
+
+@container countdown (max-width: #{$screen-xs-min}) {
+    .dxCountdown__container {
+        display: none;
+    }
+
+    .dxCountdown--mobile {
+        display: flex;
+    }
+}

@@ -1,0 +1,154 @@
+@import "../../global/breakpoints.scss";
+@import "../../global/variables.scss";
+
+.dxCBCatalog {
+    position: relative;
+
+    &__header {
+        margin-bottom: 1.25rem;
+        font-family: var(--_28-primary-semibold-150-font-family);
+        font-size: var(--_28-primary-semibold-150-font-size);
+        font-weight: var(--_28-primary-semibold-150-font-weight);
+        line-height: var(--_28-primary-semibold-150-line-height);
+        letter-spacing: var(--_28-primary-semibold-150-letter-spacing);
+        color: var(--dark-dark-l2);
+    }
+
+    &__row:not(:first-child) {
+        margin-top: 2.5rem;
+
+        @include mobile {
+            margin-top: .5rem;
+        }
+
+        @include xs {
+            margin-top: .5rem;
+        }
+
+        @include sm {
+            margin-top: .5rem;
+        }
+    }
+
+    &__row {
+        display: flex;
+        justify-content: flex-start;
+        width: 100%;
+
+        @include mobile {
+            flex-direction: column;
+        }
+
+        @include xs {
+            flex-direction: column;
+        }
+
+        @include sm {
+            flex-direction: column;
+        }
+
+        &Item:not(:last-child) {
+            margin-right: 3rem;
+        }
+
+        &Item {
+            flex: 1 1 0;
+
+            @include mobile {
+                width: 100%;
+                margin-top: .5rem;
+            }
+
+            @include xs {
+                width: 100%;
+                margin-top: .5rem;
+            }
+
+            @include sm {
+                width: 100%;
+                margin-top: .5rem;
+            }
+        }
+    }
+
+    &__slider {
+        width: 97%;
+        margin: auto;
+
+        & .dxCBCatalog__sliderMain .slick-list .slick-track .slick-slide {
+            padding-bottom: .5rem;
+        }
+
+        // Slider class, hence doesn't comply with library naming convention
+        .slick-slide>div {
+            margin: 0 .5rem;
+            height: 100%;
+        }
+
+        /* the parent */
+        .slick-list {
+            margin: 0 -.5rem;
+        }
+
+        .slick-track {
+            display: flex;
+        }
+
+        .slick-slide {
+            height: auto;
+        }
+    }
+
+    &__navbtn {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        width: 15px;
+        z-index: $firstLevel;
+
+        &:hover {
+            opacity: 0.5;
+            transition: all ease .5s;
+        }
+
+        i {
+            color: var(--dark-dark);
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        &--hide {
+            display: none;
+        }
+
+        &.prev {
+            left: -2%;
+
+            @include mobile {
+                left: -5.5%;
+            }
+
+            @include xs {
+                left: -5%;
+            }
+        }
+
+        &.next {
+            right: -2%;
+
+            @include mobile {
+                right: -5.5%;
+            }
+
+            @include xs {
+                right: -5%;
+            }
+        }
+    }
+}

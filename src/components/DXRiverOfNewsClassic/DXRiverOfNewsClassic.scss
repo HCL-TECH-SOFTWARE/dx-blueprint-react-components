@@ -1,0 +1,88 @@
+@import "../../global/breakpoints.scss";
+.dxRiverOfNewsClassic {
+    position: relative;
+    &__topContainer {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1.563rem;
+    }
+    &__title {
+        color: var(--primary-primary);
+        font-family: var(--_40-primary-semibold-150-font-family);
+        font-size: var(--_40-primary-semibold-150-font-size);
+        letter-spacing: var(--_40-primary-semibold-150-letter-spacing);
+        line-height: var(--_40-primary-semibold-150-line-height);
+        font-weight: var(--_40-primary-semibold-150-font-weight);
+        @include mobile {
+            font-family: var(--_28-primary-semibold-150-font-family);
+            font-size: var(--_28-primary-semibold-150-font-size);
+            letter-spacing: var(--_28-primary-semibold-150-letter-spacing);
+            line-height: var(--_28-primary-semibold-150-line-height);
+            font-weight: var(--_28-primary-semibold-150-font-weight);
+        }
+        @include xs {
+            font-family: var(--_28-primary-semibold-150-font-family);
+            font-size: var(--_28-primary-semibold-150-font-size);
+            letter-spacing: var(--_28-primary-semibold-150-letter-spacing);
+            line-height: var(--_28-primary-semibold-150-line-height);
+            font-weight: var(--_28-primary-semibold-150-font-weight);
+        }
+        @include sm {
+            font-family: var(--_32-primary-semibold-150-font-family);
+            font-size: var(--_32-primary-semibold-150-font-size);
+            letter-spacing: var(--_32-primary-semibold-150-letter-spacing);
+            line-height: var(--_32-primary-semibold-150-line-height);
+            font-weight: var(--_32-primary-semibold-150-font-weight);
+        }
+    }
+    &__viewAllButton {
+        height: 2.688rem;
+        font-family: var(--_18-primary-semibold-150-font-family);
+        font-size: var(--_18-primary-semibold-150-font-size);
+        letter-spacing: var(--_18-primary-semibold-150-letter-spacing);
+        line-height: var(--_18-primary-semibold-150-line-height);
+        font-weight: var(--_18-primary-semibold-150-font-weight);
+        &:hover,
+        &:active {
+            background-color: rgba(108, 117, 125, 0.1);
+            border-color: #6c757d !important;
+            color: #000000 !important;
+        }
+        @include mobile {
+            font-family: var(--_14-primary-semibold-125-font-family);
+            font-size: var(--_14-primary-semibold-125-font-size);
+            letter-spacing: var(--_14-primary-semibold-125-letter-spacing);
+            line-height: var(--_14-primary-semibold-125-line-height);
+            font-weight: var(--_14-primary-semibold-125-font-weight);
+            height: 2.3rem;
+        }
+        @include xs {
+            font-family: var(--_16-primary-semibold-125-font-family);
+            font-size: var(--_16-primary-semibold-125-font-size);
+            letter-spacing: var(--_16-primary-semibold-125-letter-spacing);
+            line-height: var(--_16-primary-semibold-125-line-height);
+            font-weight: var(--_16-primary-semibold-125-font-weight);
+        }
+        @include sm {
+            font-family: var(--_16-primary-semibold-125-font-family);
+            font-size: var(--_16-primary-semibold-125-font-size);
+            letter-spacing: var(--_16-primary-semibold-125-letter-spacing);
+            line-height: var(--_16-primary-semibold-125-font-size);
+            font-weight: var(--_16-primary-semibold-125-font-weight);
+        }
+    }
+    &__list {
+        padding: 0;
+        li {
+            list-style: none;
+            border-bottom: solid 1px;
+            border-color: var(--secondary-secondary-l3);
+            height: 100%;
+            padding: 1.563rem 0;
+        }
+        :last-child {
+            border-bottom: none;
+        }
+    }
+}

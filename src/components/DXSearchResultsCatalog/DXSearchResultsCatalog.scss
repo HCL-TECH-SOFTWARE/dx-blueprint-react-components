@@ -1,0 +1,21 @@
+.dxSRCatalog {
+
+    &__item {
+        & .dxStraightCard {
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        margin-bottom: 2rem;
+    }
+
+    .dxStraightCard {
+        &__title {
+            a {
+                color: var(--primary-primary);
+            }
+
+        }
+    }
+}

@@ -1,0 +1,20 @@
+import React from "react";
+import "@testing-library/jest-dom";
+import { render, screen } from "@testing-library/react";
+import DXPieChart from "./DXPieChart";
+import { PieChartArgs } from "./DXPieChart.stories";
+
+test( "If svg renders inside given container", () => {
+    render( <DXPieChart {...PieChartArgs} /> );
+    expect( screen.getByTestId( "dxPieChart-parent" ).querySelector( "svg" ) ).not.toBeNull();
+} );
+
+test( "If svg re-renders inside the same given container", () => {
+    let props = PieChartArgs;
+    props.data[0].value = 50;
+    const { rerender } = render( <DXPieChart {...props} /> );
+    props.data[0].value += 100;
+    rerender( <DXPieChart {...PieChartArgs} /> );
+    expect( screen.getByTestId( "dxPieChart-parent" ).querySelector( "svg" ) ).not.toBeNull();
+    expect( screen.getByTestId( "dxPieChart-parent" ).querySelectorAll( "svg" ).length ).toBe( 1 );
+} );

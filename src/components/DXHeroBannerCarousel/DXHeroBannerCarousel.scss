@@ -1,0 +1,108 @@
+@import "../../global/variables.scss";
+
+.dxHeroBannerCarousel {
+    position: relative;
+
+    ul {
+        list-style: none;
+        padding: 0;
+        position: relative;
+        overflow: hidden;
+
+        li {
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+
+            display: none;
+            position: relative;
+            width: 100%;
+
+            //Managing compatibility issues
+            transition: -webkit-transform var(--HBCarousel-timer) linear;
+            transition: transform var(--HBCarousel-timer) ease;
+            transition: transform var(--HBCarousel-timer) ease, -webkit-transform var(--HBCarousel-timer) ease;
+
+            &.active {
+                display: block;
+
+                &.left {
+                    transform: translate3d(-100%, 0, 0);
+                }
+
+                &.right {
+                    transform: translate3d(100%, 0, 0);
+                }
+            }
+
+            &.next {
+                position: absolute;
+                top: 0;
+                display: block;
+
+                &--left {
+                    -webkit-transform: translate3d(100%, 0, 0);
+                    transform: translate3d(100%, 0, 0);
+                }
+
+                &--right {
+                    -webkit-transform: translate3d(-100%, 0, 0);
+                    transform: translate3d(-100%, 0, 0);
+                }
+            }
+
+
+            &.move {
+                -webkit-transform: translateX(0);
+                transform: translateX(0);
+            }
+        }
+    }
+
+    &__bulletContainer {
+        z-index: $foregroundLevel + 1;
+        position: absolute;
+        bottom: 1rem;
+        border-radius: 1rem;
+        backdrop-filter: blur(4px) brightness(75%);
+        padding: 0.5rem;
+        display: flex;
+        width: fit-content;
+
+        &--left {
+            left: 5%;
+        }
+
+        &--center {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        &--right {
+            right: 5%;
+        }
+    }
+
+    &__bullet {
+        transition-property: background-color;
+        transition-duration: var(--HBCarousel-timer);
+        transform-style: ease;
+        transition-delay: none;
+
+        border: 1px solid var(--light-light);
+        border-radius: 50%;
+        display: block;
+        width: 1rem;
+        height: 1rem;
+        background-color: var(--primary-primary-l1);
+        margin: 0 0.25rem;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        &--active {
+            background-color: var(--light-light);
+        }
+    }
+}

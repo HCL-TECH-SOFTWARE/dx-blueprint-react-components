@@ -1,0 +1,75 @@
+@import "../../global/breakpoints.scss";
+
+.dxFullImageCard {
+    width: 100%;
+    border-radius: 8px;
+    background: linear-gradient(to right, #333333, #877f78);
+    height: 352px;
+    position: relative;
+
+    @include mobile {
+        height: 155px;
+    }
+
+    &__link {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        border-radius: 8px;
+        text-decoration: none;
+        color: inherit;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    &__info {
+        color: var(--white);
+        width: 100%;
+        height: 100%;
+        padding: 0 0.9375rem 0.9375rem 0.9375rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        gap: 0.875rem;
+
+        @include mobile {
+            gap: 0.25rem;
+        }
+
+        &Subtitle {
+            margin: 0;
+            font-family: var(--_14-bold-125-font-family);
+            font-size: var(--_14-bold-125-font-size);
+            letter-spacing: var(--_14-bold-125-letter-spacing);
+            line-height: var(--_14-bold-125-line-height);
+            font-weight: var(--_14-bold-125-font-weight);
+        }
+
+        &Heading {
+            font-family: var(--_20-regular-125-font-family);
+            font-size: var(--_20-regular-125-font-size);
+            letter-spacing: var(--_20-regular-125-letter-spacing);
+            line-height: var(--_20-regular-125-line-height);
+            font-weight: var(--_20-regular-125-font-weight);
+            margin-bottom: 0;
+            display: -webkit-box;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+
+            @include mobile {
+                font-family: var(--_16-regular-100-font-family);
+                font-size: var(--_16-regular-100-font-size);
+                letter-spacing: var(--_16-regular-100-letter-spacing);
+                line-height: var(--_16-regular-100-line-height);
+                font-weight: var(--_16-regular-100-font-weight);
+            }
+        }
+    }
+}

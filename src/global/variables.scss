@@ -1,0 +1,32 @@
+/*
+** This file contains the declaration of the z index levels available to be used
+** in the components from Terraform Library
+**
+** Graphically, the variables represents this schema
+** -------------|    navigation   |-----------------
+** ------------|      dropdown     |----------------
+** -----------|      foreground     |---------------
+** ---------|        fourthLevel      |-------------
+** --------|         thirdLevel        |------------
+** -------|          secondLevel        |-----------
+** ------|           firstLevel          |----------
+** -----|         componentLevel          |--------- -> Z index equal to 0
+** ----------|       subLevel         |-------------
+
+** The max value declared here is 100 and no value should exceed that one inside the components.
+** If your component is not listed within the main lavels (navigation, dropdown and foreground) and,
+** internally, it has more than four levels you can use the first level and add integer values depending
+** on the number of levels you have. However, be careful of using this approach because you should remain
+** within the level limits. E.g. you cannot make something like firstLevel + 10 because in that case
+** you should be using the second level.
+**
+*/
+$navigationLevel: 110;
+$editButtonLevel: 100;
+$dropdownLevel: 90;
+$foregroundLevel: 80;
+$fourthLevel: 40;
+$thirdLevel: 30;
+$secondLevel: 20;
+$firstLevel: 10;
+$subLevel: -10;

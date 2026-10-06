@@ -1,0 +1,52 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import AdditionalResources from '../blocks/additional-resources.mdx';
+import Admonition from '../blocks/Admonition.mdx';
+
+<Meta title="How To/Install Blueprint/In Containerized Deployments" />
+
+<header>
+How To
+
+# Install Blueprint in Containerized DX Deployments
+
+Learn how to install the Blueprint design system in HCL Digital Experience (DX) Cloud Native and HCL Digital Experience (DX) Compose deployments.
+</header>
+
+# Introduction
+
+The Blueprint Design System bundle comes out of the box with HCL Digital Experience (DX) Cloud Native v9.5 starting from CF229 and in HCL Digital Experience (DX) Compose starting from CF232, and is automatically installed to the base portal site upon either a new installation or an upgrade of the platform. Starting with CF232, users can control the deployment and updates of the Blueprint Design System bundle in both DX Cloud Native and DX Compose by configuring the Blueprint Design System’s Helm chart values, allowing you to enable or disable the Blueprint Assets or the Nex Haven sample site and manage updates according to your environment needs.
+
+It is also possible to [install The Blueprint design system bundle to Virtual Portal instances](/docs/how-to-install-blueprint-in-virtual-portals--documentation).
+
+## Prerequisites
+
+* You have administrator access to the HCL Digital Experience (DX) instance.
+
+## Install Blueprint via helm upgrade
+
+<Admonition type="warning">
+    If the Blueprint Design System is currently **not** in your environment and you wish to keep it that way, set `enableAssets` in the [Helm chart](https://help.hcl-software.com/digital-experience/9.5/CF231/get_started/plan_deployment/container_deployment/#helm-chart-contents) to false **before performing a Helm upgrade**.
+
+    **Note**: If you are reading this documentation after performing the Helm Upgrade and the Blueprint Design System were deployed, configure the corresponding Helm chart values with the necessary settings to remove it and perform another Helm upgrade.
+</Admonition>
+
+1. Add Blueprint Design System's Helm chart values under `incubator.configuration` as shown below:
+```
+incubator:
+  configuration:
+    blueprint:
+        enableAssets: true
+        enableNexHaven: true
+```
+
+2. Apply the changes to your deployment by performing a Helm upgrade.
+
+3. Verify that the Blueprint has been deployed successfully by checking your base portal for the following:
+    * The **Nex Haven** site is listed under the **Site Menu** on the [Site Manager](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_authoring/inline_editing/) toolbar or **Sites** in [Practitioner Studio](https://help.hcl-software.com/digital-experience/9.5/latest/build_sites/practitioner_studio/).
+        ![](./docs/how-to/deployment-of-blueprint-to-vp-12.png)
+    * The Blueprint libraries are available in the [Web Content Libraries](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_authoring/authoring_portlet/web_content_libraries/) portlet.
+4. If you opted to install the **Nex Haven site** as well, visit it in your base portal to check if everything seems to be working as expected.
+
+**Note:** If `enableAssets` is set to false (Blueprint Assets are removed), the Nex Haven sample site will not be deployed, even if `enableNexHaven` is set to true.
+
+<AdditionalResources />

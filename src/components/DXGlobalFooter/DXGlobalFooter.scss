@@ -1,0 +1,237 @@
+@import "../../global/breakpoints.scss";
+
+.dxGlobalFooter {
+    background-color: var(--primary-primary);
+    color: var(--white);
+    max-height: 152px;
+    padding: 1rem 3rem 1rem 3rem;
+
+    @include mobile {
+        max-height: 332px;
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+
+    @include xs {
+        max-height: 332px;
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+
+    @include sm {
+        max-height: 332px;
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+
+    &__logo {
+        @include mobile {
+            margin-bottom: 2rem;
+        }
+
+        @include xs {
+            margin-bottom: 2rem;
+        }
+
+        @include sm {
+            margin-bottom: 2rem;
+        }
+    }
+
+    &__logoContainer {
+        display: flex;
+        justify-content: center;
+        height: 100%;
+    }
+
+    &__logoImg {
+        height: 100%;
+        width: 95%;
+        display: flex;
+        align-items: center;
+
+        img {
+            width: 100%;
+        }
+    }
+
+    &__col {
+        margin-bottom: .5rem;
+    }
+
+    &__links {
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: row;
+
+        @include mobile {
+            flex-direction: column;
+        }
+
+        @include xs {
+            flex-direction: column;
+        }
+
+        @include sm {
+            flex-direction: column;
+        }
+
+        ul {
+            padding: 0;
+            margin: 0;
+        }
+
+        ul li {
+            display: inline;
+
+            @include mobile {
+                display: block;
+            }
+
+            @include xs {
+                display: block;
+            }
+
+            @include sm {
+                display: block;
+            }
+        }
+    }
+
+    &__linkItem {
+        margin-right: 1rem;
+
+        p {
+            margin-bottom: 0;
+            margin-top: 0;
+            display: inline-flex;
+        }
+
+        p a {
+            text-decoration: none;
+            color: var(--white);
+
+            i {
+                margin-left: .5rem;
+            }
+        }
+
+        @include mobile {
+            margin-bottom: .5rem;
+            margin-right: 0;
+        }
+
+        @include xs {
+            margin-bottom: .5rem;
+            margin-right: 0;
+        }
+
+        @include sm {
+            margin-bottom: .5rem;
+            margin-right: 0;
+        }
+
+        &--primary {
+            font-family: var(--_18-primary-semibold-150-font-family);
+            font-weight: var(--_18-primary-semibold-150-font-weight);
+            letter-spacing: var(--_18-primary-semibold-150-letter-spacing);
+            line-height: var(--_18-primary-semibold-150-line-height);
+            font-size: var(--_18-primary-semibold-150-font-size);
+
+            @include mobile {
+                font-family: var(--_14-primary-semibold-150-font-family);
+                font-weight: var(--_14-primary-semibold-150-font-weight);
+                letter-spacing: var(--_14-primary-semibold-150-letter-spacing);
+                line-height: var(--_14-primary-semibold-150-line-height);
+                font-size: var(--_14-primary-semibold-150-font-size);
+                margin-right: 0;
+            }
+
+            @include xs {
+                font-family: var(--_14-primary-semibold-150-font-family);
+                font-weight: var(--_14-primary-semibold-150-font-weight);
+                letter-spacing: var(--_14-primary-semibold-150-letter-spacing);
+                line-height: var(--_14-primary-semibold-150-line-height);
+                font-size: var(--_14-primary-semibold-150-font-size);
+                margin-right: 0;
+            }
+
+            @include sm {
+                font-family: var(--_14-primary-semibold-150-font-family);
+                font-weight: var(--_14-primary-semibold-150-font-weight);
+                letter-spacing: var(--_14-primary-semibold-150-letter-spacing);
+                line-height: var(--_14-primary-semibold-150-line-height);
+                font-size: var(--_14-primary-semibold-150-font-size);
+                margin-right: 0;
+            }
+        }
+
+        &--secondary {
+            font-family: var(--_16-primary-regular-150-font-family);
+            font-weight: var(--_16-primary-regular-150-font-weight);
+            letter-spacing: var(--_16-primary-regular-150-letter-spacing);
+            line-height: var(--_16-primary-regular-150-line-height);
+            font-size: var(--_16-primary-regular-150-font-size);
+
+            @include mobile {
+                font-family: var(--_14-primary-semibold-150-font-family);
+                font-weight: var(--_14-primary-semibold-150-font-weight);
+                letter-spacing: var(--_14-primary-semibold-150-letter-spacing);
+                line-height: var(--_14-primary-semibold-150-line-height);
+                font-size: var(--_14-primary-semibold-150-font-size);
+                margin-right: 0;
+            }
+
+            @include xs {
+                font-family: var(--_14-primary-semibold-150-font-family);
+                font-weight: var(--_14-primary-semibold-150-font-weight);
+                letter-spacing: var(--_14-primary-semibold-150-letter-spacing);
+                line-height: var(--_14-primary-semibold-150-line-height);
+                font-size: var(--_14-primary-semibold-150-font-size);
+                margin-right: 0;
+            }
+
+            @include sm {
+                font-family: var(--_14-primary-semibold-150-font-family);
+                font-weight: var(--_14-primary-semibold-150-font-weight);
+                letter-spacing: var(--_14-primary-semibold-150-letter-spacing);
+                line-height: var(--_14-primary-semibold-150-line-height);
+                font-size: var(--_14-primary-semibold-150-font-size);
+                margin-right: 0;
+            }
+        }
+    }
+
+    &__copyright {
+        font-family: var(--_12-regular-150-font-family);
+        font-weight: var(--_12-regular-150-font-weight);
+        letter-spacing: var(--_12-regular-150-letter-spacing);
+        line-height: var(--_12-regular-150-line-height);
+        font-size: var(--_12-regular-150-font-size);
+
+        @include mobile {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        @include xs {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        @include sm {
+            margin-top: 1rem;
+            text-align: center;
+        }
+    }
+
+    // Lexicon class, hence doesn't comply with library naming convention
+    .container {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .container .row .col-md-9 .row {
+        margin-top: .625rem;
+    }
+}

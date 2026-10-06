@@ -1,0 +1,130 @@
+.dxSidebarMenu {
+    container-name: sidebarMenu;
+    container-type: inline-size;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: var(--primary-primary-l2);
+    padding: 0.5rem 1rem 1rem 1rem;
+
+    &__title {
+        margin: 0;
+        font-family: var(--_36-primary-regular-150-font-family);
+        font-size: var(--_36-primary-regular-150-font-size);
+        letter-spacing: var(--_36-primary-regular-150-letter-spacing);
+        line-height: var(--_36-primary-regular-150-line-height);
+        font-weight: var(--_36-primary-regular-150-font-weight);
+        color: var(--light-white);
+    }
+
+    &__cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 1rem;
+        row-gap: 1rem;
+
+        button {
+            height: 74px;
+            overflow: hidden;
+
+            @container sidebarMenu (max-width: 375px) {
+                div {
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: start;
+                }
+            }
+
+            .dxCardBtn__text {
+                width: 50%;
+
+                @container sidebarMenu (max-width: 375px) {
+                    width: 100%
+                }
+
+                h3 {
+                    color: var(--dark-dark);
+                    margin-bottom: 0;
+                    font-family: var(--_14-primary-regular-125-font-family);
+                    font-size: var(--_14-primary-regular-125-font-size);
+                    letter-spacing: var(--_14-primary-regular-125-letter-spacing);
+                    line-height: var(--_14-primary-regular-125-line-height);
+                    font-weight: var(--_14-primary-regular-125-font-weight);
+
+                    @container sidebarMenu (max-width: 375px) {
+                        font-family: var(--_14-semibold-125-font-family);
+                        font-size: var(--_14-semibold-125-font-size);
+                        letter-spacing: var(--_14-semibold-125-letter-spacing);
+                        line-height: var(--_14-semibold-125-line-height);
+                        font-weight: var(--_14-semibold-125-font-weight);
+                    }
+                }
+            }
+
+            div {
+                img {
+                    width: 50%;
+
+                    @container sidebarMenu (max-width: 375px) {
+                        width: 0%
+                    }
+                }
+            }
+        }
+    }
+
+    &__cardInfo {
+        .dxCard {
+            background-color: transparent;
+            border-radius: 8px;
+        }
+
+        .dxCard__container {
+            background-color: var(--primary-primary);
+            border-bottom-right-radius: 8px;
+            border-bottom-left-radius: 8px;
+
+            @container sidebarMenu (max-width: 375px) {
+                border-top-right-radius: 8px;
+                border-top-left-radius: 8px;
+            }
+        }
+
+        .dxCard__cover {
+            @container sidebarMenu (max-width: 375px) {
+                display: none;
+            }
+
+            img {
+                border-top-right-radius: 8px;
+                border-top-left-radius: 8px;
+            }
+        }
+
+        .dxCard__body {
+            h3 {
+                margin-bottom: 0;
+
+                a {
+                    font-family: var(--_20-semibold-125-font-family);
+                    font-size: var(--_20-semibold-125-font-size);
+                    letter-spacing: var(--_20-semibold-125-letter-spacing);
+                    line-height: var(--_20-semibold-125-line-height);
+                    font-weight: var(--_20-semibold-125-font-weight);
+                    color: var(--light-white);
+                }
+            }
+
+            p {
+                font-family: var(--_14-primary-regular-150-font-family);
+                font-size: var(--_14-primary-regular-150-font-size);
+                letter-spacing: var(--_14-primary-regular-150-letter-spacing);
+                line-height: var(--_14-primary-regular-150-line-height);
+                font-weight: var(--_14-primary-regular-150-font-weight);
+                color: var(--light-white);
+                margin-bottom: 0;
+            }
+        }
+    }
+}

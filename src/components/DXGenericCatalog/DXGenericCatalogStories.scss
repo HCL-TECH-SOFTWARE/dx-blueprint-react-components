@@ -1,0 +1,6 @@
+// Alternative to :has in order to cover Firefox
+#accordionCatalog .dxGenericCatalog__cards {
+    .row {
+        row-gap: 0;
+    }
+}

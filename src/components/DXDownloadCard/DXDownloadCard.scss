@@ -1,0 +1,85 @@
+.dxDownloadCard {
+    padding: 0;
+    border: none;
+    display: inline-block;
+    min-width: 288px;
+    width: 100%;
+
+    &__body {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1.875rem;
+        background-color: var(--white);
+        border: 1px solid var(--secondary-secondary-l2);
+        padding: 0.75rem;
+        border-radius: 4px;
+        cursor: pointer;
+        width: auto;
+    }
+
+    &__info {
+        display: flex;
+        justify-content: flex-start;
+        gap: 0.5rem;
+    }
+
+    &__name {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        p {
+            color: var(--secondary-secondary);
+            font-family: var(--_14-regular-font-family);
+            font-size: var(--_14-regular-font-size);
+            font-weight: var(--_14-regular-font-weight);
+            line-height: var(--_14-regular-line-height);
+            letter-spacing: var(--_14-regular-letter-spacing);
+            margin-bottom: 0;
+            /* Overflow */
+            word-break: break-word;
+            display: -webkit-box;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            text-align: left;
+        }
+    }
+
+    &__icon {
+        display: flex;
+        flex-direction: column;
+
+        & i,
+        & svg {
+            font-weight: var(--_32-regular-font-weight);
+            font-size: var(--_32-regular-font-size);
+            letter-spacing: var(--_32-regular-letter-spacing);
+            color: var(--secondary-secondary)
+        }
+
+        & span {
+            font-family: var(--_10-bold-font-family);
+            font-size: var(--_10-bold-font-size);
+            font-weight: var(--_10-bold-font-weight);
+            line-height: var(--_10-bold-line-height);
+            letter-spacing: var(--_10-bold-letter-spacing);
+            color: var(--secondary-secondary);
+            margin-top: 0.125rem;
+        }
+    }
+
+    &__download {
+        display: flex;
+        align-items: center;
+
+        & i {
+            font-size: var(--_16-regular-font-size);
+            font-weight: var(--_16-regular-font-weight);
+            letter-spacing: var(--_16-regular-letter-spacing);
+            color: var(--secondary-secondary)
+        }
+    }
+}

@@ -1,0 +1,89 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import Admonition from '../blocks/Admonition.mdx';
+import AdditionalResources from '../blocks/additional-resources.mdx';
+
+<Meta title="How To/Configure Page Components" />
+
+<header>
+How To
+
+# Configure Page Components
+
+How to link page components to appropriate data sources, select content collections, and apply the correct authoring templates.
+</header>
+
+## Introduction
+
+The Blueprint design system comes with a set of pre-built [page components](?path=/docs/foundations-page-components--documentation). Follow this guide to understand how to configure these page components using Site Manager. Proper configuration ensures each component delivers dynamic, context-relevant content as intended.
+
+<Admonition type="tip">
+This guide assumes you have already added your desired Blueprint page component to your page. If you need help with adding page components to a page, refer to the [this guide](https://help.hcl-software.com/digital-experience/9.5/latest/build_sites/create_sites/adding_pages_content_more/toolbar_add_comp/).
+</Admonition>
+
+
+## Steps to Edit Shared Settings
+
+1. Turn on **Edit Mode** on the Site Manager toolbar.
+2. Open the **Display Portlet Menu** for the component you want to configure.
+    ![](./docs/how-to/configure-components-9.png)
+3. Click on **Edit Shared Settings** from the menu options.
+4. Edit the shared settings as required by the component you are configuring. The settings you need to configure will vary based on the page component.
+    <Admonition type="note">
+    Make sure to read the help text provided by the page component to understand which settings you need to configure and what should be selected for the page component to work. If you need more help, look for its documentation in this site. Blueprint page components usually require the following settings to be configured:
+
+    * **Category**: The category of the content items that the component will display.
+    * **Site Areas**: The location where the page component will fetch its content.
+    * **Authoring Template**: The template that defines which content items should be displayed by the component.
+    </Admonition>
+
+## Steps to Configure Data Source
+
+1. Turn on **Edit Mode** on the Site Manager toolbar.
+2. Open the **Configure Data Source** for the component you want to configure.
+![](./docs/how-to/configure-components-11.png)
+3. Open the options presented to you and set them as required by the component you are configuring.
+
+    <Admonition type="note">
+    The options presented to you will depend on the [data source](?path=/docs/foundations-page-components--documentation#data-source) required by the page component you are configuring. Make sure to read the [page component description](?path=/docs/foundations-page-components--documentation#component-description) to understand how to configure it properly. The options are:
+
+       * **Set Source URL**
+       * **Set Custom Request Options**
+       * **Set Content Collection**
+       * **Set Secondary Collection**
+       * **Switch Data Source**
+    </Admonition>
+
+## Steps to Configure Component Props
+
+1. Turn on **Edit Mode** on the Site Manager toolbar.
+2. Open the **Configure Component Props** for the component you want to configure.
+![](./docs/how-to/configure-components-12.png)
+3. In the popup that appears, edit the fields as you need.
+![](./docs/how-to/configure-components-14.png)
+4. Save your settings by clicking on the "Save Component Config" button.
+
+    <Admonition type="note">
+    The fields presented to you will depend on the configurable properties of the React component which your page component is built with. Look for its documentation in this site if you want to understand how to configure it properly.
+    </Admonition>
+
+## Steps to Configure via Edit Form
+
+1. Turn on **Edit Mode** on the Site Manager toolbar.
+2. Open the **Display Content Menu** for the component you want to configure.
+3. Click on **Edit Form** from the menu options.
+![](./docs/how-to/configure-components-15.png)
+
+<Admonition type="tip">
+In the form that appears, the are location breadcrumbs at the top showing the full path of the component in the content repository. Page components are stored in their own dedicated libraries. This helps you verify the exact location of the component within your Web Content Libraries.
+
+**Example breadcrumb path**:
+`Libraries > Nex Haven Page Components > Content > Nex Haven > Home > Page Components > Nex_dxherobannercarousel`
+
+![](./docs/how-to/configure-components-16.png)
+</Admonition>
+
+4. In the form that appears, edit the fields as you need.
+5. Save your settings by clicking on the "Save and Close" button.
+6. Finally, verify that your changes are applied to the page component after the page is refreshed.
+
+<AdditionalResources />

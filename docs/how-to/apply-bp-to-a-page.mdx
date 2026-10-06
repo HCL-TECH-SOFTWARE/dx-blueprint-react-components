@@ -1,0 +1,59 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import AdditionalResources from '../blocks/additional-resources.mdx';
+import Admonition from '../blocks/Admonition.mdx';
+
+<Meta title="How To/Apply Blueprint to a Page" />
+<header>
+How To
+# Apply Blueprint to a Page
+
+Learn how to apply the Blueprint design system to a new or existing page.
+</header>
+
+## Introduction
+
+The Blueprint design system comes with a [theme](?path=/docs/foundations-theme--documentation), a few [page templates](?path=/docs/information-architecture-page-template--documentation) and page layouts that you can apply to your page. Follow this guide if your want to learn how to create a page with a Blueprint page template or configure a page to use one of the Blueprint page layouts or configure it to use the Blueprint theme. This guide will focus on how you can do this using [Site Manager](https://help.hcl-software.com/digital-experience/9.5/latest/build_sites/create_sites/adding_pages_content_more/toolbar_sm_ovr/#site-manager). If you want to learn more about other ways or tools to do these and what more you can do in our [Help Center](https://help.hcl-software.com/digital-experience/9.5/latest/build_sites/create_sites/adding_pages_content_more/).
+
+## Apply Blueprint to a New Page
+
+Follow [this guide to create a new page](https://help.hcl-software.com/digital-experience/9.5/latest/build_sites/create_sites/adding_pages_content_more/toolbar_sm_page_create/) in HCL DX. In **Step 4** of the guide, select a Page Template among the available ones. Pick one of the Blueprint page templates if you want your page to use a Blueprint page layout and theme. If none of the Blueprint page templates suits your need, pick whichever page template you prefer then configure it with a Blueprint theme or page layout using the steps writtent below.
+
+## Apply Blueprint to an Existing Page
+
+To apply a **Blueprint theme** to an existing page, follow the steps below.
+
+<Admonition type="caution">
+Do not use the Blueprint theme that comes out of the box after installation or update for your site. It will always be overwritten everytime a CF update is applied or if the Blueprint bundle is re-installed. Make sure to make a copy of the theme then make your customizations on your own copy and use it for your own site.
+</Admonition>
+
+1. Turn on **Edit Mode** on the Site Manager toolbar and expand Site Manager.
+2. In Site Manager, navigate to the site or page where you want to create a page in.
+3. Hover over the your page of interest then click on the menu button that appears.
+4. Click on the **Open Page Settings** option from the menu that appears, then click on **Edit Page Properties**.
+    ![](./docs/how-to/create-a-page-4.png)
+7. On the dialog window that appears, open the **Advanced** tab, then scroll down to the Theme Settings section.
+8. Select the Theme that you prefer.
+    * If your site is already using your own Blueprint theme by default, select the **Inherit from parent** option
+    * Otherwise select your own Blueprint theme or whichever you prefer
+    ![](./docs/how-to/create-a-page-5.png)
+9. Scroll further down the dialog modal and click on the **Save** button to apply your changes to the page configuration.
+
+
+To apply a **Blueprint page layout** to an existing page, follow [this guide](https://help.hcl-software.com/digital-experience/9.5/latest/build_sites/create_sites/adding_pages_content_more/editing_page_settings/toolbar_pages_style/). Pick a Blueprint page layout that suits your needs or select any layout you prefer (e.g., Column layout or other available options).
+
+![](./docs/how-to/create-a-page-7.png)
+
+## Associated components on your page
+
+After creating a page, but before adding any components, it is important to update the Web Content associations for that page. This ensures that any components you add are stored in their designated library, rather than being stored under the Portal Site library by default.
+
+1. Click the page in site manager 
+2. Click the context menu icon and then, click **Open Page Settings.**
+3. Navigate to the Details tab
+4. Under **Content and templates**, click on **Default site area**
+5. In the **Manage Associated Content** modal, specify the library where the components should be stored, and set it as the default location.
+
+![](./docs/how-to/create-a-page-8.png)
+
+
+<AdditionalResources />

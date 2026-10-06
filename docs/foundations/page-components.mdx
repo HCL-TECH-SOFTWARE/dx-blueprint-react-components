@@ -1,0 +1,166 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import AdditionalResources from "../blocks/additional-resources.mdx";
+import Admonition from "../blocks/Admonition.mdx";
+
+<Meta title="Foundations/Page Components" />
+
+<header>
+Foundations
+# Page Components
+
+Reusable assets that content authors can add to a page to display different types of content.
+</header>
+
+The Blueprint design system comes with [page components](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_authoring/authoring_portlet/content_management_artifacts/pages/page_components/) that can be used to build pages in HCL Digital Experience (DX). They are designed to accelerate page creation and maintain design consistency. These components are reusable assets that content authors can add to a page to display different types of content. Browse the **Components** section in this site for the documentation of each available component.
+
+<Admonition type="important">
+Do not customize the page components provided by the Blueprint design system upon installation, as they are intended to be updated and overwritten during upgrade. The Blueprint page components that you [created](?path=/docs/how-to-create-your-own-components--documentation) in your own design library are safe from being overwritten by updates. 
+</Admonition>
+
+## Usage
+
+When added to a page, Blueprint page components provide contextual guidance to help ensure the component is correctly configured and renders as expected. For example, this is a DXCard component's help text:
+
+![](./docs/how-to/configure-components-8.png)
+
+Blueprint page components require specific configuration to properly display content. Based on the example above, the DXCard component requires the following:
+
+* **Content Type:** This component uses the **Resource** [content type](information-architecture-content-types--documentation).
+* **Collection Type:** It is designed to work with a **Single Item Collection**.
+* **Portlet Configuration:** It requires that the **Authoring Template** and **Location** fields within the [portlet configuration are set](?path=/docs/how-to-configure-page-components--documentation#steps-to-edit-shared-settings).
+* **Content Items:** It requires existing content items that match content types and location requirements stated above.
+
+When set up correctly, the content item or content items displayed by the Blueprint page component [can be edited contextually](?path=/docs/how-to-edit-content--documentation). It is also possible to [create new content items directly from the page component's UI](?path=/docs/how-to-create-content--documentation).
+
+## Composition
+
+All Blueprint page components are based on the DXComponent authoring template which provides a standardized structure for creating and configuring components within the Blueprint Design System. The authoring template is located within the Blueprint Design System library. When [creating a new page component](?path=/docs/how-to-create-new-page-components--documentation) or [editing a page component](?path=/docs/how-to-configure-page-components--documentation#steps-to-configure-via-edit-form), you may configure the following properties:
+
+### Identification Information
+
+The [identification information](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_authoring/authoring_portlet/content_management_artifacts/common/items_id/) fields are common to all HCL DX Web Content Manager (WCM) items. These include the **Name**, **Title** and **Description** of the page component. These fields are used to identify the component in the Site Manager and Authoring portlet.
+
+### Component Configuration
+
+These fields are used to configure the page component and how it is supposed to behave when rendered on a page.
+
+#### DXComponent Name
+
+This is the name of the React component that the page component is configured to render on the page. Refer to the [Component section](?path=/docs/foundations/components--documentation) of this site for the list of available components and their names.
+
+#### Component Config
+
+The **component config** is not directly referenced by the page component, but it is used by the **DXComponent presentation template** which is used when rendering the page component. It is usually an HTML component that provides a set of configuration options for the page component. The options that can be configured here depend on the page component's available properties. These properties are documented in the page component's entry under the Component section of this site. A page component's configuration must be [created when creating a new page component](?path=/docs/how-to-create-new-page-components--documentation#steps-to-create-component-config).
+
+#### Component Extra Config
+
+Some components support optional configuration props that can be added based on specific requirements. These extra configurations provide advanced filtering capabilities to control which cards or content items are displayed—such as filtering by tag, location, date, subject, or custom attributes. For example, a DXBanner Stripe component requires additional configuration to render functional buttons:
+
+```json
+{
+  "buttons":[
+    {
+         "label":"Click here!",
+         "onClick":function(){
+            console.log("click");
+         }
+      },
+      {
+         "label":"Submit me!",
+         "onClick":function(){
+            console.log("Submit");
+         }
+      }
+  ]
+}
+```
+
+Properties like these are documented in the page component's entry under the Component section of this site. A page component's extra configuration must be [created when creating a new page component](?path=/docs/how-to-create-new-page-components--documentation#steps-to-create-component-config) the same way the component's main config is created. However, instead of registering it in the **Component Config Main HTML component** it should be directly referenced by the page component. They are usually stored in the **Blueprint Design System Library** under the **DXComponents Extra Configs** folder.
+
+#### Component Form Config
+
+A Blueprint page component's form config defines how the page component's config properties are displayed with a friendly UI for advanced authors. It is possible for some components to not require a form config based on the available fields in the supported content types (Authoring Templates) of the page component. A page component's form config must be [created when creating a new page component](?path=/docs/how-to-create-new-page-components--documentation#steps-to-create-component-form-config) if necessary.
+
+#### Catalog Component Type
+
+This field is only used for the DXGenericCatalog component. It is used to determine the rendering style and content behavior of the component (e.g., **`DXAppCard`, `DXEvent`, `DXNewsCard`**, etc.). Based on the type of card, the format in which data is shown and the JSON structure will come from the selected card catalog content type.
+
+![](./docs/how-to/configure-components-21.png)
+
+#### Initializers
+
+The **DXComponent Config Before Initializer**, **DXComponent Config Override Initializer**, and **DXComponent Config After Initializer** fields are used to specify custom logic for the component. These fields allow you to inject custom logic into the component lifecycle at different stages.
+
+### Data Source
+
+Page components always require a data source. The data source options available for a page component and the fields they are mapped to can be represented as follows:
+
+| Conditional Field | Value | Data Source Options | Mapped Data Source Fields |
+|-------------------|---------|---------------------|---------------------|
+| Needs content collection? | True | Set Content Collection | [DXComponent Collection](#dxcomponent-collection) |
+| Needs content collection? | False | Set External URL, Set Custom Request Options | [External Data Source, External Data Options](#external-data-source) |
+| Needs secondary collection? | True | Set Secondary Collection | [DXComponent Secondary Collection](#dxcomponent-secondary-collection) |
+| [Switch Data Source](#switch-data-source) | True | Switch Data Source | Needs content collection? |
+
+#### DXComponent Collection
+
+The **DXComponent Collection** is a reference to a menu component or personalization component that provides the data required by the page component. It must be set when you [configure the data source of a page component on a page](?path=/docs/how-to-configure-page-components--documentation#steps-to-configure-data-source) if the **Needs content collection?** field is set to true. It could refer to a single item collection if it is meant to display a single entry or a multiple item collection if it is meant to display a gallery or list of items. [Data collection must be prepared when creating a new page component](?path=/docs/how-to-create-new-page-components--documentation#steps-to-prepare-data-collection).
+
+#### External Data Source
+
+If the **Needs content collection?** field is set to false, the page component will require the **External Data Source** to be set via the **Set Source URL** option when [configuring its data source](?path=/docs/how-to-configure-page-components--documentation#steps-to-configure-data-source). The **External Data Source** field is a link to an external data source that provides the data required by the page component. Optionally, the **External Data Options** can also be set via the **Set Custom Request Options** option. The **External Data Options** field is a JSON object that provides additional query parameters for the external data source. This is useful when the page component needs to fetch data from an external API or service.
+
+#### DXComponent Secondary Collection
+
+If the **Needs secondary collection?** field is set to true, the page component will also require a **DXComponent Secondary Collection** to be set through the **Set Secondary Collection** option when [configuring its data source](?path=/docs/how-to-configure-page-components--documentation#steps-to-configure-data-source). This is required if it is designed to display additional data or fallback content. The secondary collection is also a reference to a menu component or personalization component that provides the data required by the page component.
+
+#### Switch Data Source
+
+If the **Switch Data Source** field is set to true, the page component's data source can be switched through the **Switch Data Source** option when [configuring its data source](?path=/docs/how-to-configure-page-components--documentation#steps-to-configure-data-source). This allows the page component to switch between different data sources based on the requirements of the page.
+
+<Admonition type="note">
+Notice that the Content Types folder in the root stores all the data models based on a content type, such as Banner, Ad, Resource, etc. (all based on Authoring Templates).
+Then it also includes 2 sub-folders:
+* **By Component** → Includes all data models based on Blueprint components, such as Blueprint Catalogs, Header Navigation, River of News Classic, etc.
+* **Utils** → Includes small and common reusable props across all Blueprint (Blueprint Interfaces) components such as imageProps, linkProps, etc.
+</Admonition>
+
+#### View All Link
+
+The **View All Link** field is a link element that is used by the page component to render a link that directs users to see the full content related to the component. It is meant to help users easily access the full set of items beyond the limited preview shown in the component.
+
+### Rendering Fixtures
+
+#### Component Description
+
+The component description is rendered on the page if **Edit Mode** is on to context and guidance for authors on how to set up the component correctly. It may include information about the page component's required content types, collections, and portlet configuration settings. By default, the component referenced here is a **component-description-selector (Component Description Selector)** HTML component which serves as a switch to render the appropriate Rich Text component containing the component's description based on the page component's DXComponent Name. A unique component description should be [added when creating a new page component](?path=/docs/how-to-create-new-page-components--documentation#steps-to-add-component-description).
+
+![](./docs/how-to/configure-components-8.png)
+
+#### Section Title
+
+The **Section Title** field is used to specify the title of the section where the component will be displayed. It is rendered as a heading above the component on the page. If left empty, no title will be displayed for that section. For example, In the image below entered **"Full Image Catalog"**, this text appeared as the component's title, clearly labeling that section.
+
+![](./docs/how-to/configure-components-18.png)
+![](./docs/how-to/configure-components-19.png)
+
+#### DXComponent Config Styles
+The DXComponent Config Styles is an HTML field intended for rendering CSS class overrides and UI design tweaks. It can be used to align with  your brand or custom UI needs. Like any other HTML markup fields or components in HCL DX, [WCM Tags](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_authoring/authoring_portlet/content_management_artifacts/tags/) can be used here to dynamically bind values or identifiers within CSS rules. This allows the application of styles based on the page component's properties or context. For example:
+
+```css
+<style>
+  .dx-component-main-[Property field="id" type="auto" context="autofill"] {
+    .dxButton {
+      display: none;
+    }
+  }
+</style>
+```
+
+This ensures the styling does not affect other similar components on the page. This approach can be used to target elements like buttons within a specific component instance.
+
+#### Icons
+
+The **Icons** field is an image field that allows you to upload an icon for the page component. This icon is used to represent the component in the Site Manager toolbar or Authoring portlet. It helps authors quickly identify the component when adding it to a page. The icon should be a small image that visually represents the component's purpose or functionality.
+
+<AdditionalResources />

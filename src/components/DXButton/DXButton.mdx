@@ -1,0 +1,347 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import AdditionalResources from "../../../docs/blocks/additional-resources.mdx";
+import * as DXButtonStories from "./DXButton.stories";
+
+<Meta of={DXButtonStories} />
+
+<header>
+Components/Buttons and Headers
+
+# Button
+
+Buttons communicate action items to indicate user interaction hotspots.
+
+</header>
+
+## About
+
+The Button is a clickable UI element used to trigger actions or navigate users to different sections of the application. It serves as a key interactive element, guiding users toward primary and secondary actions. Buttons can vary by style, size, and state, depending on their purpose and priority within a page.
+
+## Elements
+
+### Anatomy
+
+This section shows the anatomy of the button, focusing on its core parts: the container, label text, and optional icon. Knowing how these elements work together helps maintain consistency across all button variants.
+
+1. **Button container**
+2. **Label text**
+3. **Icon**
+
+<div className="dx-image-container">
+    <img
+        src="./docs/how-to/storybook-documents/DXButton/anatomy.png"
+        alt="Button anatomy diagram showing the three numbered parts: container, label text, and icon"
+    />
+</div>
+
+### Variants
+
+Refers to their visual style and their hierarchical importance and specific function within a user interface. This section contains the different button variants used across the UI.
+
+<div className="dx-image-container">
+    <img
+        src="./docs/how-to/storybook-documents/DXButton/variants.png"
+        alt="Button variants: Text only, Text + Icon, Icon only"
+    />
+</div>
+
+### States
+
+Refers to their visual style and their hierarchical importance and specific function within a user interface. This section contains the different button states used across the UI.
+
+<div className="dx-image-container">
+    <img
+        src="./docs/how-to/storybook-documents/DXButton/states.png"
+        alt="Button states: Default State, Hover State, Selected State, Disabled State"
+    />
+</div>
+
+### Dimensions
+
+This illustrates the essential measurements like its padding, height, and width, as well as the precise spacing between its individual elements for the Buttons.
+
+<div className="dx-image-container">
+    <img
+        src="./docs/how-to/storybook-documents/DXButton/dimensions.png"
+        alt="Button dimensions showing padding, gap, border radius and icon sizes for each variant across all states"
+    />
+</div>
+
+### Types
+
+Refers to their visual style and their hierarchical importance and specific function within a user interface.
+
+<div className="dx-sub-content">
+
+#### 1. Primary
+
+Primary buttons communicate interaction hotspots within the UI which will lead to the next step of the journey (happy path).
+
+<div className="dx-image-container">
+    <img
+        src="./docs/how-to/storybook-documents/DXButton/primary-variant.png"
+        alt="Primary button variants shown in light and dark mode across all states"
+        width="525"
+        height="171"
+    />
+</div>
+
+#### 2. Secondary
+
+Secondary buttons communicate interaction hotspots within the UI which will lead to an alternate path (journey) or internal configuration within the current task.
+
+<div className="dx-image-container">
+    <img
+        src="./docs/how-to/storybook-documents/DXButton/secondary-variant.png"
+        alt="Secondary button variants shown in light and dark mode across all states"
+        width="525"
+        height="171"
+    />
+</div>
+
+#### 3. Borderless
+
+Borderless Buttons communicate interaction hotspots within the UI which will lead to shy alternatives or configurations.
+
+<div className="dx-image-container">
+    <img
+        src="./docs/how-to/storybook-documents/DXButton/borderless-variant.png"
+        alt="Borderless button variants shown in light and dark mode across all states"
+        width="525"
+        height="171"
+    />
+</div>
+
+</div>
+
+### Colors
+
+This illustrates the color usage of the Buttons, including background, borders, text, and icon colors, as well as the states (default, hover, active, and disabled) to ensure proper contrast and visual hierarchy.
+
+<style>{`
+    .sbdocs h1,
+    .sbdocs h2,
+    .sbdocs h3,
+    .sbdocs h4,
+    .sbdocs h5,
+    .sbdocs h6 {
+        border-bottom: none !important;
+    }
+
+    .sbdocs h3 {
+        color: var(--primary-primary);
+    }
+
+    .dx-sub-content {
+        margin-left: 2rem;
+    }
+
+    .dx-colors-table {
+        width: 100%;
+        border: none !important;
+        border-collapse: separate !important;
+        border-spacing: 0 !important;
+        border-radius: 8px;
+        overflow: hidden;
+
+        background-color: var(--light-white);
+        color: var(--dark-dark);
+        font-size: inherit;
+
+        /* Outer border + shadow */
+        box-shadow:
+            0 0 0 1px var(--light-light-d2),
+            0 2px 4px 0 rgba(0, 0, 0, 0.04);
+    }
+
+    .dx-colors-table th {
+        background-color: var(--light-light-l1);
+        color: var(--dark-dark);
+        height: 51px;
+
+        border: none !important;
+        border-right: 1px solid var(--light-light-d2) !important;
+        border-bottom: 1px solid var(--light-light-d2) !important;
+
+        padding: 12px 16px;
+        text-align: left;
+        font-weight: 600;
+    }
+
+    .dx-colors-table td {
+        background-color: var(--light-white);
+        color: var(--dark-dark);
+        height: 51px;
+
+        border: none !important;
+        border-right: 1px solid var(--light-light-d2) !important;
+        border-bottom: 1px solid var(--light-light-d2) !important;
+
+        padding: 12px 16px;
+    }
+
+    .dx-colors-table th:last-child,
+    .dx-colors-table td:last-child {
+        border-right: none !important;
+    }
+
+    .dx-colors-table tbody tr:last-child td {
+        border-bottom: none !important;
+    }
+
+    .dx-image-container {
+        width: 100%;
+        background-color: var(--light-light-l1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 24px 0;
+    }
+    .dx-table-container {
+        width: 100%;
+        background-color: var(--light-light);
+        padding: 24px;
+        box-sizing: border-box;
+    }
+
+    .dx-mode-heading {
+        font-weight: 700;
+        font-style: Bold;
+        font-size: 24px;
+        line-height: 150%;
+        padding: 10px 0;
+    }
+
+    .dx-mode-heading + .dx-table-container {
+        margin-top: 0;
+    }
+
+    .dx-table-container + .dx-mode-heading {
+        margin-top: 20px;
+    }
+
+`}</style>
+
+<div className="dx-sub-content">
+    <div className="dx-mode-heading">Mode: Light</div>
+    <div className="dx-table-container">
+        <table className="dx-colors-table">
+            <thead>
+                <tr>
+                    <th>Button part</th>
+                    <th>Default</th>
+                    <th>Hover</th>
+                    <th>Selected</th>
+                    <th>Disabled</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>Container</td>
+                    <td>$primary-d1</td>
+                    <td>$primary-l1</td>
+                    <td>$primary-l1</td>
+                    <td>$light-d2</td>
+                </tr>
+
+                <tr>
+                    <td>Text (Label)</td>
+                    <td>$secondary-l3</td>
+                    <td>$type-white</td>
+                    <td>$type-white</td>
+                    <td>$secondary-l1</td>
+                </tr>
+
+                <tr>
+                    <td>Icon</td>
+                    <td>$white</td>
+                    <td>$white</td>
+                    <td>$white</td>
+                    <td>$light</td>
+                </tr>
+
+                <tr>
+                    <td>Border</td>
+                    <td>N/A</td>
+                    <td>N/A</td>
+                    <td>$dark-d2</td>
+                    <td>N/A</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div className="dx-mode-heading">Mode: Dark</div>
+    <div className="dx-table-container">
+        <table className="dx-colors-table">
+            <thead>
+                <tr>
+                    <th>Button part</th>
+                    <th>Default</th>
+                    <th>Hover</th>
+                    <th>Selected</th>
+                    <th>Disabled</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>Container</td>
+                    <td>$secondary</td>
+                    <td>$secondary-l1</td>
+                    <td>$primary-l1</td>
+                    <td>$dark-l1</td>
+                </tr>
+
+                <tr>
+                    <td>Text (Label)</td>
+                    <td>$secondary-l3</td>
+                    <td>$dark-d2</td>
+                    <td>$type-white</td>
+                    <td>$type-light-d2</td>
+                </tr>
+
+                <tr>
+                    <td>Icon</td>
+                    <td>$white</td>
+                    <td>$white</td>
+                    <td>$white</td>
+                    <td>$light-d3</td>
+                </tr>
+
+                <tr>
+                    <td>Border</td>
+                    <td>N/A</td>
+                    <td>N/A</td>
+                    <td>$white</td>
+                    <td>N/A</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+## When to Use
+
+Buttons communicate actions that users can take. They are commonly found throughout the interface in areas such as:
+
+- Dialogs
+- Modal windows
+- Forms
+- Cards
+
+**Use buttons when:**
+
+- The user needs to trigger an action (save, submit, confirm, apply, upload, continue).
+- You need to move the user to the next step in a flow.
+- The action is important and should be clearly visible and accessible.
+- A clear call-to-action is required.
+
+## Arg Types
+
+<Controls of={DXButtonStories.Default} />
+
+<AdditionalResources />

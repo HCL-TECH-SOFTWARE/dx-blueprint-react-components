@@ -1,0 +1,33 @@
+.dxPieChart {
+
+    svg {
+        width: 100%;
+        height: auto;
+    }
+
+    &__value {
+        font-family: var(--_28-primary-bold-150-font-family);
+        font-size: var(--_28-primary-bold-150-font-size);
+        letter-spacing: var(--_28-primary-bold-150-letter-spacing);
+        line-height: var(--_28-primary-bold-150-line-height);
+        font-weight: var(--_28-primary-bold-150-font-weight);
+    }
+
+    &__name {
+        font-family: var(--_18-primary-semibold-150-font-family);
+        font-size: var(--_18-primary-semibold-150-font-size);
+        letter-spacing: var(--_18-primary-semibold-150-letter-spacing);
+        line-height: var(--_18-primary-semibold-150-line-height);
+        font-weight: var(--_18-primary-semibold-150-font-weight);
+        color: var(--dark-dark-d2);
+    }
+
+    &__nominal {
+        font-family: var(--_16-regular-150-font-family);
+        font-size: var(--_16-regular-150-font-size);
+        letter-spacing: var(--_16-regular-150-letter-spacing);
+        line-height: var(--_16-regular-150-line-height);
+        font-weight: var(--_16-regular-150-font-weight);
+        color: var(--dark-dark-d2);
+    }
+}

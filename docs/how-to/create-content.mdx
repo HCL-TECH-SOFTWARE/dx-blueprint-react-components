@@ -1,0 +1,46 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import AdditionalResources from '../blocks/additional-resources.mdx';
+import Admonition from '../blocks/Admonition.mdx';
+
+<Meta title="How To/Create Content" />
+
+<header>
+How To
+
+# Create Content
+
+Learn how to create content that can be used on a page in HCL Digital Experience (DX) site that is using the Blueprint design system.
+</header>
+
+## Introduction
+
+In HCL Digital Experience (DX), content items can be created and managed using many different ways. Follow this guide if you want to add content based on a Blueprint page component you already have on your page. To learn more about web content management in HCL DX, please refer to the [HCL DX Help Center](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/).
+
+## Steps to Add New Content
+
+1. Turn on **Edit Mode** on the Site Manager tool bar.
+2. On your page, find and choose a page component that draws content from a content collection. They usually have a <i class="ci-Add_Plus"/> icon button attached to the page component.
+    - This could be a page component like the [Catalog](?path=/docs/components-lists-catalogs-and-filters-catalog--documentation), [Carousel](?path=/docs/components-home-page-carousel--documentation), or any other component that is designed to display lists or collections of content. Not all page components support adding content, so make sure to choose one that does.
+
+    ![](./docs/how-to/create-content-5.png)
+3. Click on the <i class="ci-Add_Plus"/> icon on the page component to add new content.
+    ![](./docs/how-to/create-content-6.png)
+    <br/>
+    <Admonition type="note">
+    The content fields on the form vary based on the [content template](?path=/docs/information-architecture-content-types--documentation) that is being used by the page component where you are adding the content.
+    </Admonition>
+5. Enter all of the required fields for your content item and the fields that are needed by the page component you chose in step 2.
+    <Admonition type="tip">
+    * Fill in as many fields as possible to ensure that your content is displayed correctly in different contexts. The content item that you create may be displayed differently by other page components.
+    * Check the page component's settings to see which category and site area your content item should be tagged with and located. This is important for the content to be displayed correctly.
+    </Admonition>
+6. Once you are satisfied with what you wrote, save your content item.
+7. Finally, verify that your content item is displayed correctly in the page component you chose in step 2.
+   <Admonition type="tip">
+    If you do not see your content item,
+    * Try refreshing the page or clearing the cache.
+    * Check your new content item to ensure that it is tagged with the correct category and that it is located in the correct site area.
+    * Check the page component's configuration if there are any filters, pagination, or limits that might affect the display of your content item.
+   </Admonition>
+
+<AdditionalResources />

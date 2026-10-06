@@ -1,0 +1,45 @@
+.dxTextBreak {
+    position: relative;
+    width: 100%;
+
+    &__container {
+        &.row {
+            margin: 0;
+        }
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        padding-top: 6.25rem;
+        padding-bottom: 6.25rem;
+        color: var(--dark-dark-d2);
+
+        h4 {
+            font-family: var(--_40-primary-semibold-150-font-family);
+            font-size: var(--_40-primary-semibold-150-font-size);
+            font-weight: var(--_40-primary-semibold-150-font-weight);
+            line-height: var(--_40-primary-semibold-150-line-height);
+            letter-spacing: var(--_40-primary-semibold-150-letter-spacing);
+            margin-bottom: 1.875rem;
+        }
+
+        h6 {
+            font-family: var(--_20-regular-150-font-family);
+            font-size: var(--_20-regular-150-font-size);
+            font-weight: var(--_20-regular-150-font-weight);
+            line-height: var(--_20-regular-150-line-height);
+            letter-spacing: var(--_20-regular-150-letter-spacing);
+            margin-bottom: 2.375rem;
+        }
+
+        & .dxButton {
+            font-family: var(--_16-semibold-150-font-family);
+            font-size: var(--_16-semibold-150-font-size);
+            letter-spacing: var(--_16-semibold-150-letter-spacing);
+            line-height: var(--_16-semibold-150-line-height);
+            font-weight: var(--_16-semibold-150-font-weight);
+            padding: 0.5rem 1rem;
+        }
+    }
+}

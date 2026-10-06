@@ -1,0 +1,277 @@
+@import "../../global/variables.scss";
+@import "../../global/breakpoints.scss";
+
+.dxNavHeaderUtils {
+    min-width: 768px;
+    background-color: var(--light-white);
+
+    &__primaryLevel {
+        height: 98px;
+        align-items: center;
+
+        &.--state--inactive {
+            display: none;
+        }
+    }
+
+    &__utils {
+        display: flex;
+        height: 38px;
+        margin: 24px 0;
+
+        button {
+            margin-left: 5%;
+        }
+
+        &.--state--inactive {
+            display: none;
+        }
+    }
+
+    &__utilsButton {
+        color: var(--light-white);
+        background-color: var(--primary-primary);
+        border: none;
+        border-radius: 4px;
+        padding: 0 12px;
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
+
+    &__utilsIcon {
+        align-items: center;
+        display: flex;
+
+        &.dxButton.btn.btn-unstyled {
+            padding: 0.375rem;
+            border: none;
+            color: var(--dark-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 2.5rem;
+            min-height: 2.5rem;
+
+            i {
+                width: 1.5rem;
+                height: 1.5rem;
+                font-size: 1.5rem;
+                line-height: 1;
+
+                &::before {
+                    font-size: 1.5rem;
+                }
+            }
+
+            &:hover {
+                background-color: transparent;
+            }
+        }
+    }
+
+    // Lexicon class, hence doesn't comply with library naming convention
+    .form-control:focus {
+        box-shadow: none;
+    }
+
+    // Lexicon class, hence doesn't comply with library naming convention
+    > .container-fluid {
+        padding: 0 100px;
+
+        @include mobile {
+            padding: 0 50px;
+        }
+
+        @include xs {
+            padding: 0 50px;
+        }
+
+        @include sm {
+            padding: 0 50px;
+        }
+
+        @include md {
+            padding: 0 50px;
+        }
+    }
+
+    &__topRow {
+        align-items: center;
+    }
+
+    &__image {
+        img {
+            max-width: 100%;
+            min-height: 40px;
+            float: left;
+            object-fit: scale-down;
+            object-position: left;
+            margin: 24px 0;
+        }
+    }
+
+    // Non-compliant with BEM notation to maintain override over Lexicon classes working
+    .dxNavHeaderUtils__search {
+        transition: max-width 0.5s ease;
+        display: none;
+
+        &.--state--active {
+            display: flex;
+            align-items: center;
+
+            form {
+                flex: 1 1 auto;
+                min-width: 0;
+                width: 100%;
+            }
+        }
+
+        .input-group {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto auto;
+            align-items: center;
+            width: 100%;
+            height: 40px;
+
+            border: 1px solid var(--dark-dark);
+            border-radius: 0.25rem;
+            overflow: hidden;
+
+            // Override Bootstrap input-group flex styles.
+            flex-wrap: unset;
+        }
+
+        .input-group-item {
+            grid-column: 1;
+            min-width: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-group-inset-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: static;
+            width: auto;
+        }
+
+        .dxNavHeaderUtils__buttonSearch {
+            grid-column: 2;
+        }
+
+        .dxNavHeaderUtils__buttonClose {
+            grid-column: 3;
+        }
+
+        .dxNavHeaderUtils__buttonSearch,
+        .dxNavHeaderUtils__buttonClose {
+            .dxButton.btn.btn-unstyled {
+                position: static;
+                margin: 0;
+                border: none;
+                color: var(--dark-dark);
+                background-color: transparent;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                min-width: 2.5rem;
+                min-height: 2.5rem;
+
+                i {
+                    width: 1.5rem;
+                    height: 1.5rem;
+                    font-size: 1.5rem;
+                    line-height: 1;
+
+                    &::before {
+                        font-size: 1.5rem;
+                    }
+                }
+
+                &:hover {
+                    background-color: transparent;
+                }
+            }
+        }
+
+        *:not(.form-control) {
+            background: var(--light-white);
+        }
+    }
+
+    &__searchContainer {
+        margin-bottom: 0;
+        width: 100%;
+    }
+
+    &__searchInput {
+        width: 100%;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        background-color: var(--light-white);
+
+        .input-group {
+            border: 1px solid #e7e7ed;
+            border-radius: 0.25rem;
+            overflow: hidden;
+
+            &:focus-within {
+                border-color: var(--primary-primary);
+            }
+        }
+    }
+
+    &__searchInput {
+        border: none;
+        border-top-left-radius: 0.25rem;
+        border-bottom-left-radius: 0.25rem;
+
+        &:focus {
+            box-shadow: none;
+        }
+    }
+
+    .dxNavHeaderUtils__button {
+        &Search {
+            border: none;
+            color: var(--dark-dark);
+            font-size: 1.5rem;
+
+
+            & .dxButton.btn.btn-unstyled {
+                padding: 0;
+                font-size: 1.5rem;
+                color: var(--dark-dark);
+
+                &:hover {
+                    background-color: transparent;
+                }
+            }
+        }
+
+        &Close {
+            border: none;
+            border-top-right-radius: 0.25rem;
+            border-bottom-right-radius: 0.25rem;
+
+            & .dxButton.btn.btn-unstyled {
+                padding: 0;
+                color: var(--dark-dark);
+                font-size: 1.5rem;
+
+                &:hover {
+                    background-color: transparent;
+                }
+            }
+        }
+    }
+
+    .dxMegaMenu {
+        height: 100%;
+    }
+}

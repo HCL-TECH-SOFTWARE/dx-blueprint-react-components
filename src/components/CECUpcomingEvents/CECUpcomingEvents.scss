@@ -1,0 +1,164 @@
+.cec-upcoming-events {
+    overflow: hidden;
+    width: 100%;
+    padding: 1.25rem;
+    container-type: inline-size;
+    // RTL modifier — explicit direction prevents Bootstrap negative-margin gutter overflow
+    // from being clipped by overflow:hidden when <html dir="rtl"> is inherited.
+    &--rtl {
+        direction: rtl;
+    }
+    // Responsive padding
+    @media (max-width: 768px) {
+        padding: 1rem;
+    }
+    @media (max-width: 480px) {
+        padding: 0.75rem;
+    }
+    // row style for grid layout
+    &__row {
+        row-gap: 1.5rem;
+    }
+    // Column styling for grid layout (matching DXEventCatalog exactly)
+    &__col {
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        container-type: inline-size;
+        @media (max-width: 768px) {
+            margin-bottom: 0.75rem;
+        }
+        // Use CSS custom property for exact column widths (supports any elementsPerRow value)
+        // Only applies above mobile breakpoint so xs=12 (full width) still works on small screens
+        @media (min-width: 576px) {
+            flex: 0 0 var(--cec-col-width) !important;
+            max-width: var(--cec-col-width) !important;
+        }
+    }
+    // Critical: Ensure first child div in columns has height: 100% (same as DXEventCatalog)
+    [class*="col-"] {
+        &>div:first-child {
+            height: 100% !important;
+        }
+    }
+    // More specific selector for our columns
+    &__col {
+        &>div:first-child {
+            height: 100% !important;
+        }
+        // Even more specific selectors
+        &.cec-upcoming-events__col {
+            &>div:first-child {
+                height: 100% !important;
+            }
+        }
+    }
+    &__container {
+        margin: 0;
+        @media (max-width: 768px) {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+    }
+    // Header
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--cec-event-padding);
+        border-bottom: 1px solid var(--cec-event-border);
+        background-color: var(--cec-color-background-subtle, #f8f9fa);
+        @media (max-width: 768px) {
+            flex-direction: column;
+            gap: 0.75rem;
+            text-align: center;
+            padding: 1rem;
+        }
+        @media (max-width: 480px) {
+            padding: 0.75rem;
+        }
+    }
+    &__title {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--cec-event-text);
+        @media (max-width: 768px) {
+            font-size: 1.125rem;
+        }
+        @media (max-width: 480px) {
+            font-size: 1rem;
+        }
+    }
+    // Event list - Using Bootstrap grid system, not CSS grid
+    &__list {
+        // Bootstrap grid handles layout, this is just for spacing
+        padding: 0;
+    }
+    &__item {
+        border: 1px solid var(--cec-event-border);
+        border-radius: var(--cec-event-radius);
+        background: var(--cec-event-bg);
+        overflow: hidden;
+    }
+    // Empty state
+    &__empty {
+        padding: 2rem;
+        text-align: center;
+        color: var(--cec-event-text-secondary);
+        font-style: italic;
+        grid-column: 1 / -1;
+        @media (max-width: 768px) {
+            padding: 1.5rem;
+        }
+        @media (max-width: 480px) {
+            padding: 1rem;
+            font-size: 0.875rem;
+        }
+    }
+    // Pagination
+    &__pagination {
+        margin-top: 1rem;
+        padding: 0 var(--cec-event-spacing) var(--cec-event-spacing);
+        @media (max-width: 768px) {
+            margin-top: 1rem;
+        }
+        &-info {
+            color: var(--cec-event-text-secondary, #666);
+            font-size: 0.875rem;
+            text-align: center;
+            width: 100%;
+            @media (max-width: 480px) {
+                font-size: 0.8rem;
+            }
+        }
+    }
+    // Mobile styles
+    @media (max-width: 768px) {
+        .cec-event--featured {
+            .cec-event__date {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                padding: 0.5rem 0.75rem;
+                background: transparent;
+                border-bottom: 1px solid var(--cec-event-border);
+                border-radius: 0;
+            }
+            .cec-event__meta {
+                flex-wrap: wrap;
+                gap: 0.5rem 1rem;
+            }
+        }
+    }
+    // Keep label-to-control spacing fixed at 0.5rem (8px) only for CEC Upcoming Events taxonomy filter.
+    .dxTaxonomyFilter {
+        &__searchContainer {
+            justify-content: flex-start;
+            gap: 0.5rem;
+        }
+        &--select {
+            gap: 0.5rem;
+        }
+    }
+}

@@ -1,0 +1,20 @@
+.dxACatalog {
+    &__items {
+        padding: 1.25rem 0 1.25rem 0;
+    }
+
+    & .dxACatalog__items .dxAccordion:not(:last-child) {
+        border-bottom-width: 0px;
+    }
+    & .dxACatalog__items .dxAccordion{
+        border-width: 2px;
+    }
+    & .dxACatalog__items .dxAccordion:first-child {
+        border-top-right-radius: .5rem;
+        border-top-left-radius: .5rem;
+    }
+    & .dxACatalog__items .dxAccordion:last-child {
+        border-bottom-right-radius: .5rem;
+        border-bottom-left-radius: .5rem;
+    }
+}

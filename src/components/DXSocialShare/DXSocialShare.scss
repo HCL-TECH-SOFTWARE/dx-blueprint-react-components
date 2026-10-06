@@ -1,0 +1,74 @@
+.dxSocialShare {
+
+    &__title {
+        font-family: var(--_18-regular-150-font-family);
+        font-size: var(--_18-regular-150-font-size);
+        letter-spacing: var(--_18-regular-150-letter-spacing);
+        line-height: var(--_18-regular-150-line-height);
+        font-weight: var(--_18-regular-150-font-weight);
+        color: var(--dark-dark);
+    }
+
+    &__button {
+        color: var(--secondary-secondary);
+        background-color: transparent;
+        border-color: transparent;
+        font-size: 42px;
+        display: inline-block !important;
+        height: fit-content;
+        width: fit-content;
+        line-height: 1;
+    }
+
+    &__container {
+        background-color: transparent;
+        padding: 0;
+        gap: 20px;
+
+        &.btn-group{
+            display: inline !important;
+        }
+
+        & .dxSocialShare__button:hover {
+            background-color: var(--primary-primary);
+        }
+
+        &.btn-group>.btn:not(:last-child):not(.dropdown-toggle),
+        .btn-group>.btn-group:not(:last-child)>.btn {
+            &:hover {
+                border-bottom-right-radius: 8px;
+                border-top-right-radius: 8px;
+                border-bottom-left-radius: 8px;
+                border-top-left-radius: 8px;
+            }
+        }
+
+        &.btn-group>.btn:not(:first-child),
+        .btn-group>.btn-group:not(:first-child)>.btn {
+            border-bottom-right-radius: 8px;
+            border-top-right-radius: 8px;
+            border-bottom-left-radius: 8px;
+            border-top-left-radius: 8px;
+        }
+
+        &.dxSocialShare--small {
+            background: var(--primary-primary);
+            border-radius: 4px;
+            padding: 9px 27px;
+            gap: 8px;
+
+            .dxSocialShare__button {
+                color: var(--light-white);
+                font-size: 15px;
+                height: fit-content;
+                width: fit-content;
+            }
+
+            >.dxSocialShare__button:not(:last-child):not(.dropdown-toggle) {
+                border-radius: 0;
+            }
+
+        }
+    }
+
+}

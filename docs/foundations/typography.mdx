@@ -1,0 +1,99 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as css from 'css-tree';
+import styles from '../../src/static/typography.txt?raw';
+import AdditionalResources from '../blocks/additional-resources.mdx';
+
+export const ast = css.parse(styles);
+
+export function Typography({ ast, Tag }) {
+    function isRule(node) {
+        if (node.type !== 'Rule') {
+            return false;
+        }
+        if (!node.prelude || !node.block) {
+            return false;
+        }
+        if (!node.prelude.children || node.prelude.children.isEmpty) {
+            return false;
+        }
+        if (!node.prelude.children.first.children || node.prelude.children.first.children.isEmpty) {
+            return false;
+        }
+        if (node.prelude.children.first.children.first.type !== 'ClassSelector') {
+            return false;
+        }
+        return true;
+    }
+    const types = css.findAll(ast, isRule);
+
+    function renderTypeset(type, index) {
+        const rawName = type?.prelude?.children?.first?.children?.first?.name || null;
+        const name = rawName ? rawName.replaceAll(/[_-]/g, ' ').trim() : 'Unknown Type';
+        function findProperty(tree, propertyName) {
+            function filter(node) {
+                return node.type === 'Declaration' && node.property === propertyName;
+            }
+            return css.find(tree, filter);
+        }
+
+        function getValue(propertyName) {
+            const varName = findProperty(type.block, propertyName).value.children.first.children.first.name
+            const varValue = findProperty(ast, varName).value.value;
+            return varValue;
+        }
+
+        function Property({ children }) {
+            return (
+                <p className="sb-unstyled" style={{ fontSize: "13px", margin: "0" }}>{children}</p>
+            )
+        }
+
+        return (
+            <>
+                <div style={{ gridColumn: "span 3", borderTop: "1px solid #ccc" }} />
+                <p style={{ gridColumn: "span 3", margin: "0", fontSize: "18px" }}><b>{`${name}`}</b></p>
+                <div>
+                    <Property><b>Class:</b></Property>
+                    <Property><b>Family:</b></Property>
+                    <Property><b>Size:</b></Property>
+                    <Property><b>Line Height:</b></Property>
+                    <Property><b>Letter Spacing:</b></Property>
+                </div>
+                <div>
+                    <Property>{`${rawName}`}</Property>
+                    <Property>{`${getValue("font-family")}`}</Property>
+                    <Property>{`${getValue("font-size")}`}</Property>
+                    <Property>{`${getValue("line-height")}`}</Property>
+                    <Property>{`${getValue("letter-spacing")}`}</Property>
+                </div>
+                <div>
+                    <Tag className={`${rawName} sb-unstyled`} style={{ margin: '0', fontFamily: getValue("font-family")}}>
+                        The quick brown fox jumps over the lazy dog
+                    </Tag>
+                </div>
+            </>
+        )
+    }
+    return (
+        <div style={{ display: 'grid', gridTemplateColumns: 'auto auto minmax(200px, 1fr)', gap: '8px 40px', alignItems: 'center' }}>
+            {types.map(renderTypeset)}
+        </div>
+    );
+}
+
+
+<Meta title="Foundations/Typography" />
+
+<header>
+Foundations
+
+# Typography
+
+Typography is a key aspect of the Blueprint design system, providing a consistent and readable text style across components. 
+</header>
+
+Below is a list of typography styles provided in the Blueprint design system by default as part of the [Blueprint Theme](?path=/docs/foundations-theme--documentation) as design tokens. Use these styles to ensure uniformity in text presentation throughout your website or application. These typography styles can be customized by overriding the CSS properties in the [Theme Injectors](?path=/docs/how-to-customize-the-theme--documentation#steps-to-customize-the-themes-styles).
+
+<Typography ast={ast} Tag="p" />
+
+<AdditionalResources />

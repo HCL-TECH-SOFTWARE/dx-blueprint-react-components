@@ -1,0 +1,37 @@
+@import "../../global/breakpoints.scss";
+
+.dxToggleMenu {
+    display: inline-flex;
+    width: fit-content;
+    gap: 0;
+
+     // Horizontal
+    &:not(.btn-group-vertical) {
+        .dxButton:first-child {
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+        }
+
+        .dxButton:last-child {
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+    }
+
+    // Vertical
+    &.btn-group-vertical {
+        .dxButton:first-child {
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .dxButton:last-child {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+    }
+}

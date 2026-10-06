@@ -1,0 +1,10 @@
+.dxAds {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .row {
+        display: flex;
+        justify-content: space-between;
+    }
+}

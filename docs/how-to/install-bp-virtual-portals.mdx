@@ -1,0 +1,139 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import AdditionalResources from '../blocks/additional-resources.mdx';
+import Admonition from '../blocks/Admonition.mdx';
+
+<Meta title="How To/Install Blueprint/In Virtual Portals" />
+
+<header>
+How To
+
+# Install Blueprint in Virtual Portals
+
+Learn how to install the Blueprint design system in virtual portals.
+</header>
+
+# Introduction
+
+[Virtual Portals](https://help.hcl-software.com/digital-experience/9.5/latest/build_sites/virtual_portal/) in HCL DX allow you to create isolated environments for different user groups or projects. Deploying the Blueprint design system to a Virtual Portal enables you to leverage its components, patterns, and principles in a specific context.
+
+## Steps to Deploy Blueprint to a Virtual Portal
+
+### DX Compose
+
+In HCL DX Compose, [ConfigEngine is not available](https://help.hcl-software.com/digital-experience/dx-compose/latest/getting_started/product_overview/limitations/). To deploy Blueprint to a virtual portal, you must use the WCM Module utility to export each Blueprint library from the base portal and import it into your virtual portal.
+
+#### Prerequisites
+
+*   You have administrator access to the HCL DX Compose instance.
+*   You must be logged in to HCL DX Compose in the same browser before running any of the commands below.
+
+#### Blueprint Libraries Required
+
+Blueprint requires the following WCM libraries to be imported into each virtual portal:
+
+- **Blueprint Common Resources**
+- **Blueprint Design Library**
+- **Blueprint Design System**
+- **Blueprint Taxonomies**
+- **Blueprint Web Content**
+
+#### Steps
+
+1. Export all Blueprint libraries from the base portal in a single request by navigating to the following URL in your browser. Replace `<your-host>` with your WebEngine host and `<context-root>` with your portal context root (default: `wps`):
+
+    ```
+    https://<your-host>/<context-root>/wcm/myconnect?MOD=data&taskType=export&exportLibrary=Blueprint+Common+Resources;Blueprint+Design+Library;Blueprint+Design+System;Blueprint+Taxonomies;Blueprint+Web+Content&output.dir=%2Ftmp%2Fexport
+    ```
+
+    The libraries will be exported to `/tmp/export` inside the WebEngine container.
+
+2. Import all Blueprint libraries into your virtual portal in a single request by navigating to the following URL in your browser. Replace `<your-host>` with your WebEngine host, `<context-root>` with your portal context root (default: `wps`), and `<vp-context>` with the context root of your virtual portal (for example, `vp1`):
+
+    ```
+    https://<your-host>/<context-root>/wcm/myconnect/<vp-context>?MOD=data&processLibraries=false&taskType=import&importLibrary=Blueprint+Common+Resources;Blueprint+Design+Library;Blueprint+Design+System;Blueprint+Taxonomies;Blueprint+Web+Content&skipScheduleActions=false&renameConflict=false&input.dir=%2Ftmp%2Fexport
+    ```
+
+3. Import the Site Builder Template library into your virtual portal by following the documentation here: [Importing the Site Builder Template library onto a new virtual portal](https://help.hcl-software.com/digital-experience/dx-compose/latest/deploy_dx/manage/cfg_webengine/import_site_builder_library/).
+
+4. Export the Blueprint Page Templates from the Base Portal:
+    * Navigate to **Administration** > **Site Management** > **Pages**.
+    * Navigate to **Content Root** > **Hidden Pages** > **Page Templates**.
+    * Locate the following pages and click the **Export** button next to each:
+        - Home (`wps.blueprint.template.home`)
+        - Featured products (`wps.blueprint.template.featured.products`)
+        - About Us (`wps.blueprint.template.about.us`)
+        - Under Construction (`wps.blueprint.template.under.construction`)
+    * When redirected to the confirmation page asking *"Do you want to export the entire page hierarchy?"*, click the **Yes** button to export the hierarchy and download the XML file.
+
+5. Import the Blueprint Page Templates into the Virtual Portal:
+    * Navigate to the Virtual Portal, then go to **Administration** > **Production** > **XML Import**.
+    * Click the **Choose File** button to specify the location of the XML file to import.
+    * Select the exported XML file and click import. Repeat this for all downloaded page template XML files.
+
+6. Verify that Blueprint has been deployed successfully by checking your virtual portal for the following:
+    * The Blueprint libraries are available in the [Web Content Libraries](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_authoring/authoring_portlet/web_content_libraries/) portlet.
+    * The Blueprint Template is available in the Site Builder
+    * The Blueprint Page Templates are available in **Administration** > **Site Management** > **Pages**
+
+<Admonition type="tip">
+    The newly imported libraries are usually hidden from the Authoring portlet by default. To make them visible, go to the [Authoring portlet settings](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_authoring/authoring_portlet/auth_portlet_settings/) and add them to your [selected libraries](./?path=/docs/how-to-show-libraries-in-authoring--documentation).
+</Admonition>
+
+<Admonition type="note">
+    Unlike the DX Cloud Native and Traditional DX installation methods, importing Blueprint libraries into a DX Compose virtual portal does **not** automatically create the Nex Haven sample site. To create a generic sample site in your virtual portal, use [Site Builder](?path=/docs/how-to-create-the-blueprint-sample-site--documentation) with the **Blueprint Template** after the libraries have been imported.
+</Admonition>
+
+For full details on the WCM library export and import process, see [Importing the Site Builder Template library onto a new virtual portal](https://help.hcl-software.com/digital-experience/dx-compose/latest/deploy_dx/manage/cfg_webengine/import_site_builder_library/) in the HCL DX Compose documentation.
+
+### DX Cloud Native
+
+#### Prerequisites
+
+*   You have administrator access to the HCL Digital Experience (DX) instance.
+*   You are able to connect to your server and run [DX Core configuration tasks](https://help.hcl-software.com/digital-experience/9.5/latest/deployment/manage/container_configuration/run_core_config_engine/).
+
+1. [Connect to your DX Core instance](https://help.hcl-software.com/digital-experience/9.5/latest/deployment/manage/container_configuration/run_core_config_engine/#running-core-config-engine-tasks) and run the following configuration task; replace the placeholders with your actual values:
+    ```
+    ./ConfigEngine.sh blueprint-deploy-libraries-vp
+    \-DVirtualPortalContext=\<virtualPortalContext\>
+    \-DPortalAdminPwd=\<portalAdminPassword\>
+    \-DWasPassword=\<wasAdminPassword\>
+    ```
+    The deployment may take a few minutes depending on the environment.
+2. Verify that the Blueprint has been deployed successfully by checking your virtual portal for the following:
+    * The **Nex Haven** site is listed under the **Site Menu** on the [Site Manager](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_authoring/inline_editing/) toolbar or **Sites** in [Practitioner Studio](https://help.hcl-software.com/digital-experience/9.5/latest/build_sites/practitioner_studio/).
+    * The Blueprint libraries are available in the [Web Content Libraries](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_authoring/authoring_portlet/web_content_libraries/) portlet.
+3. Finally, visit the **Nex Haven** site in your Virtual Portal to check if everything seems to be working as expected.
+
+### Traditional DX
+
+#### Prerequisites
+
+*   You have administrator access to the HCL Digital Experience (DX) instance.
+
+1. Open a command prompt and navigate to **wp_profile_root/ConfigEngine**
+
+2. Run the following configuration task; replace the placeholders with your actual values:
+
+    ```
+    UNIX™Linux™:
+    ./ConfigEngine.sh blueprint-deploy-libraries-vp
+    \-DVirtualPortalContext=\<virtualPortalContext\>
+    \-DPortalAdminPwd=\<portalAdminPassword\>
+    \-DWasPassword=\<wasAdminPassword\>
+
+    Windows™:
+    ConfigEngine.bat blueprint-deploy-libraries-vp
+    \-DVirtualPortalContext=\<virtualPortalContext\>
+    \-DPortalAdminPwd=\<portalAdminPassword\>
+    \-DWasPassword=\<wasAdminPassword\>
+    ```
+
+    The deployment may take a few minutes depending on the environment.
+
+3. Verify that the Blueprint has been deployed successfully by checking your virtual portal for the following:
+    * The **Nex Haven** site is listed under the **Site Menu** on the [Site Manager](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_authoring/inline_editing/) toolbar or **Sites** in [Practitioner Studio](https://help.hcl-software.com/digital-experience/9.5/latest/build_sites/practitioner_studio/).
+    * The Blueprint libraries are available in the [Web Content Libraries](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_authoring/authoring_portlet/web_content_libraries/) portlet.
+4. Finally, visit the **Nex Haven** site in your Virtual Portal to check if everything seems to be working as expected.
+
+<AdditionalResources />

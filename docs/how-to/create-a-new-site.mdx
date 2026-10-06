@@ -1,0 +1,49 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+import AdditionalResources from '../blocks/additional-resources.mdx';
+import Admonition from '../blocks/Admonition.mdx';
+
+<Meta title="How To/Create a New Site" />
+
+<header>
+
+How To
+
+# Create a New Site
+
+In this guide, you will learn how to create a new site that uses Blueprint design system.
+</header>
+
+## Introduction
+
+Creating a new site that uses the Blueprint design system involves several key steps to ensure that your site is properly set up and customized. This guide will walk you through the process of creating a new site, including duplicating the necessary components, customizing them to fit your needs, and ensuring that your customizations are preserved.
+
+<Admonition type="important">
+    Every time you want to use any item that comes out-of-the-box with the
+    Blueprint design system installation for your own site, make sure to create
+    your own copies of those items. This ensures that your customizations are
+    preserved and not overwritten during updates or reinstallation of the
+    Blueprint bundle.
+</Admonition>
+
+## Steps to Create a New Site
+
+1. [Create your own web content libraries](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_authoring/authoring_portlet/web_content_libraries/oob_content_createlib/) which will serve as counterparts to the [Blueprint Web Content Libraries](?path=/docs/information-architecture-web-content-libraries--documentation).
+2. Copy all of the items that you plan to use from the [Blueprint Web Content Libraries](?path=/docs/information-architecture-web-content-libraries--documentation) to your own web content libraries. This includes page templates, authoring templates, page components, and any other items that you want to use in your new site. If you want to copy everything at once, use [configuration tasks to make a copy](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_configuration/wcm_adm_tools/wcmlibrary_export/wcm_config_wcmlibrary_exportcopy/) of the entire Blueprint Web Content Libraries.
+3. Replace any references to the original Blueprint libraries and items with references to your copied items in your web content libraries.
+4. [Make your own copy of the theme](https://help.hcl-software.com/digital-experience/9.5/latest/build_sites/themes_skins/customizing_theme/copying_theme/themeopt_themedev_copy/).
+5. [Customize your copy of the theme](?path=/docs/how-to-customize-the-theme--documentation) as much as you need. Make sure to save all of the new components that you generated for your customizations in your own web content libraries.
+6. From here, create your own pages, components, templates, and everything else you need to [build your new site](https://help.hcl-software.com/digital-experience/9.5/latest/build_sites/create_sites/).
+
+<Admonition type="note">
+    **DX Compose deployments:** In DX Compose environments, ConfigEngine is not
+    available. The [configuration tasks to make a
+    copy](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_configuration/wcm_adm_tools/wcmlibrary_export/wcm_config_wcmlibrary_exportcopy/)
+    referenced in step 2 do not apply. Instead, use the [DX Compose library
+    import/export
+    process](https://help.hcl-software.com/digital-experience/dx-compose/CF235/deploy_dx/manage/cfg_webengine/import_site_builder_library/)
+    to copy Blueprint libraries. Note that although the HCL documentation
+    demonstrates this process using the Site Builder Template Library, the same
+    import/export approach applies to all Blueprint libraries.
+</Admonition>
+
+<AdditionalResources />

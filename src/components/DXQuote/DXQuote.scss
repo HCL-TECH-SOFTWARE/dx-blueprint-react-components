@@ -1,0 +1,47 @@
+.dxQuote {
+    &__body {
+        font-family: var(--_24-primary-regular-150-font-family);
+        font-size: var(--_24-primary-regular-150-font-size);
+        letter-spacing: var(--_24-primary-regular-150-letter-spacing);
+        line-height: var(--_24-primary-regular-150-line-height);
+        font-weight: var(--_24-primary-regular-150-font-weight);
+        color: var(--primary-primary);
+        margin-bottom: 0;
+
+        i {
+            color: var(--primary-primary);
+            font-size: 2.5em;
+            margin-top: 0;
+        }
+    }
+
+    &__imgContainer {
+        height: 48px;
+        width: 48px;
+
+        .dxQuote__img {
+            height: 100%;
+            width: 100%;
+            border-radius: 100%;
+            object-fit: cover;
+            object-position: 50% 50%;
+        }
+    }
+
+    &__name {
+        font-family: var(--_18-primary-regular-150-font-family);
+        font-size: var(--_18-primary-regular-150-font-size);
+        letter-spacing: var(--_18-primary-regular-150-letter-spacing);
+        line-height: var(--_18-primary-regular-150-line-height);
+        font-weight: var(--_18-primary-regular-150-font-weight);
+        color: var(--secondary-secondary);
+    }
+
+    &__body>div {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
+}

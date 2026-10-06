@@ -1,0 +1,222 @@
+.dxProfileInfo {
+    &__wrapper {
+        width: 100%;
+        height: auto;
+        background: var(--info-info-l1);
+        padding: 1.25rem;
+    }
+
+    &__containerInfo {
+        display: flex;
+
+        .dxProfileInfo__infoBlock {
+            display: flex;
+            flex-direction: column;
+            gap: 0.1875rem;
+            justify-content: center;
+            align-items: flex-start;
+        }
+    }
+
+    &__profileImage {
+        margin-bottom: 26px;
+        margin-right: 10px;
+
+        figure {
+            margin: 0;
+        }
+
+        figure>img {
+            height: 80px;
+            width: 80px;
+            border-radius: 4px;
+            object-fit: cover;
+        }
+
+        figure>button {
+            padding: 0;
+            display: block;
+        }
+
+        &--avatar {
+            height: 80px;
+            width: 80px;
+            border-radius: 4px;
+            background-color: var(--light-white);
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+
+            .avatar {
+                font-family: var(--_36-primary-regular-150-font-family);
+                font-size: var(--_36-primary-regular-150-font-size);
+                letter-spacing: var(--_36-primary-regular-150-letter-spacing);
+                line-height: var(--_36-primary-regular-150-line-height);
+                font-weight: var(--_36-primary-regular-150-font-weight);
+                color: var(--dark-dark);
+            }
+        }
+    }
+
+    &__address {
+        .dxMap {
+            margin: 10px 0;
+        }
+
+    }
+
+    &__editImage {
+        width: 24px;
+        height: 24px;
+        position: absolute;
+        top: 100px;
+        left: 100px;
+        padding: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+
+    &__infoBlock {
+        margin-bottom: 24px;
+
+        a {
+            font-family: var(--_14-semibold-150-font-family);
+            font-size: var(--_14-semibold-150-font-size);
+            letter-spacing: var(--_14-semibold-150-letter-spacing);
+            line-height: var(--_14-semibold-150-line-height);
+            font-weight: var(--_14-semibold-150-font-weight);
+            color: var(--primary-primary-d2);
+
+            &:hover {
+                text-decoration: none;
+                color: var(--primary-primary-d1);
+            }
+
+            &:focus {
+                text-decoration: none;
+                color: var(--primary-primary-d1);
+            }
+        }
+
+        p {
+            margin: 0;
+            color: var(--dark-dark);
+        }
+
+    }
+
+    &__fullName {
+        p {
+            font-family: var(--_28-primary-regular-100-font-family);
+            font-size: var(--_28-primary-regular-100-font-size);
+            letter-spacing: var(--_28-primary-regular-100-letter-spacing);
+            line-height: var(--_28-primary-regular-100-line-height);
+            font-weight: var(--_28-primary-regular-100-font-weight);
+        }
+    }
+
+    &__jobTitle,
+    &__department {
+        p {
+            font-family: var(--_14-primary-regular-100-font-family);
+            font-size: var(--_14-primary-regular-100-font-size);
+            letter-spacing: var(--_14-primary-regular-100-letter-spacing);
+            line-height: var(--_14-primary-regular-100-line-height);
+            font-weight: var(--_14-primary-regular-100-font-weight);
+        }
+    }
+
+    &__optionalButtons {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 2.0625rem;
+
+        button {
+            justify-content: center;
+            height: 44px;
+        }
+    }
+
+    &__toggleContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 2.0625rem;
+    }
+
+    &__toggleButton {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        width: 2rem;
+        height: 2rem;
+    }
+
+    &__toggleButton.dxButton,
+    &__buttonsSection>.dxButton {
+        font-family: var(--_16-semibold-font-family);
+        font-size: var(--_16-semibold-font-size);
+        letter-spacing: var(--_16-semibold-letter-spacing);
+        line-height: var(--_16-semibold-line-height);
+        font-weight: var(--_16-semibold-font-weight);
+    }
+
+    &__icon {
+        transition: transform 0.5s;
+
+        &--open {
+            transform: rotate(180deg);
+            transition: transform 0.5s;
+        }
+    }
+
+    &__label {
+        color: var(--dark-dark-d2);
+        font-family: var(--_10-regular-150-font-family);
+        font-size: var(--_10-regular-150-font-size);
+        letter-spacing: var(--_10-regular-150-letter-spacing);
+        line-height: var(--_10-regular-150-line-height);
+        font-weight: var(--_10-regular-150-font-weight);
+        text-transform: uppercase;
+    }
+
+    &__value {
+        color: var(--dark-dark-d2);
+        font-family: var(--_14-primary-regular-100-150-font-family);
+        font-size: var(--_14-primary-regular-100-150-font-size);
+        letter-spacing: var(--_14-primary-regular-100-150-letter-spacing);
+        line-height: var(--_14-primary-regular-100-150-line-height);
+        font-weight: var(--_14-primary-regular-100-150-font-weight);
+    }
+
+    &__buttonsSection {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .dxSocialPresence {
+        &__title {
+            margin-bottom: 0.75rem;
+        }
+
+        button {
+            color: var(--primary-primary);
+
+            &:hover {
+                color: var(--light-white);
+            }
+
+            &:focus {
+                color: var(--light-white);
+            }
+        }
+    }
+}

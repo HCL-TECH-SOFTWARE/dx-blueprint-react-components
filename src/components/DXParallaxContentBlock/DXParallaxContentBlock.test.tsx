@@ -1,0 +1,71 @@
+import React from "react";
+import "@testing-library/jest-dom";
+import { act, render, screen } from "@testing-library/react";
+import { ParallaxContentBlockDemoArgs } from "./DXParallaxContentBlock.stories";
+import DXParallaxContentBlock from "./DXParallaxContentBlock";
+import userEvent from "@testing-library/user-event";
+
+test( "button executes expected method when clicked", async () => {
+    let props = ParallaxContentBlockDemoArgs;
+    const spyWindowOpen = jest.spyOn( window, 'open' );
+    spyWindowOpen.mockImplementation( jest.fn() );
+
+    if ( props.items[0].link?.url ) {
+        render( <DXParallaxContentBlock {...props} /> );
+        const link = screen.getAllByTestId( "pcb-eventButton" )[0] as HTMLButtonElement;
+        await userEvent.click( link );
+        expect( spyWindowOpen ).toHaveBeenCalled();
+    }
+} );
+
+test( "button renders the correct label", () => {
+    // @ts-ignore: Ignoring warning for constructor missing required props not required by the test
+    render( <DXParallaxContentBlock {...ParallaxContentBlockDemoArgs} /> );
+    expect( screen.getAllByTestId( "pcb-eventButton" )[0] ).toHaveTextContent( "Visit " + ParallaxContentBlockDemoArgs.items[0].title );
+} );
+
+test( "if component renders a correct title", () => {
+    render( <DXParallaxContentBlock {...ParallaxContentBlockDemoArgs} /> );
+    expect( screen.getAllByTestId( "parallax-title" )[0] ).toHaveTextContent( ParallaxContentBlockDemoArgs.items[0].title );
+} );
+
+test( "if component renders a correct body", () => {
+    render( <DXParallaxContentBlock {...ParallaxContentBlockDemoArgs} /> );
+    let containerTemp = document.createElement( "div" );
+    containerTemp.innerHTML = ParallaxContentBlockDemoArgs.items[0].richText;
+    expect( screen.getAllByTestId( "parallax-body" )[0].innerText ).toEqual( containerTemp.innerText );
+} );
+
+test( "If the component's width is equal to 768px the event's info should have the class 'dxParallaxContenBlock__eventInfoMobile'", () => {
+    Object.defineProperties( window.HTMLElement.prototype, {
+        offsetWidth: {
+            get: function () { return 768; }
+        }
+    } );
+    const { getAllByTestId } = render( <DXParallaxContentBlock {...ParallaxContentBlockDemoArgs} /> );
+    const event = getAllByTestId( "pcb-blockInfo" )[0];
+    expect( event ).toHaveClass( "row dxParallaxContenBlock__eventInfoMobile" );
+} );
+
+test( "If the component's width is larger than 768px after being equal to said value the event's info should not have the class 'dxParallaxContenBlock__eventInfoMobile'", () => {
+    Object.defineProperties( window.HTMLElement.prototype, {
+        offsetWidth: {
+            get: function () { return 768; }
+        }
+    } );
+
+    const { getAllByTestId } = render( <DXParallaxContentBlock {...ParallaxContentBlockDemoArgs} /> );
+
+    Object.defineProperties( window.HTMLElement.prototype, {
+        offsetWidth: {
+            get: function () { return 1080; }
+        }
+    } );
+
+    act( () => {
+        window.dispatchEvent( new Event( 'resize' ) );
+    } );
+
+    const event = getAllByTestId( "pcb-blockInfo" )[0];
+    expect( event ).not.toHaveClass( "row dxParallaxContenBlock__eventInfoMobile" );
+} );

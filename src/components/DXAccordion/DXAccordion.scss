@@ -1,0 +1,89 @@
+.dxAccordion {
+    width: 100%;
+    overflow: hidden;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--light-light-d2);
+    background-color: var(--white);
+
+    &__header {
+        padding-block: 1rem;
+        padding-inline-start: 0.75rem;
+        padding-inline-end: 1rem;
+
+        button {
+            font-family: var(--_18-primary-bold-125-font-family);
+            font-size: var(--_18-primary-bold-125-font-size);
+            letter-spacing: var(--_18-primary-bold-125-letter-spacing);
+            line-height: var(--_18-primary-bold-125-line-height);
+            font-weight: var(--_18-primary-bold-125-font-weight);
+            color: var(--secondary-secondary);
+            background: none;
+            border: none;
+            padding: 0;
+            display: flex;
+            gap: 1.875rem;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            text-align: start;
+
+            .js-close {
+                display: none;
+            }
+
+            .js-open {
+                display: inline-block;
+            }
+        }
+    }
+
+    &__content {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.3s ease-in-out;
+    }
+
+    &__contentInner {
+        overflow: hidden;
+        min-height: 0;
+        padding-block: 0;
+        padding-inline-start: 0.75rem;
+        padding-inline-end: 1rem;
+        text-align: start;
+        font-family: var(--_16-regular-150-font-family);
+        font-size: var(--_16-regular-150-font-size);
+        letter-spacing: var(--_16-regular-150-letter-spacing);
+        line-height: var(--_16-regular-150-line-height);
+        font-weight: var(--_16-regular-150-font-weight);
+        color: var(--secondary-secondary);
+    }
+
+    & .dxDownloadGroup {
+        & .dxDownloadGroup__title {
+            color: var(--secondary-secondary);
+        }
+
+        margin-top: 1rem;
+    }
+
+    &--display-enabled {
+        .dxAccordion__content {
+            grid-template-rows: 1fr;
+        }
+
+        .dxAccordion__contentInner {
+            padding-bottom: 1rem;
+        }
+
+        .dxAccordion__header>button {
+            .js-open {
+                display: none;
+            }
+
+            .js-close {
+                display: inline-block;
+            }
+        }
+    }
+}

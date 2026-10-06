@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('./admonition.css');
+@import url('./header.css');
+
+
+:root {
+    --primary-font: 'Inter', sans-serif;
+    --dark-typography-type-dark: #272833;
+    --primary-primary-d-1: #0B7DFF;
+}
+
+.sbdocs {
+
+    & :where(:not(.sb-anchor, .sb-unstyled, .sb-unstyled li)) {
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        a,
+        li {
+            font-family: var(--primary-font);
+        }
+    }
+
+    h1 {
+        color: var(--dark-typography-type-dark);
+        font-size: 36px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 54px;
+    }
+
+    h2 {
+        color: var(--dark-typography-type-dark);
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 48px;
+    }
+
+    h3 {
+        color: var(--primary-primary-d-1);
+        font-size: 28px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 42px;
+    }
+
+    h4 {
+        color: var(--dark-typography-type-dark);
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 36px;
+    }
+
+    h5 {
+        color: var(--primary-primary-d-1);
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 30px;
+    }
+
+    h6 {
+        color: var(--dark-typography-type-dark);
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 27px;
+    }
+
+    img {
+        height: auto;
+        max-height: 400px;
+    }
+
+    p:has(img) {
+        text-align: center;
+    }
+
+    li {
+        p {
+            text-align: start;
+        }
+
+        img {
+            display: block
+        }
+    }
+
+    blockquote {
+        border-color: #0053F0;
+        border-left-width: 8px;
+    }
+}

@@ -1,0 +1,117 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import AdditionalResources from '../blocks/additional-resources.mdx';
+import Admonition from '../blocks/Admonition.mdx';
+
+<Meta title="How To/Customize the Theme" />
+
+<header>
+How To
+# Customize the Blueprint Theme
+
+Learn how to customize the Blueprint theme to match your brand identity and design requirements.
+</header>
+
+## Introduction
+
+The Blueprint design system provides a [theme](?path=/docs/foundations-theme--documentation) that serves as the foundation for the visual style and branding of the components. Customizing the theme allows you to align the design system with your brand identity and create a unique user experience. This guide will walk you through the steps to customize the Blueprint theme, including modifying design tokens, updating theme injectors, and applying custom styles.
+
+<Admonition type="important">
+    Before you start customizing the Blueprint theme, create your own copies of the theme and the theme injector components into your own web content libraries. This ensures that your customizations are preserved and not overwritten during updates or reinstallation of the Blueprint bundle.
+</Admonition>
+
+## Steps to Customize the Site Theme via Theme Injectors
+
+1. Turn on **Edit Mode** in the Site Manager toolbar and expand Site Manager.
+2. In Site Manager, navigate to the site or page which you want to customize.
+3. Hover over the your page of interest then click on the menu button that appears.
+4. Click on the **Open Page Settings** option from the menu that appears, then click on **Edit Page Properties**.
+5. On the dialog window that appears, open the **Advanced** tab, then scroll down to the **Metadata** section. This is where you will add the theme injectors
+6. In the metadata key/value area, add the following keys (one per row):
+     - wcmHeadInjectorID
+     - wcmHeaderInjectorID
+     - wcmFootInjectorID
+7. For each key, set the value to the UUID of the corresponding theme injector HTML component stored in your own common resources library.
+
+    ![](./docs/how-to/blueprint-customization-8.png)
+
+    For example, the injector for the Nex Haven site's footer is located at the following location: `Blueprint Common Resources > Components > Portal Theme Utilities > Nex Haven Theme Footer Injector`
+
+    ![](./docs/how-to/blueprint-customization-9.png)
+
+    In this case, the value for the wcmFootInjectorID will be the UUID that is present under the **Properties** tab which is `82795cff-0e0c-4b28-883b-569efb3a06bf`.
+
+    ![](./docs/how-to/blueprint-customization-10.png)
+8. Scroll further down the dialog modal and click on the **Save** button to apply your changes to the page configuration.
+
+## Steps to Customize the Theme's Styles
+
+The Theme's CSS variables (also known as design tokens) can be customized by adding your own design tokens through your own theme head injector HTML component. The design tokens defined in the theme's css files can also be directly updated through the [Theme Editor portlet](https://help.hcl-software.com/digital-experience/9.5/latest/build_sites/themes_skins/customizing_theme/theme_editor_portlet/). You can also use these steps to add your own styles and overrides to the Blueprint theme.
+
+### Via Library Components
+
+1. Create a new **file component**, **stylesheet component**, or **HTML component** for your design tokens.
+2. If you want to follow the same structure as the Blueprint design system, create it under the stylesheets (Stylesheets) / assets (Assets) folder in your common resources library.
+3. If you want to follow the same naming convention as the Blueprint design system, name it as **\<your-site\>-design-tokens.css** (e.g., `my-site-design-tokens.css`).
+4. If you created a file component or stylesheet component, then upload a `.css` file with your own design tokens.
+5. If you created an HTML component, then in the HTML Markup field, add the design tokens wrapped by the `<style>` tag as the snippet below.
+    ```html
+    <style>
+        :root {
+            /* Add here the new CSS properties */
+            --brand-theme-color: #a71930;
+
+            /* Set the new CSS property values. */
+            --primary-primary: var(--brand-theme-color);
+            --primary: var(--brand-theme-color);
+        }
+    </style>
+    ```
+6. Save your new library component.
+7. Edit your theme head injector HTML component.
+8. Add the reference to the your new component to include the design tokens.
+    * If you created a file component or stylesheet component, then add the following line to the HTML Markup field of the theme head injector HTML component:
+        ```html
+        <link rel="stylesheet" href="[Component name="<your-common-resources-library>/stylesheets/assets/<your-site-design-tokens.css>"]" />
+        ```
+    * If you created an HTML component, then add the following line to the HTML Markup field of the theme head injector HTML component:
+        ```html
+        [Component name="<your-common-resources-library>/components/<your-site-design-tokens>"]
+        ```
+    Replace `<your-common-resources-library>` and `<your-site-design-tokens>` with the actual names of your library and new component.
+8. Save your theme head injector HTML component.
+9. Finally, test the new Blueprint's look and feel.
+
+### Via Theme File
+
+1. Navigate to your copy of the Blueprint theme in the [Theme Manager](https://help.hcl-software.com/digital-experience/9.5/latest/build_sites/themes_skins/getting_started_with_themes/themeopt_themedev_manager/?h=theme+manager).
+    ![](./docs/how-to/blueprint-customization-18.png)
+2. Open the [Theme Editor portlet](https://help.hcl-software.com/digital-experience/9.5/latest/build_sites/themes_skins/customizing_theme/theme_editor_portlet/) for your copy of the Blueprint theme.
+3. Navigate to `modules > getting_started_module > head > design_system_styles.css`.
+    ![](./docs/how-to/blueprint-customization-19.png)
+4. Update the CSS variables' values, add new values, or add style overrides as required.
+5. Save your changes.
+
+## Steps to Utilize a Font File
+
+1. Create a **file component** for each font file.
+2. If you want to follow the same structure as the Blueprint design system, create it under the **Fonts** folder in your common resources library.
+3. If you want to follow the same naming convention as the Blueprint design system, follow this format:
+    * name it in kebab-case such as `<font-name-in-kebab-case>.<extension>` (e.g., roboto-regular.woff2)
+    * title it camel-case such as `<FontNameInCamelCase>.<extension>` (e.g., RobotoRegular.woff2)
+4. Upload the font files to the file component.
+5. Save your new file component.
+6. Create a new **HTML component** and follow the steps outlined above to [inject a style tag](#via-library-components) that includes the new font as a @font-face rule. For example, you would add the following code to the HTML Markup field of the HTML component:
+    ```html
+    <style>
+        @font-face {
+            font-family: 'Roboto';
+            src: url('[Component name="<your-common-resources-library>/fonts/<your-font-file-component>"]') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+    </style>
+    ```
+    Replace `<your-common-resources-library>` and `<your-font-file-component>` with the actual names of your common resources library and font file component.
+7. Save your new HTML component.
+
+<AdditionalResources />

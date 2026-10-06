@@ -1,0 +1,158 @@
+// RTL support
+// Buttons stay in their physical positions (left arrow on left, right arrow on right).
+// JS handler swap makes left = Next and right = Prev in RTL.
+// Dots: reversed DOM indices + flex-direction: row-reverse + direction: rtl
+// gives visual order: last | ... | first* (matching CECFeaturedStories Pagination pattern)
+.dxGallery--rtl {
+    direction: rtl; // inherited by all children; no per-child overrides needed
+    .dxGallery__dots {
+        flex-direction: row-reverse;
+        direction: rtl;
+    }
+}
+@import "../../global/variables.scss";
+.dxGallery {
+    width: 100%;
+    min-height: 430px;
+    &__info {
+        h6 {
+            font-family: var(--_16-regular-font-family);
+            font-size: var(--_16-regular-font-size);
+            font-weight: var(--_16-regular-font-weight);
+            line-height: var(--_16-regular-line-height);
+            letter-spacing: var(--_16-regular-letter-spacing);
+        }
+        h4 {
+            width: 100%;
+            font-family: var(--_28-bold-font-family);
+            font-size: var(--_28-bold-font-size);
+            font-weight: var(--_28-bold-font-weight);
+            line-height: var(--_28-bold-line-height);
+            letter-spacing: var(--_28-bold-letter-spacing);
+            /*Overflow*/
+            display: -webkit-box;
+            overflow: hidden;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+        }
+    }
+    &__container {
+        height: 430px;
+        position: relative;
+        & .dxGallery__info {
+            width: 100%;
+            position: absolute;
+            z-index: $firstLevel;
+            background: linear-gradient(180deg, rgba(39, 40, 51, 0.62) 0%, rgba(39, 40, 51, 0) 100%);
+            padding: 0.75rem;
+            color: var(--white);
+        }
+        .dxGallery__arrow.dxButton.btn.btn-secondary,
+        .dxGallery__arrow {
+            width: 40px;
+            height: 40px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 8px;
+            z-index: $secondLevel;
+            // Smooth return to default after click
+            transition: background-color 0.25s ease, border-color 0.25s ease;
+            i {
+                width: 16px;
+                height: 16px;
+                font-size: 16px;
+                line-height: 16px;
+                color: var(--primary-primary);
+                transition: color 0.25s ease;
+                &::before {
+                    color: var(--primary-primary);
+                }
+            }
+            &:hover {
+                i,
+                i::before {
+                    color: var(--primary-primary);
+                }
+            }
+            // Instant blue on press; transition fades back on release
+            &:active {
+                background-color: var(--primary-primary);
+                border-color: var(--primary-primary);
+                color: var(--light-white);
+                transition: none;
+                i {
+                    color: var(--light-white);
+                    transition: none;
+                    &::before {
+                        color: var(--light-white);
+                    }
+                }
+            }
+        }
+    }
+    &__arrowLeft.dxButton {
+        left: 1rem;
+    }
+    &__arrowRight.dxButton {
+        right: 1rem;
+    }
+    &__background {
+        width: 100%;
+        height: auto;
+        max-height: 430px;
+        img {
+            width: 100%;
+            height: 430px;
+            object-fit: cover;
+        }
+    }
+    &__bottom {
+        position: absolute;
+        top: 95%;
+        width: 100%;
+        & .dxGallery__dots {
+            display: flex;
+            justify-content: center;
+        }
+        & .dxGallery__dot {
+            border: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--light-white);
+            margin: 0 .25rem;
+            cursor: pointer;
+            &--active {
+                background-color: var(--primary-primary);
+            }
+        }
+        & .dxGallery__description {
+            position: absolute;
+            margin-top: 1.625rem;
+            padding-inline: 0.6875rem;
+            color: var(--white);
+        }
+    }
+    &__description {
+        width: 100%;
+        margin-top: .75rem;
+        font-family: var(--_14-regular-font-family);
+        font-size: var(--_14-regular-font-size);
+        font-weight: var(--_14-regular-font-weight);
+        line-height: var(--_14-regular-line-height);
+        letter-spacing: var(--_14-regular-letter-spacing);
+        /*Overflow*/
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        p {
+            min-height: 1rem;
+        }
+    }
+}

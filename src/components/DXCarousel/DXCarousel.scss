@@ -1,0 +1,192 @@
+@import "../../global/breakpoints.scss";
+
+.dxCarousel {
+    box-shadow: 0px 0px 2px 0px rgba(128, 128, 128, 1);
+    min-width: 300px;
+    width: 100%;
+
+    .row {
+        flex-direction: row-reverse;
+        margin-left: 0;
+        margin-right: 0;
+        transition: opacity 0.5s ease;
+    }
+
+    &__imageContainer {
+        padding: 0;
+    }
+
+    &__image {
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: 50% 50%;
+        width: 100%;
+        height: 100%;
+        min-height: 181px;
+    }
+
+    &__content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        padding: 1.5rem 1.5rem 0.75rem 1.5rem;
+
+        @include mobile {
+
+            .dxCarousel__title.big,
+            .dxCarousel__title.medium,
+            .dxCarousel__title.small {
+                font-family: var(--_18-primary-bold-125-font-family);
+                font-size: var(--_18-primary-bold-125-font-size);
+                font-weight: var(--_18-primary-bold-125-font-weight);
+                line-height: var(--_18-primary-bold-125-line-height);
+                letter-spacing: var(--_18-primary-bold-125-letter-spacing);
+                margin-bottom: .5rem;
+                margin-top: .5rem;
+            }
+
+            .dxCarousel__body,
+            .dxCarousel__body.big {
+                margin-bottom: .5rem;
+            }
+        }
+
+        @include xs {
+
+            .dxCarousel__title.big,
+            .dxCarousel__title.medium,
+            .dxCarousel__title.small {
+                font-family: var(--_18-primary-bold-125-font-family);
+                font-size: var(--_18-primary-bold-125-font-size);
+                font-weight: var(--_18-primary-bold-125-font-weight);
+                line-height: var(--_18-primary-bold-125-line-height);
+                letter-spacing: var(--_18-primary-bold-125-letter-spacing);
+                margin-bottom: .5rem;
+                margin-top: .5rem;
+            }
+
+            .dxCarousel__body,
+            .dxCarousel__body.big {
+                margin-bottom: .5rem;
+            }
+        }
+
+        @include sm {
+
+            .dxCarousel__title.big,
+            .dxCarousel__title.medium,
+            .dxCarousel__title.small {
+                font-family: var(--_18-primary-bold-125-font-family);
+                font-size: var(--_18-primary-bold-125-font-size);
+                font-weight: var(--_18-primary-bold-125-font-weight);
+                line-height: var(--_18-primary-bold-125-line-height);
+                letter-spacing: var(--_18-primary-bold-125-letter-spacing);
+                margin-bottom: .5rem;
+                margin-top: .5rem;
+            }
+
+            .dxCarousel__body,
+            .dxCarousel__body.big {
+                margin-bottom: .5rem;
+            }
+        }
+    }
+
+    &__body {
+        color: var(--dark-dark-d1);
+        margin-bottom: .75rem;
+        text-align: left;
+        overflow: hidden;
+    }
+
+    &__body.overflow-body {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    &__body.big {
+        margin-bottom: 1.125rem;
+    }
+
+    &__title {
+        color: var(--dark-dark-d2);
+        margin-bottom: .75rem;
+        margin-top: .75rem;
+    }
+
+    &__title.big {
+        font-family: var(--_32-primary-bold-150-font-family);
+        font-size: var(--_32-primary-bold-150-font-size);
+        font-weight: var(--_32-primary-bold-150-font-weight);
+        line-height: var(--_32-primary-bold-150-line-height);
+        letter-spacing: var(--_32-primary-bold-150-letter-spacing);
+        margin-bottom: 1.125rem;
+        margin-top: 1.125rem;
+    }
+
+    &__title.medium {
+        font-family: var(--_20-primary-bold-125-font-family);
+        font-size: var(--_20-primary-bold-125-font-size);
+        font-weight: var(--_20-primary-bold-125-font-weight);
+        line-height: var(--_20-primary-bold-125-line-height);
+        letter-spacing: var(--_20-primary-bold-125-letter-spacing);
+    }
+
+    &__title.small {
+        font-family: var(--_16-primary-bold-125-font-family);
+        font-size: var(--_16-primary-bold-125-font-size);
+        font-weight: var(--_16-primary-bold-125-font-weight);
+        line-height: var(--_16-primary-bold-125-line-height);
+        letter-spacing: var(--_16-primary-bold-125-letter-spacing);
+    }
+
+    &__subtitle {
+        margin-bottom: 0;
+        color: var(--secondary-secondary);
+        font-family: var(--_16-primary-semibold-150-font-family);
+        font-size: var(--_16-primary-semibold-150-font-size);
+        font-weight: var(--_16-primary-semibold-150-font-weight);
+        line-height: var(--_16-primary-semibold-150-line-height);
+        letter-spacing: var(--_16-primary-semibold-150-letter-spacing);
+    }
+
+    &__bottom {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    &__bottom:has(button) {
+        justify-content: space-between;
+    }
+
+    &__button {
+        width: max-content;
+        min-width: max-content;
+        white-space: nowrap;
+    }
+
+    &__indicators {
+        display: inline-flex;
+        gap: 0.5rem;
+        align-items: center;
+        margin: 0.5rem;
+    }
+
+    &__indicator {
+        border-radius: 50%;
+        display: inline-block;
+        vertical-align: middle;
+        width: 12px;
+        height: 12px;
+        background-color: var(--secondary-secondary-l3);
+
+        &--active {
+            @extend .dxCarousel__indicator;
+            background-color: var(--primary-primary);
+        }
+    }
+}

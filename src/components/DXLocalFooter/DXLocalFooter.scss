@@ -1,0 +1,275 @@
+@import "../../global/variables.scss";
+@import "../../global/breakpoints.scss";
+
+.dxLocalFooter {
+    position: relative;
+
+    &__content {
+        position: relative;
+        color: var(--dark-dark);
+        padding: 3.625rem 6.25rem;
+        z-index: $secondLevel;
+
+        @include mobile {
+            padding-inline: 1.4375rem;
+        }
+
+        @include xs {
+            padding-inline: 1.4375rem;
+        }
+
+        @include sm {
+            padding-inline: 1.4375rem;
+        }
+
+        @include md {
+            padding-inline: 1.4375rem;
+        }
+    }
+
+    &__container {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+        gap: 1.5rem;
+
+        @include mobile {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        @include xs {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        @include sm {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        @include md {
+            flex-wrap: wrap;
+        }
+    }
+
+    &__title {
+        margin-bottom: 2.813rem;
+        position: relative;
+        z-index: $firstLevel;
+    }
+
+    &__titleLogo {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        width: 20%;
+
+        @include mobile {
+            width: 50%;
+        }
+
+        @include xs {
+            width: 50%;
+        }
+
+        @include sm {
+            width: 35%;
+        }
+
+        @include md {
+            width: 35%;
+        }
+
+        img {
+            width: 100%;
+        }
+    }
+
+    &__links {
+        display: flex;
+        flex-direction: column;
+        max-width: 20%;
+
+        @include mobile {
+            margin-bottom: 2rem;
+            max-width: 100%;
+        }
+
+        @include xs {
+            margin-bottom: 2rem;
+            max-width: 100%;
+        }
+
+        @include sm {
+            margin-bottom: 2rem;
+            max-width: 100%;
+        }
+
+        ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+
+            li {
+                margin-bottom: .5rem;
+            }
+        }
+    }
+
+    // Lexicon class, hence doesn't comply with library naming convention
+    .container {
+        margin-left: 0;
+        margin-right: 0;
+        position: relative;
+        z-index: $firstLevel;
+    }
+
+    &__background {
+        background-color: var(--light-light);
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        display: flex;
+        justify-content: flex-start;
+
+        &Left,
+        &Right {
+            width: 50%;
+            height: auto;
+
+            @include mobile {
+                width: 100%;
+                height: 50%;
+            }
+
+            @include xs {
+                width: 100%;
+                height: 50%;
+            }
+
+            @include sm {
+                width: 100%;
+                height: 50%;
+            }
+        }
+
+        @include mobile {
+            flex-direction: column;
+            justify-content: flex-end;
+
+        }
+
+        @include xs {
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        @include sm {
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        &Right {
+            background-position: bottom right;
+        }
+
+        &Left {
+            background-position: bottom left;
+
+            @include mobile {
+                display: none;
+            }
+
+            @include xs {
+                display: none;
+            }
+
+            @include sm {
+                display: none;
+            }
+        }
+    }
+
+    &__linkInfo {
+        margin-bottom: .5rem;
+
+        p {
+            margin-bottom: 0;
+        }
+    }
+
+    &__linkSection {
+        margin-bottom: .5rem;
+        text-transform: uppercase;
+        font-family: var(--_18-primary-bold-125-font-family);
+        font-weight: var(--_18-primary-bold-125-font-weight);
+        letter-spacing: var(--_18-primary-bold-125-letter-spacing);
+        line-height: var(--_18-primary-bold-125-line-height);
+        font-size: var(--_18-primary-bold-125-font-size);
+    }
+
+    &__linkItem {
+        text-transform: capitalize;
+        font-family: var(--_16-regular-150-font-family);
+        font-weight: var(--_16-regular-150-font-weight);
+        letter-spacing: var(--_16-regular-150-letter-spacing);
+        line-height: var(--_16-regular-150-line-height);
+        font-size: var(--_16-regular-150-font-size);
+        margin-bottom: .5rem;
+
+        p {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        p a {
+            text-decoration: none;
+            color: var(--dark-dark);
+            font-family: var(--_16-primary-regular-150-font-family);
+            font-weight: var(--_16-primary-regular-150-font-weight);
+            letter-spacing: var(--_16-primary-regular-150-letter-spacing);
+            line-height: var(--_16-primary-regular-150-line-height);
+            font-size: var(--_16-primary-regular-150-font-size);
+
+            i {
+                margin-left: .5rem;
+            }
+
+            &:hover {
+                color: var(--primary-primary);
+            }
+        }
+
+        label {
+            font-family: var(--_16-primary-semibold-150-font-family);
+            font-weight: var(--_16-primary-semibold-150-font-weight);
+            letter-spacing: var(--_16-primary-semibold-150-letter-spacing);
+            line-height: var(--_16-primary-semibold-150-line-height);
+            font-size: var(--_16-primary-semibold-150-font-size);
+        }
+    }
+
+    &__externalLink {
+        margin-top: 0;
+        margin-bottom: 0;
+
+        a {
+            text-transform: capitalize;
+            font-family: var(--_16-primary-bold-125-font-family);
+            font-weight: var(--_16-primary-bold-125-font-weight);
+            letter-spacing: var(--_16-primary-bold-125-letter-spacing);
+            line-height: var(--_16-primary-bold-125-line-height);
+            font-size: var(--_16-primary-bold-125-font-size);
+            color: var(--primary-primary);
+
+            i {
+                margin-left: .5rem;
+            }
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
+    }
+}

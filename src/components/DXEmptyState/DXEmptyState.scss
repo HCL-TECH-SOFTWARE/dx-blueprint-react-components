@@ -1,0 +1,169 @@
+@import "../../global/breakpoints.scss";
+
+.dxEmptyState {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    margin: 0;
+    border-radius: 0.25rem;
+    padding: 2.5rem 0;
+    gap: 2.5rem;
+
+    @include mobile {
+        flex-direction: column;
+        padding: 0.75rem 0;
+        gap: 1.5rem;
+    }
+
+    @include xs {
+        flex-direction: column;
+        padding: 2.5rem 0;
+        gap: 2.5rem;
+    }
+
+    @include sm {
+        flex-direction: column;
+        padding: 2.5rem 0;
+        gap: 2.5rem;
+    }
+
+    &__image {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin: 0;
+        padding: 0;
+
+        img {
+            display: block;
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+        }
+
+        @include mobile {
+            justify-content: center;
+            flex: 0 0 120px;
+            width: 120px;
+            height: 120px;
+
+            img {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        @include xs {
+            justify-content: center;
+        }
+
+        @include sm {
+            justify-content: center;
+        }
+    }
+
+    &__info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        height: auto;
+        text-align: center;
+
+        @include mobile {
+            text-align: center;
+            justify-content: center;
+            gap: 0.25rem;
+        }
+
+        @include xs {
+            text-align: center;
+            justify-content: center;
+        }
+
+        @include sm {
+            text-align: center;
+            justify-content: center;
+        }
+
+        &Buttons {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-top: 0.5rem;
+            gap: 0.625rem;
+
+            @include mobile {
+                justify-content: center;
+            }
+
+            @include xs {
+                justify-content: center;
+            }
+
+            @include sm {
+                justify-content: center;
+            }
+        }
+    }
+
+    &__text {
+        font-family: var(--_14-regular-150-font-family);
+        font-size: var(--_14-regular-150-font-size);
+        letter-spacing: var(--_14-regular-150-letter-spacing);
+        line-height: var(--_14-regular-150-line-height);
+        font-weight: var(--_14-regular-150-font-weight);
+        color: var(--secondary-secondary);
+        margin: 0;
+
+        @include mobile {
+            font-family: var(--_14-regular-125-font-family);
+            font-size: var(--_14-regular-125-font-size);
+            letter-spacing: var(--_14-regular-125-letter-spacing);
+            line-height: var(--_14-regular-125-line-height);
+            font-weight: var(--_14-regular-125-font-weight);
+        }
+
+        @include xs {
+            font-family: var(--_14-regular-125-font-family);
+            font-size: var(--_14-regular-125-font-size);
+            letter-spacing: var(--_14-regular-125-letter-spacing);
+            line-height: var(--_14-regular-125-line-height);
+            font-weight: var(--_14-regular-125-font-weight);
+        }
+    }
+}
+
+.dxEmptyState .dxEmptyState__title {
+        font-family: var(--_16-semibold-150-font-family);
+        font-size: var(--_16-semibold-150-font-size);
+        letter-spacing: var(--_16-semibold-150-letter-spacing);
+        line-height: var(--_16-semibold-150-line-height);
+        font-weight: var(--_16-semibold-150-font-weight);
+        color: var(--dark-dark);
+        margin: 0;
+
+        @include mobile {
+            font-family: var(--_16-semibold-font-family);
+            font-size: var(--_16-semibold-font-size);
+            letter-spacing: var(--_16-semibold-letter-spacing);
+            line-height: var(--_16-semibold-line-height);
+            font-weight: var(--_16-semibold-font-weight);
+        }
+
+        @include xs {
+            font-family: var(--_16-semibold-font-family);
+            font-size: var(--_16-semibold-font-size);
+            letter-spacing: var(--_16-semibold-letter-spacing);
+            line-height: var(--_16-semibold-line-height);
+            font-weight: var(--_16-semibold-font-weight);
+        }
+    }

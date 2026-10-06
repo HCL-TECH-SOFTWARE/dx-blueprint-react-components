@@ -1,0 +1,1041 @@
+@import "../../global/breakpoints.scss";
+.cec-event {
+    /* CSS Custom Properties */
+    --cec-event-bg: var(--cec-color-background, #fff);
+    --cec-event-border: var(--cec-color-border, #CDCED9);
+    --cec-event-text: var(--cec-color-text-primary, #272833);
+    --cec-event-text-secondary: var(--cec-color-text-secondary, #6B6C7E);
+    --cec-event-accent: var(--cec-color-primary, #0062ff);
+    --cec-event-accent-hover: var(--cec-color-primary-hover, #0047cc);
+    --cec-event-radius: 8px;
+    --cec-event-padding: 1rem;
+    --cec-event-spacing: 0.75rem;
+    --cec-event-shadow: 0px 2px 4px 0px #2728331F;
+    --cec-focus-ring: 0 0 0 3px rgba(0, 98, 255, 0.3);
+    --cec-line-height: 1.5;
+    --cec-event-date-font-size: 36px;
+    --cec-event-font-family: "NotoSans", "NotoSans-Regular", Arial, sans-serif;
+    --cec-event-title-font-size: 1.25rem;
+    --cec-event-description-font-size: 1rem;
+    --cec-event-date-month-font-size: 18px;
+    --cec-event-date-day-number-font-size: 36px;
+    --cec-event-meta-font-size: 0.875rem;
+    --cec-event-tags-font-size: 0.75rem;
+    --cec-event-icon-size: 16px;
+    --cec-event-bg-button-primary: #0B5FFF;
+    --cec-event-button-font-size: 1rem;
+    background: var(--cec-event-bg);
+    box-shadow: var(--cec-event-shadow);
+    overflow: hidden;
+    transition: var(--cec-event-transition);
+    position: relative;
+    font-family: var(--cec-event-font-family);
+    padding: 0.25rem; // Space for focus outline on buttons
+    background-color: var(--light-white);
+    box-shadow: 0 0.125rem 0.25rem 0 rgba(39, 40, 51, 0.12);
+    width: 100%;
+    max-width: 100%; //Allow parent container to control width
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden; // Prevent content from spilling outside
+    border-radius: var(--cec-event-radius);
+    // Responsive container
+    &__container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem 2rem;
+    }
+    // Featured variant (default)
+    &__featured {
+        container-name: cec-event-featured;
+        container-type: inline-size;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        @include mobile {
+            padding: .75rem 1rem;
+        }
+    }
+    // River variant (for lists)
+    &__river {
+        container-name: cec-event-river;
+        container-type: inline-size;
+        display: flex;
+        justify-content: space-between;
+        border-radius: 4px;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        .cec-event__container {
+            padding: 24px 16px;
+        }
+        .cec-event__content {
+            padding-top: 1rem;
+            gap: 1rem;
+        }
+        .cec-event__river-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .cec-event__river-main {
+            flex: 1;
+        }
+        .cec-event__action--river {
+            padding: 0.5rem;
+            min-width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-inline-start: 0.75rem;
+            .cec-event__action-icon {
+                font-size: 1.25rem;
+                line-height: 1;
+            }
+            span:not(.cec-event__action-icon) {
+                display: none;
+            }
+        }
+        &:hover {
+            background-color: var(--cec-color-background-hover, #e9ecef);
+        }
+    }
+    // Featured Compact variant
+    &__featured-compact {
+        container-name: cec-event-featured-compact;
+        container-type: inline-size;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        .cec-event__container {
+            padding: 24px 32px;
+        }
+        .cec-event__content {
+            padding-top: 1rem; // Reduced top padding to accommodate date
+            gap: 1rem;
+        }
+        // Adjust date positioning for compact variant
+        .cec-event__date {
+            position: relative;
+            &-month {
+                font-size: 14px;
+            }
+            &-day-number {
+                font-size: 24px;
+            }
+            &-separator-text {
+                font-size: 12px;
+            }
+        }
+        // Adjust title for compact variant
+        .cec-event__title {
+            font-size: 18px;
+            line-height: 1.3;
+            margin-top: 0.5rem;
+        }
+        // Adjust other elements for compact layout
+        .cec-event__meta {
+            font-size: 0.75rem;
+            gap: 0.5rem;
+            margin: 0.25rem 0;
+        }
+        .cec-event__description {
+            font-size: 14px;
+        }
+        .cec-event__action {
+            padding: 0.5rem 1rem;
+            font-size: 12px;
+        }
+    }
+    &__info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    &__content {
+        padding-top: 1.5rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        // Featured variant spacing - 24px gap between sections
+        .cec-event--featured & {
+            gap: 1.5rem;
+        }
+    }
+    &__date {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        color: var(--cec-event-text-secondary);
+        font-size: 0.875rem;
+        &-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        &-day {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+        &-month {
+            font-weight: 700;
+            font-size: 18px;
+            line-height: 125%;
+            letter-spacing: 0;
+            vertical-align: middle;
+            color: var(--cec-event-text);
+        }
+        &-day-number {
+            font-size: var(--_36-bold-125-font-size);
+            font-weight: var(--_36-bold-125-font-weight);
+            line-height: 125%;
+            letter-spacing: 0;
+            vertical-align: middle;
+            color: var(--cec-event-text);
+        }
+        &-separator {
+            display: flex;
+            align-items: center;
+            padding: 0 0.5rem;
+            color: var(--cec-event-text-secondary);
+            font-size: 1rem;
+            &-text {
+                font-weight: 400;
+                font-size: 16px;
+                line-height: 150%;
+                letter-spacing: 0;
+                text-align: center;
+                vertical-align: middle;
+                text-transform: lowercase;
+                color: var(--cec-event-text-secondary);
+            }
+        }
+    }
+    &__date-range {
+        display: flex;
+        flex-direction: column;
+    }
+    &__date-range-start,
+    &__date-range-end {
+        display: flex;
+        align-items: baseline;
+        gap: 0.25rem;
+    }
+    &__date-part {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        line-height: 1.2;
+    }
+    &__month {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        line-height: 1.2;
+        letter-spacing: 0.05em;
+    }
+    &__day {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--cec-text-primary, #333);
+    }
+    &__date-time {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.25rem;
+        color: var(--cec-event-text-secondary);
+        flex-wrap: nowrap;
+        font-weight: var(--_16-regular-150-font-weight);
+        font-size: var(--_16-regular-150-font-size);
+        line-height: var(--_16-bold-150-line-height);
+        letter-spacing: 0;
+        white-space: pre-line;
+    }
+    &__calender-clock-icon {
+        height: 16px;
+        width: 16px;
+        opacity: 1;
+        position: relative;
+        margin-top: 3px;
+        flex-shrink: 0;
+        min-width: 0;
+    }
+    &__title {
+        font-size: var(--_28-bold-125-font-size);
+        font-weight: var(--_28-bold-125-font-weight);
+        line-height: 125%;
+        letter-spacing: 0;
+        color: var(--cec-event-text);
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        margin: 0;
+    }
+    &__category {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--cec-color-primary, #0062ff);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.5rem;
+    }
+    &__meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1rem;
+        color: var(--cec-event-text-secondary);
+        font-size: 0.875rem;
+        margin: 0.5rem 0;
+        @media (max-width: 480px) {
+            gap: 0.75rem;
+            font-size: 0.8125rem;
+        }
+    }
+    &__actions {
+        display: flex;
+        flex-direction: row;
+        gap: 0.75rem;
+        width: 100%;
+        box-sizing: border-box; // Ensure padding is included in width calculation
+    }
+    &__action {
+        white-space: normal;
+        text-align: center;
+        vertical-align: middle;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--cec-event-accent);
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        font-weight: 600;
+        font-size: 14px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        border: none;
+        width: fit-content;
+        gap: 8px;
+        opacity: 1;
+        flex-wrap: wrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex-shrink: 0;
+        // i want to apply this style only to a tag element
+        &--primary {
+            background: var(--cec-event-bg-button-primary);
+            color: white !important;
+            &:hover {
+                background-color: var(--cec-event-accent-hover);
+                text-decoration: none;
+            }
+        }
+        &--secondary {
+            background: transparent;
+            color: var(--cec-event-accent);
+            border: 1px solid var(--cec-event-accent);
+            text-decoration: none;
+            &:hover {
+                background-color: var(--cec-event-accent-hover);
+                color: white;
+                text-decoration: underline;
+            }
+        }
+        &:focus-visible {
+            outline: 2px solid var(--cec-event-accent);
+            outline-offset: 0.125rem;
+            box-shadow: none;
+        }
+    }
+    &__location {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.25rem;
+        flex-wrap: nowrap;
+        color: var(--cec-event-text-secondary);
+        font-weight: var(--_16-regular-150-font-weight);
+        font-size: var(--_16-regular-150-font-size);
+        line-height: var(--_16-bold-150-line-height);
+        letter-spacing: 0;
+    }
+    &__location-text {
+        flex: 1;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+    &__location-icon {
+        height: 16px;
+        width: 16px;
+        margin-top: 3px;
+        opacity: 1;
+        flex-shrink: 0;
+        min-width: 0;
+    }
+    &__recurrence-details {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.25rem;
+        color: var(--cec-event-text-secondary);
+        font-weight: 400;
+        flex-wrap: nowrap;
+        font-size: 16px;
+        line-height: 150%;
+        letter-spacing: 0;
+    }
+    &__recurrence-icon {
+        height: 16px;
+        width: 16px;
+        margin-top: 5px;
+        opacity: 1;
+        flex-shrink: 0;
+        min-width: 0;
+    }
+    &__recurrence-text {
+        font-size: 0.875rem;
+        color: var(--cec-event-text-secondary);
+    }
+    &__description {
+        font-size: var(--_20-bold-100-font-size);
+        font-weight: var(--_20-semibold-font-weight);
+        line-height: 125%;
+        letter-spacing: 0;
+        color: var(--cec-event-text);
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: var(--description-max-lines, 3);
+        overflow: hidden;
+        p {
+            margin: 0 0 0.5rem 0;
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+    &__tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin: 0;
+        @media (max-width: 480px) {
+            margin-top: 0.75rem;
+        }
+    }
+    &__tag {
+        color: var(--cec-event-text-secondary);
+        border: 1px solid var(--cec-event-border);
+        transition: var(--cec-event-transition);
+        opacity: 1;
+        padding: 0.5px 0.25rem;
+        border-radius: 0.5rem;
+        background: transparent;
+        font-family: var(--_12-regular-150-font-family);
+        font-size: var(--_12-regular-150-font-size);
+        font-weight: var(--_12-semibold-150-font-weight);
+        line-height: var(--_12-regular-150-line-height);
+        &:focus-visible {
+            outline: none;
+            border-color: var(--cec-event-accent);
+            box-shadow: var(--cec-focus-ring);
+        }
+        &-ellipsis {
+            background: var(--cec-color-background-subtle);
+            color: var(--cec-event-text-secondary);
+            font-style: italic;
+            cursor: pointer;
+            &:hover {
+                background: var(--cec-event-accent);
+                color: white;
+                transform: translateY(-1px);
+            }
+            &:active {
+                transform: translateY(0);
+            }
+        }
+    }
+    .event-date {
+        font-size: 0.9rem;
+        color: #333;
+        &__main {
+            font-weight: 500;
+        }
+        &__day {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--cec-event-bg-button-primary);
+        }
+        &__all-day {
+            display: inline-block;
+            background: #f0f5ff;
+            color: var(--cec-event-bg-button-primary);
+            padding: 0.15rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            margin-inline-start: 0.5rem;
+        }
+    }
+    .event-recurrence {
+        margin-top: 0.5rem;
+        color: #666;
+        font-size: 0.85rem;
+        font-style: italic;
+    }
+    &__date-time-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        color: var(--cec-event-text-secondary);
+    }
+    &__date-time-details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    &__full-date {}
+    &__time-display {}
+    &__recurrence-display {}
+    &__date-error {
+        color: #d32f2f;
+        font-style: italic;
+        font-size: 0.9em;
+    }
+    &__action {
+        font-family: var(--_12-semibold-150-font-family);
+        font-size: var(--cec-event-button-font-size);
+        font-weight: var(--_12-semibold-150-font-weight);
+        letter-spacing: var(--_12-semibold-150-letter-spacing);
+    }
+    // ========================================
+    // GENERAL CONTAINER QUERIES (All Variants)
+    // ========================================
+    // Container queries for responsive icon sizing based on column width
+    @media (max-width: 400px) {
+        .cec-event {
+            --cec-event-icon-size: 16px;
+        }
+        &__content {
+            padding-top: 1.5rem;
+        }
+        &__title {
+            font-family: var(--_20-bold-150-font-family);
+            font-size: var(--_20-bold-150-font-size);
+            font-weight: var(--_20-bold-150-font-weight);
+            line-height: var(--_20-bold-150-line-height);
+            letter-spacing: var(--_20-bold-150-letter-spacing);
+        }
+        &__description {
+            font-family: var(--_16-regular-150-font-family);
+            font-size: var(--_16-regular-150-font-size);
+            font-weight: var(--_16regular-150-font-weight);
+            line-height: var(--_16-regular-150-line-height);
+            letter-spacing: var(--_16-regular-150-letter-spacing);
+        }
+        &__date-month {
+            font-family: var(--_16-bold-125-font-family);
+            font-size: var(--_16-bold-125-font-size);
+            font-weight: var(--_16-bold-125-font-weight);
+            line-height: var(--_16-bold-125-line-height);
+            letter-spacing: var(--_16-bold-125-letter-spacing);
+        }
+        &__date-day-number {
+            font-family: var(--_28-bold-125-font-family);
+            font-size: var(--_28-bold-125-font-size);
+            font-weight: var(--_28-bold-125-font-weight);
+            line-height: var(--_28-bold-132-line-height);
+            letter-spacing: var(--_28-bold-125-letter-spacing);
+        }
+        &__location,
+        &__date-time-info {
+            font-family: var(--_14-regular-150-font-family);
+            font-size: var(--_14-regular-150-font-size);
+            font-weight: var(--_14-regular-150-font-weight);
+            line-height: var(--_14-regular-150-line-height);
+            letter-spacing: var(--_14-regular-150-letter-spacing);
+        }
+        &__tag {
+            font-family: var(--_12-regular-150-font-family);
+            font-size: var(--_12-regular-150-font-size);
+            font-weight: var(--_12-regular-150-font-weight);
+            line-height: var(--_12-regular-150-line-height);
+            letter-spacing: var(--_12-regular-150-letter-spacing);
+        }
+        &__calender-clock-icon,
+        &__location-icon,
+        &__recurrence-icon {
+            height: 16px;
+            width: 16px;
+        }
+        &__actions {
+            flex-direction: row;
+            gap: 0.75rem;
+            width: 100%;
+            flex-wrap: wrap; // Allow buttons to wrap if needed
+        }
+        &__action {
+            width: fit-content;
+            max-width: 100%;
+            min-width: 0;
+            justify-content: center;
+            text-align: center;
+            white-space: normal;
+            overflow: hidden;
+            text-overflow: clip;
+            min-height: 1px;
+            height: auto;
+            max-height: none;
+            flex-shrink: 1;
+            word-wrap: break-word;
+            word-break: break-word;
+            flex-wrap: wrap;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            position: relative;
+            &--primary,
+            &--secondary {
+                min-width: 0;
+            }
+        }
+    }
+    @container (max-width: 300px) {
+        .cec-event {
+            --cec-event-icon-size: 12px;
+        }
+        &__title {
+            font-family: var(--_18-bold-100-font-family);
+            font-size: var(--_18-bold-100-font-size);
+            font-weight: var(--_18-bold-100-font-weight);
+            line-height: var(--_18-bold-100-line-height);
+            letter-spacing: var(--_18-bold-100-letter-spacing);
+        }
+        &__description {
+            font-family: var(--_14-regular-150-font-family);
+            font-size: var(--_14-regular-150-font-size);
+            font-weight: var(--_14-regular-150-font-weight);
+            line-height: var(--_14-regular-150-line-height);
+            letter-spacing: var(--_14-regular-150-letter-spacing);
+        }
+        &__date-month {
+            font-family: var(--_14-bold-125-font-family);
+            font-size: var(--_14-bold-125-font-size);
+            font-weight: var(--_14-bold-125-font-weight);
+            line-height: var(--_14-bold-125-line-height);
+            letter-spacing: var(--_14-bold-125-letter-spacing);
+        }
+        &__date-day-number {
+            font-family: var(--_24-bold-125-font-family);
+            font-size: var(--_24-bold-125-font-size);
+            font-weight: var(--_24-bold-125-font-weight);
+            line-height: var(--_24-bold-125-line-height);
+            letter-spacing: var(--_24-bold-125-letter-spacing);
+        }
+        &__location,
+        &__date-time-info {
+            font-family: var(--_12-regular-150-font-family);
+            font-size: var(--_12-regular-150-font-size);
+            font-weight: var(--_12-regular-150-font-weight);
+            line-height: var(--_12-regular-150-line-height);
+            letter-spacing: var(--_12-regular-150-letter-spacing);
+        }
+        &__tag {
+            font-family: var(--_12-regular-150-font-family);
+            font-size: var(--_12-regular-150-font-size);
+            font-weight: var(--_12-regular-150-font-weight);
+            line-height: var(--_12-regular-150-line-height);
+            letter-spacing: var(--_12-regular-150-letter-spacing);
+        }
+        &__calender-clock-icon,
+        &__location-icon,
+        &__recurrence-icon {
+            height: 14px;
+            width: 14px;
+        }
+        &__actions {
+            flex-direction: row;
+            gap: 0.75rem;
+            width: 100%;
+            flex-wrap: wrap; // Allow buttons to wrap if needed
+        }
+        &__action {
+            width: fit-content;
+            max-width: 100%;
+            min-width: 0;
+            justify-content: center;
+            text-align: center;
+            white-space: normal;
+            overflow: hidden;
+            text-overflow: clip;
+            min-height: 1px;
+            height: auto;
+            max-height: none;
+            flex-shrink: 1;
+            word-wrap: break-word;
+            word-break: break-word;
+            flex-wrap: wrap;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            position: relative;
+            &--primary,
+            &--secondary {
+                min-width: 0;
+            }
+        }
+    }
+    @container (max-width: 200px) {
+        .cec-event {
+            --cec-event-icon-size: 10px;
+        }
+        &__title {
+            font-family: var(--_16-bold-125-font-family);
+            font-size: var(--_16-bold-125-font-size);
+            font-weight: var(--_16-bold-125-font-weight);
+            line-height: var(--_16-bold-125-line-height);
+            letter-spacing: var(--_16-bold-125-letter-spacing);
+        }
+        &__description {
+            font-family: var(--_12-regular-150-font-family);
+            font-size: var(--_12-regular-150-font-size);
+            font-weight: var(--_12-regular-150-font-weight);
+            line-height: var(--_12-regular-150-line-height);
+            letter-spacing: var(--_12-regular-150-letter-spacing);
+        }
+        &__date-month {
+            font-family: var(--_12-bold-125-font-family);
+            font-size: var(--_12-bold-125-font-size);
+            font-weight: var(--_12-bold-125-font-weight);
+            line-height: var(--_12-bold-125-line-height);
+            letter-spacing: var(--_12-bold-125-letter-spacing);
+        }
+        &__date-day-number {
+            font-family: var(--_20-bold-125-font-family);
+            font-size: var(--_20-bold-125-font-size);
+            font-weight: var(--_20-bold-125-font-weight);
+            line-height: var(--_20-bold-125-line-height);
+            letter-spacing: var(--_20-bold-125-letter-spacing);
+        }
+        &__location,
+        &__date-time-info {
+            font-family: var(--_12-regular-150-font-family);
+            font-size: var(--_12-regular-150-font-size);
+            font-weight: var(--_12-regular-150-font-weight);
+            line-height: var(--_12-regular-150-line-height);
+            letter-spacing: var(--_12-regular-150-letter-spacing);
+        }
+        &__tag {
+            font-family: var(--_10-regular-150-font-family);
+            font-size: var(--_10-regular-150-font-size);
+            font-weight: var(--_10-regular-150-font-weight);
+            line-height: var(--_10-regular-150-line-height);
+            letter-spacing: var(--_10-regular-150-letter-spacing);
+        }
+        &__actions {
+            flex-direction: column;
+            gap: 0.5rem;
+            width: 100%;
+            align-items: center;
+        }
+        &__action {
+            font-family: var(--_10-semibold-150-font-family);
+            font-size: var(--_10-semibold-150-font-size);
+            font-weight: var(--_10-semibold-150-font-weight);
+            line-height: var(--_10-semibold-150-line-height);
+            letter-spacing: var(--_10-semibold-150-letter-spacing);
+        }
+        &__calender-clock-icon,
+        &__location-icon,
+        &__recurrence-icon {
+            height: 12px;
+            width: 12px;
+        }
+    }
+    @container (max-width: 100px) {
+        .cec-event {
+            --cec-event-icon-size: 8px;
+        }
+        &__content {
+            padding-top: 4rem;
+        }
+        &__title {
+            font-family: var(--_12-bold-100-font-family);
+            font-size: var(--_12-bold-100-font-size);
+            font-weight: var(--_12-bold-100-font-weight);
+            line-height: var(--_12-bold-100-line-height);
+            letter-spacing: var(--_12-bold-100-letter-spacing);
+        }
+        &__description {
+            font-family: var(--_10-regular-150-font-family);
+            font-size: var(--_10-regular-150-font-size);
+            font-weight: var(--_10-regular-150-font-weight);
+            line-height: var(--_10-regular-150-line-height);
+            letter-spacing: var(--_10-regular-150-letter-spacing);
+        }
+        &__date-month {
+            font-family: var(--_10-bold-125-font-family);
+            font-size: var(--_10-bold-125-font-size);
+            font-weight: var(--_10-bold-125-font-weight);
+            line-height: var(--_10-bold-125-line-height);
+            letter-spacing: var(--_10-bold-125-letter-spacing);
+        }
+        &__date-day-number {
+            font-family: var(--_16-bold-125-font-family);
+            font-size: var(--_16-bold-125-font-size);
+            font-weight: var(--_16-bold-125-font-weight);
+            line-height: var(--_16-bold-125-line-height);
+            letter-spacing: var(--_16-bold-125-letter-spacing);
+        }
+        &__location,
+        &__date-time-info {
+            font-family: var(--_10-regular-150-font-family);
+            font-size: var(--_10-regular-150-font-size);
+            font-weight: var(--_10-regular-150-font-weight);
+            line-height: var(--_10-regular-150-line-height);
+            letter-spacing: var(--_10-regular-150-letter-spacing);
+        }
+        &__tag {
+            font-family: var(--_8-regular-150-font-family);
+            font-size: var(--_8-regular-150-font-size);
+            font-weight: var(--_8-regular-150-font-weight);
+            line-height: var(--_8-regular-150-line-height);
+            letter-spacing: var(--_8-regular-150-letter-spacing);
+        }
+        &__actions {
+            flex-direction: column;
+            gap: 0.25rem;
+            width: 100%;
+        }
+        &__action {
+            font-family: var(--_8-semibold-150-font-family);
+            font-size: var(--_8-semibold-150-font-size);
+            font-weight: var(--_8-semibold-150-font-weight);
+            line-height: var(--_8-semibold-150-line-height);
+            letter-spacing: var(--_8-semibold-150-letter-spacing);
+            text-align: center;
+            white-space: normal;
+            overflow: hidden;
+            text-overflow: clip;
+            min-height: 1px;
+            height: auto;
+            max-height: none;
+            flex-shrink: 1;
+            word-wrap: break-word;
+            flex-wrap: wrap;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        &__calender-clock-icon,
+        &__location-icon,
+        &__recurrence-icon {
+            height: 10px;
+            width: 10px;
+        }
+    }
+    // Media query fallback for extra safety
+    @media (max-width: 200px) {
+        .cec-event {
+            --cec-event-icon-size: 10px;
+        }
+        &__title {
+            font-family: var(--_18-bold-100-font-family);
+            font-size: var(--_18-bold-100-font-size);
+            font-weight: var(--_18-bold-100-font-weight);
+            line-height: var(--_18-bold-100-line-height);
+            letter-spacing: var(--_18-bold-100-letter-spacing);
+        }
+        &__description {
+            font-family: var(--_14-regular-150-font-family);
+            font-size: var(--_14-regular-150-font-size);
+            font-weight: var(--_14-regular-150-font-weight);
+            line-height: var(--_14-regular-150-line-height);
+            letter-spacing: var(--_14-regular-150-letter-spacing);
+        }
+        &__date-month {
+            font-family: var(--_14-bold-125-font-family);
+            font-size: var(--_14-bold-125-font-size);
+            font-weight: var(--_14-bold-125-font-weight);
+            line-height: var(--_14-bold-125-line-height);
+            letter-spacing: var(--_14-bold-125-letter-spacing);
+        }
+        &__date-day-number {
+            font-family: var(--_24-bold-125-font-family);
+            font-size: var(--_24-bold-125-font-size);
+            font-weight: var(--_24-bold-125-font-weight);
+            line-height: var(--_24-bold-125-line-height);
+            letter-spacing: var(--_24-bold-125-letter-spacing);
+        }
+        &__location,
+        &__date-time-info {
+            font-family: var(--_12-regular-150-font-family);
+            font-size: var(--_12-regular-150-font-size);
+            font-weight: var(--_12-regular-150-font-weight);
+            line-height: var(--_12-regular-150-line-height);
+            letter-spacing: var(--_12-regular-150-letter-spacing);
+        }
+        &__tag {
+            font-family: var(--_12-regular-150-font-family);
+            font-size: var(--_12-regular-150-font-size);
+            font-weight: var(--_12-regular-150-font-weight);
+            line-height: var(--_12-regular-150-line-height);
+            letter-spacing: var(--_12-regular-150-letter-spacing);
+        }
+        &__calender-clock-icon,
+        &__location-icon,
+        &__recurrence-icon {
+            height: 12px;
+            width: 12px;
+        }
+        &__actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            width: 100%;
+            overflow: hidden;
+            box-sizing: border-box;
+            max-width: 100%;
+            min-width: 0;
+        }
+        &__action {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            justify-content: center;
+            text-align: center;
+            white-space: normal;
+            overflow: hidden;
+            text-overflow: clip;
+            min-height: 1px;
+            height: auto;
+            max-height: none;
+            flex-shrink: 1;
+            word-wrap: break-word;
+            word-break: break-all;
+            flex-wrap: wrap;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            position: relative;
+            &--primary,
+            &--secondary {
+                min-width: 0;
+            }
+        }
+    }
+    // RTL modifier — explicit direction so layout is not left to cascade
+    &--rtl {
+        direction: rtl;
+        // In a column flex container with direction:rtl, the cross axis runs
+        // right→left, so:
+        //   flex-start = RIGHT side of the card  ✓
+        //   flex-end   = LEFT side of the card   ✗  (previous wrong value)
+        // align-self: flex-start shrinks the item to content width and docks
+        // it to the right side of the card.
+        .cec-event__date {
+            align-self: flex-start;
+        }
+        // Keep internal left→right ordering so start date always renders
+        // before end date visually (OCT 27 → NOV 07).
+        .cec-event__date-wrapper {
+            direction: ltr;
+        }
+    }
+    @media (max-width: 100px) {
+        .cec-event {
+            --cec-event-icon-size: 8px;
+        }
+        &__title {
+            font-family: var(--_20-bold-150-font-family);
+            font-size: var(--_20-bold-150-font-size);
+            font-weight: var(--_20-bold-150-font-weight);
+            line-height: var(--_20-bold-150-line-height);
+            letter-spacing: var(--_20-bold-150-letter-spacing);
+        }
+        &__description {
+            font-family: var(--_16-regular-150-font-family);
+            font-size: var(--_16-regular-150-font-size);
+            font-weight: var(--_16-regular-150-font-weight);
+            line-height: var(--_16-regular-150-line-height);
+            letter-spacing: var(--_16-regular-150-letter-spacing);
+        }
+        &__date-month {
+            font-family: var(--_16-bold-125-font-family);
+            font-size: var(--_16-bold-125-font-size);
+            font-weight: var(--_16-bold-125-font-weight);
+            line-height: var(--_16-bold-125-line-height);
+            letter-spacing: var(--_16-bold-125-letter-spacing);
+        }
+        &__date-day-number {
+            font-family: var(--_28-bold-125-font-family);
+            font-size: var(--_28-bold-125-font-size);
+            font-weight: var(--_28-bold-125-font-weight);
+            line-height: var(--_28-bold-125-line-height);
+            letter-spacing: var(--_28-bold-125-letter-spacing);
+        }
+        &__location,
+        &__date-time-info {
+            font-family: var(--_14-regular-150-font-family);
+            font-size: var(--_14-regular-150-font-size);
+            font-weight: var(--_14-regular-150-font-weight);
+            line-height: var(--_14-regular-150-line-height);
+            letter-spacing: var(--_14-regular-150-letter-spacing);
+        }
+        &__tag {
+            font-family: var(--_12-regular-150-font-family);
+            font-size: var(--_12-regular-150-font-size);
+            font-weight: var(--_12-regular-150-font-weight);
+            line-height: var(--_12-regular-150-line-height);
+            letter-spacing: var(--_12-regular-150-letter-spacing);
+        }
+        &__actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            width: 100%;
+            overflow: hidden;
+            box-sizing: border-box;
+            max-width: 100%;
+            min-width: 0;
+        }
+        &__action {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            justify-content: center;
+            text-align: center;
+            white-space: normal;
+            overflow: hidden;
+            text-overflow: clip;
+            min-height: auto;
+            height: auto;
+            flex-shrink: 1;
+            word-wrap: break-word;
+            word-break: break-word;
+            flex-wrap: wrap;
+            &--primary,
+            &--secondary {
+                min-width: auto;
+            }
+        }
+        &__calender-clock-icon,
+        &__location-icon,
+        &__recurrence-icon {
+            height: 10px;
+            width: 10px;
+        }
+    }
+}

@@ -1,0 +1,52 @@
+.sbdocs {
+
+    .sbdocs-wrapper:has(& header) {
+        padding-top: 0px;
+        overflow-x: hidden;
+    }
+
+    header {
+        padding: 40px 80px;
+        margin-bottom: 1rem;
+        background: linear-gradient(90deg, #0B5FFF 0%, #00B2FF 100%), url("./grid.png");
+        background-size: 100% 100%, 50% auto;
+        background-repeat: no-repeat;
+        background-position-y: 0px, 50%;
+        background-position-x: 0px, right;
+        background-blend-mode: lighten;
+        position: relative;
+        left: calc((100vw - 100%) / -2);
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        h1,
+        p {
+            width: 100%;
+            max-width: 1000px;
+            color: var(--light-white);
+        }
+
+        p {
+            font-family: var(--primary-font);
+            font-style: normal;
+            font-weight: 400;
+            line-height: 36px;
+        }
+
+        a {
+            color: var(--light-white);
+            text-decoration: underline;
+        }
+
+        p:has(+ h1) {
+            font-size: 16px;
+            text-transform: capitalize;
+        }
+
+        h1+p {
+            font-size: 24px;
+        }
+    }
+}

@@ -1,0 +1,146 @@
+@import "../../global/variables.scss";
+
+.dxDashboardContainer {
+    width: 100%;
+    padding: 0 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__title {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        &Text {
+            font-family: var(--_28-primary-semibold-150-font-family);
+            font-size: var(--_28-primary-semibold-150-font-size);
+            letter-spacing: var(--_28-primary-semibold-150-letter-spacing);
+            line-height: var(--_28-primary-semibold-150-line-height);
+            font-weight: var(--_28-primary-semibold-150-font-weight);
+            color: var(--dark-dark);
+            margin: 0;
+        }
+
+        i {
+            font-size: var(--_28-primary-semibold-150-font-size);
+            letter-spacing: var(--_28-primary-semibold-150-letter-spacing);
+            line-height: var(--_28-primary-semibold-150-line-height);
+            color: var(--primary-primary);
+        }
+    }
+
+    &__badge {
+        padding: 0.03125rem 0.25rem;
+        background: var(--light-light-l1);
+        color: var(--primary-primary-d1);
+        border: 1px solid var(--primary-primary-d1);
+        border-radius: 0.5rem;
+        font-family: var(--_14-primary-semibold-150-font-family);
+        font-size: var(--_14-primary-semibold-150-font-size);
+        font-weight: var(--_14-primary-semibold-150-font-weight);
+        line-height: var(--_14-primary-semibold-150-line-height);
+        letter-spacing: var(--_14-primary-semibold-150-letter-spacing);
+    }
+
+    &__subtitle {
+        color: var(--dark-dark);
+        font-family: var(--_24-primary-semibold-150-font-family);
+        font-size: var(--_24-primary-semibold-150-font-size);
+        letter-spacing: var(--_24-primary-semibold-150-letter-spacing);
+        line-height: var(--_24-primary-semibold-150-line-height);
+        font-weight: var(--_24-primary-semibold-150-font-weight);
+
+        margin-top: 0.25rem;
+        margin-bottom: 0.5rem;
+    }
+
+    &__element {
+        position: relative;
+        overflow: hidden;
+
+        &--collapsed {
+            height: fit-content;
+            max-height: 12.5rem;
+        }
+    }
+
+    &__link {
+        display: flex;
+        align-items: center;
+
+        font-family: var(--_16-primary-semibold-100-font-family);
+        font-size: var(--_16-primary-semibold-100-font-size);
+        letter-spacing: var(--_16-primary-semibold-100-letter-spacing);
+        line-height: var(--_16-primary-semibold-100-line-height);
+        font-weight: var(--_16-primary-semibold-100-font-weight);
+
+        &:hover {
+            color: var(--primary-primary-d2);
+            text-decoration: none;
+        }
+
+        i {
+            padding-left: 0.25rem;
+        }
+    }
+
+    &__buttons {
+        display: flex;
+        justify-content: right;
+        gap: 0.75rem;
+    }
+
+    &__button {
+        font-family: var(--_16-primary-semibold-100-font-family);
+        font-size: var(--_16-primary-semibold-100-font-size);
+        letter-spacing: var(--_16-primary-semibold-100-letter-spacing);
+        line-height: var(--_16-primary-semibold-100-line-height);
+        font-weight: var(--_16-primary-semibold-100-font-weight);
+
+        &--borderless {
+            &.dxButton.btn.btn-unstyled {
+                color: var(--secondary-secondary);
+            }
+        }
+    }
+
+    &__overlay {
+        height: 50%;
+        background: linear-gradient(to top, #fff, transparent);
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        z-index: $dropdownLevel - 1;
+    }
+
+    &__collapseButton {
+        margin: auto;
+
+
+        &.dxButton.btn.btn-primary {
+            background-color: var(--light-white);
+            border: solid 1px var(--light-light-d1);
+            height: 2.5rem;
+            width: 3rem;
+
+            &:hover {
+                background-color: var(--light-light-d1);
+            }
+        }
+
+        i {
+            color: var(--primary-primary);
+        }
+
+        &--expanded {
+            rotate: 180deg;
+        }
+    }
+}

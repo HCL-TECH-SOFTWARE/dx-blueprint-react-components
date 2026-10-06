@@ -1,0 +1,43 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import Admonition from '../blocks/Admonition.mdx';
+import AdditionalResources from '../blocks/additional-resources.mdx';
+
+<Meta title="Information Architecture/Web Content Libraries" />
+
+<header>
+Information Architecture
+
+# Web Content Libraries
+
+Collections of reusable content components that can be used across multiple pages and applications.
+</header>
+
+## Blueprint Web Content Libraries
+
+The Blueprint design system comes with a set of Web Content Libraries that provide a structured way to manage and organize web content. These libraries and their content are intended to be used as patterns that should be copied and modified to suit your specific needs. They are **not intended to be used as-is**, but rather as a starting point for your own content.
+
+<Admonition type="important">
+As you [create your own site](?path=/docs/how-to-create-a-new-site--documentation), [customize the Blueprint Theme](?path=/docs/how-to-customize-the-theme--documentation), or [create your own page components](?path=/docs/how-to-create-new-page-components--documentation), make sure that you are customizing and extending your own copy of these libraries or their content. Do not use the libraries or their content as-is, as they will be overwritten during updates.
+</Admonition>
+
+### Blueprint Common Resources
+
+This library contains global resources that are shared across all Blueprint components. It includes front-end libraries, styles, and settings that are intended to be used across your sites.
+
+### Blueprint Design Library
+
+The Blueprint Design Library houses all DX solution page components, including HTML components, menus, and other reusable elements. This library is intended for the design components that are not part of or used by the [Blueprint page components](?path=/docs/foundations-page-components--documentation).
+
+### Blueprint Web Content
+
+This library contains all of the content items that are used for your sites. It is up to you to organize your content for multiple sites, However, take note of how the Blueprint page components [collect data](?path=/docs/foundations-page-components--documentation#data-source) based on this libraries structure. 
+
+### Blueprint Design System
+
+The Blueprint Design System contains all core [page components](?path=/docs/foundations-page-components--documentation) that can be used throughout your sites. This library also contains all of the [configuration items](?path=/docs/how-to-configure-page-components--documentation) that they require to function properly aside from the actual data that they are populated with when they are rendered.
+
+### Blueprint Taxonomies
+
+The Blueprint Taxonomies library is intended to store categories and classification structures that can be used to profile content items across your content libraries or site areas so that they can be collected by some page components by their category instead of by their location.
+
+<AdditionalResources />

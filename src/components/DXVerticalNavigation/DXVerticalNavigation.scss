@@ -1,0 +1,180 @@
+.dxVerticalNav {
+    // Bootstrap 5 .nav is display:flex flex-wrap:wrap (horizontal).
+    // Force vertical stacking for all nav lists in this component.
+    .nav {
+        flex-direction: column;
+    }
+
+    &__triggerContainer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &:hover {
+            background-color: var(--primary-primary-l3);
+
+            // Navigation button
+            .dxButton.btn.btn-unstyled.nav-link {
+                color: var(--primary-primary);
+                background-color: transparent;
+            }
+
+            // Collapse / expand icon
+            .collapse-icon {
+                color: var(--primary-primary);
+                background-color: transparent;
+
+                i {
+                    color: var(--primary-primary);
+                }
+            }
+        }
+
+        // Collapse / expand icon
+        .collapse-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 8px 16px;
+            color: var(--secondary-secondary);
+            cursor: pointer;
+            background-color: transparent;
+            border: 0;
+
+            i {
+                display: inline-block;
+                width: 16px;
+                height: 16px;
+                color: var(--secondary-secondary);
+                font-size: 16px;
+                margin-top: 0;
+            }
+        }
+    }
+
+    // Common navigation typography
+    & .dxButton.btn.btn-unstyled.nav-link,
+    & a.nav-link {
+        font-family: var(--_14-primary-semibold-150-font-family);
+        font-size: var(--_14-primary-semibold-150-font-size);
+        font-weight: var(--_14-primary-semibold-150-font-weight);
+        line-height: var(--_14-primary-semibold-150-line-height);
+        letter-spacing: var(--_14-primary-semibold-150-letter-spacing);
+
+        padding: 8px 16px;
+        box-sizing: border-box;
+    }
+
+    // Parent navigation item
+    & .dxButton.btn.btn-unstyled.nav-link {
+        width: 100%;
+        background: transparent;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: none;
+        color: var(--secondary-secondary);
+
+        &:hover {
+            background-color: transparent;
+        }
+    }
+
+    // Opened / clicked navigation item
+    & .nav-item.opened > .dxVerticalNav__triggerContainer {
+        .dxButton.btn.btn-unstyled.nav-link {
+            font-family: var(--_14-primary-semibold-150-font-family);
+            font-size: var(--_14-primary-semibold-150-font-size);
+            font-weight: var(--_14-primary-semibold-150-font-weight);
+            line-height: var(--_14-primary-semibold-150-line-height);
+            letter-spacing: var(--_14-primary-semibold-150-letter-spacing);
+        }
+
+        .collapse-icon {
+            color: var(--dark-dark);
+
+            i {
+                color: var(--dark-dark);
+            }
+        }
+
+        &:hover {
+            .dxButton.btn.btn-unstyled.nav-link {
+                color: var(--primary-primary);
+            }
+
+            .collapse-icon {
+                color: var(--primary-primary);
+
+                i {
+                    color: var(--primary-primary);
+                }
+            }
+        }
+    }
+
+    // Normal links
+    & a.nav-link {
+        color: var(--secondary-secondary);
+
+        &:hover {
+            background-color: var(--primary-primary-l3);
+            color: var(--primary-primary);
+        }
+    }
+
+    // Active / current normal link
+    & a.nav-link.active {
+        color: var(--dark-dark);
+
+        &:hover {
+            background-color: var(--primary-primary-l3);
+            color: var(--primary-primary);
+        }
+    }
+
+    // Dropdown
+    & .collapse {
+        width: 100%;
+        padding-left: 16px;
+
+        .nav {
+            flex-direction: column;
+        }
+    }
+
+    // Expand / collapse animation
+    @keyframes expand-in {
+        0% {
+            display: block;
+            max-height: 0;
+            overflow: hidden;
+        }
+
+        100% {
+            max-height: 1000px;
+            overflow: hidden;
+        }
+    }
+
+    @keyframes expand-out {
+        0% {
+            max-height: 1000px;
+            overflow: hidden;
+        }
+
+        100% {
+            max-height: 0;
+            overflow: hidden;
+        }
+    }
+
+    .collapse:not(.show) {
+        animation: expand-out 0.5s ease-out;
+    }
+
+    .collapse.show {
+        animation: expand-in 0.5s ease-in;
+    }
+}
