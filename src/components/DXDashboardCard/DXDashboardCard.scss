@@ -1,0 +1,86 @@
+.dxDashboardCard {
+    border: 0;
+    padding: 14px 16px;
+    background-color: var(--light-white);
+    width: 100%;
+    overflow: hidden;
+    min-width: 184px;
+    box-shadow: 0px 2px 4px 0px rgba(39, 40, 51, 0.2);
+    align-items: center;
+
+    &--labelContainer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 35px;
+    }
+
+    i {
+        font-size: 40px;
+        padding-left: 8px;
+    }
+
+    &__data {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 35px;
+        font-family: var(--_28-bold-125-font-family);
+        font-size: var(--_28-bold-125-font-size);
+        font-weight: var(--_28-bold-125-font-weight);
+        line-height: var(--_28-bold-125-line-height);
+        letter-spacing: var(--_28-bold-125-letter-spacing);
+        color: var(--dark-dark);
+        margin-bottom: 15px;
+    }
+
+    &__label {
+        display: -webkit-box;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+
+        font-family: var(--_14-primary-semibold-125-font-family);
+        font-size: var(--_14-primary-semibold-125-font-size);
+        font-weight: var(--_14-primary-semibold-125-font-weight);
+        line-height: var(--_14-primary-semibold-125-line-height);
+        letter-spacing: var(--_14-primary-semibold-125-letter-spacing);
+        color: var(--dark-dark);
+        text-align: start;
+        align-items: center;
+        margin-bottom: 0;
+    }
+
+    &--small {
+        @extend .dxDashboardCard;
+        display: flex;
+        padding: 10px;
+
+        p {
+            margin-bottom: 0
+        }
+
+        &__data {
+            @extend .dxDashboardCard__data;
+            margin-right: 6px;
+            font-family: var(--_24-bold-125-font-family);
+            font-size: var(--_24-bold-125-font-size);
+            font-weight: var(--_24-bold-125-font-weight);
+            line-height: var(--_24-bold-125-line-height);
+            letter-spacing: var(--_24-bold-125-letter-spacing);
+            color: var(--dark-dark);
+        }
+
+        &__label {
+            @extend .dxDashboardCard__label;
+            align-items: center;
+            font-family: var(--_12-regular-125-font-family);
+            font-size: var(--_12-regular-125-font-size);
+            font-weight: var(--_12-regular-125-font-weight);
+            line-height: var(--_12-regular-125-line-height);
+            letter-spacing: var(--_12-regular-125-letter-spacing);
+            color: var(--dark-dark-l2);
+        }
+    }
+}

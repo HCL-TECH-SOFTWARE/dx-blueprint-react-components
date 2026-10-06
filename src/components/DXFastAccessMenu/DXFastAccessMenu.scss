@@ -1,0 +1,135 @@
+@import "../../global/variables.scss";
+@import "../../global/breakpoints.scss";
+
+.dxFastAccessMenu {
+    z-index: $dropdownLevel;
+    width: 100%;
+    position: absolute;
+    padding-bottom: 1rem;
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 14px;
+
+        @include mobile {
+            display: block;
+        }
+
+        @include xs {
+            display: block;
+        }
+    }
+
+    &__headerTitle {
+        color: var(--dark-dark);
+        font-size: var(--_24-primary-semibold-150-font-size);
+        font-family: var(--_24-primary-semibold-150-font-family);
+        font-weight: var(--_24-primary-semibold-150-font-weight);
+        line-height: var(--_24-primary-semibold-150-line-height);
+        letter-spacing: var(--_24-primary-semibold-150-letter-spacing);
+        margin: 0;
+
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+
+    &__headerLink {
+        gap: 12px;
+        display: flex;
+        align-items: center;
+
+        a {
+            font-size: var(--_18-primary-semibold-150-font-size);
+            font-family: var(--_18-primary-semibold-150-font-family);
+            font-weight: var(--_18-primary-semibold-150-font-weight);
+            line-height: var(--_18-primary-semibold-150-line-height);
+            letter-spacing: var(--_18-primary-semibold-150-letter-spacing);
+            text-decoration: none;
+            color: var(--primary-primary);
+        }
+
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+
+        // Coolicons class, hence doesn't comply with library naming convention
+        i {
+            color: var(--primary-primary);
+            justify-content: center;
+            font-size: 20px;
+        }
+    }
+
+    // React horizontal scrolling menu class, hence doesn't comply with library naming convention
+    .__container {
+        display: flex;
+        background: transparent;
+        height: 50px;
+        width: 40px;
+
+        button.dxButton.btn.btn-unstyled {
+            height: 50px;
+            width: 39px;
+            background-color: var(--light-white);
+            font-size: 24px;
+
+            &:hover {
+                border: 1px solid var(--primary-primary);
+            }
+        }
+
+        &--right {
+            justify-content: flex-start;
+        }
+
+        &--left {
+            justify-content: flex-end;
+        }
+    }
+
+    .__button.dxButton.btn {
+        justify-content: center;
+    }
+
+    &__menu {
+        box-shadow: 0px 2px 4px 0px rgba(39, 40, 51, 0.2);
+        background-color: var(--white);
+    }
+
+    // React horizontal scrolling menu class, hence doesn't comply with library naming convention
+    .__menu-item {
+        width: max-content;
+        height: 50px;
+        background-color: var(--light-white);
+        padding: 0px 15px;
+        border: none;
+        font-size: var(--_14-primary-semibold-150-font-size);
+        font-family: var(--_14-primary-semibold-150-font-family);
+        font-weight: var(--_14-primary-semibold-150-font-weight);
+        line-height: var(--_14-primary-semibold-150-line-height);
+        letter-spacing: var(--_14-primary-semibold-150-letter-spacing);
+
+        &:hover {
+            border: 1px solid var(--primary-primary);
+        }
+
+        &:focus {
+            border: 1px solid var(--primary-primary);
+            outline: auto solid var(--primary-primary);
+        }
+
+        &:last-child {
+            .dxNavHeaderMobile__itemContent {
+                border-bottom: none;
+            }
+        }
+    }
+
+    // React horizontal scrolling menu class, hence doesn't comply with library naming convention
+    .react-horizontal-scrolling-menu--scroll-container {
+        overflow: hidden;
+    }
+}

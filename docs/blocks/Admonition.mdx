@@ -1,0 +1,14 @@
+
+export const icon = {
+    note: 'ci-Info',
+    tip: 'ci-Bulb',
+    important: 'ci-Wavy_Check',
+    warning: 'ci-Triangle_Warning',
+    caution: 'ci-Octagon_Warning'
+}
+
+<div class="admonition" type={props.type}>
+    <i className={`${icon[props.type]}`} />
+    <p className='admonition-title'>{props.type.toUpperCase()}</p>
+    <div style={{gridColumn: "span 2"}}>{props.children}</div>
+</div>

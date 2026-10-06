@@ -1,0 +1,173 @@
+@import "../../global/variables.scss";
+@import "../../global/breakpoints.scss";
+
+.dxHBPerson {
+    position: relative;
+
+    &__carousel {
+        &__inner {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        &__inner::after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+
+        &__item {
+            position: relative;
+            float: left;
+            width: 100%;
+            margin-right: -100%;
+            display: none;
+
+            @include mobile {
+                height: 90vh;
+            }
+
+            @include xs {
+                height: 90vh;
+            }
+
+            &--active {
+                display: block;
+
+                &.dxHBPerson__carousel__item__next {
+                    opacity: 0;
+                }
+            }
+
+            &__pos_next {
+                display: block;
+                left: 0;
+                opacity: 0;
+            }
+
+            &__next {
+                transform: none;
+                opacity: 1;
+                transition: opacity .5s ease-in-out;
+            }
+        }
+
+        &__img {
+            display: block;
+            width: 100%;
+            object-fit: cover;
+            object-position: top;
+            max-height: 600px;
+
+            @include mobile {
+                height: 100%;
+                width: auto;
+                object-fit: contain;
+                max-height: 100%;
+            }
+
+            @include xs {
+                all: unset;
+                height: 100%;
+                width: 100%;
+                max-height: 100%;
+            }
+        }
+    }
+
+    &__bannerUrl {
+        width: 100%;
+        height: 100%;
+        display: block;
+        position: absolute;
+        top: 0;
+        z-index: $firstLevel;
+    }
+
+    &__content {
+        position: absolute;
+        z-index: $secondLevel;
+        margin-left: 5.875rem;
+        top: 35%;
+
+        @include mobile {
+            top: 15%;
+            margin-inline: 1.5rem;
+        }
+
+        @include xs {
+            top: 20%;
+            margin-inline: 2rem;
+        }
+
+        @include sm {
+            top: 10%;
+            margin-inline: 3.5rem;
+        }
+
+        h2,
+        p {
+            color: var(--primary-primary);
+            font-family: var(--_40-primary-semibold-100-font-family);
+            font-size: var(--_40-primary-semibold-100-font-size);
+            letter-spacing: var(--_40-primary-semibold-100-letter-spacing);
+            line-height: var(--_40-primary-semibold-100-line-height);
+            font-weight: var(--_40-primary-semibold-100-font-weight);
+            margin-bottom: 0;
+        }
+
+        i {
+            font-size: 23px;
+            color: var(--primary-primary);
+        }
+
+        & .dxSSuggestions {
+            position: relative;
+            z-index: $dropdownLevel;
+            margin-top: 0.35rem;
+        }
+    }
+
+    &__blur {
+        position: absolute;
+        z-index: $secondLevel;
+        top: 75%;
+        left: 65%;
+        padding: 1rem;
+        background-color: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(8px);
+        border-radius: 8px;
+        width: 30%;
+    }
+
+    &__details {
+        width: 100%;
+
+        p {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            margin-bottom: 0;
+            padding-bottom: 0.11rem;
+        }
+
+        p:nth-child(2) {
+            color: var(--primary-primary-l2);
+            font-family: var(--_24-primary-semibold-100-font-family);
+            font-size: var(--_24-primary-semibold-100-font-size);
+            letter-spacing: var(--_24-primary-semibold-100-letter-spacing);
+            line-height: var(--_24-primary-semibold-100-line-height);
+            font-weight: var(--_24-primary-semibold-100-font-weight);
+        }
+
+        p:nth-child(1),
+        p:nth-child(3) {
+            color: var(--primary-primary-l2);
+            font-family: var(--_10-primary-semibold-100-font-family);
+            font-size: var(--_10-primary-semibold-100-font-size);
+            letter-spacing: var(--_10-primary-semibold-100-letter-spacing);
+            line-height: var(--_10-primary-semibold-100-line-height);
+            font-weight: var(--_10-primary-semibold-100-font-weight);
+        }
+    }
+}

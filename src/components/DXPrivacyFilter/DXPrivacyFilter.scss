@@ -1,0 +1,29 @@
+@import "../../global/variables.scss";
+
+.dxPrivacyFilter {
+    display: inline-flex;
+    height: auto;
+
+    .dxButton.btn.btn-secondary {
+        font-family: var(--_14-semibold-150-font-family);
+        font-size: var(--_14-semibold-150-font-size);
+        letter-spacing: var(--_14-semibold-150-letter-spacing);
+        line-height: var(--_14-semibold-150-line-height);
+        font-weight: var(--_14-semibold-150-font-weight);
+
+        &:hover {
+            background-color: var(--light-white);
+            color: var(--primary-primary);
+        }
+    }
+}
+
+.privacyFilterOn {
+    filter: blur(8.5px) grayscale(0.8);
+    transition: all 0.3s;
+}
+
+.privacyFilterOff {
+    filter: none;
+    transition: all 0.3s;
+}

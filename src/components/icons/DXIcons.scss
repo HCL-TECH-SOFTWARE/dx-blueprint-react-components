@@ -1,0 +1,84 @@
+.dx-microsoftOutlook {
+    background-color: var(--secondary-secondary);
+    width: 36px;
+    height: 36px;
+
+    -webkit-mask: url("../icons/microsoftoutlook.svg") no-repeat center;
+    mask: url("../icons/microsoftoutlook.svg") no-repeat center;
+
+    &.disabled {
+        background-color: var(--secondary-secondary-l2);
+
+        &:hover {
+            background-color: var(--secondary-secondary-l2);
+        }
+    }
+
+    &:hover {
+        background-color: var(--dark-dark);
+    }
+}
+
+.dx-yahoo {
+    background-color: var(--secondary-secondary);
+    width: 36px;
+    height: 36px;
+
+    -webkit-mask: url("../icons/yahoo.svg") no-repeat center;
+    mask: url("../icons/yahoo.svg") no-repeat center;
+
+    &.disabled {
+        background-color: var(--secondary-secondary-l2);
+
+        &:hover {
+            background-color: var(--secondary-secondary-l2);
+        }
+    }
+
+    &:hover {
+        background-color: var(--dark-dark);
+    }
+}
+
+.dx-google {
+    background-color: var(--secondary-secondary);
+    width: 36px;
+    height: 36px;
+
+    -webkit-mask: url("../icons/google.svg") no-repeat center;
+    mask: url("../icons/google.svg") no-repeat center;
+
+    &.disabled {
+        background-color: var(--secondary-secondary-l2);
+
+        &:hover {
+            background-color: var(--secondary-secondary-l2);
+        }
+    }
+
+    &:hover {
+        background-color: var(--dark-dark);
+    }
+}
+
+.dx-apple {
+    display: block;
+    background-color: var(--secondary-secondary);
+    width: 36px;
+    height: 36px;
+
+    -webkit-mask: url("../icons/apple.svg") no-repeat center;
+    mask: url("../icons/apple.svg") no-repeat center;
+
+    &.disabled {
+        background-color: var(--secondary-secondary-l2);
+
+        &:hover {
+            background-color: var(--secondary-secondary-l2);
+        }
+    }
+
+    &:hover {
+        background-color: var(--dark-dark);
+    }
+}

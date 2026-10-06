@@ -1,0 +1,179 @@
+@import "../../global/breakpoints.scss";
+
+.dxNewsletter {
+    background-color: var(--light);
+    background-repeat: repeat;
+    background-position: center;
+
+    .container {
+        padding: 70px 0;
+
+        @include mobile {
+            padding: 24px 12px;
+        }
+
+        @include xs {
+            padding: 24px 12px;
+        }
+
+        @include sm {
+            padding: 24px 12px;
+        }
+
+        .row {
+            align-items: center;
+
+            &>* {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    &__heading {
+        font-family: var(--_24-primary-semibold-150-font-family);
+        font-size: var(--_24-primary-semibold-150-font-size);
+        letter-spacing: var(--_24-primary-semibold-150-letter-spacing);
+        line-height: var(--_24-primary-semibold-150-line-height);
+        font-weight: var(--_24-primary-semibold-150-font-weight);
+        color: var(--dark-dark-d2);
+
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+
+        @include mobile {
+            font-family: var(--_28-primary-semibold-150-font-family);
+            font-size: var(--_28-primary-semibold-150-font-size);
+            letter-spacing: var(--_28-primary-semibold-150-letter-spacing);
+            line-height: var(--_28-primary-semibold-150-line-height);
+            font-weight: var(--_28-primary-semibold-150-font-weight);
+            margin-bottom: 0;
+        }
+
+        @include xs {
+            font-family: var(--_28-primary-semibold-150-font-family);
+            font-size: var(--_28-primary-semibold-150-font-size);
+            letter-spacing: var(--_28-primary-semibold-150-letter-spacing);
+            line-height: var(--_28-primary-semibold-150-line-height);
+            font-weight: var(--_28-primary-semibold-150-font-weight);
+            margin-bottom: 0;
+        }
+
+        @include sm {
+            font-family: var(--_28-primary-semibold-150-font-family);
+            font-size: var(--_28-primary-semibold-150-font-size);
+            letter-spacing: var(--_28-primary-semibold-150-letter-spacing);
+            line-height: var(--_28-primary-semibold-150-line-height);
+            font-weight: var(--_28-primary-semibold-150-font-weight);
+            margin-bottom: 0;
+        }
+    }
+
+    &__form {
+        @include mobile {
+            margin-top: 16px;
+        }
+
+        @include xs {
+            margin-top: 16px;
+        }
+
+        @include sm {
+            margin-top: 16px;
+        }
+
+        &>.form-group {
+            margin-bottom: 0;
+
+            &>.input-group {
+                align-items: center;
+
+                @include mobile {
+                    display: block;
+
+                    .input-group-item {
+                        width: 100%;
+                        margin-left: 0;
+                    }
+                }
+
+                @include xs {
+                    display: block;
+
+                    .input-group-item {
+                        width: 100%;
+                        margin-left: 0;
+                    }
+                }
+
+                @include sm {
+                    display: block;
+
+                    .input-group-item {
+                        width: 100%;
+                        margin-left: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    &__input {
+        font-family: var(--_16-regular-150-font-family);
+        font-size: var(--_16-regular-150-font-size);
+        letter-spacing: var(--_16-regular-150-letter-spacing);
+        line-height: var(--_16-regular-150-line-height);
+        font-weight: var(--_16-regular-150-font-weight);
+    }
+
+    &__input,
+    &__input:focus {
+        background-color: var(--white);
+    }
+
+    &__button.dxButton.btn.btn-primary {
+        display: inline-block;
+        padding-left: 40px;
+        padding-right: 40px;
+        margin-left: 16px;
+        font-family: var(--_16-semibold-150-font-family);
+        font-size: var(--_16-semibold-150-font-size);
+        letter-spacing: var(--_16-semibold-150-letter-spacing);
+        line-height: var(--_16-semibold-150-line-height);
+        font-weight: var(--_16-semibold-150-font-weight);
+
+        @include mobile {
+            margin-left: 0;
+            margin-top: 24px;
+            width: 100%;
+        }
+
+        @include xs {
+            margin-left: 0;
+            margin-top: 24px;
+            width: 100%;
+        }
+
+        @include sm {
+            margin-left: 0;
+            margin-top: 24px;
+            width: 100%;
+        }
+    }
+}
+
+.tooltip.bs-tooltip-bottom,
+.tooltip[data-popper-placement^="bottom"] {
+    padding-top: 0;
+}
+
+.tooltip.bs-tooltip-bottom .tooltip-arrow,
+.tooltip[data-popper-placement^="bottom"] .tooltip-arrow {
+    background-color: transparent;
+    left: 0.5rem !important;
+    transform: none !important;
+    display: block;
+}
+

@@ -1,0 +1,405 @@
+@import "../../global/breakpoints.scss";
+.dxCard {
+    border-width: 1px;
+    border-color: var(--light-light-d2);
+    border-style: solid;
+    background-color: var(--light-white);
+    height: 100%;
+    position: relative;
+    &__cover {
+        width: 100%;
+        height: 161px;
+        position: relative;
+        @include mobile {
+            height: 130px;
+        }
+        @include xs {
+            height: 130px;
+        }
+        input[type="checkbox"] {
+            position: relative;
+            bottom: 9rem;
+            left: 0.9rem;
+            width: 1rem;
+            height: 1rem;
+            @include mobile {
+                bottom: 7.8rem;
+                left: .7rem;
+            }
+            @include xs {
+                bottom: 7.8rem;
+                left: .7rem;
+            }
+        }
+        &Image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover
+        }
+        &Sticker {
+            border-radius: 8px;
+            width: 2rem;
+            height: 2rem;
+            position: relative;
+            bottom: 3rem;
+            left: -0.1rem;
+            @include mobile {
+                left: -0.3rem;
+            }
+            @include xs {
+                left: -0.3rem;
+            }
+        }
+    }
+    &__content {
+        display: flex;
+        flex-direction: column;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    &__container {
+        display: flex;
+        justify-content: space-between;
+        padding-top: .75rem;
+        padding-bottom: .75rem;
+    }
+    &__top {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 1.25rem;
+        padding-left: 1rem;
+        padding-right: 0.5rem;
+        @include mobile {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        @include xs {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        &Label {
+            border: 1px solid;
+            border-radius: 0.25rem;
+            color: var(--secondary-secondary);
+            border-color: var(--secondary-secondary-l2);
+            background-color: transparent;
+            text-transform: uppercase;
+            font-family: var(--_12-semibold-150-font-family);
+            font-size: var(--_12-semibold-150-font-size);
+            font-weight: var(--_12-semibold-150-font-weight);
+            line-height: var(--_12-semibold-150-line-height);
+            letter-spacing: var(--_12-semibold-150-letter-spacing);
+            display: inline-block;
+            margin-right: 0.3rem;
+            /* Fix: Added spacing between label and metadata */
+            padding: 0.125rem 0.25rem;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            max-width: 500px;
+            @include mobile {
+                font-family: var(--_10-semibold-125-font-family);
+                font-size: var(--_10-semibold-125-font-size);
+                font-weight: var(--_10-semibold-125-font-weight);
+                line-height: var(--_10-semibold-125-line-height);
+                letter-spacing: var(--_10-semibold-125-letter-spacing);
+            }
+            @include xs {
+                font-family: var(--_10-semibold-125-font-family);
+                font-size: var(--_10-semibold-125-font-size);
+                font-weight: var(--_10-semibold-125-font-weight);
+                line-height: var(--_10-semibold-125-line-height);
+                letter-spacing: var(--_10-semibold-125-letter-spacing);
+            }
+        }
+        &Metadata {
+            font-family: var(--_12-regular-150-font-family);
+            font-size: var(--_12-regular-150-font-size);
+            font-weight: var(--_12-regular-150-font-weight);
+            line-height: var(--_12-regular-150-line-height);
+            letter-spacing: var(--_12-regular-150-letter-spacing);
+            display: -webkit-box;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+            @include mobile {
+                margin-bottom: .25rem;
+            }
+            @include xs {
+                margin-bottom: .25rem;
+            }
+        }
+    }
+    &__checkbox {
+        input[type="checkbox"] {
+            margin-left: .75rem;
+        }
+    }
+    &__kebab {
+        padding: 0;
+        display: flex;
+        justify-content: flex-end;
+        button.dxCard__kebabToggle.btn {
+            width: 2rem;
+            height: 2rem;
+            color: #6b6c7e;
+            background-color: transparent;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            border-radius: 4px;
+            box-shadow: none;
+            &::after {
+                content: none;
+                display: none;
+            }
+            &:hover,
+            &:focus,
+            &:active,
+            &.show {
+                color: #6b6c7e;
+                background-color: transparent;
+                text-decoration: none;
+                box-shadow: none;
+            }
+            &:focus-visible {
+                outline: none;
+                box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.25);
+            }
+        }
+        .dropdown-menu {
+            min-width: 240px;
+            padding: 0.25rem 0;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            .dropdown-item.dropdown-item,
+            a.dropdown-item.dropdown-item,
+            button.dropdown-item.dropdown-item {
+                color: var(--dark-dark-l2, #6b6c7e);
+                font-family: var(--_14-regular-150-font-family);
+                font-size: var(--_14-regular-150-font-size);
+                font-weight: var(--_14-regular-150-font-weight);
+                line-height: var(--_14-regular-150-line-height);
+                letter-spacing: var(--_14-regular-150-letter-spacing);
+                padding: 0.40rem 1rem;
+                cursor: pointer;
+                &:hover,
+                &:focus,
+                &:active,
+                &.active {
+                    color: var(--dark-dark, #000000);
+                    background-color: rgba(13, 110, 253, 0.08);
+                }
+            }
+        }
+        i {
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        svg,
+        i {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+    }
+    &__body {
+        padding-left: 1rem;
+        padding-right: 0.5rem;
+        h3 {
+            margin-bottom: 1.5625rem;
+            @include mobile {
+                margin-bottom: 0.375rem;
+            }
+            @include xs {
+                margin-bottom: 0.375rem;
+            }
+        }
+        & h3 a {
+            color: var(--dark-dark);
+            font-family: var(--_20-primary-bold-150-font-family);
+            font-weight: var(--_20-primary-bold-150-font-weight);
+            letter-spacing: var(--_20-primary-bold-150-letter-spacing);
+            line-height: var(--_20-primary-bold-150-line-height);
+            font-size: var(--_20-primary-bold-150-font-size);
+            padding-bottom: 0.1rem;
+            display: -webkit-box;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            outline: none;
+            box-shadow: none;
+            text-decoration: none;
+            @include mobile {
+                font-family: var(--_16-primary-semibold-150-font-family);
+                font-weight: var(--_16-primary-semibold-150-font-weight);
+                letter-spacing: var(--_16-primary-semibold-150-letter-spacing);
+                line-height: var(--_16-primary-semibold-150-line-height);
+                font-size: var(--_16-primary-semibold-150-font-size);
+            }
+            @include xs {
+                font-family: var(--_16-primary-semibold-150-font-family);
+                font-weight: var(--_16-primary-semibold-150-font-weight);
+                letter-spacing: var(--_16-primary-semibold-150-letter-spacing);
+                line-height: var(--_16-primary-semibold-150-line-height);
+                font-size: var(--_16-primary-semibold-150-font-size);
+            }
+        }
+        & h3 a:hover {
+            text-decoration: none;
+        }
+        &Metadata {
+            color: var(--dark-dark-l2);
+            font-family: var(--_14-regular-150-font-family);
+            font-size: var(--_14-regular-150-font-size);
+            font-weight: var(--_14-regular-150-font-weight);
+            line-height: var(--_14-regular-150-line-height);
+            letter-spacing: var(--_14-regular-150-letter-spacing);
+            display: -webkit-box;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+        }
+    }
+    &__description {
+        color: var(--dark-dark-l2);
+        font-family: var(--_14-regular-150-font-family);
+        font-size: var(--_14-regular-150-font-size);
+        font-weight: var(--_14-regular-150-font-weight);
+        line-height: var(--_14-regular-150-line-height);
+        letter-spacing: var(--_14-regular-150-letter-spacing);
+        display: -webkit-box;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
+    }
+    &__event {
+        margin-bottom: .5rem;
+        color: var(--dark-dark-l2);
+        font-family: var(--_14-regular-150-font-family);
+        font-size: var(--_14-regular-150-font-size);
+        font-weight: var(--_14-regular-150-font-weight);
+        line-height: var(--_14-regular-150-line-height);
+        letter-spacing: var(--_14-regular-150-letter-spacing);
+        @include mobile {
+            font-family: var(--_10-regular-150-font-family);
+            font-size: var(--_10-regular-150-font-size);
+            font-weight: var(--_10-regular-150-font-weight);
+            line-height: var(--_10-regular-150-line-height);
+            letter-spacing: var(--_10-regular-150-letter-spacing);
+        }
+        @include xs {
+            font-family: var(--_10-regular-150-font-family);
+            font-size: var(--_10-regular-150-font-size);
+            font-weight: var(--_10-regular-150-font-weight);
+            line-height: var(--_10-regular-150-line-height);
+            letter-spacing: var(--_10-regular-150-letter-spacing);
+        }
+        span {
+            color: var(--primary-primary);
+            font-family: var(--_14-bold-150-font-family);
+            font-size: var(--_14-bold-150-font-size);
+            font-weight: var(--_14-bold-150-font-weight);
+            line-height: var(--_14-bold-150-line-height);
+            letter-spacing: var(--_14-bold-150-letter-spacing);
+            margin-right: 1rem;
+            @include mobile {
+                font-family: var(--_10-semibold-150-font-family);
+                font-size: var(--_10-semibold-150-font-size);
+                font-weight: var(--_10-semibold-150-font-weight);
+                line-height: var(--_10-semibold-150-line-height);
+                letter-spacing: var(--_10-semibold-150-letter-spacing);
+            }
+            @include xs {
+                font-family: var(--_10-semibold-150-font-family);
+                font-size: var(--_10-semibold-150-font-size);
+                font-weight: var(--_10-semibold-150-font-weight);
+                line-height: var(--_10-semibold-150-line-height);
+                letter-spacing: var(--_10-semibold-150-letter-spacing);
+            }
+        }
+    }
+    &__iconData {
+        display: flex;
+        align-items: center;
+        i {
+            font-size: var(--_20-bold-125-font-size);
+            font-weight: var(--_20-bold-125-font-weight);
+            margin-right: 1.25rem;
+            color: var(--dark-dark-l2);
+        }
+        margin-bottom: .5rem;
+        p {
+            font-family: var(--_12-regular-125-font-family);
+            font-size: var(--_12-regular-125-font-size);
+            font-weight: var(--_12-regular-125-font-weight);
+            line-height: var(--_12-regular-125-line-height);
+            letter-spacing: var(--_12-regular-125-letter-spacing);
+            color: var(--dark-dark-l2);
+            margin-bottom: 0;
+            @include mobile {
+                font-family: var(--_10-regular-150-font-family);
+                font-size: var(--_10-regular-150-font-size);
+                font-weight: var(--_10-regular-150-font-weight);
+                line-height: var(--_10-regular-150-line-height);
+                letter-spacing: var(--_10-regular-150-letter-spacing);
+            }
+            @include xs {
+                font-family: var(--_10-regular-150-font-family);
+                font-size: var(--_10-regular-150-font-size);
+                font-weight: var(--_10-regular-150-font-weight);
+                line-height: var(--_10-regular-150-line-height);
+                letter-spacing: var(--_10-regular-150-letter-spacing);
+            }
+        }
+    }
+    &__images {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        margin-top: 2rem;
+        span {
+            display: flex;
+            align-items: center;
+            color: var(--dark-dark-l2);
+            font-family: var(--_10-regular-150-font-family);
+            font-size: var(--_10-regular-150-font-size);
+            font-weight: var(--_10-regular-150-font-weight);
+            line-height: var(--_10-regular-150-line-height);
+            letter-spacing: var(--_10-regular-150-letter-spacing);
+        }
+    }
+    &__image {
+        width: 32px;
+        border-radius: 4px;
+        &:first-child {
+            margin-right: .5rem;
+            margin-left: 0;
+        }
+        margin-inline: .5rem;
+        margin-bottom: .25rem;
+        img {
+            width: 100%;
+            height: 32px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+    }
+    &__buttons {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        margin-top: 1.25rem;
+        gap: .25rem;
+    }
+}

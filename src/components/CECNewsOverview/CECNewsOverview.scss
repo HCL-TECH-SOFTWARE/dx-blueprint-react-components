@@ -1,0 +1,370 @@
+// src/components/CECNewsOverview/CECNewsOverview.scss
+/* Container + list layout only. The tile visuals come from the shared NewsTile. */
+.cecNewsOverview {
+  /* Row mode: enforce 20px title for consistency */
+  &.cecNewsOverview--row {
+    --nov-title-fs: 20px;
+    /* Override container query font sizes in row mode */
+    .newsTile {
+      --tile-title-fs: 20px;
+    }
+  }
+  /* RTL Support */
+  &--rtl {
+    direction: rtl;
+    text-align: right;
+  }
+  &--ltr {
+    direction: ltr;
+    text-align: left;
+  }
+  --hclc-grid-row-gap: 20px;
+  --hclc-grid-column-gap: 15px;
+  --transition-fast: 200ms;
+  --mn-border-radius: 6px;
+  /* meta (category/date) font-size */
+  --nov-meta-fs: .8125rem;
+  /* Sizing passed down to NewsTile via var fallbacks */
+  --nov-thumb-w: 120px;
+  /* side thumb width */
+  --nov-thumb-h: 84px;
+  /* side thumb height (column) */
+  --nov-row-img-h: 200px;
+  /* top image height */
+  display: block;
+  background: #fff;
+  padding: 1rem;
+  /* ===== Lists ===== */
+  &.cecNewsOverview--row .cecNewsOverview__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hclc-grid-row-gap);
+    padding-right: 4px;
+    max-height: var(--nov-max-height, none);
+    overflow: auto;
+    .cecNewsOverview--rtl & {
+      direction: rtl;
+    }
+    .cecNewsOverview--ltr & {
+      direction: ltr;
+    }
+  }
+  &.cecNewsOverview--column .cecNewsOverview__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--nov-min, 260px), 1fr));
+    gap: var(--hclc-grid-row-gap) var(--hclc-grid-column-gap);
+  }
+  /* Ensure size presets inside NewsTile don't override row title size */
+  &.cecNewsOverview--row .newsTile {
+    --tile-title-fs: 20px;
+  }
+  /* ===== Summary clamp alignment (optional tuning) ===== */
+  &.cecNewsOverview--column .newsTile__summary {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+  }
+  &.cecNewsOverview--row .newsTile__summary {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
+  }
+  /* ===== Responsive: side thumbs stack on tiny screens ===== */
+  @media (max-width: 480px) {
+    &.cecNewsOverview--column .newsTile.newsTile--img-left,
+    &.cecNewsOverview--column .newsTile.newsTile--img-right {
+      grid-template-columns: 1fr;
+      grid-template-areas: "nt-image" "nt-content";
+      .newsTile__imageContainer {
+        width: 100%;
+        height: var(--nov-row-img-h);
+      }
+    }
+  }
+  /* ===== Divider mode separators for row list ===== */
+  &.cecNewsOverview--row.cecNewsOverview--divider .cecNewsOverview__list {
+    gap: 0;
+    .cecNewsOverview--rtl & {
+      padding-right: 0;
+      padding-left: 4px;
+    }
+    .cecNewsOverview--ltr & {
+      padding-right: 4px;
+      padding-left: 0;
+    }
+  }
+  /* draw the rule between adjacent wrappers */
+  &.cecNewsOverview--row.cecNewsOverview--divider .cecNewsOverview__tile+.cecNewsOverview__tile {
+    border-top: 1px solid #e6e6e6;
+    /* RTL adjustments for divider */
+    .cecNewsOverview--rtl & {
+      border-right: none;
+      border-left: none;
+    }
+  }
+  /* make sure tiles themselves don’t add borders in divider mode */
+  &.cecNewsOverview--row.cecNewsOverview--divider .newsTile {
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    min-height: 72px;
+  }
+  /* ===== Optional gutter reservation (row + side thumbs only) ===== */
+  &.cecNewsOverview--reserveGutter.cecNewsOverview--row .newsTile.newsTile--noImage.newsTile--img-left::before,
+  &.cecNewsOverview--reserveGutter.cecNewsOverview--row .newsTile.newsTile--noImage.newsTile--img-right::before {
+    content: "";
+    display: block;
+    flex: 0 0 var(--nov-thumb-w);
+    height: var(--nov-thumb-h);
+    background: transparent;
+  }
+  /* Each tile is its own CQ context; also avoid text measuring issues */
+  .cecNewsOverview__tile {
+    container-type: inline-size;
+    min-width: 0;
+  }
+  /* Let text measure freely in grid items (column mode) */
+  &.cecNewsOverview--column .newsTile {
+    min-width: 0;
+  }
+  /* Match previous clamp behavior per view */
+  &.cecNewsOverview--column .newsTile__summary {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+  }
+  &.cecNewsOverview--row .newsTile__summary {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
+  }
+  /* Don’t reserve a gutter for “no-image” rows even if reserveGutter is on */
+  &.cecNewsOverview--row.cecNewsOverview--reserveGutter .newsTile:not([data-has-image="true"]) .newsTile__imageContainer {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+  .newsTile {
+    min-width: 0;
+  }
+  &.cecNewsOverview--column .newsTile__summary {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+  }
+  &.cecNewsOverview--row .newsTile__summary {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
+  }
+}
+/* ===== RTL Support for the component ===== */
+.cecNewsOverview--rtl {
+  /* Flip the grid for RTL */
+  .cecNewsOverview__list {
+    direction: rtl;
+  }
+  /* Ensure text alignment is correct in RTL */
+  .newsTile {
+    text-align: right;
+    direction: rtl;
+    &__imageContainer {
+      margin-right: 0;
+      margin-left: 1rem;
+    }
+    &--img-left {
+      .newsTile__imageContainer {
+        margin-right: 0;
+        margin-left: 1rem;
+      }
+    }
+    &--img-right {
+      .newsTile__imageContainer {
+        margin-right: 1rem;
+        margin-left: 0;
+      }
+    }
+    /* Ensure text elements respect RTL */
+    &__title,
+    &__summary,
+    &__meta {
+      text-align: right;
+      direction: rtl;
+    }
+    /* Fix alignment of meta items */
+    &__meta {
+      justify-content: flex-start;
+      flex-direction: row-reverse;
+      >*+* {
+        margin-right: 0.75rem;
+        margin-left: 0;
+      }
+    }
+  }
+  /* Adjust padding and margins for RTL */
+  .cecNewsOverview__emptyCard,
+  .cecNewsOverview__emptyList {
+    padding-right: 0;
+    padding-left: 1.5rem;
+    text-align: right;
+  }
+  /* Adjust list item markers for RTL */
+  .cecNewsOverview__emptyList {
+    list-style-position: inside;
+    padding-right: 1.5rem;
+  }
+}
+/* ===== Dialog styles unchanged (kept from your original) ===== */
+.newsDialog__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s, visibility .3s;
+  &.active {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+.newsDialog__dialog {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, .2);
+  width: 90%;
+  /* RTL support for dialog */
+  .cecNewsOverview--rtl & {
+    direction: rtl;
+    text-align: right;
+  }
+  max-width: 800px;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transform: scale(.95);
+  transition: transform .3s;
+  position: relative;
+  .active & {
+    transform: scale(1);
+  }
+}
+.newsDialog__header {
+  position: relative !important;
+  width: auto !important;
+  left: auto !important;
+  margin: 0 !important;
+  background: #fff !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem 1.5rem;
+  padding-right: 3rem;
+  border-bottom: 1px solid #e9ecef;
+}
+.newsDialog__headerContent {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: left;
+}
+.newsDialog__title {
+  margin: 0 0 .25rem 0;
+  color: #212529 !important;
+}
+.newsDialog__meta {
+  margin: 0;
+  color: #6c757d !important;
+}
+.newsDialog__header button {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: none;
+  border: 0;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #6c757d;
+  opacity: .8;
+  padding: .25rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  &:hover {
+    opacity: 1;
+  }
+}
+.newsDialog__content {
+  padding: 1.5rem;
+  overflow-y: auto;
+  line-height: 1.6;
+  img {
+    display: none;
+  }
+}
+.newsDialog__footer {
+  background: #f8f9fa !important;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e9ecef;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.newsDialog__tags {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+.newsDialog__tags span {
+  background: #e9ecef;
+  padding: .25rem .6rem;
+  border-radius: 1rem;
+  font-size: .75rem;
+}
+.newsDialog__actions a {
+  text-decoration: none;
+  font-weight: 700;
+  color: #005fcc;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+.cecNewsOverview__empty {
+  margin-top: .5rem;
+}
+.cecNewsOverview__emptyCard {
+  background: #fff3cd;
+  border: 1px solid #ffe69c;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  color: #664d03;
+}
+.cecNewsOverview__emptyTitle {
+  font-size: 1.25rem;
+  margin: 0 0 .5rem 0;
+}
+.cecNewsOverview__emptyBody {
+  margin: 0 0 .25rem 0;
+}
+.cecNewsOverview__emptyList {
+  margin: .25rem 0 0 1.25rem;
+  padding: 0;
+}

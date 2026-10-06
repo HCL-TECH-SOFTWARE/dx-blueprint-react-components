@@ -1,0 +1,182 @@
+@import "../../global/variables.scss";
+@import "../../global/breakpoints.scss";
+
+.dxMTabMenuNav {
+    max-height: 100vh;
+
+    &--active {
+        color: var(--primary-primary);
+    }
+
+    &__overlay {
+        &Wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: calc(100vh - 79px);
+            z-index: $navigationLevel;
+            transition: height .3s ease-in;
+            width: 100vw;
+
+            &--hide {
+                height: 0;
+                overflow: hidden;
+                transition: all .3s ease-out;
+
+                & .dxMTabMenuNav__overlayHeader button {
+                    display: none;
+                }
+            }
+        }
+
+        &Header {
+            padding: 1rem 0.75rem;
+
+            p,
+            button i {
+                font-family: var(--_16-primary-semibold-125-font-family);
+                font-size: var(--_16-primary-semibold-125-font-size);
+                font-weight: var(--_16-primary-semibold-125-font-weight);
+                line-height: var(--_16-primary-semibold-125-line-height);
+                letter-spacing: var(--_16-primary-semibold-125-letter-spacing);
+                color: var(--light-white);
+                margin-bottom: 0;
+            }
+
+            button.dxButton.btn.btn-unstyled {
+                padding: 0;
+                position: absolute;
+                right: 0;
+                top: 0.8rem;
+                margin-right: 1rem;
+
+                &:hover {
+                    background-color: transparent;
+                }
+            }
+        }
+
+        &Body {
+            padding: 1rem 1.875rem;
+        }
+    }
+
+    &__nav {
+        height: 79px;
+    }
+
+    &__buttonsContainer {
+        height: calc(100% - 5px);
+    }
+
+    &__navItem {
+        width: 20%;
+        padding: .75rem;
+    }
+
+    &__navItemImg {
+        width: 20%;
+        max-width: 74px;
+
+        div {
+            @include mobile {
+                width: 35px;
+                height: 35px;
+            }
+
+            @include xs {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    }
+
+    &__btn.dxButton__borderless,
+    &__btn {
+        width: 100%;
+        height: 100%;
+
+        @include mobile {
+            padding: 0;
+        }
+
+        &Light--active.dxMTabMenuNav__btnLight.dxButton.btn.btn-unstyled {
+            color: var(--primary-primary);
+        }
+
+        &Light.dxButton.btn.btn-unstyled {
+            @extend .dxMTabMenuNav__btn;
+            color: var(--light-light-d3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            gap: 0;
+
+            i {
+                font-size: var(--_36-bold-125-font-size);
+                width: 1em;
+                height: 1em;
+                line-height: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            &:hover {
+                background-color: transparent;
+            }
+        }
+
+        &Dark--active.dxMTabMenuNav__btnDark.dxButton.btn.btn-unstyled {
+            color: var(--light-light-l1)
+        }
+
+        &Dark.dxButton.btn.btn-unstyled {
+            @extend .dxMTabMenuNav__btn;
+            color: var(--light-light-l1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            gap: 0;
+
+            i {
+                font-size: var(--_36-bold-125-font-size);
+                width: 1em;
+                height: 1em;
+                line-height: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            &:hover {
+                background-color: transparent;
+            }
+        }
+    }
+
+    &__imgBtn {
+        border-radius: 50%;
+        width: 100%;
+        height: 100%;
+    }
+
+    &__line {
+        width: 15%;
+        position: relative;
+        height: 5px;
+        transition: all 0.7s ease;
+
+        &Light {
+            @extend .dxMTabMenuNav__line;
+            background-color: var(--primary-primary);
+        }
+
+        &Dark {
+            @extend .dxMTabMenuNav__line;
+            background-color: var(--light-light-l1);
+        }
+    }
+}

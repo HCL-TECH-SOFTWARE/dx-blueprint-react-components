@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import AdditionalResources from '../blocks/additional-resources.mdx';
+import Admonition from '../blocks/Admonition.mdx';
+
+<Meta title="Information Architecture/Site Template" />
+
+<header>
+Information Architecture
+
+# Site Template
+
+Templates for rapidly creating new sites or sections in HCL DX.
+</header>
+
+## Blueprint Site Template
+
+The Blueprint Design System provides a site template, **Blueprint Template**, which can be used with [Site Builder](https://help.hcl-software.com/digital-experience/9.5/latest/build_sites/sitebuilder/) to quickly set up the Blueprint sample site. When you use this template, Site Builder creates a new library and copies the template contents into it — it does not share content with the original Blueprint libraries.
+
+<Admonition type="important">
+    Shared resources such as header and footer injectors are still shared across
+    all sites that reference them from the Blueprint libraries. To avoid
+    unintended changes affecting other sites, create your own copies of these
+    shared components and update your new site to reference your copies instead.
+</Admonition>
+
+For a step-by-step walkthrough of using the Blueprint Site Template, see [Create the Blueprint Sample Site](?path=/docs/how-to-create-the-blueprint-sample-site--documentation).
+
+<AdditionalResources />

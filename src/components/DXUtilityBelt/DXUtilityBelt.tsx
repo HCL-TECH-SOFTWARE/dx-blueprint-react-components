@@ -1,0 +1,64 @@
+import "./DXUtilityBelt.scss";
+import React from "react";
+
+interface BeltIcon {
+    button: {
+        iconClass?: string,
+        label: string,
+        onClick: Function,
+    };
+    title?: string,
+}
+export interface UtilityBeltProps {
+    items: BeltIcon[],
+    textVariant?: boolean,
+    align?: ( "left" | "center" | "right" ),
+    displayType?: ( "primary" | "secondary" | "unstyled" ),
+}
+
+const DXUtilityBelt = ( props: UtilityBeltProps ) => {
+
+    const handleClick = ( e: any, item: BeltIcon ) => {
+        if ( e.type === "click" || ( e.type === "keydown" && e.keyCode === 13 ) || ( e.type === "keydown" && e.keyCode === 32 ) ) {
+            item.button.onClick();
+        }
+    };
+
+    const getAlignment = () => {
+        if ( props.align && props.align === "left" ) return "dxUtilityBelt--left";
+        if ( props.align && props.align === "right" ) return "dxUtilityBelt--right";
+        if ( props.align && props.align === "center" ) return "dxUtilityBelt--center";
+        return "dxUtilityBelt--center";
+    };
+    const getColorClass = () => {
+        if ( props.displayType && props.displayType === "primary" ) return "dxUtilityBelt__button--primary";
+        if ( props.displayType && props.displayType === "secondary" ) return "dxUtilityBelt__button--secondary";
+        if ( props.displayType && props.displayType === "unstyled" ) return "dxUtilityBelt__button--unstyled";
+        return "dxUtilityBelt__button--primary";
+    };
+
+    const renderItems = ( items: BeltIcon[] ) => {
+        return items.map( ( item: BeltIcon, index: number ) => (
+            <div className={`dxUtilityBelt__item`} key={index}>
+                <div className={"dxUtilityBelt__itemTop" + " " + ( !props.textVariant ? "dxUtilityBelt__itemTop--full" : "" )}>
+                    <button className={getColorClass() + " " + ( !props.textVariant ? "dxUtilityBelt__icon--full" : "" )} onClick={( e ) => handleClick( e, item )} onKeyDown={( e ) => handleClick( e, item )} aria-label={item.button.label}>
+                        {item.button.iconClass ? <i className={item.button.iconClass}></i> : <span>{item.button.label}</span>}
+                    </button>
+                </div>
+                {props.textVariant &&
+                    <div className="dxUtilityBelt__itemBottom">
+                        <span>{item.title!}</span>
+                    </div>
+                }
+            </div>
+        ) );
+    };
+
+    return (
+        <div className={`dxUtilityBelt ${getAlignment()}`}>
+            {renderItems( props.items )}
+        </div>
+    );
+};
+
+export default DXUtilityBelt;

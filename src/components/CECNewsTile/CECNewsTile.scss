@@ -1,0 +1,451 @@
+// src/components/CECNewsTile/CECNewsTile.scss
+/* Shared, reusable tile styles for NewsOverview + MegaNews
+   The outer .newsTile is a container; the inner .newsTile__frame handles layout.
+   CSS-vars are read from the host (NewsOverview/MegaNews) and have sane fallbacks.
+*/
+.newsTile {
+    /* ---- Vars ---- */
+    --tile-meta-fs: var(--nov-meta-fs, .8125rem);
+    --tile-radius: var(--mn-border-radius, 8px);
+    --tile-transition-fast: var(--transition-fast, 200ms);
+    --tile-thumb-w: var(--nov-thumb-w, var(--mn-thumb-w, 120px));
+    --tile-thumb-h: var(--nov-thumb-h, var(--mn-thumb-h, 84px));
+    --tile-row-img-h: var(--nov-row-img-h, var(--mn-row-img-h, 200px));
+    --tile-title-fs: var(--nov-title-fs, 1rem);
+    --tile-title-lines: var(--nov-title-lines, 2);
+    --tile-summary-fs: var(--nov-summary-fs, 1rem);
+    --tile-summary-lines: var(--nov-summary-lines, 2);
+    /* title/link color tokens (generic + overridable) */
+    --tile-title-color: #272833;
+    --tile-title-hover-color: #0B7DFF;
+    --tile-title-active-color: #234584;
+    /* the tile itself is the container for size queries */
+    container-type: inline-size;
+    display: block;
+    min-height: 96px;
+    overflow: hidden;
+    border-radius: var(--tile-radius);
+    background: #fff;
+    border: 1px solid #CDCED9;
+    cursor: pointer;
+    transition: box-shadow var(--tile-transition-fast), transform var(--tile-transition-fast);
+    &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, .1);
+        transform: translateY(-3px);
+    }
+    /* ---- Inner frame (grid layout lives here) ---- */
+    &__frame {
+        display: grid;
+        grid-template-areas: "nt-image" "nt-content";
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+    }
+    /* ---- Media ---- */
+    &__imageContainer {
+        grid-area: nt-image;
+        position: relative;
+        width: 100%;
+        height: var(--tile-row-img-h);
+        overflow: hidden;
+        border-top-left-radius: var(--tile-radius);
+        border-top-right-radius: var(--tile-radius);
+        display: none;
+        /* default: hidden; show only when we truly have an image */
+    }
+    /* show image container when there is an image */
+    &[data-has-image="true"] .newsTile__imageContainer,
+    &:not(.newsTile--noImage) .newsTile__imageContainer {
+        display: block;
+    }
+    .newsTile__imageContainer img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        /* center crop */
+        transform: scale(1);
+        transition: transform 750ms;
+        display: block;
+    }
+    &:hover .newsTile__imageContainer img {
+        transform: scale(1.06);
+    }
+    /* ---- Content ---- */
+    &__contentContainer {
+        grid-area: nt-content;
+        padding: 10px 12px;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        /* avoid truncation in grid/flex parents */
+    }
+    &__title {
+        font-weight: 600;
+        font-size: var(--tile-title-fs);
+        margin: 0 0 .35rem 0;
+        display: -webkit-box;
+        -webkit-line-clamp: var(--tile-title-lines);
+        line-clamp: var(--tile-title-lines);
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.2;
+        /* Base + neutralized visited: same as default */
+        a:link,
+        a:visited {
+            color: var(--tile-title-color);
+            text-decoration: none;
+            text-decoration-skip-ink: auto;
+            transition: color var(--tile-transition-fast);
+        }
+        /* Hover / focus */
+        a:hover,
+        a:focus-visible {
+            color: var(--tile-title-hover-color);
+            text-decoration: none;
+        }
+        /* Pressing (active) */
+        a:active {
+            color: var(--tile-title-active-color);
+            text-decoration: none;
+        }
+    }
+    /* Tile hover affects title links */
+    &:hover &__title a {
+        color: var(--tile-title-hover-color);
+    }
+    &:hover &__title a:active,
+    &__title a:active {
+        color: var(--tile-title-active-color);
+    }
+    &__summary {
+        font-size: var(--tile-summary-fs);
+        color: var(--tile-summary-color);
+        line-height: 1.35;
+        margin: 0 0 .5rem 0;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: var(--tile-summary-lines);
+        line-clamp: var(--tile-summary-lines);
+    }
+    &__metadata {
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 1.25rem;
+        font-size: var(--tile-meta-fs);
+        line-height: 1.25;
+        color: #666;
+        time,
+        span {
+            font: inherit;
+            color: inherit;
+        }
+    }
+    &__categorySep {
+        width: 3px;
+        min-width: 3px;
+        height: 1rem;
+        border-radius: 2px;
+        display: inline-block;
+        flex: 0 0 3px;
+        background: #d7d7d7;
+    }
+    /* ---- Variants ---- */
+    /* ---- Size presets ------------------------------------------------- */
+    &.newsTile--size-xs {
+        --tile-thumb-w: 80px;
+        --tile-thumb-h: 60px;
+        --tile-row-img-h: 140px;
+        --tile-title-fs: .875rem;
+        --tile-title-lines: 2;
+        --tile-summary-fs: .85rem;
+        --tile-summary-lines: 0;
+    }
+    &.newsTile--size-sm {
+        --tile-thumb-w: 96px;
+        --tile-thumb-h: 72px;
+        --tile-row-img-h: 160px;
+        --tile-title-fs: .95rem;
+        --tile-title-lines: 2;
+        --tile-summary-fs: .875rem;
+        --tile-summary-lines: 0;
+    }
+    &.newsTile--size-md {
+        --tile-thumb-w: 120px;
+        --tile-thumb-h: 84px;
+        --tile-row-img-h: 200px;
+        --tile-title-fs: 1rem;
+        --tile-title-lines: 2;
+        --tile-summary-fs: .9rem;
+        --tile-summary-lines: 2;
+    }
+    &.newsTile--size-lg {
+        --tile-thumb-w: 160px;
+        --tile-thumb-h: 112px;
+        --tile-row-img-h: 260px;
+        --tile-title-fs: 1.125rem;
+        --tile-title-lines: 3;
+        --tile-summary-fs: .95rem;
+        --tile-summary-lines: 3;
+    }
+    &.newsTile--size-xl {
+        --tile-thumb-w: 200px;
+        --tile-thumb-h: 140px;
+        --tile-row-img-h: 320px;
+        --tile-title-fs: 1.25rem;
+        --tile-title-lines: 3;
+        --tile-summary-fs: 1rem;
+        --tile-summary-lines: 3;
+    }
+    /* sm: suppress summary by default (can still be turned off globally) */
+    &.newsTile--size-sm .newsTile__summary {
+        display: none !important;
+    }
+    /* Optional: auto scaling based on the tile's *container width*.
+       Use with class .newsTile--size-auto (does not affect default md). */
+    &.newsTile--size-auto {
+        /* start from md values via vars; adjust by width */
+        /* extra narrow → xs */
+        @container (max-width: 220px) {
+            --tile-thumb-w: 80px;
+            --tile-thumb-h: 60px;
+            --tile-row-img-h: 140px;
+            --tile-title-fs: .875rem;
+            --tile-title-lines: 1;
+            --tile-summary-fs: .85rem;
+            --tile-summary-lines: 0;
+        }
+        /* narrow → sm */
+        @container (max-width: 280px) {
+            --tile-thumb-w: 96px;
+            --tile-thumb-h: 72px;
+            --tile-row-img-h: 160px;
+            --tile-title-fs: .95rem;
+            --tile-title-lines: 2;
+            --tile-summary-fs: .875rem;
+            --tile-summary-lines: 0;
+        }
+        /* wide → lg */
+        @container (min-width: 540px) {
+            --tile-thumb-w: 160px;
+            --tile-thumb-h: 112px;
+            --tile-row-img-h: 260px;
+            --tile-title-fs: 1.125rem;
+            --tile-title-lines: 3;
+            --tile-summary-fs: .95rem;
+            --tile-summary-lines: 3;
+        }
+        /* extra wide → xl */
+        @container (min-width: 720px) {
+            --tile-thumb-w: 200px;
+            --tile-thumb-h: 140px;
+            --tile-row-img-h: 320px;
+            --tile-title-fs: 1.25rem;
+            --tile-title-lines: 3;
+            --tile-summary-fs: 1rem;
+            --tile-summary-lines: 3;
+        }
+    }
+    /* no-image: never reserve space for media */
+    &.newsTile--noImage {
+        .newsTile__imageContainer {
+            display: none !important;
+            height: 0 !important;
+        }
+        .newsTile__frame {
+            grid-template-areas: "nt-content";
+            grid-template-columns: 1fr;
+            grid-template-rows: auto;
+        }
+    }
+    &.newsTile--divider {
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        transform: none !important;
+        padding: 12px 0;
+    }
+    &.newsTile--muted {
+        box-shadow: none !important;
+        transform: none !important;
+        .newsTile__summary,
+        .newsTile__metadata,
+        .newsTile__imageContainer {
+            display: none !important;
+        }
+        .newsTile__title {
+            font-weight: 600;
+            font-size: var(--tile-title-fs);
+            margin: 0 0 0.35rem 0;
+            display: -webkit-box;
+            -webkit-line-clamp: var(--tile-title-lines);
+            line-clamp: var(--tile-title-lines);
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.2;
+        }
+    }
+    /* ---- Image position (default, wide) ---- */
+    /* left */
+    &.newsTile--img-left .newsTile__frame {
+        grid-template-columns: var(--tile-thumb-w) 1fr;
+        grid-template-areas: "nt-image nt-content";
+        grid-template-rows: auto;
+        align-items: stretch;
+    }
+    &.newsTile--img-left.newsTile--noImage .newsTile__frame,
+    &.newsTile--img-left.newsTile--muted .newsTile__frame {
+        grid-template-areas: "nt-content nt-content";
+    }
+    &.newsTile--img-left .newsTile__imageContainer {
+        width: var(--tile-thumb-w);
+        height: auto;
+        border-top-right-radius: 0;
+        border-bottom-left-radius: var(--tile-radius);
+        border-bottom-right-radius: 0;
+    }
+    /* right */
+    &.newsTile--img-right .newsTile__frame {
+        grid-template-columns: 1fr var(--tile-thumb-w);
+        grid-template-areas: "nt-content nt-image";
+        grid-template-rows: auto;
+        align-items: stretch;
+    }
+    &.newsTile--img-right.newsTile--noImage .newsTile__frame,
+    &.newsTile--img-right.newsTile--muted .newsTile__frame {
+        grid-template-areas: "nt-content nt-content";
+    }
+    &.newsTile--img-right .newsTile__imageContainer {
+        width: var(--tile-thumb-w);
+        height: auto;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: var(--tile-radius);
+    }
+    /* top */
+    &.newsTile--img-top .newsTile__frame {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        grid-template-areas: "nt-image" "nt-content";
+    }
+    &.newsTile--img-top .newsTile__imageContainer {
+        width: 100%;
+        height: var(--tile-row-img-h);
+        border-top-left-radius: var(--tile-radius);
+        border-top-right-radius: var(--tile-radius);
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+    /* ---- Responsive via container queries (per tile) ---- */
+    /* When the tile becomes narrow, force side thumbs to top */
+    @container (max-width: 300px) {
+        &.newsTile--img-left .newsTile__frame,
+        &.newsTile--img-right .newsTile__frame {
+            grid-template-columns: 1fr;
+            grid-template-rows: auto 1fr;
+            grid-template-areas: "nt-image" "nt-content";
+        }
+        &.newsTile--img-left .newsTile__imageContainer,
+        &.newsTile--img-right .newsTile__imageContainer {
+            width: 100%;
+            height: var(--tile-row-img-h);
+            border-top-left-radius: var(--tile-radius);
+            border-top-right-radius: var(--tile-radius);
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+    }
+    /* Optional: on ultra-narrow tiles, hide media entirely (opt-in via class) */
+    @container (max-width: 380px) {
+        &.newsTile--autoHide {
+            .newsTile__frame {
+                grid-template-areas: "nt-content";
+                grid-template-rows: auto;
+            }
+            .newsTile__imageContainer {
+                display: none !important;
+                height: 0 !important;
+            }
+        }
+    }
+}
+/* category gradient classes (kept) */
+.cat-color-1 .newsTile__categorySep {
+    background-image: linear-gradient(0deg, rgb(201, 80, 0), rgb(193, 12, 13));
+}
+.cat-color-2 .newsTile__categorySep {
+    background-image: linear-gradient(0deg, rgb(139, 167, 2), rgb(0, 119, 68));
+}
+.cat-color-3 .newsTile__categorySep {
+    background-image: linear-gradient(0deg, rgb(139, 167, 2), rgb(0, 119, 68));
+}
+.cat-color-4 .newsTile__categorySep {
+    background-image: linear-gradient(0deg, rgb(170, 21, 123), rgb(160, 13, 14));
+}
+.cat-color-5 .newsTile__categorySep {
+    background-image: linear-gradient(0deg, rgb(169, 21, 124), rgb(115, 5, 78));
+}
+.cat-color-6 .newsTile__categorySep {
+    background-image: linear-gradient(0deg, rgb(144, 82, 186), rgb(87, 27, 136));
+}
+.cat-color-7 .newsTile__categorySep {
+    background-image: linear-gradient(0deg, rgb(7, 132, 206), rgb(2, 85, 157));
+}
+.cat-color-8 .newsTile__categorySep {
+    background-image: linear-gradient(0deg, rgb(1, 142, 148), rgb(2, 97, 105));
+}
+.cat-color-9 .newsTile__categorySep {
+    background-image: linear-gradient(0deg, rgb(169, 21, 124), rgb(115, 5, 78));
+}
+/* CEC-specific news tile styles */
+.cec-news-tile__summary {
+    display: -webkit-box;
+    font-size: 12px;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.35;
+    margin: 0 0 .5rem 0;
+}
+.newsTile {
+  &--size-xl {
+    .cec-news-tile__summary {
+      -webkit-line-clamp: 10;
+      line-clamp: 10;
+    }
+  }
+}
+.newsTile {
+  &--size-xl {
+    .cec-news-tile__summary {
+      -webkit-line-clamp: 10;
+      line-clamp: 10;
+    }
+  }
+}
+.cec-news-tile__metadata-row {
+    display: flex;
+    gap: 6px;
+    margin-top: auto;
+}
+.cec-news-tile__category,
+.cec-news-tile__date {
+    flex: 1;
+    font-size: 10px;
+    font-weight: 400;
+    min-width: 0;
+    color: #393A4A;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

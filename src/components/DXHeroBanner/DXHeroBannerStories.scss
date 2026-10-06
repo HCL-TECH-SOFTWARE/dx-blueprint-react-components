@@ -1,0 +1,45 @@
+@import "../../global/breakpoints.scss";
+
+#dxHeroBanner-7 {
+    .dxHeroBanner {
+        &__content {
+            height: 55%;
+
+            @include mobile {
+                height: 65%;
+            }
+        }
+
+    }
+}
+
+.generic-mini-catalog-container {
+    position: relative;
+    bottom: 16rem;
+    padding-inline: 6.6875rem;
+
+    @include mobile {
+        bottom: 12.5rem;
+        padding-inline: 2rem;
+    }
+
+    @include xs {
+        bottom: 15rem;
+        padding-inline: 2rem;
+    }
+
+    @include sm {
+        bottom: 15rem;
+        padding-inline: 2rem;
+    }
+
+    .dxGenericMiniCatalog {
+        &__headerLabel {
+            color: var(--light-white);
+        }
+
+        &__navbtn i {
+            color: var(--light-white);
+        }
+    }
+}

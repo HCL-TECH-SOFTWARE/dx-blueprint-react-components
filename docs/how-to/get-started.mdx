@@ -1,0 +1,57 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+import AdditionalResources from '../blocks/additional-resources.mdx';
+import Admonition from '../blocks/Admonition.mdx';
+
+<Meta title="How To/Get Started" />
+
+<header>
+How To
+
+# Get Started
+
+Learn how to get started with the Blueprint design system for your project in HCL Digital Experience (DX).
+</header>
+
+## What is Blueprint?
+
+**Blueprint** is a design system created to help digital enterprises build first-class digital experiences for their users. It is a guide with foundations, components, and patterns that provide consistency and coherence for all of its products, and, essentially, a satisfactory and unified experience for its users. It is is designed to be flexible and adaptable, allowing you to create a unique experience for your users. It is implemented in the [HCL Digital Experience (DX) platform](https://help.hcl-software.com/digital-experience/9.5/latest/) as a bundle of a theme, web content libraries, page templates, and a set of React components.
+
+## Get Blueprint
+
+The Blueprint design system bundle comes out of the box with the HCL Digital Experience v9.5 platform starting from CF229. It is automatically installed to the base portal site upon either a new [installation](https://help.hcl-software.com/digital-experience/9.5/latest/deployment/install/container/helm_deployment/overview/) or an [upgrade](https://help.hcl-software.com/digital-experience/9.5/latest/deployment/install/container/helm_deployment/update_helm_deployment/) of the platform. It can also be installed to Virtual Portal instances. You can also remove it and install it again later if needed.
+
+- For installation/removal instructions, refer to the relevant documentation for your deployment type:
+    - [Containerized DX Deployment](/docs/how-to-install-blueprint-in-containerized-deployments--documentation)
+    - [Traditional DX Deployment](/docs/how-to-install-blueprint-in-traditional-deployments--documentation)
+
+The Blueprint design system bundle includes:
+
+1. [Blueprint Theme](?path=/docs/foundations-theme--documentation) - A theme that provides the visual style and branding for the components. The Blueprint React component library is bundled with this theme.
+2. [Web Content Libraries](?path=/docs/information-architecture-web-content-libraries--documentation) - A set of web content libraries that provide the content structure and organization for the components.
+3. [Site Template](?path=/docs/information-architecture-site-template--documentation) - A site template for setting up the Nex Haven sample site, which is a demonstration of the Blueprint design system in action.
+4. [Page Templates](?path=/docs/information-architecture-page-template--documentation) - A set of page templates that provide the layout and structure for the pages of Nex Haven.
+
+## Explore Nex Haven
+
+The **Nex Haven** sample site serves as a real-world demonstration of the **Blueprint design system** in action. Exploring this site allows you to see firsthand how Blueprint's components, patterns, and core principles are applied in a practical scenario.
+
+If the Nex Haven sample site is not currently installed in your environment, it can no longer be generated via the Site Builder. Instead, you must enable and install it using one of the following deployment methods:
+
+* **Helm Chart:** [Enable the sample site deployment configuration directly within your Helm Chart values.](/docs/foundations-deployment-configuration--documentation#helm-chart-values-descriptions)
+* **Resource Environment Provider (REP) Properties:** [Configure the appropriate REP properties in your application environment to trigger the installation.](/docs/foundations-deployment-configuration--documentation#resource-environment-provider-rep-properties--traditional-dx-deployment)
+
+## Make it yours
+
+You can customize the Blueprint design system to fit your needs.
+
+<Admonition type="important">
+    You must make a copy of the Blueprint design system bundle before you modify it to fit your requirements. From there you can:
+</Admonition>
+
+* [Customize the theme to match your brand identity.](?path=/docs/how-to-customize-the-theme--documentation)
+* [Create your own web content libraries to organize your content.](?path=/docs/information-architecture-web-content-libraries--documentation)
+* [Create your own page templates to define the layout and structure of your pages.](?path=/docs/information-architecture-page-template--documentation)
+* [Create your own components using the Blueprint React component library.](?path=/docs/how-to-create-new-page-components--documentation)
+* [Create a new site using the Blueprint design system.](?path=/docs/how-to-create-a-new-site--documentation)
+
+<AdditionalResources />

@@ -1,0 +1,82 @@
+.dxTickerMenu {
+    position: relative;
+    padding: 12px;
+    min-height: 50px;
+
+    &__list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    &__name {
+        font-family: var(--_16-primary-semibold-100-font-family);
+        font-size: var(--_16-primary-semibold-100-font-size);
+        letter-spacing: var(--_16-primary-semibold-100-letter-spacing);
+        line-height: var(--_16-primary-semibold-100-line-height);
+        font-weight: var(--_16-primary-semibold-100-font-weight);
+        color: var(--primary-primary);
+    }
+
+    &__broker {
+        color: var(--dark-dark-d2);
+        margin-left: 0.5rem;
+    }
+
+    &__values {
+        font-family: var(--_16-primary-semibold-150-font-family);
+        font-size: var(--_16-primary-semibold-150-font-size);
+        letter-spacing: var(--_16-primary-semibold-150-letter-spacing);
+        line-height: var(--_16-primary-semibold-150-line-height);
+        font-weight: var(--_16-primary-semibold-150-font-weight);
+
+        &--Up {
+            color: var(--success-success-d2);
+        }
+
+        &--Down {
+            color: var(--danger-danger);
+        }
+    }
+
+    &__price {
+        margin-left: 10px;
+        color: var(--dark-dark-d2);
+    }
+
+    &__link {
+        margin-left: auto;
+        align-items: center;
+        display: flex;
+
+        &:hover {
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        i {
+            padding: 4px;
+            color: var(--secondary-secondary);
+            font-size: 32px;
+        }
+    }
+
+    &__item {
+        display: none;
+
+        &--active {
+            display: flex;
+        }
+    }
+
+    &__timerBar {
+        background-color: var(--primary-primary);
+        height: 3px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        transition-property: width;
+        transition-duration: var(--dxTicker--animation);
+        transition-timing-function: linear;
+    }
+}

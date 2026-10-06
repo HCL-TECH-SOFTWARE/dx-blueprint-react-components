@@ -1,0 +1,222 @@
+@import "../../global/variables.scss";
+
+.dxNavigationHeader2 {
+    $bottomRowHeight: 60px;
+    width: 100%;
+    min-width: 768px;
+
+    &__main {
+        max-width: 100%;
+        padding-bottom: $bottomRowHeight;
+        position: relative;
+    }
+
+    &__floatingContainer {
+        margin: 0 -12px;
+        position: absolute;
+        background-color: var(--primary-primary);
+        width: 100%;
+    }
+
+    &__panels {
+        margin: 0;
+        padding: 0;
+    }
+
+    &__header {
+        background-color: var(--light-white);
+        display: flex;
+        padding: 0 96px;
+        position: relative;
+
+        >.col {
+            display: flex;
+        }
+
+        @media (max-width: 1050px) {
+            padding: 0 48px;
+        }
+    }
+
+    &__logo {
+        padding: 0 4px;
+        width: unset;
+    }
+
+    &__search {
+        align-self: center;
+        position: relative;
+        flex-grow: 1;
+        width: unset
+    }
+
+    &__utilities {
+        position: unset;
+        width: auto;
+        display: flex;
+        margin-top: 20px;
+    }
+
+    &__row {
+        height: 60px;
+        padding: 0 5%;
+    }
+
+    .dxSearchInput {
+        &__form {
+            margin: 0;
+        }
+
+        &__list {
+            z-index: $navigationLevel;
+            width: 100%;
+        }
+    }
+
+    .dxMegaMenu {
+        height: 100%;
+
+        &__firstLevelIcon {
+            color: var(--light-white);
+        }
+
+        &__dropdownIcon {
+            color: var(--secondary-secondary-l1);
+        }
+
+        &__firstLevelItem {
+            >button {
+                a {
+                    color: var(--light-white);
+                }
+
+                &:hover {
+                    i {
+                        color: var(--light-white);
+                    }
+
+                    &.nav-link {
+                        &::after {
+                            background-color: white;
+                        }
+                    }
+                }
+
+                &.nav-link {
+                    background-color: transparent;
+
+                    &:active {
+                        background-color: transparent;
+                        border: 0;
+                    }
+
+                    &.active {
+                        i {
+                            color: var(--light-white);
+                        }
+
+                        a {
+                            color: var(--light-white);
+                        }
+
+                        &::after {
+                            content: "";
+                            background-color: var(--light-white);
+                            bottom: 0;
+                            display: block;
+                            position: absolute;
+                            left: 0;
+                            right: 0;
+                            width: auto;
+                            height: 8px;
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+
+    .dxDrawerMenu {
+        height: 100%;
+
+        &__button {
+            background-color: transparent;
+
+            i {
+                color: white;
+            }
+
+            &--active {
+                background-color: white;
+                border-radius: 0px;
+
+                i {
+                    color: var(--primary-primary);
+                }
+            }
+
+            &:hover {
+                i {
+                    color: var(--primary-primary);
+                }
+            }
+        }
+
+        &__container {
+            top: 100%;
+        }
+
+        .dxNavigationHeaderWithDrawer__drawerContent {
+            display: block;
+        }
+    }
+
+    &__drawerContent {
+        display: none;
+    }
+
+    &__nextMeetingContainer {
+        height: 100%;
+    }
+
+    .dxMyNextMeeting {
+        height: 100%;
+        background-color: var(--primary-primary-l1);
+
+        &__title {
+            font-family: var(--_16-primary-semibold-125-font-family);
+            font-size: var(--_16-primary-semibold-125-font-size);
+            letter-spacing: var(--_16-primary-semibold-125-letter-spacing);
+            line-height: var(--_16-primary-semibold-125-line-height);
+            font-weight: var(--_16-primary-semibold-125-font-weight);
+            color: var(--light-white);
+        }
+
+        &__time {
+            color: var(--light-white);
+            font-family: var(--_12-primary-regular-100-font-family);
+            font-size: var(--_12-primary-regular-100-font-size);
+            letter-spacing: var(--_12-primary-regular-100-letter-spacing);
+            line-height: var(--_12-primary-regular-100-line-height);
+            font-weight: var(--_12-primary-regular-100-font-weight);
+        }
+
+        i {
+            color: var(--light-white);
+        }
+    }
+
+
+
+    .dxUtilityZone {
+        &__panelsContainer {
+            background-color: var(--light-light);
+            padding: 0 5%;
+
+            &.expanded {
+                position: relative;
+            }
+        }
+    }
+}

@@ -1,0 +1,60 @@
+@import "../../global/variables.scss";
+
+.dxEditButton {
+    position: absolute;
+    z-index: $editButtonLevel + 1;
+    bottom: 0;
+    right: 0;
+    color: var(--light-white);
+
+    &.ci-Edit_Pencil_Line_01 {
+        background-color: rgba(245, 0, 0, .6);
+        border-radius: 3px;
+        padding: 5px;
+    }
+
+    &--hover.dxCard::before,
+    &--hover.dxCardBtn::before,
+    &--hover.dxCatalog::before,
+    &--hover.dxCBCatalog::before,
+    &--hover.dxEvent::before,
+    &--hover.dxFullImageCard::before,
+    &--hover.dxFullImageCatalog::before,
+    &--hover.dxFullImgMiniC::before,
+    &--hover.dxHBPerson::before,
+    &--hover.dxHeroBanner::before,
+    &--hover.dxHeroBannerCarousel::before,
+    &--hover.dxLinkList::before,
+    &--hover.dxMiniCatalog::before,
+    &--hover.dxNewsCard::before,
+    &--hover.dxNewsCardCatalog::before,
+    &--hover.dxRiverOfNewsClassic::before {
+        content: "";
+        display: block;
+        position: absolute;
+        z-index: $editButtonLevel;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: rgba(245, 0, 0, .4);
+        outline: 2px dashed rgb(245, 0, 0);
+        outline-offset: 0.25rem;
+    }
+}
+
+.dxCatalog,
+.dxCBCatalog,
+.dxFullImageCatalog,
+.dxFullImgMiniC,
+.dxHeroBannerCarousel,
+.dxLinkList,
+.dxMiniCatalog,
+.dxNewsCardCatalog,
+.dxRiverOfNewsClassic {
+    &>.dxEditButton {
+        right: 0;
+        top: 0;
+        bottom: unset;
+    }
+}

@@ -1,0 +1,18 @@
+.testDivs {
+    width: 100%;
+    min-width: 5em;
+    min-height: 3em;
+    padding: 2em;
+    align-items: center;
+    justify-content: center;
+    background-color: whitesmoke;
+    margin: 1em 0;
+
+    img {
+        margin: 0 1em;
+    }
+
+    p {
+        color: white;
+    }
+}

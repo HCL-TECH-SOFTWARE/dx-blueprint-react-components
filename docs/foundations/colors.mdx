@@ -1,0 +1,71 @@
+import { Meta, ColorPalette, ColorItem } from '@storybook/addon-docs/blocks';
+import * as css from 'css-tree';
+import styles from '../../static/colors.txt?raw';
+import Admonition from '../blocks/Admonition.mdx';
+import AdditionalResources from '../blocks/additional-resources.mdx';
+
+export const ast = css.parse(styles);
+
+export function Colors() {
+    function filter(node) {
+        return node.type === 'Declaration' && node.value.type === 'Raw';
+    }
+    function titleCase(str) {
+        return str.toLowerCase().split(' ').map(
+            function (word) {
+                return word.replace(word[0], word[0].toUpperCase());
+            }
+        ).join(' ');
+    }
+    function map(node) {
+        const name = node.property;
+        const value = node.value.value;
+        const title = titleCase(name.replaceAll('-', ' ').trim().split(" ")[0]);
+        return {
+            title,
+            name,
+            value,
+        };
+    }
+    function reducer(palette, value) {
+        if (!palette[value.title]) palette[value.title] = {};
+        palette[value.title][value.name] = value.value;
+        return palette;
+    }
+    const colors = css.findAll(ast, filter).map(map).reduce(reducer, {});
+    console.log(Object.keys(colors));
+    function renderColorItem([title, colors], index) {
+        return (
+            <ColorItem
+                key={index}
+                title={title}
+                colors={colors}
+            />
+        );
+    }
+    return (
+        <>
+            {Object.entries(colors).map(renderColorItem)}
+        </>
+    );
+}
+
+<Meta title="Foundations/Colors" />
+
+<header>
+Foundations
+
+# Colors
+
+Colors are a fundamental part of the design system, providing visual consistency and branding across components. 
+</header>
+
+Below is a palette of the colors provided in the Blueprint design system by default as part of the [Blueprint Theme](?path=/docs/foundations-theme--documentation). Use these colors to maintain a cohesive look and feel throughout your website or application. The value of [these color tokens can be overriden](?path=/docs/how-to-customize-the-theme--documentation#steps-to-customize-the-themes-styles).
+
+<ColorPalette>
+    <Colors />
+</ColorPalette>
+
+<AdditionalResources />
+
+

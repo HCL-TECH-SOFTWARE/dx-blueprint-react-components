@@ -1,0 +1,27 @@
+#promo-banner .dxFullImageCard {
+    height: 100%;
+    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 1);
+}
+
+#promo-banner .dxFullImageCard__info {
+    width: 67%;
+}
+
+#promo-banner .dxFullImageCard__infoSubtitle {
+    font-family: var(--_14-primary-regular-125-font-family);
+    font-size: var(--_14-primary-regular-125-font-size);
+    letter-spacing: var(--_14-primary-regular-125-letter-spacing);
+    line-height: var(--_14-primary-regular-125-line-height);
+    font-weight: var(--_14-primary-regular-125-font-weight);
+    color: var(--light-white);
+}
+
+#promo-banner .dxFullImageCard__infoHeading {
+    font-family: var(--_28-primary-semibold-100-font-family);
+    font-size: var(--_28-primary-semibold-100-font-size);
+    letter-spacing: var(--_28-primary-semibold-100-letter-spacing);
+    line-height: var(--_28-primary-semibold-100-line-height);
+    font-weight: var(--_28-primary-semibold-100-font-weight);
+    color: var(--light-white);
+    padding-bottom: 0.875rem;
+}

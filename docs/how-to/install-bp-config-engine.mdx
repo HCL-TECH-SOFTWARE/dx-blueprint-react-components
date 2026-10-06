@@ -1,0 +1,80 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import AdditionalResources from '../blocks/additional-resources.mdx';
+import Admonition from '../blocks/Admonition.mdx';
+
+<Meta title="How To/Install Blueprint/Using Config Engine" />
+
+<header>
+How To
+
+# Install Blueprint Using Config Engine
+
+Learn how to install the Blueprint design system using Config Engine.
+</header>
+
+# Introduction
+
+Learn how to install the Blueprint design system on your HCL DX Base Portal using the Config Engine. This section provides the necessary command-line tasks to install the Blueprint design system.
+
+<Admonition type="note">
+    There is no [ConfigEngine or Configuration
+    Wizard](https://help.hcl-software.com/digital-experience/dx-compose/latest/getting_started/product_overview/limitations/)
+    with DX Compose. This page does not apply to DX Compose deployments.
+</Admonition>
+
+## Installing Blueprint to the Base Portal via Config Engine
+
+### DX Cloud Native
+
+#### Prerequisites
+
+* You have administrator access to the HCL Digital Experience (DX) instance.
+* You are able to connect to your server and run [DX Core configuration tasks](https://help.hcl-software.com/digital-experience/9.5/latest/deployment/manage/container_configuration/run_core_config_engine/).
+
+1. [Connect to your DX Core instance](https://help.hcl-software.com/digital-experience/9.5/latest/deployment/manage/container_configuration/run_core_config_engine/#running-core-config-engine-tasks) and run the following configuration tasks:
+    ```
+    ./ConfigEngine.sh install-blueprinttheme
+    ./ConfigEngine.sh deploy-wp.theme.blueprintmodule
+    ./ConfigEngine.sh action-deploy-blueprint-pages
+    ```
+2. Verify that the Blueprint has been deployed successfully by checking your base portal for the following:
+    * The **Nex Haven** site is listed under the **Site Menu** on the [Site Manager](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_authoring/inline_editing/) toolbar or **Sites** in [Practitioner Studio](https://help.hcl-software.com/digital-experience/9.5/latest/build_sites/practitioner_studio/).
+        ![](./docs/how-to/deployment-of-blueprint-to-vp-12.png)
+    * The Blueprint libraries are available in the [Web Content Libraries](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_authoring/authoring_portlet/web_content_libraries/) portlet.
+3. Finally, visit the **Nex Haven** site in your base portal to check if everything seems to be working as expected.
+
+<Admonition type="tip">
+The newly installed libraries are usually hidden from the Authoring portlet by default. To make it visible, you need to go to the [Authoring portlet settings](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_authoring/authoring_portlet/auth_portlet_settings/) then add it to your [selected libraries](./?path=/docs/how-to-show-libraries-in-authoring--documentation).
+</Admonition>
+
+### Traditional DX
+
+#### Prerequisites
+
+* You have administrator access to the HCL Digital Experience (DX) instance.
+
+1. Open a command prompt and navigate to **wp_profile_root/ConfigEngine**
+2. Run the following commands:
+    ```
+    UNIX™Linux™:
+    ./ConfigEngine.sh install-blueprinttheme
+    ./ConfigEngine.sh deploy-wp.theme.blueprintmodule
+    ./ConfigEngine.sh action-deploy-blueprint-pages
+
+    Windows™:
+    ConfigEngine.bat install-blueprinttheme
+    ConfigEngine.bat deploy-wp.theme.blueprintmodule
+    ConfigEngine.bat action-deploy-blueprint-pages
+    ```
+3. Verify that the Blueprint has been deployed successfully by checking your base portal for the following:
+    * The **Nex Haven** site is listed under the **Site Menu** on the [Site Manager](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_authoring/inline_editing/) toolbar or **Sites** in [Practitioner Studio](https://help.hcl-software.com/digital-experience/9.5/latest/build_sites/practitioner_studio/).
+        ![](./docs/how-to/deployment-of-blueprint-to-vp-12.png)
+    * The Blueprint libraries are available in the [Web Content Libraries](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_authoring/authoring_portlet/web_content_libraries/) portlet.
+4. Finally, visit the **Nex Haven** site in your base portal to check if everything seems to be working as expected.
+
+
+<Admonition type="tip">
+The newly installed libraries are usually hidden from the Authoring portlet by default. To make it visible, you need to go to the [Authoring portlet settings](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_authoring/authoring_portlet/auth_portlet_settings/) then add it to your [selected libraries](./?path=/docs/how-to-show-libraries-in-authoring--documentation).
+</Admonition>
+
+<AdditionalResources />

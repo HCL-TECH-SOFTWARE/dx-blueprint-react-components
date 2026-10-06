@@ -1,0 +1,112 @@
+.dxSSuggestions {
+    position: relative;
+
+    & .input-group {
+        flex-wrap: nowrap;
+    }
+
+    & .input-group .form-control {
+        font-family: var(--_16-primary-regular-150-font-family);
+        font-size: var(--_16-primary-regular-150-font-size);
+        letter-spacing: var(--_16-primary-regular-150-letter-spacing);
+        line-height: var(--_16-primary-regular-150-line-height);
+        font-weight: var(--_16-primary-regular-150-font-weight);
+        height: 64px;
+        background-color: #f1f2f5;
+
+        &:not(:last-child) {
+            border-right: none;
+        }
+
+        &:not(:first-child) {
+            border-left: none;
+        }
+    }
+
+    & .input-group .input-group-text {
+        background-color: #f1f2f5;
+        border: 1px solid #dee2e6;
+
+        &:not(:first-child) {
+            border-left: none;
+        }
+
+        &:not(:last-child) {
+            border-right: none;
+        }
+
+        padding: 0.75rem 0.5rem;
+        display: flex;
+        align-items: center;
+        height: 64px;
+
+        i {
+            margin: 0 3px;
+            font-size: 26px;
+            color: var(--primary-primary);
+            line-height: 1;
+        }
+    }
+
+    & .input-group .form-control:focus {
+        box-shadow: none;
+    }
+
+    & .input-group:focus-within {
+        .form-control,
+        .input-group-text {
+            background-color: #f0f5ff;
+            border-color: #80acff;
+        }
+    }
+
+    &__input--active {
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    &__list {
+        position: absolute;
+        width: 100%;
+        display: none;
+        box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.75);
+        background-color: var(--primary-primary-l3);
+        border-radius: 4px;
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul li {
+            padding: 0.59375rem 1rem 0.59375rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        ul li a {
+            color: var(--dark-dark);
+            text-decoration: none;
+            font-family: var(--_14-primary-regular-150-font-family);
+            font-size: var(--_14-primary-regular-150-font-size);
+            letter-spacing: var(--_14-primary-regular-150-letter-spacing);
+            line-height: var(--_14-primary-regular-150-line-height);
+            font-weight: var(--_14-primary-regular-150-font-weight);
+        }
+
+        ul li span {
+            cursor: pointer;
+        }
+
+        ul li i {
+            color: var(--primary-primary);
+        }
+
+        &--active {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+    }
+}

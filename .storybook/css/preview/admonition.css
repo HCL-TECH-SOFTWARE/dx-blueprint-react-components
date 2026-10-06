@@ -1,0 +1,71 @@
+.sbdocs {
+    & .admonition {
+        padding: 10px;
+        margin: 10px 0px;
+        border-radius: 8px;
+        border: 1px solid;
+        border-left: 8px solid;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+
+        p {
+            margin: 0;
+            font-family: var(--primary-font);
+        }
+
+        i {
+            font-weight: bolder;
+        }
+
+        .admonition-title {
+            padding-inline-start: 8px;
+            font-weight: bolder;
+        }
+
+        &[type="note"] {
+            border-color: var(--info-info-d2);
+
+            .admonition-title,
+            i {
+                color: var(--info-info-d2);
+            }
+        }
+
+        &[type="tip"] {
+            border-color: var(--success-success-d1);
+
+            .admonition-title,
+            i {
+                color: var(--success-success-d1);
+            }
+        }
+
+        &[type="important"] {
+            border-color: var(--primary-d2);
+
+            .admonition-title,
+            i {
+                color: var(--primary-d2);
+            }
+        }
+
+        &[type="warning"] {
+            border-color: var(--warning-warning-d2);
+
+            .admonition-title,
+            i {
+                color: var(--warning-warning-d2);
+            }
+        }
+
+        &[type="caution"] {
+            border-color: var(--danger-danger-d2);
+
+            .admonition-title,
+            i {
+                color: var(--danger-danger-d2);
+            }
+        }
+    }
+}

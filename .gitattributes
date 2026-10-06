@@ -1,0 +1,6 @@
+# Normalise line endings to LF for all text source files so that the Stryker
+# incremental cache hashes agree between Windows (core.autocrlf=true) and Linux CI.
+* text=auto eol=lf
+
+# Treat compressed Stryker incremental cache as binary (prevents PR diff rendering)
+src/__tests__/mutation/stryker-incremental.json.gz binary

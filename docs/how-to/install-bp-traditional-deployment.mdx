@@ -1,0 +1,49 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import AdditionalResources from '../blocks/additional-resources.mdx';
+import Admonition from '../blocks/Admonition.mdx';
+
+<Meta title="How To/Install Blueprint/In Traditional Deployments" />
+
+<header>
+How To
+
+# Install Blueprint in Traditional Deployments
+
+Learn how to install the Blueprint design system in HCL Digital Experience (DX) traditional deployments.
+</header>
+
+# Introduction
+
+Beginning with CF232, the installation behavior of the Blueprint Design System bundle has changed. From its initial release in CF229 through CF231, the bundle was automatically installed—bundled out of the box—during both new [installations](https://help.hcl-software.com/digital-experience/9.5/latest/deployment/install/traditional/install_upgrade_plan_supported_paths/) and [upgrades](https://help.hcl-software.com/digital-experience/9.5/latest/deployment/install/traditional/cf_install/) of the HCL Digital Experience v9.5 platform.
+
+Starting in CF232, the Blueprint Design System is now opt-in. To install it, a set of Resource Environment Provider (REP) properties must be set before running a CF upgrade.
+
+It is also possible to [install The Blueprint design system bundle to Virtual Portal instances](/docs/how-to-install-blueprint-in-virtual-portals--documentation).
+
+# Prerequisites
+
+* You have administrator access to the HCL Digital Experience (DX) instance.
+
+## Installing Blueprint to the Base Portal via REP properties
+
+<Admonition type="warning">
+    If the Blueprint Design System is currently deployed in your environment and you wish to retain it, configure the corresponding Resource Environment Providers properties with the necessary settings **before performing a CF Upgrade**. If these properties are not configured correctly, the system will use [default values](/docs/foundations-deployment-configuration--documentation#resource-environment-provider-rep-properties--traditional-dx-deployment) and **will remove the currently deployed Blueprint Design System**.
+    
+    **Note**: If you are reading this documentation after performing the CF Upgrade and the Blueprint Design System was removed, follow the instructions in [Installing Blueprint to the Base Portal via REP properties](#installing-blueprint-to-the-base-portal-via-config-engine) to restore it in your environment.
+</Admonition>
+
+1. Configure the REP properties for the Blueprint Design System, by following the [standard process for managing Resource Environment Providers](https://help.hcl-software.com/digital-experience/9.5/latest/deployment/manage/config_portal_behavior/service_config_properties/)
+
+2. Deploy or enable the Blueprint Assets or the Nex Haven sample site by updating the existing properties or creating the required ones (`blueprint.enable.assets` and `blueprint.enable.nex.haven`) and set their values to true.
+
+3. Perform a CF Upgrade. During the upgrade, the system will apply the values you set, deploying the Blueprint Assets or the Nex Haven sample site accordingly.
+
+4. Verify that the Blueprint has been deployed successfully by checking your base portal for the following:
+    * The **Nex Haven** site is listed under the **Site Menu** on the [Site Manager](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_authoring/inline_editing/) toolbar or **Sites** in [Practitioner Studio](https://help.hcl-software.com/digital-experience/9.5/latest/build_sites/practitioner_studio/).
+        ![](./docs/how-to/deployment-of-blueprint-to-vp-12.png)
+    * The Blueprint libraries are available in the [Web Content Libraries](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_authoring/authoring_portlet/web_content_libraries/) portlet.
+5. If you opted to install the **Nex Haven site** as well, visit it in your base portal to check if everything seems to be working as expected.
+
+**Note:** If `blueprint.enable.assets` is set to false (Blueprint Assets are removed), the Nex Haven sample site will not be deployed, even if `blueprint.enable.nex.haven` is set to true.
+
+<AdditionalResources />

@@ -1,0 +1,329 @@
+@import "../../global/breakpoints.scss";
+
+.dxProductSlider {
+    overflow: scroll;
+    display: flex;
+    overflow-x: hidden;
+
+    @include mobile {
+        flex-wrap: wrap;
+    }
+
+    @include xs {
+        flex-wrap: wrap;
+    }
+
+    &__children {
+        width: 50%;
+
+        @include mobile {
+            width: 100%;
+            display: flex;
+            overflow: scroll;
+            overflow-y: hidden;
+            flex-wrap: nowrap;
+        }
+
+        @include xs {
+            width: 100%;
+            display: flex;
+            overflow: scroll;
+            overflow-y: hidden;
+            flex-wrap: nowrap;
+        }
+    }
+
+    &__card {
+        @include mobile {
+            min-width: 100%;
+            align-self: center;
+            padding: 0 1rem;
+        }
+
+        @include xs {
+            min-width: 100%;
+            align-self: center;
+            padding: 0 1rem;
+        }
+    }
+
+    &__category {
+        color: var(--primary-primary);
+        margin-bottom: 1.5rem;
+
+        font-family: var(--_32-primary-regular-150-font-family);
+        font-size: var(--_32-primary-regular-150-font-size);
+        letter-spacing: var(--_32-primary-regular-150-letter-spacing);
+        line-height: var(--_32-primary-regular-150-line-height);
+        font-weight: var(--_32-primary-regular-150-font-weight);
+
+        @include mobile {
+            font-family: var(--_20-primary-semibold-100-font-family);
+            font-size: var(--_20-primary-semibold-100-font-size);
+            letter-spacing: var(--_20-primary-semibold-100-letter-spacing);
+            line-height: var(--_20-primary-semibold-100-line-height);
+            font-weight: var(--_20-primary-semibold-100-font-weight);
+        }
+
+        @include xs {
+            font-family: var(--_20-primary-semibold-100-font-family);
+            font-size: var(--_20-primary-semibold-100-font-size);
+            letter-spacing: var(--_20-primary-semibold-100-letter-spacing);
+            line-height: var(--_20-primary-semibold-100-line-height);
+            font-weight: var(--_20-primary-semibold-100-font-weight);
+        }
+    }
+
+    &__title {
+        color: var(--dark-dark);
+        margin-bottom: 1.5rem;
+
+        font-family: var(--_54-primary-regular-150-font-family);
+        font-size: var(--_54-primary-regular-150-font-size);
+        letter-spacing: var(--_54-primary-regular-150-letter-spacing);
+        line-height: 125%;
+        font-weight: var(--_54-primary-regular-150-font-weight);
+
+        display: -webkit-box;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+
+        @include mobile {
+            font-family: var(--_28-primary-semibold-125-font-family);
+            font-size: var(--_28-primary-semibold-125-font-size);
+            letter-spacing: var(--_28-primary-semibold-125-letter-spacing);
+            line-height: var(--_28-primary-semibold-125-line-height);
+            font-weight: var(--_28-primary-semibold-125-font-weight);
+        }
+
+        @include xs {
+            font-family: var(--_28-primary-semibold-125-font-family);
+            font-size: var(--_28-primary-semibold-125-font-size);
+            letter-spacing: var(--_28-primary-semibold-125-letter-spacing);
+            line-height: var(--_28-primary-semibold-125-line-height);
+            font-weight: var(--_28-primary-semibold-125-font-weight);
+        }
+    }
+
+    &__body {
+        color: var(--dark-dark);
+        margin-bottom: 1.5rem;
+
+        font-family: var(--_24-regular-150-font-family);
+        font-size: var(--_24-regular-150-font-size);
+        letter-spacing: var(--_24-regular-150-letter-spacing);
+        line-height: var(--_24-regular-150-line-height);
+        font-weight: var(--_24-regular-150-font-weight);
+
+        display: -webkit-box;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 5;
+
+        @include mobile {
+            font-family: var(--_16-primary-regular-150-font-family);
+            font-size: var(--_16-primary-regular-150-font-size);
+            letter-spacing: var(--_16-primary-regular-150-letter-spacing);
+            line-height: var(--_16-primary-regular-150-line-height);
+            font-weight: var(--_16-primary-regular-150-font-weight);
+        }
+
+        @include xs {
+            font-family: var(--_16-primary-regular-150-font-family);
+            font-size: var(--_16-primary-regular-150-font-size);
+            letter-spacing: var(--_16-primary-regular-150-letter-spacing);
+            line-height: var(--_16-primary-regular-150-line-height);
+            font-weight: var(--_16-primary-regular-150-font-weight);
+        }
+    }
+
+    &__imagesContainer {
+        position: sticky;
+        top: 0;
+        width: 50%;
+        height: 100%;
+        display: flex;
+        align-self: center;
+        justify-content: center;
+        background-color: var(--light-white);
+
+        @include mobile {
+            width: 100%;
+            height: 260px;
+            justify-content: right;
+        }
+
+        @include xs {
+            width: 100%;
+            height: 260px;
+            justify-content: right;
+        }
+    }
+
+    &__images {
+        position: relative;
+        width: 70%;
+        height: 70%;
+        align-self: center;
+
+        @include xs {
+            margin-bottom: 2.5rem;
+            height: -webkit-fill-available;
+            position: absolute;
+            right: 50%;
+            transform: translateX(60%);
+        }
+
+        @include mobile {
+            margin-bottom: 2.5rem;
+            height: -webkit-fill-available;
+            position: absolute;
+            right: 50%;
+            transform: translateX(60%);
+        }
+    }
+
+    &__imageContainer {
+        background-color: var(--light-white);
+        top: 0;
+        right: 0;
+        position: absolute;
+        height: auto;
+        width: auto;
+        border-radius: 50%;
+        box-shadow: 32px 16px 32px 0px rgba(0, 0, 0, 0.15);
+
+        @include mobile {
+            box-shadow: 18px 0px 32px 0px rgba(0, 0, 0, 0.15);
+        }
+
+        @include xs {
+            box-shadow: 18px 0px 32px 0px rgba(0, 0, 0, 0.15);
+        }
+    }
+
+    &__image {
+        height: 16rem;
+        width: 16rem;
+        border-radius: 50%;
+
+        @include mobile {
+            height: 13rem;
+            width: 13rem;
+        }
+
+        @include xs {
+            height: 13rem;
+            width: 13rem;
+        }
+
+        @include sm {
+            height: 14rem;
+            width: 14rem;
+        }
+    }
+
+    &__navDots {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.5rem;
+
+        position: absolute;
+        top: 50%;
+        right: 5%;
+        transform: translateY(-50%);
+
+        @include mobile {
+            top: revert;
+            left: 50%;
+            transform: translateX(-50%);
+            flex-direction: row;
+            bottom: 1.2rem;
+        }
+
+        @include xs {
+            top: revert;
+            left: 50%;
+            transform: translateX(-50%);
+            flex-direction: row;
+            bottom: 1.2rem;
+        }
+
+        >div {
+            height: 12px;
+            width: 12px;
+            background-color: var(--secondary-secondary-l3);
+            border-radius: 50%;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            div {
+                height: 12px;
+                width: 12px;
+                border-radius: 50%;
+                opacity: 0;
+                background-color: var(--primary-primary);
+            }
+        }
+    }
+
+    &__scrollMessage {
+        font-family: var(--_12-regular-150-font-family);
+        font-size: var(--_12-regular-150-font-size);
+        letter-spacing: var(--_12-regular-150-letter-spacing);
+        line-height: var(--_12-regular-150-line-height);
+        font-weight: var(--_12-regular-150-font-weight);
+        color: var(--secondary-secondary-l1);
+
+        display: flex;
+        align-items: center;
+        height: fit-content;
+        position: absolute;
+        top: 0;
+        right: 1rem;
+
+        i {
+            margin-left: 0.25rem;
+        }
+
+        &--right {
+            i {
+                transform: rotate(-90deg);
+            }
+        }
+
+        &--left {
+            i {
+                transform: rotate(90deg);
+            }
+        }
+
+        &--up {
+            i {
+                transform: rotate(180deg);
+            }
+        }
+
+        @include mobile {
+            top: 100%;
+            right: unset;
+            transform: translateY(-100%);
+            left: 0;
+            right: revert;
+        }
+
+        @include xs {
+            top: 100%;
+            right: unset;
+            transform: translateY(-100%);
+            left: 0;
+            right: revert;
+        }
+    }
+}

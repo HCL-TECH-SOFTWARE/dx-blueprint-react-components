@@ -1,0 +1,16 @@
+.dxOrgChartBottomUp {
+    list-style-type: none;
+    padding: 0;
+
+    li:not(:first-child) {
+        .dxChartCard {
+            padding-left: 35px;
+        }
+    }
+
+    li:last-child {
+        .dxChartCard {
+            background-color: var(--light-light-l1);
+        }
+    }
+}

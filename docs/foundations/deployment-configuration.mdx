@@ -1,0 +1,83 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+import AdditionalResources from '../blocks/additional-resources.mdx';
+import Admonition from '../blocks/Admonition.mdx';
+
+<Meta title="Foundations/Deployment Configuration" />
+
+<header>
+Foundations
+
+# Deployment Configuration
+
+Managing Blueprint Design System features across deployments
+</header>
+
+## Introduction
+HCL Digital Experience has several configuration options that allow you to control whether the Blueprint Design System bundle is deployed, removed, or updated in your environment.
+
+Depending on your deployment type, these toggles can be configured as:
+    - [Resource Environment Provider (REP) properties](https://help.hcl-software.com/digital-experience/9.5/latest/deployment/manage/config_portal_behavior/service_config_properties/) for [Traditional DX deployments](https://help.hcl-software.com/digital-experience/9.5/latest/get_started/plan_deployment/traditional_deployment/), or
+	- [Helm chart](https://help.hcl-software.com/digital-experience/9.5/latest/get_started/plan_deployment/container_deployment/#helm-chart-contents) values for [DX Compose](https://help.hcl-software.com/digital-experience/dx-compose/latest/getting_started/product_overview/) and [DX Cloud Native](https://help.hcl-software.com/digital-experience/9.5/latest/get_started/plan_deployment/container_deployment/) deployments.
+
+These toggles exist to give administrators precise control over the system’s behavior during [CF Upgrades](https://help.hcl-software.com/digital-experience/9.5/latest/deployment/install/traditional/cf_install/) or [Helm upgrades](https://help.hcl-software.com/digital-experience/9.5/latest/deployment/install/container/helm_deployment/update_helm_deployment/). By enabling or disabling specific features—such as Blueprint Libraries, the Blueprint Theme, or the Nex Haven sample site—you can ensure that only the desired components are deployed or updated, while normal server startup or restart is unaffected.
+
+## Helm Chart Values
+For containerized HCL DX deployments, the following Helm chart values are used to control whether the Blueprint Design System is deployed and updated:
+```
+blueprint:
+    enableAssets: true
+    enableNexHaven: true
+    skipAssetsUpdate: false
+    skipNexHavenUpdate: false
+```
+For examples on how to configure these Helm chart values, see the [Install Blueprint via helm upgrade](/docs/how-to-install-blueprint-in-containerized-deployments--documentation#install-blueprint-via-helm-upgrade) or [Configuring Blueprint Design System Updates - Helm Chart Values — Containerized DX Deployments](/docs/how-to-apply-cf-updates--documentation#helm-chart-values--containerized-dx-deployments) in our documentation. Set the values as needed, use the Helm chart values description table below as your reference.
+
+### Helm Chart Values Descriptions
+
+These Helm chart values determine whether the Blueprint Assets or the Nex Haven sample site are deployed, removed, or updated. Note that this logic is triggered exclusively during Helm upgrades and is ignored during normal server startup or restart.
+
+| Toggle Name | Default Value | Effect When True | Effect When False |
+|-------------|---------------|-----------------|------------------|
+| `enableAssets` | true | [Blueprint Web Content Libraries](/docs/information-architecture-web-content-libraries--documentation) and the [Blueprint Theme](/docs/foundations-theme--documentation) will be deployed if they are not already present. | Blueprint Web Content Libraries and the Blueprint Theme will be removed. |
+| `enableNexHaven` | true | The Nex Haven sample site will be deployed if it is not already present. | The Nex Haven sample site will be removed. |
+| `skipAssetsUpdate` | false | Blueprint Web Content Libraries and the Blueprint Theme will **not** be updated. | Blueprint Web Content Libraries and the Blueprint Theme will be updated. |
+| `skipNexHavenUpdate` | false | The Nex Haven sample site will **not** be updated. | The Nex Haven sample site will be updated. |
+
+<Admonition type="note">
+    - These Helm chart values should be added under the `incubator.configuration` section in your Helm chart 
+    - If Blueprint Assets are disabled, the Nex Haven sample site will be removed even if it is enabled.
+    - If Blueprint Assets are disabled and Skip Assets Update are disabled, nothing will happen since there is nothing to update.
+    - If Nex Haven sample site is disabled and Skip Nex Haven Update is disabled, nothing will happen since there is nothing to update.
+</Admonition>
+
+## Resource Environment Provider (REP) Properties — Traditional DX Deployment
+For Traditional DX deployments, the following Resource Environment Provider (REP) properties are used to control whether the Blueprint Design System is deployed and updated:
+```
+blueprint.enable.assets
+blueprint.enable.nex.haven
+blueprint.skip.assets.update
+blueprint.skip.nex.haven.update
+```
+To configure the REP properties for the Blueprint Design System, follow the [standard process for managing Resource Environment Providers](https://help.hcl-software.com/digital-experience/9.5/latest/deployment/manage/config_portal_behavior/service_config_properties/)
+
+Set the Blueprint REP properties in WP ConfigService. Update existing Blueprint REP properties or create them if not yet existing (`blueprint.enable.assets`, `blueprint.enable.nex.haven`, etc.). Set the values as needed, use the REP Properties description table below as your reference.
+
+### Resource Environment Providers (REP) Properties Descriptions
+
+The REP properties determine whether the Blueprint Assets or the Nex Haven sample site are deployed, removed, or updated. Note that this logic is triggered exclusively during CF Upgrade operations and is ignored during normal server startup or restart.
+
+| Toggle Name | Default Value | Effect When True | Effect When False |
+|-------------|---------------|-----------------|------------------|
+| `blueprint.enable.assets` | false | [Blueprint Web Content Libraries](/docs/information-architecture-web-content-libraries--documentation) and the [Blueprint Theme](/docs/foundations-theme--documentation) will be deployed if they are not already present. | Blueprint Web Content Libraries and the Blueprint Theme will be removed. |
+| `blueprint.enable.nex.haven` | false | The Nex Haven sample site will be deployed if it is not already present. | The Nex Haven sample site will be removed. |
+| `blueprint.skip.assets.update` | true | Blueprint Web Content Libraries and the Blueprint Theme will **not** be updated. | Blueprint Web Content Libraries and the Blueprint Theme will be updated. |
+| `blueprint.skip.nex.haven.update` | true | The Nex Haven sample site will **not** be updated. | The Nex Haven sample site will be updated. |
+
+<Admonition type="note">
+    - If Blueprint Assets are disabled, the Nex Haven sample site will be removed even if it is enabled.
+    - If Blueprint Assets are disabled and Skip Assets Update are disabled, nothing will happen since there is nothing to update.
+    - If Nex Haven sample site is disabled and Skip Nex Haven Update is disabled, nothing will happen since there is nothing to update.
+    - Helm chart values will take precedence in a containerized deployment and the REPs will be ignored even if they are set and updated.
+</Admonition>
+
+<AdditionalResources />

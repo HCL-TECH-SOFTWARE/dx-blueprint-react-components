@@ -1,0 +1,47 @@
+.dxAppCard {
+    width: 166px;
+    background-color: transparent;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 11px;
+
+    &__container {
+        width: 100%;
+        height: 166px;
+        max-height: 166px;
+        padding: 1.25rem;
+        border-radius: 8px;
+        background-color: var(--light-white);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        i {
+            font-size: 126px;
+        }
+    }
+
+    &__label {
+        text-align: center;
+        font-family: var(--_18-primary-semibold-150-font-family);
+        font-size: var(--_18-primary-semibold-150-font-size);
+        font-weight: var(--_18-primary-semibold-150-font-weight);
+        letter-spacing: var(--_18-primary-semibold-150-letter-spacing);
+        line-height: var(--_18-primary-semibold-150-line-height);
+        color: var(--dark-dark);
+        display: -webkit-box;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        margin: 0;
+    }
+}

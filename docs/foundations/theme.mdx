@@ -1,0 +1,65 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import AdditionalResources from '../blocks/additional-resources.mdx';
+
+<Meta title="Foundations/Theme" />
+
+<header>
+Foundations
+
+# Theme
+
+Serves as the integration point the Blueprint design system and HCL DX.
+</header>
+
+The Blueprint Theme serves as the integration point for the design system, the React components, and the HCL DX platform. It hosts the design tokens, the React component library, and the web modules that are used to render the components in the DX page. It is an EAR-based theme that is automatically deployed to the server starting from CF229. The theme is designed to be extensible through the use of theme injectors, which allow for the injection of custom styles, scripts, and HTML elements into the DX pages.
+
+## Theme Injectors
+
+The main functionality of the theme injectors components is to load and execute server-side scripts, mostly front-end assets and global dependencies as well as add HTML pieces that need the be integrated within the Theme. These are HTML components injected in the theme based on custom DX page parameters which stores the uuid of the Theme Injectors components. These injectors are [customized through the DX page metadata](?path=/docs/how-to-customize-the-theme--documentation#steps-to-customize-the-site-theme-via-theme-injectors).
+
+### Theme Head Injector
+
+The **Theme Head Injector** is used to inject essential stylesheets and configurations into the head section of a DX page. Its primary functions include:
+
+-   Dynamically loading CSS files to apply design tokens, layout styles, or other theme-specific styling.
+-   Including global style overrides to customize or extend the default DX page appearance.
+-   Loading shared JavaScript utilities required across DX sites.
+-   Executing environment-specific scripts, such as adjusting asset URLs based on user authentication or context.
+
+This injector ensures that critical styling and functionality are loaded early in the page rendering process to support a consistent and responsive theme design.
+
+### Theme Header Injector
+
+The **Theme Header Injector** is used to insert structural and interactive components at the beginning of the body section of a DX page. Its key functions include:
+
+-   Injecting desktop and mobile navigation headers to ensure a responsive and consistent top-level navigation across devices.
+-   Including components like breadcrumbs to reflect page hierarchy and editor toggle options for content editing.
+-   Adding dynamic logic through scripts (e.g., taxonomy class mappers) to manage styling and layout based on metadata.
+
+This injector defines the top portion of the DX page layout and plays a crucial role in the user experience and navigational consistency.
+
+### Theme Footer Injector
+
+The **Theme Footer Injector** is responsible for inserting footer components at the bottom of the DX page, just before the closing body tag. Its primary functions include:
+
+-   Enabling user engagement and communication by injecting elements like newsletter banners.
+-   Rendering local and global footer components, which may include links, branding, contact information, and legal disclaimers.
+-   Structuring the bottom section of the page to ensure consistency across the DX page and enhance the overall user experience.
+
+This injector defines the bottom portion of the DX page layout and plays a crucial role in the user experience and site branding.
+
+## Blueprint Design Tokens
+
+Blueprint components can be configured with a specific look and feel based on some CSS custom properties(CSS Variables). The Blueprint design system provide [Color](?path=/docs/foundations-colors--documentation) and [Typography](?path=/docs/foundations-typography--documentation) design tokens. For example, the backgroundColor and borderColor can be set with a specific color, based on the --primary-primary CSS property. The CSS properties can be set in the :root selector in order to configure a new theme color.
+
+There are two ways to customize Blueprint Design Tokens or inject Custom CSS properties into the Theme:
+
+1. [Through the Theme Injectors](?path=/docs/how-to-customize-the-theme--documentation#via-library-components)
+    * via File component (Recommended option based on a design tokens file).
+    * via Stylesheet component
+    * via HTML component
+2. [Directly in the CSS file](?path=/docs/how-to-customize-the-theme--documentation#via-theme-file).
+
+When the design tokens file refers to some fonts or when a new font family is needed, a font file can be also be [hosted in WCM and referenced in the CSS](?path=/docs/how-to-customize-the-theme--documentation#steps-to-utilize-a-font-file).
+
+<AdditionalResources />

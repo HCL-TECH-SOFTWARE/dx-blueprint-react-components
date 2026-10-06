@@ -1,0 +1,24 @@
+.dxDownloadGroup {
+    &__title {
+        color: var(--dark-dark);
+        font-family: var(--_18-regular-font-family);
+        font-size: var(--_18-regular-font-size);
+        font-weight: var(--_18-regular-font-weight);
+        line-height: var(--_18-regular-line-height);
+        letter-spacing: var(--_18-regular-letter-spacing);
+        margin-bottom: 0.3125rem;
+    }
+
+    &__container {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        column-gap: 0.5rem;
+        row-gap: 1rem;
+
+        & .dxDownloadCard .dxDownloadCard__body {
+            min-height: 68px;
+        }
+    }
+}

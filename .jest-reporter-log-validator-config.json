@@ -1,0 +1,114 @@
+{
+  "failIfUnknownLogsFound": true,
+  "failIfLogValidationsOutdated": false,
+  "exemptLogs": [
+    {
+      "patterns": [
+        "inside a test was not wrapped in act"
+      ]
+    },
+    {
+      "patterns": [
+        "Deprecation warning: value provided is not in a recognized RFC2822 or ISO format"
+      ]
+    },
+    {
+      "patterns": [
+        "cannot appear as a descendant of"
+      ]
+    },
+    {
+      "patterns": [
+        "cannot be a descendant of"
+      ]
+    },
+    {
+      "patterns": [
+        "cannot contain a nested"
+      ]
+    },
+    {
+      "patterns": [
+        "The current testing environment is not configured to support act(...)"
+      ]
+    },
+    {
+      "patterns": [
+        "Accessing element.ref was removed in React 19"
+      ]
+    },
+    {
+      "patterns": [
+        "An empty string (\"\") was passed to the src attribute"
+      ]
+    }
+  ],
+  "logValidations": [
+    {
+      "patterns": [
+        "Invalid value for DXTicker: Ticker dateTime doesn't comply with the ISO 8601 format"
+      ],
+      "max": 1
+    },
+    {
+      "patterns": [
+        "Invalid value for DXMyNextMeeting: startDateTime doesn't comply with the ISO 8601 format"
+      ],
+      "max": 2
+    },
+    {
+      "patterns": [
+        "Invalid value for DXMyNextMeeting: endDateTime doesn't comply with the ISO 8601 format"
+      ],
+      "max": 2
+    },
+    {
+      "patterns": [
+        "The DXMegaMenu Component is not able to render the second level because the given secondaryLevelContainerId value does not match any HTML element"
+      ],
+      "max": 1
+    },
+    {
+      "patterns": [
+        "ERROR: Cannot redirect to an empty URL"
+      ],
+      "max": 5
+    },
+    {
+      "patterns": [
+        "regionCode"
+      ],
+      "max": 1
+    },
+    {
+      "patterns": [
+        "Incorrect TAG for children element was not found in the library:"
+      ],
+      "max": 5
+    },
+    {
+      "patterns": [
+        "URL does not contain a file name:"
+      ],
+      "max": 2
+    },
+    {
+      "patterns": [
+        "[CECEvent] parseDate: Failed to parse date, using current date as fallback"
+      ],
+      "max": 4
+    },
+    {
+      "patterns": [
+        "[cec-utils] safeToISOString: Invalid date detected:"
+      ],
+      "max": 9
+    },
+    {
+      "patterns": [
+        "[cec-utils] safeToISOString: Exception caught while processing date:"
+      ],
+      "max": 1
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import AdditionalResources from '../blocks/additional-resources.mdx';
+
+<Meta title="Overview/Introduction" />
+<header>
+Overview
+
+# HCL DX Blueprint
+
+Understanding the HCL DX Blueprint design system and its pieces.
+</header>
+
+## Introduction
+
+**Design systems have become an essential part of modern product design.** As a collection of reusable components, guidelines, and principles that help designers and developers create cohesive and consistent experiences across products and platforms, design systems accelerated the regular implementation, **reducing the TCO** (total cost of ownership) of a solution, saving time, reducing inconsistencies, and ensure a cohesive brand identity, among other things. Design systems are also beneficial for collaboration, as they provide a **shared vocabulary and understanding of the design language** within a team.
+
+> **The HCL DX Blueprint encapsulate all benefits of using a Design System with frameworks that fuels Design Ops and Development Ops.**
+
+The Blueprint Design System includes a range of components, such as **color palettes, typography, icons, buttons, forms, and more.** Each component is designed with specific guidelines and principles, ensuring that they are used consistently across different applications and platforms. The patterns and components are developed according to best practices resulting from years of experience successfully deploying customer and employee facing solutions worldwide, across multiple industries.
+
+**The Blueprint Design System promotes efficiency and consistency.** By creating a library of reusable components, designers and developers can work more efficiently and consistently, reducing the time and effort required to create new products and features.
+
+Focused on maintaining branding, the Blueprint defines the design as a language, helping to ensure that products and features are aligned with the company's brand identity and values since the Zero-day.
+
+The Blueprint Design System is designed to **support continuous scaling for design and development efforts**. As companies grow and expand their product offerings, a design system can help ensure that the design and development teams are aligned and working towards the same goals.
+
+Designed for scalable deployments and workloads, the blueprint enables:
+
+* **Modern and agile user experiences** served through scalable digital platforms;
+* User tested and adopted **information architecture**;
+* Designed around the **needs** of content authors;
+* **Tested catalog** of components, templates, workflows, training, etc;
+* **Hyper personalization** capabilities;
+* **Flexible design systems**;
+* **Built for the needs of large and small organizations**, incorporating security, governance, change management.
+
+<figure>
+![](./docs/overview/introduction-1.png)
+<figcaption>Some of our Blueprint implementations</figcaption>
+</figure>
+
+## How it works
+
+Our Blueprint focuses on **YOUR** user. You can check a list of the [Principles](?path=/docs/overview-principles--documentation) that drives adoption, assembling your DX platform and keeping it organized as it grows.
+
+<figure>
+![](./docs/overview/introduction-2.png)
+<figcaption>Proven principles, patterns and components to assemble your DX website and keep it organized as it grows.</figcaption>
+</figure>
+
+With a **composable architecture**, Blueprint allows organizations to create a unique composition layer, using packaged capabilities available into the design system bundle which comes with DX offerings.
+
+To achieve this portability, we use [Atomic Design](https://bradfrost.com/blog/post/atomic-web-design/) as a baseline for the creation of all components we are going to enable for your organization.
+
+<figure>
+![](./docs/overview/introduction-3.png)
+<figcaption>Components are packaged into a design system bundle, encapsulating all components through what is called Atomic Design Principles.</figcaption>
+</figure>
+
+This library of components connects and explore **all features** available in a DX Platform, allowing access to APIs, Workflows, Generative Technologies using LLMs, besides the foundational assets for the authorization and access layer and the core CMS capabilities.
+
+> Think of Blueprint as a set of modern components, templates, patterns, principles, and business practices that enable an agile inter-dependability between IT and business groups.
+
+## Main Characteristics
+
+Blueprint has some powerful characteristics that provide designers and author roles great flexibility:
+
+* Customer-centric dialogs across any device combining content, data, and functionality from different underlying systems into a new, fresh, UX presentation layer.
+* Components that can be up and running quickly.
+* Fast enablement for content creators and authors who want ease of use, control and flexibility to deploy content to fit their needs and schedule. They want to be independent of IT just as much as IT wants to be independent of them.
+* Fast Adoption for DX users where Blueprint templates provide dynamic UI's that are readily adaptable to changing needs.
+* Wide autonomy to business teams who can manage the DX platform through advanced editing, personalization configuration, and preexisting templates
+
+## Get Started
+
+Begin your journey with the Blueprint Design System by exploring the [Get Started](?path=/docs/how-to-get-started--documentation) guide to understand the basics, by checking the [Changelog](?path=/docs/overview-changelog--documentation) to see the latest updates and releases, or by diving into the [Components](?path=/docs/components-buttons-and-headers-accordion--documentation) section to learn about the available components and how to use them in your projects.
+
+## Expected Behaviors
+
+### YouTube Iframe Console Warnings (Edge & Firefox)
+
+When rendering pages that embed YouTube videos—specifically through the `DXVideo` and `DXInteractiveTabs` components, or via author-entered HTML processed by the `parseContentAndMedia` utility—you may observe a high volume of console warnings on page load. 
+
+**These warnings are expected browser behavior, are not caused by a Blueprint code defect, and can be safely ignored.**
+
+The warnings originate from third-party YouTube scripts interacting with modern browser privacy engines:
+* **Microsoft Edge:** Triggers hundreds of "Tracking Prevention blocked access to storage" warnings due to Edge's built-in Tracking Prevention engine blocking YouTube analytics and ad requests.
+* **Mozilla Firefox:** Triggers warnings related to Feature Policy/Permissions Policy (rejecting Chromium-specific sensor tokens), Content-Security-Policy (YouTube's internal strict-dynamic rules), and Total Cookie Protection (partitioning cross-site cookies). Firefox's engine may also flag unreachable code within YouTube's minified player bundle.
+
+<figure>
+![](./docs/overview/edge-warnings.png)
+<figcaption>Microsoft Edge: Expected Tracking Prevention console warnings triggered by YouTube iframes.</figcaption>
+</figure>
+
+<figure>
+![](./docs/overview/firefox-warnings.png)
+<figcaption>Mozilla Firefox: Expected Privacy and CSP console warnings triggered by YouTube iframes.</figcaption>
+</figure>
+
+## Limitations
+
+At the moment, the way Blueprint page components are rendered on a page makes it incompatible with strict Content Security Policy (CSP) settings. If your organization enforces strict CSP rules, you will encounter issues when trying to use this version of Blueprint components.
+
+<AdditionalResources />

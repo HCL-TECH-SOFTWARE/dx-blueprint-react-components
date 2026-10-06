@@ -1,0 +1,118 @@
+@import "../../global/variables.scss";
+@import "../../global/breakpoints.scss";
+
+.dxFullImgMiniC {
+    width: 90%;
+    margin: auto;
+    position: relative;
+
+    &__grid {
+        &Col {
+            padding-left: 4px;
+            padding-right: 4px;
+
+            @include mobile {
+                padding: 4px 0px;
+            }
+
+            @include xs {
+                padding: 4px 0px;
+            }
+
+            @include sm {
+                padding: 4px 0px;
+            }
+        }
+    }
+
+    /*Slider styles*/
+    &__slider {
+        margin-top: 1.96rem;
+    }
+
+    &__slider .slick-list .slick-track .slick-slide {
+        padding-bottom: .5rem;
+    }
+
+    // Slider class, hence doesn't comply with library naming convention
+    .slick-slide>div {
+        margin: 0 .5rem;
+        height: 100%;
+    }
+
+    /* the parent */
+    .slick-list {
+        margin: 0 -.5rem;
+    }
+
+    .slick-track {
+        display: flex;
+    }
+
+    .slick-slide {
+        height: auto;
+    }
+
+    &__navBtn {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        width: 4rem;
+        z-index: $firstLevel;
+
+        &:hover {
+            opacity: 0.5;
+            transition: all ease .5s;
+        }
+
+        i {
+            color: var(--dark-dark);
+            font-size: 2.25rem;
+            font-weight: 700;
+        }
+
+        @include mobile {
+            width: 2.625rem;
+            height: 25%;
+            top: 40%;
+        }
+
+        @include xs {
+            width: 2.625rem;
+        }
+
+        &--direction-next {
+            right: -4.7%;
+
+            @include mobile {
+                right: -11%;
+            }
+
+            @include xs {
+                right: -9%;
+            }
+        }
+
+        &--direction-prev {
+            left: -4.6%;
+
+            @include mobile {
+                left: -11%;
+            }
+
+            @include xs {
+                left: -9%;
+            }
+        }
+
+        &--display-hide {
+            display: none;
+        }
+    }
+}

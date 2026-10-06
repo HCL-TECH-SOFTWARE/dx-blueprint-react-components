@@ -1,0 +1,322 @@
+.dxEventTabs {
+    width: 100%;
+
+    &__tabs {
+        max-width: 98%;
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            overflow-y: hidden;
+            overflow-x: auto;
+            white-space: nowrap;
+            margin-bottom: 0;
+
+            li {
+                display: inline-block;
+
+                a:hover {
+                    text-decoration: none;
+                }
+            }
+        }
+
+        &Mobile {
+            @extend .dxEventTabs__tabs;
+            max-width: 100%;
+            border: 1px solid var(--secondary-secondary-l1);
+            border-bottom: 0px;
+            border-top-right-radius: .5rem;
+            border-top-left-radius: .5rem;
+            border-bottom-right-radius: 0;
+
+            ul {
+                border-top-right-radius: .5rem;
+                border-top-left-radius: .5rem;
+            }
+
+        }
+
+    }
+
+    &__tab {
+        &:first-child {
+            border-top-left-radius: .5rem;
+            border-left: 1px solid var(--secondary-secondary-l1);
+        }
+
+        &:last-child {
+            border-top-right-radius: .5rem;
+        }
+
+        border-top: 1px solid var(--secondary-secondary-l1);
+        border-right: 1px solid var(--secondary-secondary-l1);
+        border-bottom: none;
+        border-left: none;
+        padding: 0.8125rem 1rem 0.8125rem 1rem;
+        background-color: var(--white);
+        cursor: pointer;
+        color: var(--dark-dark);
+        font-family: var(--_20-bold-font-family);
+        font-size: var(--_20-bold-font-size);
+        letter-spacing: var(--_20-bold-letter-spacing);
+        font-weight: var(--_20-bold-font-weight);
+        line-height: var(--_20-bold-line-height);
+
+        &Mobile {
+            @extend .dxEventTabs__tab;
+
+            &:first-child {
+                border-left: 0;
+            }
+
+            &:last-child {
+                border-top-right-radius: 0;
+            }
+
+            font-family: var(--_14-semibold-font-family);
+            font-size: var(--_14-semibold-font-size);
+            letter-spacing: var(--_14-semibold-letter-spacing);
+            font-weight: var(--_14-semibold-font-weight);
+            line-height: var(--_14-semibold-line-height);
+            border-top: 0;
+        }
+
+        &--active {
+            color: var(--white);
+            background-color: var(--secondary-secondary);
+        }
+    }
+
+    &__container {
+        padding: 2.6875rem 1.6875rem 2rem 1.6875rem;
+        background-color: var(--white);
+        border: 1px solid var(--secondary-secondary-l1);
+        border-top-right-radius: .5rem;
+        border-bottom-left-radius: .5rem;
+        border-bottom-right-radius: .5rem;
+
+        &Mobile {
+            @extend .dxEventTabs__container;
+            border-top-right-radius: 0;
+        }
+
+    }
+
+    &__event {
+        display: flex;
+        justify-content: flex-start;
+
+        &Icon {
+            min-width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background-color: var(--primary-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            i {
+                color: var(--white);
+                font-size: var(--_20-regular-font-size);
+            }
+        }
+
+        &Info {
+            margin-left: 2.6875rem;
+
+            h5 {
+                margin-bottom: 0;
+            }
+
+            a:hover {
+                text-decoration: none;
+            }
+
+            h5,
+            h5 a {
+                color: var(--primary-primary);
+            }
+
+            h5,
+            h5 a {
+                font-family: var(--_24-regular-font-family);
+                font-size: var(--_24-regular-font-size);
+                letter-spacing: var(--_24-regular-letter-spacing);
+                line-height: var(--_24-regular-line-height);
+                font-weight: var(--_24-regular-font-weight);
+            }
+
+            h5~p,
+            h5 a~p {
+                color: var(--dark-dark);
+            }
+
+            p {
+                font-family: var(--_16-semibold-font-family);
+                font-size: var(--_16-semibold-font-size);
+                letter-spacing: var(--_16-semibold-letter-spacing);
+                line-height: var(--_16-semibold-line-height);
+                font-weight: var(--_16-semibold-font-weight);
+            }
+
+            &Mobile {
+                @extend .dxEventTabs__eventInfo;
+                margin-left: 1rem;
+
+                h5,
+                h5 a {
+                    font-family: var(--_18-semibold-font-family);
+                    font-size: var(--_18-semibold-font-size);
+                    letter-spacing: var(--_18-semibold-letter-spacing);
+                    line-height: var(--_18-semibold-line-height);
+                    font-weight: var(--_18-semibold-font-weight);
+                }
+
+                p {
+                    font-family: var(--_12-regular-font-family);
+                    font-size: var(--_12-regular-font-size);
+                    letter-spacing: var(--_12-regular-letter-spacing);
+                    line-height: var(--_12-regular-line-height);
+                    font-weight: var(--_12-regular-font-weight);
+                }
+            }
+        }
+    }
+
+    &__pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 1.6875rem;
+    }
+
+    &__nav.dxButton.btn.btn-unstyled {
+        width: 40px;
+        height: 40px;
+        padding: 12px;
+        margin-inline: 0.5625rem;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border: 1px solid transparent;
+        border-radius: 8px;
+
+        // Override generic DXButton styling
+        background-color: transparent;
+        color: var(--primary-primary);
+
+        i {
+            width: 16px;
+            height: 16px;
+            font-size: 16px;
+            line-height: 16px;
+            color: var(--primary-primary);
+
+            &::before {
+                color: var(--primary-primary);
+            }
+        }
+
+        // Hover
+        &:hover {
+            background-color: var(--light-light);
+            border: 1px solid var(--light-light-d2);
+            color: var(--primary-primary);
+
+            i {
+                color: var(--primary-primary);
+
+                &::before {
+                    color: var(--primary-primary);
+                }
+            }
+        }
+
+        // Mouse down (before click release)
+        &:active {
+            background-color: var(--light-light);
+            border: 1px solid var(--light-light-d2);
+            color: var(--primary-primary);
+
+            i {
+                color: var(--primary-primary);
+
+                &::before {
+                    color: var(--primary-primary);
+                }
+            }
+        }
+
+        // Selected / Focused (only after mouse press ends)
+        &.active,
+        &:focus:not(:active),
+        &:focus-visible:not(:active) {
+            background-color: var(--primary-primary);
+            border: 2px solid var(--light-white);
+            color: var(--light-white);
+
+            i {
+                color: var(--light-white);
+
+                &::before {
+                    color: var(--light-white);
+                }
+            }
+        }
+
+        &.dxEventTabs--selected {
+            background-color: var(--primary-primary);
+            border: 2px solid var(--light-white);
+            color: var(--light-white);
+
+            i {
+                color: var(--light-white);
+
+                &::before {
+                    color: var(--light-white);
+                }
+            }
+
+            &:hover {
+                background-color: var(--primary-primary);
+                border: 2px solid var(--light-white);
+                color: var(--light-white);
+
+                i {
+                    color: var(--light-white);
+
+                    &::before {
+                        color: var(--light-white);
+                    }
+                }
+            }
+        }
+    }
+
+    &--disabled.dxButton.btn.btn-unstyled,
+    &__nav.dxButton.btn.btn-unstyled:disabled {
+        background-color: var(--light-light-d2);
+        border: 1px solid var(--light-light-d2);
+        color: var(--secondary-secondary-l1);
+        cursor: not-allowed;
+
+        &:hover {
+            background-color: var(--light-light-d2);
+            border-color: var(--light-light-d2);
+        }
+
+        i {
+            width: 20px;
+            height: 20px;
+            font-size: 20px;
+            line-height: 20px;
+            color: var(--secondary-secondary-l1);
+
+            &::before {
+                color: var(--secondary-secondary-l1);
+            }
+        }
+    }
+}

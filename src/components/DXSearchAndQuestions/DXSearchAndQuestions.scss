@@ -1,0 +1,59 @@
+@import "../../global/variables.scss";
+@import "../../global/breakpoints.scss";
+
+.dxSearchAndQuestions {
+    padding-top: 2rem;
+    padding-bottom: 3.5rem;
+    display: flex;
+    justify-content: center;
+    background-color: var(--light-white);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: center;
+    background-position-x: center;
+
+    &__innerContainer {
+        width: 80%;
+
+        @include mobile {
+            width: 95%;
+        }
+
+        @include xs {
+            width: 90%;
+        }
+
+        @include sm {
+            width: 85%;
+        }
+
+        @include xl {
+            width: 65%;
+        }
+
+        padding: 1.25rem 2.5rem 2.5rem 2.5rem;
+        box-shadow: 0.125rem 0.125rem 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
+        border-radius: 0.5rem;
+
+        .dxSSuggestions {
+            position: relative;
+            margin-bottom: 1rem;
+
+            .input-group-item {
+                >input {
+                    height: 2.5rem;
+                }
+
+                >div {
+                    height: 2.5rem;
+                }
+            }
+
+            &__list {
+                z-index: $dropdownLevel;
+                position: absolute;
+                width: -webkit-fill-available;
+            }
+        }
+    }
+}

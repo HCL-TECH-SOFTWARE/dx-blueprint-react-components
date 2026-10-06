@@ -1,0 +1,409 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import AdditionalResources from "../blocks/additional-resources.mdx";
+import Admonition from "../blocks/Admonition.mdx";
+
+<Meta title="Foundations/Form Configuration" />
+
+<header>
+Foundations
+# Form Configuration
+
+Blueprint components configuration form is defined by the *fieldSets* array in the Component's form config HTML component.
+</header>
+
+Any [page component](?path=/docs/foundations-page-components--documentation) can be [configured in Site Manager](?path=/docs/how-to-configure-page-components--documentation#steps-to-configure-component-props) based on the [form config created for that component](?path=/docs/how-to-create-new-page-components--documentation#steps-to-create-component-form-config). The `fieldSets` array within that form config declares every field that appears in the configuration form. Each field entry is an object that specifies the field's type (e.g. text input, dropdown, toggle), label, name (which controls how the value is saved to WCM), and other properties such as validation rules, grouping, and descriptions.
+
+---
+
+## Common Properties
+
+Every field entry, regardless of type, may carry the following properties.
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `type` | `string` | ✅ | Field type identifier. See [Field Types](#field-types). |
+| `name` | `string` | ✅ | The key used in the serialised JSON config. Supports dot-bracket notation for nested objects and arrays (see [Name Syntax](#name-syntax)). |
+| `label` | `string` | ✅ | Human-readable label displayed above the field. |
+| `required` | `boolean` | — | When `true`, the field is marked required and an asterisk is appended to its label. HTML5 native validation is applied. |
+| `description` | `string` | — | Tooltip text shown via an info icon (`ℹ`) next to the label. Accessible via mouse hover, focus, and keyboard (Enter / Space). |
+| `group` | `boolean` | — | When `true`, the field is rendered inside a named group container. Requires `groupName` and `groupLabel`. See [Grouped Fields](#grouped-fields). |
+| `groupName` | `string` | ✅ if `group` | Unique identifier for the group container. All fields sharing the same `groupName` are placed in the same group. |
+| `groupLabel` | `string` | ✅ if `group` | Heading text displayed at the top of the group container. |
+| `collapsible` | `boolean` | — | When `true` (and `group: true`), the group is rendered with a collapse/expand chevron button. |
+
+---
+
+## Field Types
+
+### `text`
+
+A single-line plain-text input.
+
+The following example illustrates the `header` prop of the [Hero Banner](?path=/docs/components-home-page-hero-banner--documentation) component.
+
+```js
+{
+  type: "text",
+  label: "Heading",
+  name: "header",
+  required: true,
+  description: "Main heading displayed in the hero banner.",
+}
+```
+
+**Additional properties**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `format` | `string` | Controls client-side pattern validation. |
+
+**`format` values**
+
+| Value | Pattern enforced | Serialised output |
+|-------|-----------------|-------------------|
+| `"array-numeric"` | `^\\d+(,\\d+)*$` — comma-separated integers only | Array of numbers, e.g. `[2, 10, 25]` |
+| `"array-string"` | `^[a-zA-Z][a-zA-Z0-9\\s]*(,[a-zA-Z][a-zA-Z0-9\\s]*)*$` — comma-separated alphabetic tokens | Array of strings, e.g. `["news", "events"]` |
+| _(omitted)_ | No pattern restriction | Plain string |
+
+> **Tip — array names:** Fields that collect an array (e.g. `name: "sets[]"`) use the `[]` suffix on the `name` property, which signals the config form serialiser to treat the value as an array.
+
+---
+
+### `number`
+
+A numeric input. Accepts whole numbers and decimals. Serialised values are cast from strings to JavaScript numbers automatically.
+
+The following example illustrates the `animationTime` prop of the [Hero Banner Carousel](?path=/docs/components-home-page-hero-banner-carousel--documentation) component.
+
+```js
+{
+  type: "number",
+  label: "Animation Time",
+  name: "animationTime",
+  min: 0,
+  max: 10,
+  description: "Slide transition duration in seconds.",
+}
+```
+
+**Additional properties**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `min` | `number` | Minimum allowed value (passed to `<input min>`). |
+| `max` | `number` | Maximum allowed value (passed to `<input max>`). |
+
+---
+
+### `textArea`
+
+A multi-line text input.
+
+The following example illustrates the `body` prop of the [Hero Banner](?path=/docs/components-home-page-hero-banner--documentation) component.
+
+```js
+{
+  type: "textArea",
+  label: "Body",
+  name: "body",
+  description: "Supporting body copy displayed beneath the hero heading.",
+}
+```
+
+No additional properties beyond the [common set](#common-properties).
+
+---
+
+### `select`
+
+A dropdown that lets the user pick one option from a predefined list.
+
+The following example illustrates the `variant` prop of the [Event](?path=/docs/components-general-event--documentation) component.
+
+```js
+{
+  type: "select",
+  label: "Variant",
+  name: "variant",
+  required: true,
+  options: [
+    { label: "Featured",         value: "featured"          },
+    { label: "River",            value: "river"             },
+    { label: "Featured Compact", value: "featured-compact"  },
+  ],
+  description: "Controls the display layout of the event card.",
+}
+```
+
+**Additional properties**
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `options` | `Array<{ label: string, value: string }>` | ✅ | List of items to render as `<option>` elements. `label` is the visible text; `value` is the serialised output. |
+
+---
+
+### `checkbox`
+
+A boolean toggle rendered as a standard checkbox. When checked, the value is serialised as `true`; when unchecked, as `false` (explicit `false` is always written, even when the checkbox is left blank).
+
+The following example illustrates the `bottomLabel` prop of the [Card](?path=/docs/components-cards-card--documentation) component.
+
+```js
+{
+  type: "checkbox",
+  label: "Show Bottom Label",
+  name: "bottomLabel",
+  description: "When checked, displays the status label at the bottom of the card.",
+}
+```
+
+No additional properties beyond the [common set](#common-properties).
+
+---
+
+### `toggle`
+
+A boolean toggle rendered as a switch control (uses `role="switch"` and `aria-checked`). Behaves identically to `checkbox` in terms of serialised output.
+
+The following example illustrates the `eventTime24hrFormat` prop of the [Event](?path=/docs/components-general-event--documentation) component.
+
+```js
+{
+  type: "toggle",
+  label: "24-Hour Time Format",
+  name: "eventTime24hrFormat",
+  description: "When enabled, event times are displayed in 24-hour format instead of 12-hour (AM/PM).",
+}
+```
+
+No additional properties beyond the [common set](#common-properties).
+
+---
+
+### `datePicker`
+
+A native date picker (`<input type="date">`). Stored internally as `yyyy-MM-dd`; can be reformatted on save via the `format` property.
+
+The following example illustrates the `eventFrom` prop of the [Event](?path=/docs/components-general-event--documentation) component.
+
+```js
+{
+  type: "datePicker",
+  label: "Event Start Date",
+  name: "eventFrom",
+  required: true,
+  description: "The date on which the event begins.",
+}
+```
+
+**Additional properties**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `format` | `string` | A [date-fns format string](https://date-fns.org/docs/format) applied when serialising the selected date. If omitted, the date is saved in `yyyy-MM-dd` format. Common examples: `"MM/dd/yyyy"`, `"dd-MM-yyyy"`, `"MMMM dd, yyyy"`. |
+
+---
+
+### `color`
+
+A colour picker input (`<input type="color">`). The selected colour is serialised as a hex string (e.g. `"#1a73e8"`).
+
+> **Note:** The default picker value is `#efebeb`. If the user does not change this default, the field is **omitted** from the saved JSON to avoid persisting a meaningless placeholder.
+
+The following example illustrates the `textColor` prop of the [Countdown Floater](?path=/docs/components-general-countdown-floater--documentation) component.
+
+```js
+{
+  type: "color",
+  label: "Text Color",
+  name: "textColor",
+  description: "Colour applied to the countdown timer numbers and labels.",
+}
+```
+
+No additional properties beyond the [common set](#common-properties).
+
+---
+
+### `password`
+
+A masked text input for secrets such as API keys, tokens, or passwords. Autocomplete is disabled by default to prevent password-manager autofill on non-credential fields.
+
+This type is appropriate for any component configuration that requires a secret value, such as an access token for an external data source.
+
+```js
+{
+  type: "password",
+  label: "Data Source Access Token",
+  name: "accessToken",
+  required: true,
+  description: "Bearer token used to authenticate requests to the external content API.",
+}
+```
+
+**Additional properties**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `autocomplete` | `string` | HTML `autocomplete` token (e.g. `"current-password"`, `"new-password"`). Defaults to `"off"`. See the [full token list](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofilling-form-controls:-the-autocomplete-attribute). |
+
+---
+
+## Grouped Fields
+
+Fields are collected inside a named section when `group: true` is set. All fields sharing the same `groupName` are rendered under a single `<h4>` group heading.
+
+The following example illustrates a grouped configuration for the `background` properties of the [Hero Banner](?path=/docs/components-home-page-hero-banner--documentation) component.
+
+```js
+{
+  type: "text",
+  label: "Background Image URL",
+  name: "background[url]",
+  group: true,
+  groupName: "background",
+  groupLabel: "Background",
+  collapsible: true,
+  description: "Fully qualified URL of the background image or video.",
+},
+{
+  type: "select",
+  label: "Overlay Opacity",
+  name: "background[opacity]",
+  options: [
+    { label: "Light", value: "light" },
+    { label: "Dark",  value: "dark"  },
+  ],
+  group: true,
+  groupName: "background",
+  groupLabel: "Background",
+  collapsible: true,
+  description: "Controls the darkness of the overlay applied over the background media.",
+},
+```
+
+The above produces a serialised output like:
+
+```json
+{
+  "background": {
+    "url": "https://example.com/hero.jpg",
+    "opacity": "dark"
+  }
+}
+```
+
+**Collapsible groups**
+
+When `collapsible: true` is set, a chevron button is added to the group heading. The button toggles the group between collapsed and expanded states when activated by click, Enter, or Space, and exposes `aria-expanded` for screen readers.
+
+---
+
+## Name Syntax
+
+The `name` property controls how each field maps to the serialised JSON output. The config form serialiser supports HTML form naming conventions:
+
+| Pattern | Example `name` | Serialised output |
+|---------|---------------|-------------------|
+| Plain key | `"title"` | `{ "title": "..." }` |
+| Nested object | `"hero[heading]"` | `{ "hero": { "heading": "..." } }` |
+| Indexed object | `"links[0][url]"` | `{ "links": [ { "url": "..." } ] }` |
+| Flat array | `"tags[]"` | `{ "tags": ["a", "b"] }` |
+| Numeric array (with `format`) | `"sets[]"` + `format: "array-numeric"` | `{ "sets": [2, 10, 25] }` |
+
+---
+
+## Complete Example
+
+The following `fieldSets` array shows a possible form config for the [Hero Banner](?path=/docs/components-home-page-hero-banner--documentation) component. It covers `text`, `textArea`, `select`, `color`, and `toggle` field types, as well as grouped and collapsible fields.
+
+```js
+{
+  fieldSets: [
+    {
+      type: "text",
+      label: "Heading",
+      name: "header",
+      required: true,
+      description: "Main heading displayed in the hero banner.",
+    },
+    {
+      type: "text",
+      label: "Sub-heading",
+      name: "subheader",
+      description: "Optional secondary line displayed beneath the main heading.",
+    },
+    {
+      type: "textArea",
+      label: "Body",
+      name: "body",
+      description: "Supporting body copy shown below the heading.",
+    },
+    {
+      type: "select",
+      label: "Text Alignment",
+      name: "textAlign",
+      options: [
+        { label: "Left",   value: "left"   },
+        { label: "Center", value: "center" },
+        { label: "Right",  value: "right"  },
+      ],
+      description: "Horizontal alignment of the heading, sub-heading, and body text.",
+    },
+    {
+      type: "color",
+      label: "Text Color",
+      name: "textColor",
+      description: "Colour applied to the heading, sub-heading, and body text.",
+    },
+    // Background group
+    {
+      type: "text",
+      label: "Background Image URL",
+      name: "background[url]",
+      group: true,
+      groupName: "background",
+      groupLabel: "Background",
+      collapsible: true,
+      description: "Fully qualified URL of the background image or video.",
+    },
+    {
+      type: "toggle",
+      label: "Is Video",
+      name: "background[isVideo]",
+      group: true,
+      groupName: "background",
+      groupLabel: "Background",
+      collapsible: true,
+      description: "Enable if the background URL points to a video rather than an image.",
+    },
+    {
+      type: "select",
+      label: "Overlay Opacity",
+      name: "background[opacity]",
+      options: [
+        { label: "Light", value: "light" },
+        { label: "Dark",  value: "dark"  },
+      ],
+      group: true,
+      groupName: "background",
+      groupLabel: "Background",
+      collapsible: true,
+      description: "Controls the darkness of the overlay applied over the background media.",
+    },
+    {
+      type: "text",
+      label: "Desktop Height",
+      name: "background[heightDesktop]",
+      group: true,
+      groupName: "background",
+      groupLabel: "Background",
+      collapsible: true,
+      description: "CSS height value for desktop screens (e.g. 450px, 60vh).",
+    },
+  ]
+}
+```
+
+<AdditionalResources />

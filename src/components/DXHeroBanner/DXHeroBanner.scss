@@ -1,0 +1,363 @@
+@import "../../global/variables.scss";
+@import "../../global/breakpoints.scss";
+
+.dxHeroBanner {
+    position: relative;
+
+    &__backgroundMedia {
+        display: block;
+        width: 100%;
+        object-fit: cover;
+        height: auto;
+        min-height: 100%;
+        opacity: 0.5;
+        border-radius: inherit;
+    }
+
+    &__container {
+        position: relative;
+        overflow: visible;
+        display: flex;
+        align-items: center;
+    }
+
+    &__animatedBox {
+        width: 100%;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+
+        &--center {
+            justify-content: center;
+        }
+
+        &--right {
+            justify-content: flex-end;
+        }
+
+        &--left {
+            justify-content: flex-start;
+        }
+
+        &Header {
+            white-space: pre-wrap;
+            margin: 0;
+            font-family: var(--_40-primary-bold-100-font-family);
+            font-size: var(--_40-primary-bold-100-font-size);
+            letter-spacing: var(--_40-primary-bold-100-letter-spacing);
+            line-height: var(--_40-primary-bold-100-line-height);
+            font-weight: var(--_40-primary-bold-100-font-weight);
+
+            @include mobile {
+                font-family: var(--_36-primary-bold-100-font-family);
+                font-size: var(--_36-primary-bold-100-font-size);
+                letter-spacing: var(--_36-primary-bold-100-letter-spacing);
+                line-height: var(--_36-primary-bold-100-line-height);
+                font-weight: var(--_36-primary-bold-100-font-weight);
+            }
+
+            @include xs {
+                font-family: var(--_36-primary-bold-100-font-family);
+                font-size: var(--_36-primary-bold-100-font-size);
+                letter-spacing: var(--_36-primary-bold-100-letter-spacing);
+                line-height: var(--_36-primary-bold-100-line-height);
+                font-weight: var(--_36-primary-bold-100-font-weight);
+            }
+
+            @include sm {
+                font-family: var(--_36-primary-bold-100-font-family);
+                font-size: var(--_36-primary-bold-100-font-size);
+                letter-spacing: var(--_36-primary-bold-100-letter-spacing);
+                line-height: var(--_36-primary-bold-100-line-height);
+                font-weight: var(--_36-primary-bold-100-font-weight);
+            }
+        }
+
+        & .typed-cursor,
+        .typed-cursor.typed-cursor--blink {
+            font-family: var(--_40-primary-bold-100-font-family);
+            font-size: var(--_40-primary-bold-100-font-size);
+            line-height: var(--_40-primary-bold-100-line-height);
+            font-weight: var(--_40-primary-bold-100-font-weight);
+
+            @include mobile {
+                font-family: var(--_36-primary-bold-100-font-family);
+                font-size: var(--_36-primary-bold-100-font-size);
+                line-height: var(--_36-primary-bold-100-line-height);
+                font-weight: var(--_36-primary-bold-100-font-weight);
+            }
+
+            @include xs {
+                font-family: var(--_36-primary-bold-100-font-family);
+                font-size: var(--_36-primary-bold-100-font-size);
+                line-height: var(--_36-primary-bold-100-line-height);
+                font-weight: var(--_36-primary-bold-100-font-weight);
+            }
+
+            @include sm {
+                font-family: var(--_36-primary-bold-100-font-family);
+                font-size: var(--_36-primary-bold-100-font-size);
+                line-height: var(--_36-primary-bold-100-line-height);
+                font-weight: var(--_36-primary-bold-100-font-weight);
+            }
+        }
+    }
+
+    &__content {
+        position: absolute;
+        top: 0;
+        width: 60%;
+        height: 100%;
+        z-index: $foregroundLevel;
+        color: var(--light-white);
+        padding-left: 6.6875rem;
+        padding-right: 6.6875rem;
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+        gap: 1.75rem;
+
+        &.dxHeroBanner--animatedText {
+            width: 100%;
+        }
+
+        &--left {
+            text-align: left;
+            align-items: flex-start;
+        }
+
+        &--center {
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+            align-items: center;
+        }
+
+        &--right {
+            text-align: right;
+            right: 0;
+            align-items: flex-end;
+        }
+
+        &Headers {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        &Header {
+            margin: 0;
+            font-family: var(--_40-primary-bold-100-font-family);
+            font-size: var(--_40-primary-bold-100-font-size);
+            letter-spacing: var(--_40-primary-bold-100-letter-spacing);
+            line-height: var(--_40-primary-bold-100-line-height);
+            font-weight: var(--_40-primary-bold-100-font-weight);
+
+            @include mobile {
+                width: 100%;
+                font-family: var(--_36-primary-bold-150-font-family);
+                font-size: var(--_36-primary-bold-150-font-size);
+                letter-spacing: var(--_36-primary-bold-150-letter-spacing);
+                line-height: var(--_36-primary-bold-150-line-height);
+                font-weight: var(--_36-primary-bold-150-font-weight);
+            }
+
+            @include xs {
+                width: 100%;
+                font-family: var(--_36-primary-bold-150-font-family);
+                font-size: var(--_36-primary-bold-150-font-size);
+                letter-spacing: var(--_36-primary-bold-150-letter-spacing);
+                line-height: var(--_36-primary-bold-150-line-height);
+                font-weight: var(--_36-primary-bold-150-font-weight);
+            }
+
+            @include sm {
+                width: 100%;
+                font-family: var(--_36-primary-bold-150-font-family);
+                font-size: var(--_36-primary-bold-150-font-size);
+                letter-spacing: var(--_36-primary-bold-150-letter-spacing);
+                line-height: var(--_36-primary-bold-150-line-height);
+                font-weight: var(--_36-primary-bold-150-font-weight);
+            }
+        }
+
+        &Subheader {
+            margin: 0.25rem 0 0 0;
+            font-family: var(--_32-primary-semibold-100-font-family);
+            font-size: var(--_32-primary-semibold-100-font-size);
+            letter-spacing: var(--_32-primary-semibold-100-letter-spacing);
+            line-height: var(--_32-primary-semibold-100-line-height);
+            font-weight: var(--_32-primary-semibold-100-font-weight);
+
+            @include mobile {
+                width: 100%;
+                font-family: var(--_28-primary-semibold-100-font-family);
+                font-size: var(--_28-primary-semibold-100-font-size);
+                letter-spacing: var(--_28-primary-semibold-100-letter-spacing);
+                line-height: var(--_28-primary-semibold-100-line-height);
+                font-weight: var(--_28-primary-semibold-100-font-weight);
+            }
+
+            @include xs {
+                width: 100%;
+                font-family: var(--_28-primary-semibold-100-font-family);
+                font-size: var(--_28-primary-semibold-100-font-size);
+                letter-spacing: var(--_28-primary-semibold-100-letter-spacing);
+                line-height: var(--_28-primary-semibold-100-line-height);
+                font-weight: var(--_28-primary-semibold-100-font-weight);
+            }
+
+            @include sm {
+                width: 100%;
+                font-family: var(--_28-primary-semibold-100-font-family);
+                font-size: var(--_28-primary-semibold-100-font-size);
+                letter-spacing: var(--_28-primary-semibold-100-letter-spacing);
+                line-height: var(--_28-primary-semibold-100-line-height);
+                font-weight: var(--_28-primary-semibold-100-font-weight);
+            }
+        }
+
+        &Body {
+            margin: 0;
+            font-family: var(--_24-primary-regular-125-font-family);
+            font-size: var(--_24-primary-regular-125-font-size);
+            letter-spacing: var(--_24-primary-regular-125-letter-spacing);
+            line-height: var(--_24-primary-regular-125-line-height);
+            font-weight: var(--_24-primary-regular-125-font-weight);
+
+            @include mobile {
+                width: 100%;
+                font-family: var(--_24-primary-regular-125-font-family);
+                font-size: var(--_24-primary-regular-125-font-size);
+                letter-spacing: var(--_24-primary-regular-125-letter-spacing);
+                line-height: var(--_24-primary-regular-125-line-height);
+                font-weight: var(--_24-primary-regular-125-font-weight);
+            }
+
+            @include xs {
+                width: 100%;
+                font-family: var(--_24-primary-regular-125-font-family);
+                font-size: var(--_24-primary-regular-125-font-size);
+                letter-spacing: var(--_24-primary-regular-125-letter-spacing);
+                line-height: var(--_24-primary-regular-125-line-height);
+                font-weight: var(--_24-primary-regular-125-font-weight);
+            }
+
+            @include sm {
+                width: 100%;
+                font-family: var(--_24-primary-regular-125-font-family);
+                font-size: var(--_24-primary-regular-125-font-size);
+                letter-spacing: var(--_24-primary-regular-125-letter-spacing);
+                line-height: var(--_24-primary-regular-125-line-height);
+                font-weight: var(--_24-primary-regular-125-font-weight);
+            }
+        }
+
+        @include mobile {
+            width: 100%;
+            gap: 1.875rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        @include xs {
+            width: 100%;
+            gap: 1.875rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        @include sm {
+            width: 100%;
+            gap: 1.875rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+    }
+
+    &__buttonContainer {
+        display: flex;
+        gap: 1.75rem;
+    }
+
+    &__button.dxButton.btn {
+        font-family: var(--_16-semibold-150-font-family);
+        font-size: var(--_16-semibold-150-font-size);
+        letter-spacing: var(--_16-semibold-150-letter-spacing);
+        line-height: var(--_16-semibold-150-line-height);
+        font-weight: var(--_16-semibold-150-font-weight);
+    }
+
+    &__link {
+        color: inherit;
+        margin: 0;
+        text-decoration: none;
+
+        a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            color: var(--primary-primary-l2);
+            font-family: var(--_16-primary-semibold-100-font-family);
+            font-size: var(--_16-primary-semibold-100-font-size);
+            letter-spacing: var(--_16-primary-semibold-100-letter-spacing);
+            line-height: var(--_16-primary-semibold-100-line-height);
+            font-weight: var(--_16-primary-semibold-100-font-weight);
+
+            &:hover {
+                text-decoration: none;
+                border-bottom: 0.1rem solid;
+                cursor: pointer;
+            }
+        }
+    }
+
+    &__foregroundImage {
+        z-index: $firstLevel;
+        position: absolute;
+        bottom: 0;
+        max-height: 100%;
+        max-width: 50%;
+
+        &--left {
+            left: 0;
+        }
+
+        &--right {
+            right: 0;
+        }
+
+        @include mobile {
+            display: none;
+        }
+
+        @include xs {
+            display: none;
+        }
+
+        @include sm {
+            display: none;
+        }
+    }
+
+    &__input {
+        width: 90%;
+
+        &.dxHeroBanner--animatedText {
+            width: 100%;
+        }
+
+        @include mobile {
+            width: 100%;
+        }
+
+        @include xs {
+            width: 100%;
+        }
+
+        @include sm {
+            width: 100%;
+        }
+    }
+}

@@ -1,0 +1,178 @@
+import { Meta, Markdown } from "@storybook/addon-docs/blocks";
+import AdditionalResources from "../blocks/additional-resources.mdx";
+import Admonition from "../blocks/Admonition.mdx";
+
+<Meta title="How To/Create the Blueprint Sample Site" />
+<header>
+How To
+
+# Create The Blueprint Sample Site
+
+This guide will walk you through the steps to create the Blueprint sample site using the [**Site Builder**](https://help.hcl-software.com/digital-experience/9.5/latest/build_sites/sitebuilder/) tool in HCL Digital Experience (DX).
+
+</header>
+
+## Introduction
+
+The Blueprint sample site is a demonstration of the Blueprint design system in action. It showcases the components, patterns, and principles of the Blueprint design system. [Site Builder](https://help.hcl-software.com/digital-experience/9.5/latest/build_sites/sitebuilder/) in HCL Digital Experience (DX) is a GUI-based tool for quickly creating full sites or site sections, based on predefined templates.
+
+![](./docs/how-to/site-template-1.png)
+
+## Prerequisites
+
+1. You are on an HCL Digital Experience (DX) v9.5 CF229 or later instance with [Site Builder enabled](https://help.hcl-software.com/digital-experience/9.5/latest/build_sites/sitebuilder/install_site_builder/).
+2. You have [access to the **Site Builder**](https://help.hcl-software.com/digital-experience/9.5/latest/build_sites/sitebuilder/deploy_site_builder/sitebuilder_access_users/) and [you have the necessary permissions to create new sites](https://help.hcl-software.com/digital-experience/9.5/latest/build_sites/sitebuilder/deploy_site_builder/sitebuilder_access_creators/).
+3. You have the Blueprint Design System bundle installed in your DX instance.
+    - For installation instructions, refer to the relevant documentation for your deployment type:
+        - [Containerized DX Deployment](/docs/how-to-install-blueprint-in-containerized-deployments--documentation)
+        - [Traditional DX Deployment](/docs/how-to-install-blueprint-in-traditional-deployments--documentation)
+
+<Admonition type="note">
+    **DX Compose deployments:** If you are creating the Blueprint sample site in a DX Compose virtual portal, the Blueprint libraries must be imported into that virtual portal before Site Builder can use the Blueprint Template. For the required library list and step-by-step import instructions, see [Install Blueprint in Virtual Portals](?path=/docs/how-to-install-blueprint-in-virtual-portals--documentation).
+</Admonition>
+
+## Steps to Create the Blueprint Sample Site
+
+1. Navigate to the Site Templates in your DX instance. It is accessible through many ways depending on your configuration, but is typically found in Practitioner Studio or the application switcher on the toolbar.
+2. Choose the **Blueprint Template** site template by clicking on the **Launch Site Wizard** button adjacent to it.
+   ![](./docs/how-to/site-template-2.png)
+3. Set the site name and friendly URL. Make sure that the friendly URL is unique and does not conflict with existing sites.
+   ![](./docs/how-to/site-template-3.png)
+4. Proceed to the next step in the wizard to select a Library to store content. Select "Create a new library" and name it something like "Nex Haven Library".
+   ![](./docs/how-to/site-template-4.png)
+5. Proceed to the next step in the wizard to select pages to include in your website. For the Blueprint sample site, you can select all the pages provided in the template.
+   ![](./docs/how-to/site-template-5.png)
+6. Review the summary of your selections and click on **Create Site** to create the site
+7. Wait for the site creation process to complete. This may take a few moments. You can check the progress in the Site Builder Creation Status panel on the right side of the screen.
+8. Once the site is created, you will see it listed in the same panel in the "Completed" section.
+9. You can now access the site by clicking on the "Go to Site" button or by navigating to the URL you set in step 3.
+10. The Blueprint sample site is now ready for exploration. You can start customizing it, adding content, and exploring the components and patterns of the Blueprint design system.
+
+<Admonition type="tip">
+    The new library that was created for the site is usually hidden from the
+    Authoring portlet by default. To make it visible, you need to go to the
+    [Authoring portlet
+    settings](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_authoring/authoring_portlet/auth_portlet_settings/)
+    then add it to your [selected
+    libraries](./?path=/docs/how-to-show-libraries-in-authoring--documentation).
+</Admonition>
+
+## Blueprint Library Structure
+
+The Blueprint Site Template maintains a separate library structure similar to the Nex Haven implementation.
+
+Separate libraries and injectors are provided for:
+
+-   Blueprint site template components
+-   Header components
+-   Footer components
+
+This separation enables improved maintainability and modular customization across implementations.
+
+<Admonition type="warning">
+    The **Header** and **Footer** injectors are **shared across all sites**
+    created by the Blueprint Site Template. If you need to customize them for a
+    specific site, you should copy the injector components into your site's
+    library and replace the references accordingly. Only the **Content** and
+    **Page Components** are copied over to the newly created library during site
+    creation.
+</Admonition>
+
+![](./docs/how-to/site-template-6.png)
+![](./docs/how-to/site-template-7.png)
+![](./docs/how-to/site-template-8.png)
+
+## Creating the Site in a Virtual Portal
+
+After the Virtual Portal setup has been completed, you can create the Blueprint site within the Virtual Portal environment by following these steps:
+
+-   Navigate to **Site Templates** within the Virtual Portal.
+-   Select the **Blueprint Site Template**.
+-   Follow the same site creation procedure described in the **Steps to Create the Blueprint Sample Site** section earlier in this document.
+-   Complete any remaining configuration and validation activities as required.
+
+The post-creation configuration and validation steps are identical to those used for the standard site creation process.
+
+## Known Limitations
+
+### Header and Footer Configuration for Virtual Portals
+
+The default Header and Footer navigation links in the Blueprint Site Template are configured for the default Site Template setup in Base Portals. When a site is created within a Virtual Portal, these links may not resolve to the expected Site Areas or Content because the navigation configuration does not automatically account for the Virtual Portal context.
+
+As a result, Header and Footer navigation links may refresh the current page or navigate to the Virtual Portal home page instead of the intended destination.
+
+After creating the site within a Virtual Portal, customers should review and configure the Header and Footer navigation links so that they point to the appropriate Site Areas or Content for their implementation.
+
+### Site-Specific Header and Footer Customization
+
+The Blueprint Site Template provides separate Header, Head, and Footer injector components within the Blueprint Common Resources library under Portal Theme Utilities.
+
+To use site-specific Header and Footer implementations:
+
+1. Copy the required Header, Head, and Footer injector components from Blueprint Common Resources → Portal Theme Utilities into your site's library.
+2. Update the navigation links within the copied Header and Footer injector components so that they point to the appropriate Site Areas or Content for your implementation.
+3. Enable Edit Mode and open the page's context menu.
+4. Select Open Page Settings.
+
+    ![](./docs/how-to/site-template-9.png)
+
+5. Click Edit Page Properties and open the Advanced tab.
+6. Update the following page properties to reference the UUIDs of the injector components that should be used by the site:
+
+    - `wcmHeadInjectorID`
+    - `wcmHeaderInjectorID`
+    - `wcmFootInjectorID`
+
+    ![](./docs/how-to/site-template-10.png)
+
+7. Repeat this configuration for all pages that should use the site-specific Header and Footer implementations.
+8. Configure the Header and Footer navigation links in the injector components to point to the desired Site Areas or Content.
+
+After saving the changes, verify that the site is rendering the expected Header and Footer components.
+Failure to update the injector mappings may result in the site continuing to use the shared Blueprint Header and Footer components instead of the site-specific implementations.
+
+### Semi-Dynamic Links and Button Configuration
+
+Several components within the Blueprint Site Template use semi-dynamic links and button configurations.
+
+Examples include:
+
+-   Hero Banner **Learn More** button
+-   Help Center icon links
+-   Testimonial links
+-   Featured Product links
+-   Additional navigation actions throughout the template
+
+These components dynamically resolve the site's base path; however, the remaining portion of the target URL is hardcoded.
+
+**Examples of hardcoded paths:**
+
+```text
+/home/
+/featured-products/featured-product-1
+/about-us/
+/under-construction/
+```
+
+### Impact of Modifying Friendly URLs
+
+If page configurations are modified during site creation—for example, by changing a page's friendly URL, certain links, and buttons may no longer function correctly.
+
+This may result in:
+
+-   Navigation failures
+-   Incorrect redirects
+-   Broken links, buttons, or actions
+
+### Resolution
+
+If links or buttons become invalid after modifying the default site structure:
+
+-   Identify the affected component.
+-   Edit the component configuration.
+-   Update the target link or friendly URL path as required.
+-   Save and republish the component, if applicable.
+
+This ensures that the component points to the correct destination after site customization.
+
+<AdditionalResources />

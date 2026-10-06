@@ -1,0 +1,75 @@
+/*
+ * Clay input inset compatibility bridge.
+ * Flex-based polyfill matching atlas.css layout model.
+ * Only structural/layout rules — visual theming is handled by component SCSS.
+ */
+.input-group-item {
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    margin-left: 0.5rem;
+    position: relative;
+    width: 1%;
+    &:first-child {
+        margin-left: 0;
+    }
+}
+.input-group {
+    .input-group-inset-item {
+        align-items: center;
+        border-bottom-width: 0.0625rem;
+        border-color: #e7e7ed;
+        border-left-width: 0.0625rem;
+        border-right-width: 0.0625rem;
+        border-style: solid;
+        border-top-width: 0.0625rem;
+        display: flex;
+        margin-bottom: 0;
+        padding-left: 0.25rem;
+        padding-right: 0.25rem;
+    }
+    .input-group-inset-item-before {
+        border-bottom-left-radius: 0.25rem;
+        border-right-width: 0;
+        border-top-left-radius: 0.25rem;
+        order: 3;
+    }
+    .input-group-inset-item-after {
+        border-bottom-right-radius: 0.25rem;
+        border-left-width: 0;
+        border-top-right-radius: 0.25rem;
+        order: 9;
+    }
+    .input-group-inset-item .btn {
+        align-items: center;
+        display: flex;
+        height: 75%;
+        justify-content: center;
+        line-height: 1;
+        margin-left: 0.25rem;
+        margin-right: 0.25rem;
+        padding-bottom: 0;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        padding-top: 0;
+    }
+    .input-group-item {
+        .input-group-inset-before.form-control {
+            border-bottom-left-radius: 0;
+            border-left-width: 0;
+            border-top-left-radius: 0;
+            padding-left: 0;
+        }
+        .input-group-inset-after.form-control {
+            border-bottom-right-radius: 0;
+            border-right-width: 0;
+            border-top-right-radius: 0;
+            padding-right: 0;
+        }
+    }
+}
+.input-group-inset {
+    flex-grow: 1;
+    order: 5;
+    width: 1%;
+}

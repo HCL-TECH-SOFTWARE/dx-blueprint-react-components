@@ -1,0 +1,213 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import AdditionalResources from "../blocks/additional-resources.mdx";
+import Admonition from "../blocks/Admonition.mdx";
+
+<Meta title="How To/Create New Page Components" />
+
+<header>
+How To
+
+# Create New Blueprint Component
+
+Learn how to create a new page component based on existing components in the Blueprint Design System. 
+</header>
+
+## Introduction
+
+Blueprint components are modular and reusable building blocks that help streamline webpage creation while ensuring visual and functional consistency across your site. Whether you're looking to replicate a hero banner, embed a video module, or display a catalog in a mini layout, this guide will walk you through copying, customizing, and integrating components into your Blueprint-based pages.
+
+By following the outlined process, authors with the appropriate permissions can efficiently develop and reuse components without altering the core design system, enabling scalable and consistent site development.
+
+## Prerequisites
+
+* Access to the HCL Digital Experience environment with authoring privileges.
+* Familiarity with the [Blueprint Design System](?path=/docs/overview-introduction--documentation) and [page components](?path=/docs/foundations-page-components--documentation).
+* Required permissions to access and modify web content and libraries.
+* You have your own counterpart of the Blueprint Design System library.
+
+## Steps to Create a New Blueprint Page Component
+1. [Copy a page component](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_authoring/authoring_portlet/content_management_artifacts/content_items/howto_move_copy_link_items/wcm_dev_content_linking_linking/#copying) from the Blueprint Design System library to your own design system library or [create an completely new one](https://help.hcl-software.com/digital-experience/9.5/latest/manage_content/wcm_authoring/authoring_portlet/content_management_artifacts/content_items/) based on the [DXComponent authoring template](?path=/docs/foundations-page-components--documentation#dxcomponent-authoring-template).
+    <Admonition type="important">
+    If you created a new site area to store your components, make sure to add `ibm.portal.toolbar.NewContent` to the **Keywords** field of the new site area. This ensures that the site area appears as a folder in the page component selection panel and that your new page component appears in it.
+    </Admonition>
+2. Customize the component as you need and follow the guides below for additional steps you might need to take for setting up your component.
+    <Admonition type="caution">
+    Avoid editing components directly in the Blueprint Design System library. Always copy and edit components in your own libraries to prevent impacting shared resources. Always make sure to replace references to the original Blueprint web content libraries and items.
+    </Admonition>
+3. Finally, test it by [adding it to a page](https://help.hcl-software.com/digital-experience/9.5/latest/build_sites/create_sites/adding_pages_content_more/toolbar_add_comp/) and then [configuring it](?path=/docs/how-to-configure-page-components--documentation).
+
+## Additional Optional Steps
+
+Follow the steps below to further customize and configure your new component. If you want to make sure that your new page component is unique or unaffected by changes to other page components, execute all of the steps below. This ensures that the component is fully functional, configurable, and consistent with other Blueprint page components.
+
+### Steps to Create Component Config
+
+1. Navigate to your own design system library.
+2. In your own design system library, create a new HTML component. If you want to follow the Blueprint Design System structure, create it under the **dx-components-configs (DXComponents Config)** folder.
+3. If you want to follow the Blueprint Design System naming convention:
+    * name it using the format: \<ComponentName\>-component-config (e.g., MyNewComp-component-config)
+    * title it using the format: \<ComponentName\> Component Config (e.g., MyNewComp Component Config)
+4. In the HTML Markup field, write a JSON object that represents the configuration for your component. This JSON object should include all the properties that you want to configure for your component. For example, look at this config for a [River of News Classic page component](?path=/docs/components-lists-catalogs-and-filters-river-of-news-classic--documentation):
+    ```json
+    {
+        "title": "Local News",
+        "riverOfNews": \[ ... \],
+        "viewAllLink": {
+
+            "label": "View All",
+            "url": "https://www.hcl-software.com/",
+            "target": "\_blank"
+
+        }
+    }
+    ```
+5. Save your new HTML component.
+6. Edit your own **Component Config Main** HTML component from your own design system library.
+7. In its HTML Markup field, add a new line to include your new component config. Use the following format:
+    ```html
+    [Plugin:Equals text1="<ComponentName>" text2="[Element key="dxcomponent-name"]"]
+        DXComponentConfig = [Component name="your-own-design-system-library/dx-components-configs/<ComponentName>-component-config"]
+    [/Plugin:Equals]
+    ```
+    Replace \<ComponentName\> with the name of your new page component (e.g., MyNewComp).
+8. Save your **Component Config Main** HTML component.
+
+
+### Steps to Create Component Form Config
+
+1. Navigate to your own design system library.
+2. In your own design system library, create a new HTML component. If you want to follow the Blueprint Design System structure, create it under the **dx-components-form-configs (DXComponents Form Configs)** folder.
+3. If you want to follow the Blueprint Design System naming convention:
+    * name it using the format: \<ComponentName\>-form-config (e.g., MyNewComp-form-config)
+    * title it using the format: \<ComponentName\> Form Config (e.g., MyNewComp Form Config)
+4. In the HTML Markup field, write a JSON object that represents the [form configuration](?path=/docs/foundations-form-configuration--documentation) for your component. This JSON object should include all the fields that you want to configure for your component. For example, look at this config for a [River of News Classic page component](?path=/docs/components-lists-catalogs-and-filters-river-of-news-classic--documentation):
+    ```json
+    {
+      "fieldSets": [
+      {
+        "type": "text",
+        "label": "Title",
+        "name": "title",
+        "required": true
+      },    
+      {
+        "type": "text",
+        "label": "Label",
+        "name": "viewAllLink[label]",
+        "required": true,
+        "group": true,
+        "groupName": "viewAllLink",
+        "groupLabel": "View All Link"
+      },
+      {
+        "type": "text",
+        "label": "URL",
+        "name": "viewAllLink[url]",
+        "required": true,
+        "group": true,
+        "groupName": "viewAllLink",
+        "groupLabel": "View All Link"
+      },
+      {
+        "type": "select",
+        "label": "Target",
+        "name": "viewAllLink[target]",
+        "options": [
+        {
+            "label": "Blank",
+            "value": "_blank"
+        },
+        {
+            "label": "Self",
+            "value": "_self"
+        }],
+        "required": true,
+        "group": true,
+        "groupName": "viewAllLink",
+        "groupLabel": "View All Link"
+      }]
+    }
+    ```
+5. Save your new HTML component.
+6. Edit your own **Form Config Main** HTML component from your own design system.
+7. In its HTML Markup field, add a new line to include your new component form config. Use the following pattern:
+    ```html
+    [Plugin:Equals text1="<ComponentName>" text2="[Element key="dxcomponent-name"]"]
+        componentFormConfig = [Component name="your-own-design-system-library/dx-components-form-configs/<ComponentName>-form-config"]
+    [/Plugin:Equals]
+    ```
+    Replace \<ComponentName\> with the name of your new page component (e.g., MyNewComp).
+8. Save your **Form Config Main** HTML component.
+
+### Steps to Prepare Data Collection
+
+1. Navigate to your own design system library.
+2. In your own design system library, create a new HTML component. If you want to follow the Blueprint Design System structure, create it under the **content-types (Content Types)** folder.
+3. Give it the same name and title as your new page component (e.g., MyNewComp).
+4. In the HTML Markup field, write a JSON object that represents the data collection for your component. This JSON object should include all the fields that your page component requires. For example, look at this config for a [River of News Classic page component](?path=/docs/components-lists-catalogs-and-filters-river-of-news-classic--documentation):
+    ```json
+    {
+        [Plugin:ifNotEmpty value="[Element key="image"]"]  
+        "image": [Component name="blueprint design system/content-types/utils/image-props"],
+        [/Plugin:ifNotEmpty]
+        "link": [Component name="blueprint design system/content-types/utils/links-prop"],
+        "date": "[Property field="publishdate" type="auto" context="autofill" format="DATE_SHORT"]",
+        "contentType": "[Element key="topics" type="auto" context="autofill" format="title" separator=", "]",
+        [Component name="blueprint design system/content-types/utils/edit-button"]
+    }
+    ```
+5. Save the HTML component.
+6. Edit your own **lp-component-data-selector (LP - Component Data Selector)** HTML component from your own design system library. In the Blueprint Design System Library, this component is located under the **content-types (Content Types) / utils (Utils)** folder. However, make sure that you are editing your own copy of the component.
+7. In its HTML Markup field, add a new line to include your new component's data collection. Use the following pattern:
+    ```html
+    [Plugin:Equals text1="<ComponentName>" text2="[Element key="dxcomponent-name"] context="portletContext"]"]
+        [Component name="your-own-design-system-library/content-types/<ComponentName>"]
+    [/Plugin:Equals]
+    ```
+    Replace \<ComponentName\> with the name of your new page component (e.g., MyNewComp).
+8. Save your **lp-component-data-selector (LP - Component Data Selector)** HTML component.
+
+### Steps to Add Component Description
+
+1. Navigate to your own design system library.
+2. In your own design system library, create a new Rich Text component. If you want to follow the Blueprint Design System structure, create it under the **descriptions (Component Descriptions)** folder.
+3. If you want to follow the Blueprint Design System naming convention: 
+    * name it using the format: \<ComponentName\>-description (e.g., MyNewComp-description)
+    * title it using the format: \<ComponentName\> (e.g., MyNewComp)
+4. In the Rich Text Element field, write a description of your component. This description should include the following:
+    * Which content type or types your page component supports
+    * Whether it uses a "Multiple item Collection" or "Single item Collection"
+    * Which settings in the portlet configuration should be configured.
+    * What else the author should know about the component or do to set it up properly.
+    For example, look at this description for a [River of News Classic page component](?path=/docs/components-lists-catalogs-and-filters-river-of-news-classic--documentation):
+    ```html
+      <ul dir="ltr">
+        <li>Uses "News" content type</li>
+        <li>This component uses a "Multiple item Collection"</li>
+        <li>Set "location" and "authoring template" in the portlet configuration.</li>
+        <li>Please make sure you have created content with the criteria configured for this component.</li>
+      </ul>
+    ```
+5. Save your new Rich Text component.
+6. Edit your own **component-description-selector (Component Description Selector)** HTML component from your own design system library. In the Blueprint Design System Library, this component is located under the **descriptions (Component Descriptions) / utils (Utils)** folder. However, make sure that you are editing your own copy of the component.
+7. In its HTML Markup field, add a new line to include your new component description. Use the following pattern:
+    ```html
+    [Plugin:Equals text1="<ComponentName>" text2="[Element key="dxcomponent-name" context="portletContext"]"]
+        [Component name="your-own-design-system-library/descriptions/<ComponentName>-description"]
+    [/Plugin:Equals]
+    ```
+    Replace \<ComponentName\> with the name of your new page component (e.g., MyNewComp).
+8. Save your **component-description-selector (Component Description Selector)** HTML component.
+
+### Steps to Set Default References
+Before testing the new DXComponent, will be needed to set the default values, so, set the reference to the component-description-selector component in the DXComponent Description field as well as the data collection Menu Component reference to the DXComponent Collection field.
+
+
+1. Edit your new page component (e.g., MyNewComp).
+2. In the DXComponent Description field, select your own **component-description-selector (Component Description Selector)** HTML component. In the Blueprint Design System Library, this component is located under the **descriptions (Component Descriptions) / utils (Utils)** folder. However, make sure that you are selecting your own copy of the component from your own design library.
+3. In the DXComponent Collection field, select your own menu component that is appropriate for your page component. In the Blueprint Design System Library, this component is located under the **collections (Collections) / menu-components (Menu Components)** folder. However, make sure that you are selecting your own copy of the menu component from your own design library.
+4. Save your new page component.
+
+![](./docs/how-to/create-new-blueprint-components-5.png)
+
+<AdditionalResources />

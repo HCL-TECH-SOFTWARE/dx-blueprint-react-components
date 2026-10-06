@@ -1,0 +1,24 @@
+.dxTableContents {
+    &__title {
+        font-family: var(--_24-semibold-150-font-family);
+        font-size: var(--_24-semibold-150-font-size);
+        font-weight: var(--_24-semibold-150-font-weight);
+        line-height: var(--_24-semibold-150-line-height);
+        letter-spacing: var(--_24-semibold-150-letter-spacing);
+        color: var(--dark-dark);
+    }
+
+    & ul li a {
+        font-family: var(--_16-primary-regular-150-font-family);
+        font-size: var(--_16-primary-regular-150-font-size);
+        font-weight: var(--_16-primary-regular-150-font-weight);
+        line-height: var(--_16-primary-regular-150-line-height);
+        letter-spacing: var(--_16-primary-regular-150-letter-spacing);
+        color: var(--dark-dark);
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

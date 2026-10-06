@@ -1,0 +1,69 @@
+/*
+ * Bootstrap 4 compatibility bridge.
+ * Keeps key visual defaults where Bootstrap 5 introduces regressions.
+ */
+.btn {
+    --bs-btn-border-radius: 0.25rem;
+}
+.dropdown-menu {
+    --bs-dropdown-padding-x: 0;
+    --bs-dropdown-padding-y: 0.5rem;
+}
+.dropdown-item {
+    --bs-dropdown-item-padding-x: 1.5rem;
+    --bs-dropdown-item-padding-y: 0.25rem;
+}
+.pagination {
+    --bs-pagination-padding-x: 0.75rem;
+    --bs-pagination-padding-y: 0.5rem;
+    --bs-pagination-border-radius: 0.25rem;
+}
+.sr-only:not(:focus):not(:active) {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+/*
+ * Modal portal globals — appended to <body> by react-bootstrap, cannot be
+ * component-scoped. Modal structure styles live in each component's own SCSS.
+ */
+body.modal-open {
+    overflow: hidden;
+}
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1050;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+    &.fade { opacity: 0; }
+    &.show { opacity: 0.5; }
+}
+/*
+ * ClayUI .btn-unstyled — not present in standard Bootstrap.
+ * Used by DXButton displayType="unstyled" across multiple components,
+ * so kept global (not scoped to modal only).
+ */
+.btn-unstyled {
+    background-color: transparent;
+    border-width: 0;
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    padding: 0;
+    text-align: left;
+    vertical-align: baseline;
+    &:hover,
+    &:focus,
+    &:active {
+        background-color: transparent;
+        color: inherit;
+    }
+}

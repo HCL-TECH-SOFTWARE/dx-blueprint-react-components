@@ -1,0 +1,521 @@
+@import "../../global/variables.scss";
+@import "../../global/breakpoints.scss";
+.dxJiraTaskCard {
+    width: 100%;
+    overflow: hidden;
+    &__task {
+        align-items: center;
+        background-color: transparent;
+        padding: 4px 0;
+        border-top: 1px solid var(--dark-l5);
+        &Info {
+            &Main {
+                display: flex;
+                align-items: center;
+                p {
+                    margin: 0;
+                    font-family: var(--_14-primary-regular-150-font-family);
+                    font-size: var(--_14-primary-regular-150-font-size);
+                    font-weight: var(--_14-primary-regular-150-font-weight);
+                    line-height: var(--_14-primary-regular-150-line-height);
+                    letter-spacing: var(--_14-primary-regular-150-letter-spacing);
+                    margin-right: 12px;
+                    min-width: max-content;
+                }
+                a {
+                    font-family: var(--_16-primary-regular-150-font-family);
+                    font-size: var(--_16-primary-regular-150-font-size);
+                    font-weight: var(--_16-primary-regular-150-font-weight);
+                    line-height: var(--_16-primary-regular-150-line-height);
+                    letter-spacing: var(--_16-primary-regular-150-letter-spacing);
+                    text-decoration: none;
+                }
+            }
+            &Text {
+                margin: 0;
+                font-family: var(--_14-primary-regular-150-font-family);
+                font-size: var(--_14-primary-regular-150-font-size);
+                font-weight: var(--_14-primary-regular-150-font-weight);
+                line-height: var(--_14-primary-regular-150-line-height);
+                letter-spacing: var(--_14-primary-regular-150-letter-spacing);
+                display: -webkit-box;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 1;
+            }
+            &Wrap {
+                padding: 0;
+            }
+        }
+        &Tag {
+            font-family: var(--_12-primary-regular-150-font-family);
+            font-size: var(--_12-primary-regular-150-font-size);
+            font-weight: var(--_12-primary-regular-150-font-weight);
+            line-height: var(--_12-primary-regular-150-line-height);
+            letter-spacing: var(--_12-primary-regular-150-letter-spacing);
+            color: var(--primary-primary);
+            border-color: var(--primary-primary);
+            background-color: #fff;
+            border-radius: 0.125rem;
+            border-style: solid;
+            border-width: 0.0625rem;
+            margin-bottom: 0.125rem;
+            margin-right: 0.25rem;
+            margin-top: 0.125rem;
+            max-width: 100%;
+            padding-bottom: 0.125rem;
+            padding-left: 0.25rem;
+            padding-right: 0.25rem;
+            padding-top: 0.125rem;
+            text-transform: uppercase;
+            white-space: inherit;
+            word-wrap: break-word;
+            outline: 0;
+            transition: box-shadow 0.15s ease-in-out;
+            display: inline-flex;
+            align-items: center;
+            &Wrap {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                padding: 0;
+            }
+        }
+    }
+    &__list {
+        background-color: var(--light-light);
+        padding: 13px;
+        &Header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            @include mobile {
+                align-items: baseline;
+            }
+            @include xs {
+                align-items: baseline;
+            }
+            &Title {
+                margin: 0;
+                text-align: center;
+                font-family: var(--_16-primary-regular-150-font-family);
+                font-size: var(--_16-primary-regular-150-font-size);
+                font-weight: var(--_16-primary-regular-150-font-weight);
+                line-height: var(--_16-primary-regular-150-line-height);
+                letter-spacing: var(--_16-primary-regular-150-letter-spacing);
+                @include mobile {
+                    min-width: max-content;
+                }
+                @include xs {
+                    min-width: max-content;
+                }
+            }
+            &Empty {
+                margin-bottom: 13px;
+                text-align: center;
+                font-family: var(--_16-primary-regular-150-font-family);
+                font-size: var(--_16-primary-regular-150-font-size);
+                font-weight: var(--_16-primary-regular-150-font-weight);
+                line-height: var(--_16-primary-regular-150-line-height);
+                letter-spacing: var(--_16-primary-regular-150-letter-spacing);
+                @include mobile {
+                    min-width: max-content;
+                }
+                @include xs {
+                    min-width: max-content;
+                }
+            }
+        }
+        &Tasks {
+            padding: 12px;
+            list-style-type: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+            span {
+                min-width: max-content;
+            }
+            a {
+                display: -webkit-box;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 1;
+                color: var(--primary-primary-d1);
+            }
+        }
+    }
+    &__tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        @include mobile {
+            margin: 8px 0;
+        }
+        @include xs {
+            margin: 8px 0;
+        }
+        span {
+            display: inline-flex;
+            gap: 0.25rem;
+            align-items: center;
+            border-radius: 2px;
+            background-color: var(--light-white);
+            color: var(--dark-l3);
+            padding: .1875rem .5rem .1875rem .5rem;
+            font-family: var(--_12-primary-semibold-150-font-family);
+            font-size: var(--_12-primary-semibold-150-font-size);
+            letter-spacing: var(--_12-primary-semibold-150-letter-spacing);
+            line-height: var(--_12-primary-semibold-150-line-height);
+            font-weight: var(--_12-primary-semibold-150-font-weight);
+            margin-right: 4px;
+            i {
+                font-size: 16px;
+            }
+        }
+    }
+    &__button {
+        border-radius: 4px;
+        border: 1px solid var(--secondary-secondary-l3);
+        .dropdown-toggle::after {
+            display: none;
+        }
+        @include mobile {
+            width: inherit;
+        }
+        @include xs {
+            width: inherit;
+        }
+        button {
+            display: flex;
+            justify-content: space-between;
+            width: 201px;
+            height: 40px;
+            font-family: var(--_16-primary-regular-150-font-family);
+            font-size: var(--_16-primary-regular-150-font-size);
+            letter-spacing: var(--_16-primary-regular-150-letter-spacing);
+            line-height: var(--_16-primary-regular-150-line-height);
+            font-weight: var(--_16-primary-regular-150-font-weight);
+            border: 1px solid var(--secondary-secondary-l3);
+            color: var(--dark-dark) !important;
+            @include mobile {
+                width: inherit;
+            }
+            @include xs {
+                width: inherit;
+            }
+        }
+    }
+    &__filter {
+        display: flex;
+        align-items: center;
+        gap: 0.875rem;
+        @include mobile {
+            flex-direction: column-reverse;
+            align-items: flex-start;
+            max-width: 250px;
+            width: -webkit-fill-available;
+        }
+        @include xs {
+            flex-direction: column-reverse;
+            align-items: flex-start;
+            max-width: 250px;
+            width: -webkit-fill-available;
+        }
+    }
+    &__projectTag {
+        border: 1px solid var(--secondary-secondary-l2);
+        border-radius: 0.25rem;
+        background-color: transparent;
+        padding: 0.125rem 0.5rem;
+        color: var(--secondary-secondary);
+        text-transform: uppercase;
+        font-size: 0.625rem;
+        font-weight: 600;
+        line-height: 1;
+        white-space: inherit;
+    }
+    &__project {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        @include mobile {
+            display: block;
+        }
+        @include xs {
+            display: block;
+        }
+        &Data {
+            display: flex;
+            justify-content: flex-start;
+        }
+        &Image {
+            min-width: 50px;
+            width: 50px;
+            height: auto;
+            border-radius: 8px;
+            margin-right: 15px;
+            img {
+                width: 100%;
+                height: 100%;
+                border-radius: 8px;
+                object-fit: cover;
+            }
+        }
+        &ProfileImage {
+            object-fit: cover;
+        }
+        &Symbol {
+            min-width: 50px;
+            width: 50px;
+            height: auto;
+            border-radius: 0.5rem;
+            margin-right: 0.9375rem;
+            height: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--secondary-secondary-l2);
+            color: var(--dark-dark-d2);
+            text-transform: uppercase;
+            font-family: var(--_24-primary-bold-150-font-family);
+            font-size: var(--_24-primary-bold-150-font-size);
+            font-weight: var(--_24-primary-bold-150-font-weight);
+            line-height: var(--_24-primary-bold-150-line-height);
+            letter-spacing: var(--_24-primary-bold-150-letter-spacing);
+        }
+        &NameTag {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            p {
+                margin: 0;
+                font-family: var(--_16-primary-regular-150-font-family);
+                font-size: var(--_16-primary-regular-150-font-size);
+                font-weight: var(--_16-primary-regular-150-font-weight);
+                line-height: var(--_16-primary-regular-150-line-height);
+                letter-spacing: var(--_16-primary-regular-150-letter-spacing);
+            }
+        }
+        &Member {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 37px;
+            height: 37px;
+            border-radius: 100%;
+            text-align: center;
+            justify-content: center;
+            background-color: var(--secondary-secondary-l2);
+            color: var(--dark-dark);
+            font-family: var(--_10-primary-regular-150-font-family);
+            font-size: var(--_10-primary-regular-150-font-size);
+            font-weight: var(--_10-primary-regular-150-font-weight);
+            line-height: var(--_10-primary-regular-150-line-height);
+            letter-spacing: var(--_10-primary-regular-150-letter-spacing);
+            @include mobile {
+                width: 24px;
+                height: 24px;
+            }
+            @include xs {
+                width: 24px;
+                height: 24px;
+            }
+        }
+        &Badge {
+            height: 75%;
+            border-radius: 1rem;
+            background-color: var(--primary-primary);
+            color: var(--light-white);
+            font-family: var(--_12-primary-regular-150-font-family);
+            font-size: var(--_12-primary-regular-150-font-size);
+            font-weight: var(--_12-primary-regular-150-font-weight);
+            line-height: var(--_12-primary-regular-150-line-height);
+            letter-spacing: var(--_12-primary-regular-150-letter-spacing);
+            margin-left: 0.5rem;
+            padding-inline: 0.3rem;
+            @include mobile {
+                height: 75%;
+                border-radius: 1rem;
+            }
+            @include xs {
+                height: 75%;
+                border-radius: 1rem;
+            }
+        }
+        &ButtonSection {
+            display: flex;
+            align-items: center;
+        }
+        &MemberSection {
+            display: flex;
+            align-items: center;
+            margin-right: 24px;
+            @include mobile {
+                display: flex;
+                margin-top: 1.5rem;
+                margin-left: 16px;
+            }
+            @include xs {
+                display: flex;
+                margin-top: 1.5rem;
+                margin-left: 16px;
+            }
+            p {
+                display: none;
+                margin: 0;
+                @include mobile {
+                    display: inline;
+                    max-width: max-content;
+                    width: 80px;
+                    text-align: right;
+                    color: var(--dark-dark-d2);
+                    font-family: var(--_14-primary-regular-150-font-family);
+                    font-size: var(--_14-primary-regular-150-font-size);
+                    font-weight: var(--_14-primary-regular-150-font-weight);
+                    line-height: var(--_14-primary-regular-150-line-height);
+                    letter-spacing: var(--_14-primary-regular-150-letter-spacing);
+                }
+                @include xs {
+                    display: inline;
+                    max-width: max-content;
+                    width: 80px;
+                    text-align: right;
+                    color: var(--dark-dark-d2);
+                    font-family: var(--_14-primary-regular-150-font-family);
+                    font-size: var(--_14-primary-regular-150-font-size);
+                    font-weight: var(--_14-primary-regular-150-font-weight);
+                    line-height: var(--_14-primary-regular-150-line-height);
+                    letter-spacing: var(--_14-primary-regular-150-letter-spacing);
+                }
+            }
+        }
+        &Members {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding-left: 0.6rem;
+            @include mobile {
+                margin-left: 1.5rem;
+                padding-left: 0;
+            }
+            @include xs {
+                margin-left: 1.5rem;
+                padding-left: 0;
+            }
+        }
+        &MemberContainer {
+            position: relative;
+            margin-left: -0.6rem;
+            margin-top: 0.125rem;
+            @include mobile {
+                margin-left: 0.25rem;
+                margin-top: 0;
+                &:first-child {
+                    margin-left: 0;
+                }
+            }
+            @include xs {
+                margin-left: 0.25rem;
+                margin-top: 0;
+                &:first-child {
+                    margin-left: 0;
+                }
+            }
+            img {
+                width: 37px;
+                height: 37px;
+                border-radius: 100%;
+                @include mobile {
+                    width: 24px;
+                    height: 24px;
+                }
+                @include xs {
+                    width: 24px;
+                    height: 24px;
+                }
+            }
+        }
+        &Tooltip {
+            position: absolute;
+            z-index: $firstLevel;
+            top: -0.5rem;
+            right: 0;
+            font-family: var(--_12-primary-regular-150-font-family);
+            font-size: var(--_12-primary-regular-150-font-size);
+            font-weight: var(--_12-primary-regular-150-font-weight);
+            line-height: var(--_12-primary-regular-150-line-height);
+            letter-spacing: var(--_12-primary-regular-150-letter-spacing);
+            background-color: var(--dark-dark-l2);
+            color: var(--light-white);
+            border-radius: 1rem;
+            padding-inline: .25rem;
+            width: max-content;
+        }
+        &ExtraData {
+            display: flex;
+            justify-content: flex-end;
+            @include mobile {
+                justify-content: flex-start;
+            }
+            @include xs {
+                justify-content: flex-start;
+            }
+        }
+        &Trigger.dxButton.btn.btn-unstyled {
+            i {
+                font-size: 24px;
+            }
+            &:hover {
+                background-color: transparent;
+            }
+            @include mobile {
+                position: absolute;
+                right: 0;
+                top: 0;
+                margin: 8px;
+            }
+            @include xs {
+                position: absolute;
+                right: 0;
+                top: 0;
+                margin: 8px;
+            }
+        }
+    }
+    .dxEmptyState {
+        border-radius: 0;
+        border-top: 1px solid var(--dark-l5);
+        border-bottom: 1px solid var(--dark-l5);
+    }
+    .dxToggleMenu .dxButton.btn.btn-secondary {
+        border-color: var(--light-light-d2);
+        color: var(--secondary-secondary);
+    }
+    .dxToggleMenu .dxButton,
+    .dxToggleMenu .dxButton.btn.btn-primary,
+    .dxToggleMenu .dxButton.btn.btn-secondary {
+        height: 40px;
+        font-family: var(--_16-primary-semibold-100-font-family);
+        font-size: var(--_16-primary-semibold-100-font-size);
+        font-weight: var(--_16-primary-semibold-100-font-weight);
+        line-height: var(--_16-primary-semibold-100-line-height);
+        letter-spacing: var(--_16-primary-semibold-100-letter-spacing);
+    }
+    .dxToggleMenu .dxButton.btn.btn-primary {
+        border: 1px solid var(--light-white);
+    }
+}
+//Dropdown Menu classes, hence doesn't comply with library naming convention
+div.dropdown-menu.show {
+    min-width: 200px;
+    @include mobile {
+        min-width: auto;
+    }
+    @include xs {
+        min-width: 250px;
+    }
+}
+.dropdown-item {
+    color: var(--dark-dark);
+}

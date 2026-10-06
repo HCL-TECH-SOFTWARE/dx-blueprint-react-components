@@ -1,0 +1,19 @@
+@import "./breakpoints.scss";
+@import "./variables.scss";
+
+:export {
+    xs: $screen-xs-min;
+    sm: $screen-sm-min;
+    md: $screen-md-min;
+
+    zindex: {
+        firstLevel: $firstLevel;
+        secondLevel: $secondLevel;
+        thirdLevel: $thirdLevel;
+        fourthLevel: $fourthLevel;
+        foregroundLevel: $foregroundLevel;
+        dropdownLevel: $dropdownLevel;
+        editButtonLevel: $editButtonLevel;
+        navigationLevel: $navigationLevel;
+    }
+}

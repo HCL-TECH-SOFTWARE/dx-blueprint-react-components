@@ -1,0 +1,80 @@
+.dxToolButton {
+    margin: 0px 15.5px;
+
+    &__badge::before {
+        content: attr(data-count);
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        background-color: var(--primary-primary);
+        color: var(--light-white);
+        position: absolute;
+        bottom: 1.25rem;
+        left: 50%;
+        padding: 0.75rem;
+        font-family: var(--_10-semibold-125-font-family);
+        font-size: var(--_10-semibold-125-font-size);
+        font-weight: var(--_10-semibold-125-font-weight);
+        line-height: var(--_10-semibold-125-line-height);
+        letter-spacing: var(--_10-semibold-125-letter-spacing);
+    }
+
+    &__buttonContainer {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    &__button {
+        position: relative;
+        background: transparent;
+        border: none;
+        padding: 0;
+
+        &Icon {
+            font-size: var(--_32-regular-150-font-size);
+            color: var(--dark-dark);
+        }
+    }
+
+    &__indicator {
+        font-size: 64px;
+        color: var(--light-light);
+    }
+
+    &__imageButton {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        margin-bottom: 0.5rem;
+    }
+
+    &__imageContainer {
+        width: 32px;
+        height: 32px;
+        margin-bottom: 0.25rem;
+        position: relative;
+    }
+
+    &__image {
+        width: 100%;
+        object-fit: cover;
+        height: 32px;
+        border-radius: 50%;
+    }
+
+    &__label {
+        margin-bottom: 0;
+        color: var(--dark-dark);
+        text-align: center;
+        font-family: var(--_10-primary-regular-100-font-family);
+        font-size: var(--_10-primary-regular-100-font-size);
+        font-weight: var(--_10-primary-regular-100-font-weight);
+        line-height: var(--_10-primary-regular-100-line-height);
+        letter-spacing: var(--_10-primary-regular-100-letter-spacing);
+    }
+}

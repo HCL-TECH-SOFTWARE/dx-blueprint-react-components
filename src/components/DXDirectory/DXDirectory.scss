@@ -1,0 +1,16 @@
+.dxDirectory {
+    &__items {
+        padding: 1.25rem 0 1.25rem 0;
+    }
+
+    &__item {
+        &:first-child {
+            padding-top: 0;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--light-light-d2);
+        }
+
+        padding: 1.5rem 0;
+        border-bottom: 1px solid var(--light-light-d2);
+    }
+}

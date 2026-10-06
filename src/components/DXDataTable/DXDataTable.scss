@@ -1,0 +1,52 @@
+.dxDataTable {
+    & .rdt_Table {
+        border-radius: 4px;
+    }
+
+    & .rdt_TableHead .rdt_TableHeadRow {
+        border-radius: 4px 4px 0 0;
+        background-color: var(--light-light-l1);
+        color: var(--dark-dark);
+        font-family: var(--_14-primary-semibold-150-font-family);
+        font-size: var(--_14-primary-semibold-150-font-size);
+        font-weight: var(--_14-primary-semibold-150-font-weight);
+        line-height: var(--_14-primary-semibold-150-line-height);
+        letter-spacing: var(--_14-primary-semibold-150-letter-spacing);
+    }
+
+    & .rdt_Table .rdt_TableBody {
+        & .rdt_TableRow {
+            color: var(--dark-dark);
+            font-family: var(--_14-primary-regular-150-font-family);
+            font-size: var(--_14-primary-regular-150-font-size);
+            font-weight: var(--_14-primary-regular-150-font-weight);
+            line-height: var(--_14-primary-regular-150-line-height);
+            letter-spacing: var(--_14-primary-regular-150-letter-spacing);
+
+            &:last-child {
+                border-radius: 0 0 4px 4px;
+            }
+        }
+    }
+
+    // This changes the color of the Striped variant
+    & .rdt_Table .rdt_TableBody .krEPjR {
+        background-color: var(--light-light);
+    }
+
+    // This changes the color of the Expander div
+    & .rdt_Table .rdt_TableBody .rdt_ExpanderRow {
+        background-color: var(--light-light-d1);
+    }
+
+    // Pagination styles
+    & .rdt_Pagination {
+        background-color: var(--light-white);
+        color: var(--dark-dark-d2);
+        font-family: var(--_14-primary-regular-150-font-family);
+        font-size: var(--_14-primary-regular-150-font-size);
+        font-weight: var(--_14-primary-regular-150-font-weight);
+        line-height: var(--_14-primary-regular-150-line-height);
+        letter-spacing: var(--_14-primary-regular-150-letter-spacing);
+    }
+}

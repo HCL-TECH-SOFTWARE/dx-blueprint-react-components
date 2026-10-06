@@ -1,0 +1,271 @@
+.dxMyLinksCard {
+    background: var(--light-white);
+    box-shadow: 0px 2px 4px rgba(39, 40, 51, 0.12);
+    border-radius: 8px;
+    width: 100%;
+    max-width: 316px;
+    height: 58px;
+    box-sizing: border-box;
+
+    &:has(.dxMyLinksCard__kebabToggle.show) {
+        box-shadow: 0px 2px 4px rgba(39, 40, 51, 0.12), inset 0 0 0 1px var(--primary-primary);
+    }
+
+    &__main {
+        border-radius: 8px;
+        align-items: center;
+        display: flex;
+        height: 100%;
+        box-sizing: border-box;
+        padding: 0.75rem;
+        gap: 0.75rem;
+
+        &:hover {
+            text-decoration: none;
+            color: var(--dark-dark);
+        }
+
+        button {
+            background-color: transparent;
+            border: none;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 4px;
+            flex: 0 0 auto;
+
+            i {
+                font-size: 24px;
+                width: 1.5rem;
+                height: 1.5rem;
+                line-height: 1;
+                color: var(--dark-dark);
+            }
+        }
+
+        & .dxButton.btn.btn-unstyled {
+            background-color: transparent;
+            border: none;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 4px;
+            flex: 0 0 auto;
+
+            &:hover {
+                background-color: transparent;
+            }
+
+            i {
+                font-size: 24px;
+                width: 1.5rem;
+                height: 1.5rem;
+                line-height: 1;
+                color: var(--dark-dark);
+            }
+        }
+
+        &--link {
+            text-decoration: none;
+
+            &:hover {
+                outline: 0.063rem solid var(--primary-primary);
+            }
+        }
+    }
+
+    &__label {
+        align-items: center;
+        display: flex;
+        gap: 0.75rem;
+        font-family: var(--_16-primary-regular-150-font-family);
+        font-size: var(--_16-primary-regular-150-font-size);
+        letter-spacing: var(--_16-primary-regular-150-letter-spacing);
+        line-height: var(--_16-primary-regular-150-line-height);
+        font-weight: var(--_16-primary-regular-150-font-weight);
+        color: var(--dark-dark);
+        margin-right: auto;
+
+        // Single-line clamp for the plain (no-subLabel) label span only —
+        // must not reach __labelText, which is also a direct-child <span>
+        // but needs its own flex-column layout (see &Text below).
+        &>span:not(.dxMyLinksCard__labelText) {
+            display: -webkit-box;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+        }
+
+
+        // No overflow: hidden here (unlike the other three occurrences of
+        // that declaration in this file, which are load-bearing for
+        // line-clamp truncation and must not be touched). Every coolicons
+        // glyph has an advance width of exactly 1em with no ink outside
+        // that box, so there is no real overflow to contain — but
+        // ci-Cloud's ink fills the box edge-to-edge, and overflow: hidden
+        // was clipping its antialiased edge columns whenever the box
+        // landed on a fractional pixel position. Absolute px units (not
+        // rem) keep the box and the 28px glyph tracking each other even
+        // if the root font-size is ever not 16px.
+        i {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: var(--dark-dark);
+        }
+
+        &--link {
+            text-decoration: none;
+
+            &:hover {
+                color: initial;
+                text-decoration: none;
+
+                &>span:not(.dxMyLinksCard__labelText) {
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        &Text {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        &Title {
+            font-family: var(--_16-primary-semibold-100-font-family);
+            font-size: var(--_16-primary-semibold-100-font-size);
+            letter-spacing: var(--_16-primary-semibold-100-letter-spacing);
+            line-height: var(--_16-primary-semibold-100-line-height);
+            font-weight: var(--_16-primary-semibold-100-font-weight);
+            color: var(--dark-dark);
+            display: -webkit-box;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+        }
+
+        &Subtitle {
+            font-family: var(--_12-primary-regular-100-font-family);
+            font-size: var(--_12-primary-regular-100-font-size);
+            letter-spacing: var(--_12-primary-regular-100-letter-spacing);
+            line-height: var(--_12-primary-regular-100-line-height);
+            font-weight: var(--_12-primary-regular-100-font-weight);
+            color: var(--dark-dark);
+            display: -webkit-box;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+        }
+    }
+
+    &__kebabToggle {
+        &::after {
+            display: none;
+        }
+
+        &:hover, &.show.btn {
+            background-color: var(--light-light);
+        }
+    }
+}
+
+// The dropdown menu is portaled into document.body by PortalDropdownMenu,
+// so it is NOT a descendant of .dxMyLinksCard — this block must stay
+// top-level (a sibling of .dxMyLinksCard), never nested under it.
+//
+// Specificity note: the base rule below is (0,2,0), enough to beat
+// Bootstrap's own .dropdown-menu (0,1,0) for border-radius/padding/gap/
+// background-color/border. It is NOT enough to beat the unscoped
+// `div.dropdown-menu.show { min-width: 200px }` leaking from
+// DXJiraTaskCard.scss:610, which is (0,2,1) (two classes + the `div`
+// element) and beats a plain (0,2,0) rule on element count. min-width
+// is therefore declared separately inside `&.show`, compiling to
+// `.dxMyLinksCard__dropdownMenu.dropdown-menu.show` at (0,3,0) — three
+// classes beats two classes + one element because class count is
+// compared before element count. Scoping to `.show` is also
+// functionally complete: a closed menu is display:none, so its
+// min-width cannot matter. Do NOT fix DXJiraTaskCard.scss here — its
+// unscoped globals are a real defect but out of scope for this ticket.
+.dxMyLinksCard__dropdownMenu.dropdown-menu {
+    border-radius: 8px;
+    padding: 8px;
+    background-color: var(--light-white);
+    border: none;
+    // "Dropdown Shadow - Dark" redline — replaces the card's own shadow
+    // that this block previously carried over.
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25);
+    z-index: 1000;
+    margin-left: 12px;
+    margin-right: -12px;
+
+    // Popper anchors the menu to the kebab toggle, not the card.
+    &[data-popper-placement^="bottom"] {
+        margin-top: 12px;
+    }
+
+    // A flipped menu is bottom-anchored (inset: auto 0 0 auto), so it
+    // needs margin-bottom, not margin-top.
+    &[data-popper-placement^="top"] {
+        margin-bottom: 12px;
+    }
+
+    // Beat Bootstrap's custom-property path in addition to winning on
+    // selector specificity, so the CSS-variable route can't reassert
+    // library defaults if this block's own declarations are ever removed.
+    --bs-dropdown-min-width: 164px;
+    --bs-dropdown-padding-x: 8px;
+    --bs-dropdown-padding-y: 8px;
+
+    &.show {
+        min-width: 164px;
+    }
+
+    .dropdown-item.dxMyLinksCard__dropdownItem {
+        font-family: var(--_14-primary-regular-150-font-family);
+        font-size: var(--_14-primary-regular-150-font-size);
+        letter-spacing: var(--_14-primary-regular-150-letter-spacing);
+        line-height: var(--_14-primary-regular-150-line-height);
+        font-weight: var(--_14-primary-regular-150-font-weight);
+        color: var(--secondary-secondary);
+        padding: 8px;
+        border-radius: 8px;
+        background-color: transparent;
+        border: none;
+        text-align: left;
+        white-space: normal;
+
+        // Guarded explicitly (rather than relying on Bootstrap's
+        // pointer-events: none to make hover moot) so the disabled
+        // treatment below cannot regress if that behaviour ever changes.
+        &:hover:not(:disabled):not(.disabled) {
+            color: var(--dark-dark);
+            background-color: var(--primary-primary-l3);
+        }
+
+        // react-bootstrap's DropdownItem renders through @restart/ui's
+        // Anchor, which with no `href` emits a <button> — a disabled item
+        // therefore carries BOTH the `.disabled` class and the `:disabled`
+        // attribute, so both selectors are required. Deliberately does NOT
+        // override Bootstrap's `.dropdown-item:disabled { pointer-events:
+        // none }` — that is wanted behaviour, not a defect to fix.
+        &.disabled,
+        &:disabled {
+            color: var(--secondary-secondary-l1);
+            background-color: transparent;
+        }
+    }
+}

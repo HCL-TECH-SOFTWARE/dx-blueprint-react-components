@@ -1,0 +1,63 @@
+import { Meta, IconGallery, IconItem } from '@storybook/addon-docs/blocks';
+import * as css from 'css-tree';
+import styles from '../../static/coolicons.txt?raw';
+import Admonition from '../blocks/Admonition.mdx';
+import AdditionalResources from '../blocks/additional-resources.mdx';
+
+export const ast = css.parse(styles);
+
+export function Iconography({ ast }) {
+    function isRule(node) {
+        if (node.type !== 'Rule') {
+            return false;
+        }
+        if (!node.prelude || !node.block) {
+            return false;
+        }
+        if (!node.prelude.children || node.prelude.children.isEmpty) {
+            return false;
+        }
+        if (!node.prelude.children.first.children || node.prelude.children.first.children.isEmpty) {
+            return false;
+        }
+        if (node.prelude.children.first.children.first.type !== 'ClassSelector') {
+            return false;
+        }
+        return true;
+    }
+    const types = css.findAll(ast, isRule);
+
+    function renderIconItem(type) {
+        const rawName = type?.prelude?.children?.first?.children?.first?.name || null;
+
+        return (
+            <>
+                
+                <IconItem name={`${rawName}`}>
+                    <i className={`${rawName}`} />
+                </IconItem>
+            </>
+        )
+    }
+    return (
+        <IconGallery>
+            {types.map(renderIconItem)}
+        </IconGallery>
+    );
+}
+
+<Meta title="Foundations/Icons" />
+
+<header>
+Foundations
+
+# Icons
+
+Icons are an essential part of the user interface, providing visual cues that enhance usability and accessibility. 
+</header>
+
+Icons help users quickly identify actions, content, and navigation elements. The Blueprint design system uses [coolicons](https://coolicons.cool/) for its iconography. The icons are designed to be simple, clean, and easily recognizable. Use these icons to improve the user experience by making interfaces more intuitive and visually appealing.
+
+<Iconography ast={ast} />
+
+<AdditionalResources />

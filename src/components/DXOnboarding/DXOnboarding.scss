@@ -1,0 +1,103 @@
+.dxOnboarding {
+
+    &__button {
+        border: 1px solid var(--primary-primary);
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        text-align: center;
+        width: 45%;
+
+        &:hover {
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        &.introjs-prevbutton {
+            font-family: var(--_16-primary-semibold-150-font-family);
+            font-size: var(--_16-primary-semibold-150-font-size);
+            line-height: var(--_16-primary-semibold-150-line-height);
+            font-weight: var(--_16-primary-semibold-150-font-weight);
+            letter-spacing: var(--_16-primary-semibold-150-letter-spacing);
+            background-color: var(--light-white);
+            color: var(--secondary-secondary);
+            border-color: var(--secondary-secondary);
+            padding-right: 0.25rem;
+
+            &:hover {
+                background-color: var(--light-light-l1);
+            }
+
+            &.introjs-disabled {
+                color: var(--light-light-d2);
+                border-color: var(--light-light-d2);
+            }
+        }
+
+        &.introjs-nextbutton {
+            font-family: var(--_16-primary-semibold-150-font-family);
+            font-size: var(--_16-primary-semibold-150-font-size);
+            line-height: var(--_16-primary-semibold-150-line-height);
+            font-weight: var(--_16-primary-semibold-150-font-weight);
+            letter-spacing: var(--_16-primary-semibold-150-letter-spacing);
+            background-color: var(--primary-primary);
+            color: var(--light-light);
+            padding-left: 0.25rem;
+
+            &:hover {
+                background-color: var(--primary-primary-d1);
+            }
+        }
+    }
+
+    &__tooltip {
+        &.introjs-floating {
+            width: max-content;
+            max-width: 35vw;
+        }
+
+        .introjs-tooltip-header {
+            .introjs-tooltip-title {
+                font-family: var(--_20-primary-semibold-150-font-family);
+                font-size: var(--_20-primary-semibold-150-font-size);
+                line-height: var(--_20-primary-semibold-150-line-height);
+                font-weight: var(--_20-primary-semibold-150-font-weight);
+                letter-spacing: var(--_20-primary-semibold-150-letter-spacing);
+                color: var(--secondary-secondary);
+            }
+
+            .introjs-skipbutton {
+                color: var(--secondary-secondary);
+            }
+
+            border-bottom: 1px solid var(--light-light-d2);
+            padding-bottom: 0.5rem;
+        }
+
+        .introjs-tooltipbuttons {
+            border-top: 1px solid var(--light-light-d2);
+            display: flex;
+            justify-content: space-evenly;
+
+            &:after {
+                display: none;
+            }
+        }
+
+
+        .introjs-tooltiptext {
+            font-size: var(--_16-primary-regular-150-font-size);
+            letter-spacing: var(--_16-primary-regular-150-letter-spacing);
+            line-height: var(--_16-primary-regular-150-line-height);
+            font-weight: var(--_16-primary-regular-150-font-weight);
+
+            * {
+                color: var(--dark-dark);
+                font-family: var(--_16-primary-regular-150-font-family);
+            }
+
+            img {
+                max-width: 100%;
+            }
+        }
+    }
+}
