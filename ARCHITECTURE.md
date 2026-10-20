@@ -12,7 +12,7 @@ HCL DX Blueprint is a React 19 + TypeScript component library that ships as CJS,
 │  import { DXCard, CECNewsTile, ... } from '@blueprint…' │
 └──────────────────────┬──────────────────────────────────┘
                        │
-              published via Artifactory
+              published via npm registry
                        │
 ┌──────────────────────▼──────────────────────────────────┐
 │  Library Entry Point  (src/index.ts)                    │
@@ -115,7 +115,6 @@ DXComponentName/
 ├── DXComponentName.tsx         # Implementation
 ├── DXComponentName.test.tsx    # Unit tests (Jest + RTL)
 ├── DXComponentName.stories.tsx # Storybook stories
-├── DXComponentName.storyshots.tsx # Auto-generated composite story for visual regression (do not edit)
 ├── DXComponentName.scss        # BEM-scoped styles
 └── index.ts                    # Barrel: export { default } from "./DXComponentName"
 ```
@@ -174,36 +173,42 @@ DXComponentName/
 ### Mutation Testing (Stryker)
 
 - **Targets:** `src/components/**/*.tsx` (excludes tests, stories, index files)
-- **Thresholds:** high 80%, low 60%, break (CI fail) 50%
+- **Thresholds:** high 80%, low 70%, break (CI fail) 65%
 - **Incremental mode** caches results in `src/__tests__/mutation/stryker-incremental.json`
 - **Runner:** Jest, 8 workers, 60s timeout per mutant
 
 ### Visual Snapshot Tests
 
-- **Story source:** 126 auto-generated `*.storyshots.tsx` composite stories (one per component, DXVideo excluded); all variants rendered stacked vertically in a single page
-- **`*.storyshots.tsx` files are auto-generated** — do not edit them manually
+Visual snapshot testing infrastructure was removed during the open-source preparation. Component visual regression can be verified through Storybook's built-in interaction and visual testing capabilities.
 
 ## CI/CD (GitHub Actions)
 
 ```
 ┌─────────────────────────────────────────┐
-│  ci.yml (on: push / pull_request)       │
+│  ci.yml (on: push to main / PR)         │
 │  ├── npm ci                             │
 │  ├── npm run lint                       │
-│  ├── npm run test:unit                  │
 │  ├── npm run build:lib (library build)  │
-│  └── npm run build:storybook (docs)     │
-│                                         │
-│  Artifacts: coverage, test reports,     │
-│             Storybook static site       │
+│  ├── npm run test:unit --coverage       │
+│  └── npm run test:mutation              │
 └─────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────┐
-│  release.yml (on: tag push)             │
+│  docs.yml (on: push to main)            │
 │  ├── npm ci                             │
-│  ├── npm run test:unit                  │
+│  ├── npm run build:storybook            │
+│  └── deploy → GitHub Pages (gh-pages)   │
+└─────────────────────────────────────────┘
+
+┌─────────────────────────────────────────┐
+│  release.yml (on: workflow_dispatch)    │
+│  ├── npm ci                             │
+│  ├── npm run lint                       │
 │  ├── npm run build:lib                  │
-│  └── npm publish → npm registry         │
+│  ├── npm run test:unit --coverage       │
+│  ├── npm version (set version)          │
+│  ├── npm publish → npm registry         │
+│  └── git tag + push                     │
 └─────────────────────────────────────────┘
 ```
 
@@ -214,12 +219,13 @@ DXComponentName/
 ## Storybook Documentation
 
 ```
-src/docs/
-├── overview/        # Introduction, principles, changelog
-├── how-to/          # Get started, install, configure, customize
+docs/
+├── overview/                  # Introduction, principles, changelog
+├── how-to/                    # Get started, install, configure, customize
 ├── information-architecture/  # Portal structure guidance
-├── foundations/      # Design tokens, typography, colors
-└── blocks/          # Reusable MDX fragments (not displayed as stories)
+├── foundations/               # Design tokens, typography, colors
+├── assets/                    # Static assets for documentation
+└── blocks/                    # Reusable MDX fragments (not displayed as stories)
 ```
 
 Story sort order: **Overview → How To → Information Architecture → Foundations → Components**.
