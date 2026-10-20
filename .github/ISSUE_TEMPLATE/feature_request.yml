@@ -1,0 +1,25 @@
+name: Feature request
+description: Suggest a new feature or enhancement.
+labels: ['enhancement', 'pending assessment']
+body:
+  - type: checkboxes
+    attributes:
+      label: Not a duplicate
+      description: Before opening a feature request, please check if it has already been suggested.
+      options:
+        - label: I have checked that this feature does not already exist
+          required: true
+  - type: textarea
+    attributes:
+      label: Summary
+      description: Describe the feature and how it should work.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Examples
+      description: Provide links to similar implementations, design specifications, or screenshots of the expected behavior.
+  - type: textarea
+    attributes:
+      label: Motivation
+      description: What are you trying to accomplish? Providing context helps us come up with a solution that is more useful in the real world.

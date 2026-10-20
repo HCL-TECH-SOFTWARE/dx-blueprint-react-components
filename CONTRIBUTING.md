@@ -92,10 +92,19 @@ npm run build           # Library build (CJS, ESM, UMD via Rollup)
 npm run build:storybook # Build Storybook static site
 ```
 
+## Contributor License Agreement (CLA)
+
+We require all contributors to sign a Contributor License Agreement (CLA) before we can accept contributions. When you open a pull request, the CLA Assistant bot will check whether you have signed. If the CLA check fails, you can sign the CLA here:
+
+https://cla-assistant.io/HCL-TECH-SOFTWARE/dx-blueprint-react-components
+
+You only need to sign the CLA once — it covers all future contributions to this repository.
+
 ## Pull Request Expectations
 
 - All tests pass (`npm run test:unit`)
 - Lint passes (`npm run lint`)
+- CLA is signed (the CLA Assistant bot will verify this automatically)
 - Clear, descriptive commit messages
 - Work on a feature branch — never commit directly to `main`
 - Keep PRs focused on a single change

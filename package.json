@@ -89,7 +89,8 @@
   "module": "dist/esm/index.js",
   "umd": "dist/umd/index.js",
   "files": [
-    "dist"
+    "dist",
+    "THIRD-PARTY-LICENSES"
   ],
   "types": "dist/index.d.ts",
   "publishConfig": {
