@@ -2,10 +2,7 @@ thead {
     display: none;
 }
 
-.sbdocs.sbdocs-content :where(table:not(.sb-anchor, .sb-unstyled, .sb-unstyled table)) {
-
-    tr,
-    td {
-        border: none;
-    }
+.sbdocs.sbdocs-content :where(table:not(.sb-anchor, .sb-unstyled, .sb-unstyled table)) tr,
+.sbdocs.sbdocs-content :where(table:not(.sb-anchor, .sb-unstyled, .sb-unstyled table)) td {
+    border: none;
 }
