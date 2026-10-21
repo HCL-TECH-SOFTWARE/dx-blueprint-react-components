@@ -52,7 +52,28 @@ test( "does not render optional desktop search and meeting content when omitted"
     expect( document.querySelector( ".dxMyNextMeeting" ) ).toBeNull();
 } );
 
-test( "renders the mobile header and forwards mobile search submissions", () => {
+test( "desktop layout renders secondLevelContainer div", () => {
+    render( <DXNavigationHeader2 {...NavigationHeader2Args} /> );
+    expect( document.getElementById( "secondLevelContainer" ) ).not.toBeNull();
+} );
+
+test( "desktop layout renders panels container", () => {
+    render( <DXNavigationHeader2 {...NavigationHeader2Args} /> );
+    expect( document.getElementById( "dxNavHeader2__panels" ) ).not.toBeNull();
+} );
+
+test( "desktop layout renders drawer content container", () => {
+    render( <DXNavigationHeader2 {...NavigationHeader2Args} /> );
+    expect( document.getElementById( "NH-drawer-content" ) ).not.toBeNull();
+} );
+
+test( "desktop layout does not render mobile header", () => {
+    render( <DXNavigationHeader2 {...NavigationHeader2Args} /> );
+    expect( document.querySelector( ".dxNavHeaderMobile" ) ).toBeNull();
+    expect( document.querySelector( ".dxNavigationHeader2" ) ).not.toBeNull();
+} );
+
+const setupMobileMatchMedia = () => {
     const originalMatchMedia = window.matchMedia;
     const matchMedia = jest.fn().mockReturnValue( {
         matches: true,
@@ -65,6 +86,13 @@ test( "renders the mobile header and forwards mobile search submissions", () => 
         dispatchEvent: jest.fn(),
     } );
     Object.defineProperty( window, "matchMedia", { configurable: true, value: matchMedia } );
+    return () => {
+        Object.defineProperty( window, "matchMedia", { configurable: true, value: originalMatchMedia } );
+    };
+};
+
+test( "renders the mobile header and forwards mobile search submissions", () => {
+    const restore = setupMobileMatchMedia();
     const searchFn = jest.fn();
     const { unmount } = render( <DXNavigationHeader2
         {...NavigationHeader2Args}
@@ -84,5 +112,54 @@ test( "renders the mobile header and forwards mobile search submissions", () => 
     expect( searchFn ).toHaveBeenCalledWith();
 
     unmount();
-    Object.defineProperty( window, "matchMedia", { configurable: true, value: originalMatchMedia } );
+    restore();
+} );
+
+test( "mobile view does not render desktop container", () => {
+    const restore = setupMobileMatchMedia();
+    const { unmount } = render( <DXNavigationHeader2 {...NavigationHeader2Args} /> );
+
+    expect( document.querySelector( ".dxNavigationHeader2" ) ).toBeNull();
+    expect( document.querySelector( ".dxNavHeaderMobile" ) ).not.toBeNull();
+
+    unmount();
+    restore();
+} );
+
+test( "mobile view uses secondary logo when available", () => {
+    const restore = setupMobileMatchMedia();
+    const propsWithSecondary = {
+        ...NavigationHeader2Args,
+        portalLogos: {
+            ...NavigationHeader2Args.portalLogos,
+            secondary: {
+                imageSrc: "/secondary-logo.png",
+                label: "Secondary Logo"
+            }
+        }
+    };
+    const { unmount } = render( <DXNavigationHeader2 {...propsWithSecondary} /> );
+    const img = document.querySelector( ".dxNavHeaderMobile__portalLogo img" );
+    expect( img ).toHaveAttribute( "src", "/secondary-logo.png" );
+    expect( img ).toHaveAttribute( "alt", "Secondary Logo" );
+
+    unmount();
+    restore();
+} );
+
+test( "mobile view falls back to main logo when secondary is absent", () => {
+    const restore = setupMobileMatchMedia();
+    const propsNoSecondary = {
+        ...NavigationHeader2Args,
+        portalLogos: {
+            ...NavigationHeader2Args.portalLogos,
+            secondary: undefined,
+        }
+    };
+    const { unmount } = render( <DXNavigationHeader2 {...propsNoSecondary} /> );
+    const img = document.querySelector( ".dxNavHeaderMobile__portalLogo img" );
+    expect( img ).toHaveAttribute( "src", NavigationHeader2Args.portalLogos.main.imageSrc );
+
+    unmount();
+    restore();
 } );
