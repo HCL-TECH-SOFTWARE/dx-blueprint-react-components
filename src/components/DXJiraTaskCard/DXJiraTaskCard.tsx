@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import "./DXJiraTaskCard.scss";
 import React, { useEffect, useState } from "react";
 import { IconButtonProps, ImageProps, LinksProps, StateIcons, TagProps, getIcon, getLinkTarget, renderAvatarProjectMembers } from "../../utilities";
@@ -11,12 +10,14 @@ import { ToggleMenuProps } from "../DXToggleMenu/DXToggleMenu";
 import DXButton from "../DXButton";
 import DXEmptyState, { EmptyStateProps } from "../DXEmptyState/DXEmptyState";
 import { CardComponent } from "../../utilities/CardComponent/CardComponent";
+
 interface JiraTaskItem {
     title: LinksProps;
     id?: string,
     text?: string,
     status?: TagProps;
 }
+
 export interface JiraTaskCardProps extends CardComponent {
     tasks?: JiraTaskItem[];
     projectInfo: ProjectCardProps;
@@ -24,6 +25,7 @@ export interface JiraTaskCardProps extends CardComponent {
     icons?: StateIcons;
     dropdownOpen?: boolean;
 }
+
 export interface ProjectCardProps {
     name: string,
     img?: ImageProps,
@@ -40,7 +42,9 @@ export interface ProjectCardProps {
     }[];
     action?: IconButtonProps;
 }
+
 const DXJiraTaskCard = ( props: JiraTaskCardProps ) => {
+
     const [showTasks, setShowTasks] = useState( props.dropdownOpen || false );
     const [activeFilters, setActiveFilters] = useState<any>( [] );
     const [tasksFiltered, setTasksFiltered] = useState( [] as JiraTaskItem[] );
@@ -48,17 +52,20 @@ const DXJiraTaskCard = ( props: JiraTaskCardProps ) => {
     const [newOptions, setNewOptions] = useState<any>( [] );
     const [disabledMenu, setDisabledMenu] = useState( false );
     const [expand, setExpand] = useState( props.dropdownOpen || false );
+
     useEffect( () => {
         if ( props.dropdownOpen !== undefined ) {
             setExpand( props.dropdownOpen );
         }
     }, [props.dropdownOpen] );
+
     useEffect( () => {
         if ( props.tasks && props.tasks.length > 0 ) {
             let tasksStatus = props.tasks.map( ( task: any ) => ( capitalize( task.status.label ) ) );
             setNewOptions( Array.from( new Set( tasksStatus ) ) );
         }
     }, [props.tasks] );
+
     useEffect( () => {
         if ( activeFilters.length > 0 ) {
             let finalOptions = [];
@@ -67,12 +74,15 @@ const DXJiraTaskCard = ( props: JiraTaskCardProps ) => {
                     return item;
                 }
             } );
+
             setNewOptions( finalOptions );
         }
     }, [activeFilters] );
+
     useEffect( () => {
         newOptions.length === 0 ? setDisabledMenu( true ) : setDisabledMenu( false );
     }, [newOptions] );
+
     const typeFilter = () => {
         if ( props.tasks && props.tasks.length <= 4 ) {
             let toggleProps = {} as ToggleMenuProps;
@@ -84,6 +94,7 @@ const DXJiraTaskCard = ( props: JiraTaskCardProps ) => {
                     handleClick: selectedOptionToggleMenu
                 }
             ) )];
+
             return (
                 <>
                     <div className="dxJiraTaskCard__listHeader">
@@ -151,9 +162,11 @@ const DXJiraTaskCard = ( props: JiraTaskCardProps ) => {
             );
         }
     };
+
     const capitalize = ( str: string ) => {
         return str.charAt( 0 ).toUpperCase() + str.slice( 1 );
     };
+
     const selectFilterAdd = ( event: any ) => {
         let newFilter = event;
         let newFilters = [...activeFilters];
@@ -163,6 +176,7 @@ const DXJiraTaskCard = ( props: JiraTaskCardProps ) => {
             setTasksFiltered( tasksFiltered.concat( mainFilter( filter ) as JiraTaskItem[] ) );
         } );
     };
+
     const selectFilterRemove = ( value: string ) => {
         let oldFilter = value;
         let newFilters = activeFilters.filter( ( item: string ) => item !== oldFilter );
@@ -173,9 +187,11 @@ const DXJiraTaskCard = ( props: JiraTaskCardProps ) => {
                     return item;
                 }
             } ) as JiraTaskItem[] );
+
         newOptions.push( oldFilter );
         setNewOptions( newOptions );
     };
+
     const mainFilter = ( status: any ) => {
         return props.tasks && props.tasks.filter( ( item ) => {
             if ( item?.status?.label.toLowerCase() === status.toLowerCase() ) {
@@ -183,8 +199,13 @@ const DXJiraTaskCard = ( props: JiraTaskCardProps ) => {
             }
         } );
     };
+
     const selectedOptionToggleMenu = ( status: any, detail: any ) => {
-        if ( detail[2] === "btn-secondary" ) {
+        const isSecondaryButton = typeof detail?.contains === "function"
+            ? detail.contains( "btn-secondary" )
+            : detail?.indexOf?.( "btn-secondary" ) !== -1;
+
+        if ( isSecondaryButton ) {
             setTasksFiltered( tasksFiltered.concat( mainFilter( status ) as JiraTaskItem[] ) );
         } else {
             setTasksFiltered(
@@ -195,6 +216,7 @@ const DXJiraTaskCard = ( props: JiraTaskCardProps ) => {
                 } ) as JiraTaskItem[] );
         }
     };
+
     //Jira Task item
     const jiraTaskItem = ( task: JiraTaskItem ) => {
         return (
@@ -222,12 +244,14 @@ const DXJiraTaskCard = ( props: JiraTaskCardProps ) => {
             </li >
         );
     };
+
     //Jira Tasks List
     const jiraTaskList = () => {
         let propsEmpty = props.empty ? props.empty : {
             title: "No tasks here",
             text: "Contact your manager for additional assignments"
         } as EmptyStateProps;
+
         if ( props.tasks && props.tasks.length > 0 ) {
             return (
                 <div className="dxJiraTaskCard__list" data-testid="list-container">
@@ -250,6 +274,7 @@ const DXJiraTaskCard = ( props: JiraTaskCardProps ) => {
             );
         }
     };
+
     //Methods To Project Card
     const renderTags = ( tags: string[] ) => {
         return tags.map( ( tag: string, index: number ) => (
@@ -258,6 +283,7 @@ const DXJiraTaskCard = ( props: JiraTaskCardProps ) => {
             </Badge>
         ) );
     };
+
     const renderMembers = ( members: { name: string, img?: string; }[] ) => {
         return (
             <div className='dxJiraTaskCard__projectMembers' key={"members"}>
@@ -282,6 +308,7 @@ const DXJiraTaskCard = ( props: JiraTaskCardProps ) => {
             </div>
         );
     };
+
     const projectCard = () => {
         return (
             <div className="dxJiraTaskCard__project" data-testid="dxJiraTaskCard-project">
@@ -302,11 +329,13 @@ const DXJiraTaskCard = ( props: JiraTaskCardProps ) => {
                         </div>
                     </div>
                 </div>
+
                 <div className='dxJiraTaskCard__projectExtraData'>
                     <div className='dxJiraTaskCard__projectMemberSection'>
                         <p>Team</p>
                         {renderMembers( props.projectInfo.members )}
                     </div>
+
                     <div className='dxJiraTaskCard__projectButtonSection'>
                         <DXButton
                             onClick={() => setShowTasks( !showTasks )}
@@ -324,6 +353,7 @@ const DXJiraTaskCard = ( props: JiraTaskCardProps ) => {
             </div >
         );
     };
+
     return (
         <div className="dxJiraTaskCard" data-testid="dxJiraTaskCard">
             {projectCard()}
@@ -331,4 +361,5 @@ const DXJiraTaskCard = ( props: JiraTaskCardProps ) => {
         </div>
     );
 };
+
 export default DXJiraTaskCard;

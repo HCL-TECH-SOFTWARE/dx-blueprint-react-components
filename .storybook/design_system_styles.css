@@ -1320,6 +1320,13 @@
     --_32-primary-bold-100-line-height: 100%;
     --_32-primary-bold-100-font-weight: 700;
     --_32-primary-bold-100-color: black;
+    /** _32-primary-regular-100 **/
+    --_32-primary-regular-100-font-family: "NotoSans", "NotoSans-Regular";
+    --_32-primary-regular-100-font-size: 32px;
+    --_32-primary-regular-100-letter-spacing: 0px;
+    --_32-primary-regular-100-line-height: 100%;
+    --_32-primary-regular-100-font-weight: 400;
+    --_32-primary-regular-100-color: black;
     /** _32-primary-bold-125 **/
     --_32-primary-bold-125-font-family: "NotoSans", "NotoSans-Bold";
     --_32-primary-bold-125-font-size: 32px;
@@ -1544,6 +1551,13 @@
     --_54-primary-bold-150-line-height: 150%;
     --_54-primary-bold-150-font-weight: 700;
     --_54-primary-bold-150-color: black;
+    /** _54-semi-bold-125 **/
+    --_54-primary-semibold-125-font-family: "NotoSans", "NotoSans-Bold";
+    --_54-primary-semibold-125-font-size: 54px;
+    --_54-primary-semibold-125-letter-spacing: 0px;
+    --_54-primary-semibold-125-line-height: 125%;
+    --_54-primary-semibold-125-font-weight: 600;
+    --_54-primary-semibold-125-color: black;
     /** _54-semi-bold-150 **/
     --_54-primary-semibold-150-font-family: "NotoSans", "NotoSans-Bold";
     --_54-primary-semibold-150-font-size: 54px;
@@ -2796,6 +2810,15 @@
     line-height: var(--_32-primary-bold-150-line-height);
     font-weight: var(--_32-primary-bold-150-font-weight);
     color: var(--_32-primary-bold-150-color);
+}
+
+._32-primary-regular-100 {
+    font-family: var(--_32-primary-regular-100-font-family);
+    font-size: var(--_32-primary-regular-100-font-size);
+    letter-spacing: var(--_32-primary-regular-100-letter-spacing);
+    line-height: var(--_32-primary-regular-100-line-height);
+    font-weight: var(--_32-primary-regular-100-font-weight);
+    color: var(--_32-primary-regular-100-color);
 }
 
 ._32-primary-regular-150 {

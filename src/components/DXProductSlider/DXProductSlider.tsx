@@ -7,8 +7,11 @@ import { ButtonProps } from "../DXButton/DXButton";
 import DXEmptyState from "../DXEmptyState";
 
 export interface ProductSliderProps {
+    forceMobile?: boolean;
     icons?: {
         scroll?: string;
+        previous?: string;
+        next?: string;
     };
     items: ProductSliderItem[];
 }
@@ -95,19 +98,40 @@ const DXProductSlider = ( props: ProductSliderProps ) => {
         if ( sliderRef.current && imageContainerRef.current ) {
             let maxHeight = 0;
             let mobilePlus = 0;
-            let tempIsMobile = false;
+            let tempIsMobile = !!props.forceMobile;
+            let desktopMinHeight = 0;
+            let sliderElement = sliderRef.current;
 
-            if ( window.innerWidth <= 576 && !isMobile ) {
+            if ( window.innerWidth <= 576 ) {
                 tempIsMobile = true;
             }
 
             if ( tempIsMobile ) {
                 mobilePlus = imageContainerRef.current.parentElement!.scrollHeight;
+            } else {
+                desktopMinHeight = imageContainerRef.current.parentElement!.scrollHeight;
             }
 
             setIsMobile( tempIsMobile );
 
-            sliderRef.current?.querySelectorAll( ".dxProductSlider__card" ).forEach( ( item ) => {
+            if ( tempIsMobile && props.forceMobile ) {
+                let sliderStyles = window.getComputedStyle( sliderElement );
+                let verticalPadding = parseFloat( sliderStyles.paddingTop || "0" ) + parseFloat( sliderStyles.paddingBottom || "0" );
+                let verticalGap = parseFloat( sliderStyles.rowGap || sliderStyles.gap || "0" );
+
+                sliderElement.querySelectorAll( ".dxProductSlider__card" ).forEach( ( item ) => {
+                    ( item as HTMLElement ).style.padding = "";
+                    if ( maxHeight < item.scrollHeight ) {
+                        maxHeight = item.scrollHeight;
+                    }
+                } );
+
+                sliderElement.style.height = `${mobilePlus + maxHeight + verticalGap + verticalPadding}px`;
+
+                return;
+            }
+
+            sliderElement.querySelectorAll( ".dxProductSlider__card" ).forEach( ( item ) => {
                 ( item as HTMLElement ).style.padding = "0";
                 if ( maxHeight < item.clientHeight ) {
                     maxHeight = item.clientHeight;
@@ -115,12 +139,13 @@ const DXProductSlider = ( props: ProductSliderProps ) => {
             } );
 
             maxHeight += 32; // To add padding between slides
+            maxHeight = Math.max( maxHeight, desktopMinHeight );
 
-            sliderRef.current?.querySelectorAll( ".dxProductSlider__card" ).forEach( ( item ) => {
+            sliderElement.querySelectorAll( ".dxProductSlider__card" ).forEach( ( item ) => {
                 ( item as HTMLElement ).style.padding = `${( maxHeight - item.clientHeight ) / 2}px 16px`;
             } );
 
-            sliderRef.current!.style.height = `${maxHeight + mobilePlus}px`;
+            sliderElement.style.height = `${maxHeight + mobilePlus}px`;
         }
     };
 
@@ -145,6 +170,40 @@ const DXProductSlider = ( props: ProductSliderProps ) => {
         return elements;
     };
 
+    const scrollToSegment = ( targetIndex: number ) => {
+        if ( sliderRef.current && imageContainerRef.current ) {
+            setOnButtonScroll( true );
+            setButtonScrollTarget( targetIndex );
+        }
+    };
+
+    const renderMobileControls = () => {
+        const previousIndex = activeSegment === 0 ? props.items.length - 1 : activeSegment - 1;
+        const nextIndex = activeSegment === props.items.length - 1 ? 0 : activeSegment + 1;
+
+        return (
+            <div className="dxProductSlider__mobileControls">
+                <button
+                    type="button"
+                    className="dxProductSlider__mobileControl dxProductSlider__mobileControl--previous"
+                    aria-label="Previous slide"
+                    onClick={() => { scrollToSegment( previousIndex ); }}>
+                    <i className={getIcon( props.icons, "previous", "ci-Chevron_Left" )}></i>
+                </button>
+                <div className="dxProductSlider__navDots dxProductSlider__navDots--mobile">
+                    {renderNavDots()}
+                </div>
+                <button
+                    type="button"
+                    className="dxProductSlider__mobileControl dxProductSlider__mobileControl--next"
+                    aria-label="Next slide"
+                    onClick={() => { scrollToSegment( nextIndex ); }}>
+                    <i className={getIcon( props.icons, "next", "ci-Chevron_Right" )}></i>
+                </button>
+            </div>
+        );
+    };
+
     const imageManager = () => {
         let element = sliderRef.current;
         if ( !element || !imageContainerRef.current ) {
@@ -163,8 +222,10 @@ const DXProductSlider = ( props: ProductSliderProps ) => {
         let segmentPercent = ( currenScroll / segmentSize ) - Math.floor( currenScroll / segmentSize );
         let currentSegmet = Math.floor( currenScroll / segmentSize );
         let height = element.querySelector( ".dxProductSlider__images" )?.clientHeight! - element.querySelector( "img" )?.clientHeight!;
-        let width = element.querySelector( ".dxProductSlider__images" )?.clientWidth! - element.querySelector( "img" )?.clientHeight!;
-        let navDots = element.querySelector( ".dxProductSlider__navDots" )!.children;
+        let width = element.querySelector( ".dxProductSlider__images" )?.clientWidth! - element.querySelector( "img" )?.clientWidth!;
+        let navDots = element.querySelector( ".dxProductSlider__navDots" )?.children;
+        let horizontalOffsetFactor = isMobile ? 0.15 : 0.5;
+        let verticalOffsetFactor = 0.15;
 
         //Scroll message position, direction and opacity code
         let scrollMessage: HTMLElement = element.querySelector( ".dxProductSlider__scrollMessage" )!;
@@ -248,13 +309,13 @@ const DXProductSlider = ( props: ProductSliderProps ) => {
             }
 
             //The offset is a percent value that is used to calculate the Translate value for the Transform style
-            let offset = ( segmentPercent + order ) / ( segmentCount );
+            let offset = ((segmentPercent + order) / segmentCount);
 
             if ( ( scrollPercent >= segmetnSizePercent * i ) && ( scrollPercent < segmetnSizePercent * ( i + 1 ) ) ) {
                 //Giving a some tolerance to the scroll to avoid the item to inmediatly hide after a few pixels of scroll
                 let inTolerance = segmentPercent <= autoScrollLimit;
 
-                image.style.transform = `translate( -${( 1 - segmentPercent ) * width}px, ${( 1 - segmentPercent ) * height}px)`;
+                image.style.transform = `translate( -${( 1 - segmentPercent ) * width * horizontalOffsetFactor}px, ${( 1 - segmentPercent ) * height * verticalOffsetFactor}px)`;
 
                 if ( ( scrollPercent == segmetnSizePercent * i || scrollDirection == "backward" || inTolerance ) && segmentPercent <= 1 - autoScrollLimit ) {
                     image.style.zIndex = `${Z_INDEX_FIRST_LEVEL + children.length}`;
@@ -264,14 +325,16 @@ const DXProductSlider = ( props: ProductSliderProps ) => {
 
                 ( image.firstChild! as HTMLElement ).style.opacity = `${1 - 0.6 * ( segmentPercent )}`;
 
-                if ( segmentPercent <= 0.5 ) {
-                    ( navDots[i].firstChild as HTMLElement ).style.opacity = `${1 - segmentPercent * 2}`;
-                } else {
-                    ( navDots[i].firstChild as HTMLElement ).style.opacity = `0`;
+                if ( navDots ) {
+                    if ( segmentPercent <= 0.5 ) {
+                        ( navDots[i].firstChild as HTMLElement ).style.opacity = `${1 - segmentPercent * 2}`;
+                    } else {
+                        ( navDots[i].firstChild as HTMLElement ).style.opacity = `0`;
+                    }
                 }
 
             } else {
-                image.style.transform = `translate( -${( offset ) * width}px, ${( offset ) * height}px)`;
+                image.style.transform = `translate( -${( offset * horizontalOffsetFactor) * width}px, ${( offset * verticalOffsetFactor) * height}px)`;
                 image.style.zIndex = `${Z_INDEX_FIRST_LEVEL + order}`;
                 if ( order == segmentCount - 1 ) {
                     ( image.firstChild! as HTMLImageElement ).style.opacity = `${0.4 + 0.6 * ( segmentPercent )}`;
@@ -279,12 +342,14 @@ const DXProductSlider = ( props: ProductSliderProps ) => {
                     ( image.firstChild! as HTMLImageElement ).style.opacity = "0.4";
                 }
 
-                if ( segmentPercent <= 0.5 && ( i == currentSegmet + 1 ) ) {
-                    ( navDots[i].firstChild as HTMLElement ).style.opacity = `${segmentPercent * 2}`;
-                } else if ( i == currentSegmet + 1 ) {
-                    ( navDots[i].firstChild as HTMLElement ).style.opacity = `${1}`;
-                } else {
-                    ( navDots[i].firstChild as HTMLElement ).style.opacity = `0`;
+                if ( navDots ) {
+                    if ( segmentPercent <= 0.5 && ( i == currentSegmet + 1 ) ) {
+                        ( navDots[i].firstChild as HTMLElement ).style.opacity = `${segmentPercent * 2}`;
+                    } else if ( i == currentSegmet + 1 ) {
+                        ( navDots[i].firstChild as HTMLElement ).style.opacity = `${1}`;
+                    } else {
+                        ( navDots[i].firstChild as HTMLElement ).style.opacity = `0`;
+                    }
                 }
             }
         }
@@ -298,7 +363,7 @@ const DXProductSlider = ( props: ProductSliderProps ) => {
         props.items.forEach( ( item, index ) => {
             elements.push(
                 <div key={"PSImage--" + index} className="dxProductSlider__imageContainer" role="presentation">
-                    <img src={item.image.url} className="dxProductSlider__image"></img>
+                    <img src={item.image.url} className="dxProductSlider__image" alt=""></img>
                 </div>
             );
         } );
@@ -319,19 +384,21 @@ const DXProductSlider = ( props: ProductSliderProps ) => {
         props.items.forEach( ( { category, title, body, button }, index ) => {
             elements.push(
                 <div key={"PSItem--" + index} className="dxProductSlider__card" data-testid="PS__item">
-                    {category &&
-                        <div className="dxProductSlider__category">
-                            {category}
+                    <div className="dxProductSlider__content">
+                        {category &&
+                            <div className="dxProductSlider__category">
+                                {category}
+                            </div>
+                        }
+                        <div className="dxProductSlider__title">
+                            {title}
                         </div>
-                    }
-                    <div className="dxProductSlider__title">
-                        {title}
+                        {title &&
+                            <div className="dxProductSlider__body">
+                                {body}
+                            </div>
+                        }
                     </div>
-                    {title &&
-                        <div className="dxProductSlider__body">
-                            {body}
-                        </div>
-                    }
                     {button &&
                         <div className="dxProductSlider__buttonContainer">
                             {renderSliderButton( button )}
@@ -365,11 +432,9 @@ const DXProductSlider = ( props: ProductSliderProps ) => {
                                 <div ref={imageContainerRef} className="dxProductSlider__images" style={{ opacity: isScrollReady ? 1 : 0 }}>
                                     {renderImages()}
                                 </div>
-                                <div className="dxProductSlider__navDots">
-                                    {renderNavDots()}
-                                </div>
+                                {renderMobileControls()}
                                 <div className="dxProductSlider__scrollMessage">
-                                    Scroll <i className={getIcon( props.icons, "scroll", "ci-Arrow_Down_LG" )} ></i>
+                                    Drag <i className={getIcon( props.icons, "scroll", "ci-Arrow_Down_LG" )} ></i>
                                 </div>
                             </div>
                         }
@@ -386,7 +451,7 @@ const DXProductSlider = ( props: ProductSliderProps ) => {
                                     {renderNavDots()}
                                 </div>
                                 <div className="dxProductSlider__scrollMessage">
-                                    Scroll <i className={"dxProductSlider__scrollIcon " + getIcon( props.icons, "scroll", "ci-Arrow_Down_LG" )} ></i>
+                                    Drag <i className={"dxProductSlider__scrollIcon " + getIcon( props.icons, "scroll", "ci-Arrow_Down_LG" )} ></i>
                                 </div>
                             </div>
                         }

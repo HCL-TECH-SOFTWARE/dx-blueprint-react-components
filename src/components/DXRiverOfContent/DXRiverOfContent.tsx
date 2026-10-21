@@ -7,10 +7,6 @@ export interface RiverOfContentProps {
     index: number,
     header: string,
     links: LinksProps[],
-    viewAllLink: {
-        url: string,
-        label?: string,
-    },
     headerCharLimit?: number,
     itemCharLimit?: number,
     collapsible?: boolean,
@@ -24,6 +20,10 @@ const DXRiverOfContent = ( props: RiverOfContentProps ) => {
     const componentRef = useRef<HTMLDivElement>( null );
     const buttonRef = useRef<HTMLButtonElement>( null );
     const contentRef = useRef<HTMLDivElement>( null );
+
+    const getHeaderCharLimit = () => props.headerCharLimit && props.headerCharLimit > 0 ? props.headerCharLimit : 43;
+    const getItemCharLimit = () => props.itemCharLimit && props.itemCharLimit > 0 ? props.itemCharLimit : 93;
+
     const showContent = ( e: any ) => {
         e.preventDefault();
         if ( e.type === "click" || ( e.type === "keydown" && e.keyCode === 13 ) || ( e.type === "keydown" && e.keyCode === 32 ) ) {
@@ -38,13 +38,19 @@ const DXRiverOfContent = ( props: RiverOfContentProps ) => {
     };
 
     const verifyTextOverflow = ( label: string, header: boolean ) => {
-        let headerLimit = props.headerCharLimit && props.headerCharLimit > 0 ? props.headerCharLimit : 43;
-        let itemLimit = props.itemCharLimit && props.itemCharLimit > 0 ? props.itemCharLimit : 93;
         if ( header ) {
-            return label.length > headerLimit ? 'dxRiverContent__header--overflow' : '';
+            return label.length > getHeaderCharLimit() ? 'dxRiverContent__header--overflow' : '';
         } else {
-            return label.length > itemLimit ? 'dxRiverContent__items--overflow' : '';
+            return label.length > getItemCharLimit() ? 'dxRiverContent__items--overflow' : '';
         }
+    };
+
+    const truncateText = ( label: string, limit: number ) => {
+        if ( label.length <= limit ) {
+            return label;
+        }
+
+        return `${label.slice( 0, limit ).replace( /\s+$/, "" )}...`;
     };
 
     const renderLinks = () => {
@@ -59,11 +65,12 @@ const DXRiverOfContent = ( props: RiverOfContentProps ) => {
                 <ul>
                     {
                         linksToBeRendered.map( ( link, index ) => (
-                            <li key={index} data-testid="river-content-item">
+                            <li key={index} data-testid="river-content-item" className="dxRiverContent__item">
                                 <a
                                     href={link.url}
                                     target={getLinkTarget( link.target )}
-                                    className={verifyTextOverflow( link.label, false )}>{link.label}</a>
+                                    aria-label={link.label}
+                                    className={`dxRiverContent__itemLink ${verifyTextOverflow( link.label, false )}`}>{truncateText( link.label, getItemCharLimit() )}</a>
                             </li>
                         ) )
                     }
@@ -101,9 +108,6 @@ const DXRiverOfContent = ( props: RiverOfContentProps ) => {
             </div>
             <div className={props.collapsible ? "dxRiverContent__items" : "dxRiverContent__items dxRiverContent__items--active"} ref={contentRef}>
                 {renderLinks()}
-                <a href={props.viewAllLink.url} target="_self" data-testid="river-view-all">
-                    {props.viewAllLink.label && props.viewAllLink.label !== "" ? props.viewAllLink.label : 'View All'}
-                </a>
             </div>
         </div>
     );

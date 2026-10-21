@@ -40,6 +40,7 @@ const DXNewsCard = ( props: NewsCardProps ) => {
                             src={props.image.url}
                             loading="lazy"
                             onLoad={() => setLoaded( true )}
+                            onError={() => setLoaded( true )}
                             alt={props.image.altText ? props.image.altText : props.link.label}
                         ></img>
                     </div>
