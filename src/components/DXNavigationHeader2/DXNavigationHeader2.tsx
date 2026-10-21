@@ -1,5 +1,4 @@
-import React from "react";
-import { useSyncExternalStore } from "react";
+import React, { useSyncExternalStore } from "react";
 import "./DXNavigationHeader2.scss";
 import DXMegaMenu, { NavigationItem } from "../DXMegaMenu/DXMegaMenu";
 import { LinksProps } from "../../utilities";
