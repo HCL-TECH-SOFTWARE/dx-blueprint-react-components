@@ -33,7 +33,7 @@ const DXMyNextMeeting = ( props: NextMeetingProps ) => {
         <div className="dxMyNextMeeting" data-testid="microsite-next-meeting">
             <i
                 data-testid="myNextMeeting__eventIcon"
-                className={`${getIcon( props.icons, "event", "ci-Calendar" )} dxMyNextMeeting__calendarIcon dxMyNextMeeting__Icon`}
+                className={`${getIcon( props.icons, "event", "ci-Calendar_Event" )} dxMyNextMeeting__calendarIcon dxMyNextMeeting__Icon`}
             ></i>
             <div className="dxMyNextMeeting__content">
                 <p className="dxMyNextMeeting__title" data-testid={"MNM__title"} >{props.title}</p>

@@ -291,12 +291,12 @@ test( "Each item title text renders correctly", () => {
     } );
 } );
 
-// Scroll message text is "Scroll"
-test( "Scroll message contains text Scroll", () => {
+// Scroll message text is "Drag"
+test( "Scroll message contains text Drag", () => {
     global.innerWidth = 1440;
     const { container } = render( <DXProductSlider items={[itemProps]} /> );
     const scrollMessage = container.querySelector( ".dxProductSlider__scrollMessage" );
-    expect( scrollMessage?.textContent ).toContain( "Scroll" );
+    expect( scrollMessage?.textContent ).toContain( "Drag" );
 } );
 
 // Default icon is ci-Arrow_Down_LG when icons prop not provided

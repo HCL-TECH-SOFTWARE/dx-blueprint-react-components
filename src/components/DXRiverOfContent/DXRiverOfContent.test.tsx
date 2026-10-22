@@ -3,57 +3,53 @@ import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render, fireEvent, screen } from "@testing-library/react";
 import DXRiverOfContent from "./DXRiverOfContent";
-import { riverOfContentArgs } from "./DXRiverOfContent.stories";
+
+const riverOfContentTestArgs = {
+    index: 1,
+    header: "News item up to three lines that supports ",
+    links: [
+        {
+            url: "#one",
+            target: "_blank",
+            label: "News item up to three lines that supports up to 93 chars. In case of more characters, then ellipsis so"
+        },
+        {
+            url: "#two",
+            target: "_blank",
+            label: "News item up to three lines that supports up to 93 chars. In case of more characters, then ellipsis so"
+        },
+        {
+            url: "#three",
+            target: "_blank",
+            label: "News item up to three lines that supports up to 93 chars. In case of more characters, then ellipsis so"
+        },
+        {
+            url: "#four",
+            target: "_blank",
+            label: "News item up to three lines that supports up to 93 chars. In case of more characters, then ellipsis so"
+        },
+    ],
+    collapsible: true
+};
 
 test( "If no links were passed, then a message '' will appear", () => {
     const props = {
-        header: "Header text up to two lines with 43 characters",
-        viewAllLink: { url: "#view-all" }
+        header: "Header text up to two lines with 43 characters"
     };
     //@ts-ignore: Ignoring warning for constructor missing required props not required by the test
     const { getByText } = render( <DXRiverOfContent {...props} /> );
     expect( getByText( "No links received" ) ).toBeInTheDocument();
 } );
 
-test( "If no label inside the viewAllLink prop is passed, the value should be 'View All'", () => {
-    let props = {
-        ...riverOfContentArgs,
-        viewAllLink: { url: "#awesome" }
-    };
-    const { getByTestId } = render( <DXRiverOfContent {...props} /> );
-    const el = getByTestId( "river-view-all" ) as HTMLAnchorElement;
-    expect( el.textContent ).toEqual( "View All" );
-} );
-
-test( "If the label inside the viewAllLink prop is an empty string, the value should be 'View All'", () => {
-    let props = {
-        ...riverOfContentArgs,
-        viewAllLink: { url: "#awesome", label: "" }
-    };
-    const { getByTestId } = render( <DXRiverOfContent {...props} /> );
-    const el = getByTestId( "river-view-all" ) as HTMLAnchorElement;
-    expect( el.textContent ).toEqual( "View All" );
-} );
-
-test( "If the label inside the viewAllLink prop is passed, that value should be display", () => {
-    let props = {
-        ...riverOfContentArgs,
-        viewAllLink: { url: "#awesome", label: "More awesome news" }
-    };
-    const { getByTestId } = render( <DXRiverOfContent {...props} /> );
-    const el = getByTestId( "river-view-all" ) as HTMLAnchorElement;
-    expect( el.textContent ).toEqual( props.viewAllLink.label );
-} );
-
 test( "If links were passed, then it should render the same amount of elements", () => {
-    const { getAllByTestId } = render( <DXRiverOfContent {...riverOfContentArgs} /> );
+    const { getAllByTestId } = render( <DXRiverOfContent {...riverOfContentTestArgs} /> );
     const items = getAllByTestId( "river-content-item" );
-    expect( items ).toHaveLength( riverOfContentArgs.links.length );
+    expect( items ).toHaveLength( riverOfContentTestArgs.links.length );
 } );
 
 test( "If the user pass more than 4 links, it will render just 4 elements", () => {
     const props = {
-        ...riverOfContentArgs,
+        ...riverOfContentTestArgs,
         links: [
             {
                 url: "#one",
@@ -88,7 +84,7 @@ test( "If the user pass more than 4 links, it will render just 4 elements", () =
 } );
 
 test( "If the user clicks on the header element, the items element should have this class 'dxRiverContent__items--active'", async () => {
-    const { container } = render( <DXRiverOfContent {...riverOfContentArgs} /> );
+    const { container } = render( <DXRiverOfContent {...riverOfContentTestArgs} /> );
     const headerEl = container.querySelector( ".dxRiverContent__header" )?.childNodes[0] as Element;
     await userEvent.click( headerEl );
     const itemsEl = container.querySelector( ".dxRiverContent__items" );
@@ -96,7 +92,7 @@ test( "If the user clicks on the header element, the items element should have t
 } );
 
 test( "If the user clicks on the header element, the header's icon should have the class 'dxRiverContent__icon--open'", async () => {
-    const { container, getByTestId } = render( <DXRiverOfContent {...riverOfContentArgs} /> );
+    const { container, getByTestId } = render( <DXRiverOfContent {...riverOfContentTestArgs} /> );
     const headerEl = container.querySelector( ".dxRiverContent__header" )?.childNodes[0] as Element;
     await userEvent.click( headerEl );
     const iconEl = getByTestId( "river-header-icon" );
@@ -104,7 +100,7 @@ test( "If the user clicks on the header element, the header's icon should have t
 } );
 
 test( "If the user clicks on the header element, the component should have the class 'dxRiverContent--open'", async () => {
-    const { container } = render( <DXRiverOfContent {...riverOfContentArgs} /> );
+    const { container } = render( <DXRiverOfContent {...riverOfContentTestArgs} /> );
     const headerEl = container.querySelector( ".dxRiverContent__header" )?.childNodes[0] as Element;
     await userEvent.click( headerEl );
     const componentEl = container.querySelector( ".dxRiverContent" ) as Element;
@@ -112,7 +108,7 @@ test( "If the user clicks on the header element, the component should have the c
 } );
 
 test( "If the user clicks on the header element twice, the items element should not have this class 'dxRiverContent__items--active'", async () => {
-    const { container } = render( <DXRiverOfContent {...riverOfContentArgs} /> );
+    const { container } = render( <DXRiverOfContent {...riverOfContentTestArgs} /> );
     const headerEl = container.querySelector( ".dxRiverContent__header" ) as Element;
     await userEvent.click( headerEl );
     await userEvent.click( headerEl );
@@ -121,7 +117,7 @@ test( "If the user clicks on the header element twice, the items element should 
 } );
 
 test( "If the user clicks on the header element twice, the header's icon should not have the class 'dxRiverContent__icon--open'", async () => {
-    const { container, getByTestId } = render( <DXRiverOfContent {...riverOfContentArgs} /> );
+    const { container, getByTestId } = render( <DXRiverOfContent {...riverOfContentTestArgs} /> );
     const headerEl = container.querySelector( ".dxRiverContent__header" ) as Element;
     await userEvent.click( headerEl );
     await userEvent.click( headerEl );
@@ -130,7 +126,7 @@ test( "If the user clicks on the header element twice, the header's icon should 
 } );
 
 test( "If the user clicks on the header element twice, the component should not have the class 'dxRiverContent--open'", async () => {
-    const { container } = render( <DXRiverOfContent {...riverOfContentArgs} /> );
+    const { container } = render( <DXRiverOfContent {...riverOfContentTestArgs} /> );
     const headerEl = container.querySelector( ".dxRiverContent" )?.childNodes[0] as Element;
     await userEvent.click( headerEl );
     await userEvent.click( headerEl );
@@ -139,7 +135,7 @@ test( "If the user clicks on the header element twice, the component should not 
 } );
 
 test( "If the user focus on the header element and press the space key, the items should have the class 'dxRiverContent__items--active'", () => {
-    const { container } = render( <DXRiverOfContent {...riverOfContentArgs} /> );
+    const { container } = render( <DXRiverOfContent {...riverOfContentTestArgs} /> );
     const headerEl = container.querySelector( ".dxRiverContent__header" )?.childNodes[0] as HTMLElement;
     headerEl.focus();
     fireEvent.keyDown( headerEl, {
@@ -154,7 +150,7 @@ test( "If the user focus on the header element and press the space key, the item
 } );
 
 test( "If the user focus on the header element and press the space key twice, the items should not have the class 'dxRiverContent__items--active'", () => {
-    const { container } = render( <DXRiverOfContent {...riverOfContentArgs} /> );
+    const { container } = render( <DXRiverOfContent {...riverOfContentTestArgs} /> );
     const headerEl = container.querySelector( ".dxRiverContent__header" )?.childNodes[0] as HTMLElement;
     headerEl.focus();
     fireEvent.keyDown( headerEl, {
@@ -176,7 +172,7 @@ test( "If the user focus on the header element and press the space key twice, th
 } );
 
 test( "If the user focus on the header element and press the enter key, the items should have the class 'dxRiverContent__items--active'", () => {
-    const { container } = render( <DXRiverOfContent {...riverOfContentArgs} /> );
+    const { container } = render( <DXRiverOfContent {...riverOfContentTestArgs} /> );
     const headerEl = container.querySelector( ".dxRiverContent__header" )?.childNodes[0] as HTMLElement;
     headerEl.focus();
     fireEvent.keyDown( headerEl, {
@@ -191,7 +187,7 @@ test( "If the user focus on the header element and press the enter key, the item
 } );
 
 test( "If the user focus on the header element and press the enter key twice, the items should not have the class 'dxRiverContent__items--active'", () => {
-    const { container } = render( <DXRiverOfContent {...riverOfContentArgs} /> );
+    const { container } = render( <DXRiverOfContent {...riverOfContentTestArgs} /> );
     const headerEl = container.querySelector( ".dxRiverContent__header" ) as HTMLElement;
     headerEl.focus();
     fireEvent.keyDown( headerEl, {
@@ -213,7 +209,7 @@ test( "If the user focus on the header element and press the enter key twice, th
 } );
 
 test( "If the user focus on the header element and press the 'a' key, the items should not have the class 'dxRiverContent__items--active'", async () => {
-    const { container } = render( <DXRiverOfContent {...riverOfContentArgs} /> );
+    const { container } = render( <DXRiverOfContent {...riverOfContentTestArgs} /> );
     const headerEl = container.querySelector( ".dxRiverContent__header" ) as HTMLElement;
     headerEl.focus();
     fireEvent.keyDown( headerEl, {
@@ -228,14 +224,18 @@ test( "If the user focus on the header element and press the 'a' key, the items 
 } );
 
 test( "If the header's length is more than 43 characters, it should have the class 'dxRiverContent__header--overflow'", () => {
-    const { container } = render( <DXRiverOfContent {...riverOfContentArgs} /> );
+    const props = {
+        ...riverOfContentTestArgs,
+        header: "News item up to three lines that supports longer text"
+    };
+    const { container } = render( <DXRiverOfContent {...props} /> );
     const headerEl = container.querySelector( ".dxRiverContent__header" ) as HTMLElement;
     expect( headerEl ).toHaveClass( "dxRiverContent__header--overflow" );
 } );
 
 test( "If the item recieved, has a length larger than 93 characters, it should have the class 'dxRiverContent__items--overflow'", () => {
     let props = {
-        ...riverOfContentArgs,
+        ...riverOfContentTestArgs,
         links: [{
             url: "#one",
             target: "_blank",
@@ -247,9 +247,25 @@ test( "If the item recieved, has a length larger than 93 characters, it should h
     expect( itemEl ).toHaveClass( "dxRiverContent__items--overflow" );
 } );
 
+test( "If the item recieved, has a length larger than the character limit, it should render an ellipsis", () => {
+    let props = {
+        ...riverOfContentTestArgs,
+        itemCharLimit: 20,
+        links: [{
+            url: "#one",
+            target: "_blank",
+            label: "News item up to three lines that supports up to 93 chars. In case of more characters, then ellipsis so"
+        }]
+    };
+    const { getByRole } = render( <DXRiverOfContent {...props} /> );
+    const itemEl = getByRole( "link", { name: props.links[0].label } );
+
+    expect( itemEl.textContent ).toEqual( "News item up to thre..." );
+} );
+
 test( "If headerCharLimit is passed, and the header has a larger length than that value, it should have the class 'dxRiverContent__header--overflow'", () => {
     let props = {
-        ...riverOfContentArgs,
+        ...riverOfContentTestArgs,
         header: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo,",
         headerCharLimit: 54
     };
@@ -260,7 +276,7 @@ test( "If headerCharLimit is passed, and the header has a larger length than tha
 
 test( "If itemCharLimit is passed, and the item has a larger length than that value, it should have the class 'dxRiverContent__items--overflow'", () => {
     let props = {
-        ...riverOfContentArgs,
+        ...riverOfContentTestArgs,
         links: [{
             url: "#one",
             target: "_blank",
@@ -275,7 +291,7 @@ test( "If itemCharLimit is passed, and the item has a larger length than that va
 
 test( "If no target prop is passed on the only link item, the target should be '_self'", () => {
     let props = {
-        ...riverOfContentArgs,
+        ...riverOfContentTestArgs,
         links: [{
             url: "#one",
             label: "News item up to three lines that supports up to 93 chars. In case of more characters, then ellipsis so"
@@ -288,7 +304,7 @@ test( "If no target prop is passed on the only link item, the target should be '
 
 test( "If an unvalid target prop is passed on the only link item, the target should be '_self'", () => {
     let props = {
-        ...riverOfContentArgs,
+        ...riverOfContentTestArgs,
         links: [{
             url: "#one",
             target: "_external",
@@ -302,7 +318,7 @@ test( "If an unvalid target prop is passed on the only link item, the target sho
 
 test( "If a valid target prop is passed on the only link item, the target should be the same", () => {
     let props = {
-        ...riverOfContentArgs,
+        ...riverOfContentTestArgs,
         links: [{
             url: "#one",
             target: "_blank",
@@ -317,11 +333,11 @@ test( "If a valid target prop is passed on the only link item, the target should
 // Tests for multiple instances
 test( "If we have two components with different indexes, if the user clicks on the first one's header, the second should not have the classes 'dxRiverContent--open'", async () => {
     let props1 = {
-        ...riverOfContentArgs,
+        ...riverOfContentTestArgs,
         index: 1,
     };
     let props2 = {
-        ...riverOfContentArgs,
+        ...riverOfContentTestArgs,
         index: 2,
     };
     const { container } = render( <div><DXRiverOfContent {...props1} /><DXRiverOfContent {...props2} /></div> );
@@ -333,11 +349,11 @@ test( "If we have two components with different indexes, if the user clicks on t
 
 test( "If we have two components with different indexes, if the user clicks on the second one's header, the first should not have the classes 'dxRiverContent--open'", async () => {
     let props1 = {
-        ...riverOfContentArgs,
+        ...riverOfContentTestArgs,
         index: 1,
     };
     let props2 = {
-        ...riverOfContentArgs,
+        ...riverOfContentTestArgs,
         index: 2,
     };
     const { container } = render( <div><DXRiverOfContent {...props1} /><DXRiverOfContent {...props2} /></div> );
@@ -348,7 +364,7 @@ test( "If we have two components with different indexes, if the user clicks on t
 } );
 
 test( "If icon changes when iconClass property is configured", () => {
-    render( <DXRiverOfContent {...riverOfContentArgs} icons={{
+    render( <DXRiverOfContent {...riverOfContentTestArgs} icons={{
         link: "ci-Arrow_Down_SM"
     }}
         /> );

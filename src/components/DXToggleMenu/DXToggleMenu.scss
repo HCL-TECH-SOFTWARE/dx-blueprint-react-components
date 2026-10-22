@@ -5,6 +5,72 @@
     width: fit-content;
     gap: 0;
 
+    > .btn,
+    > .btn:hover,
+    > .btn:focus,
+    > .btn:active,
+    > .btn.active,
+    > .btn:focus-visible {
+        z-index: 0;
+    }
+
+    .dxToggleMenu__button.dxButton.btn {
+        min-width: 108px;
+        height: 40px;
+        gap: 8px;
+        padding: 12px 16px;
+        border: 1px solid var(--light-light-d2);
+        box-sizing: border-box;
+        box-shadow: none;
+        outline: none;
+        transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+
+        &.btn-primary {
+            border: 1px solid var(--light-light-d2);
+        }
+
+        &.btn-primary:hover:not(:disabled):not(.disabled),
+        &.btn-primary:focus-visible:not(:disabled):not(.disabled) {
+            background-color: var(--primary-primary-d1);
+            border: 1px solid var(--light-light-d2);
+            box-shadow: none;
+        }
+
+        &.btn-primary.active,
+        &.btn-primary:active {
+            background-color: var(--primary-primary);
+            border: 1px solid var(--light-light-d2);
+            box-shadow: none;
+        }
+
+        &.btn-secondary {
+            border: 1px solid var(--light-light-d2);
+        }
+
+        &.btn-secondary:hover:not(:disabled):not(.disabled),
+        &.btn-secondary:focus-visible:not(:disabled):not(.disabled) {
+            background-color: var(--light-light);
+            border: 1px solid var(--light-light-d2);
+            box-shadow: none;
+        }
+
+        &.btn-secondary.active,
+        &.btn-secondary:active {
+            background-color: var(--light-white);
+            border: 1px solid var(--light-light-d2);
+            box-shadow: none;
+        }
+
+        &:focus,
+        &:focus-visible,
+        &.focus,
+        &.active:focus,
+        &:active:focus {
+            box-shadow: none;
+            outline: none;
+        }
+    }
+
      // Horizontal
     &:not(.btn-group-vertical) {
         .dxButton:first-child {

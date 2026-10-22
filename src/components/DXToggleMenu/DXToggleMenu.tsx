@@ -19,11 +19,20 @@ export interface ToggleMenuProps {
 
 const DXToggleMenu = ( props: ToggleMenuProps ) => {
     const [selectedButton, setSelectedButton] = useState( props.activeIndexes ? [...props.activeIndexes] : [] );
+
+    const getButtonClassName = ( index: number ) => {
+        const selectionClass = selectedButton.indexOf( index ) !== -1
+            ? "dxToggleMenu__button--selected"
+            : "dxToggleMenu__button--unselected";
+
+        return `dxToggleMenu__button ${selectionClass}`;
+    };
+
     const handleSelectedButton = ( index: number, e: any ) => {
         setSelectedButton( [index] );
         let buttonClicked = props.buttons[index];
         if ( buttonClicked.handleClick !== undefined ) {
-            buttonClicked.handleClick( buttonClicked.label, e.target.classList, e.target );
+            buttonClicked.handleClick( buttonClicked.label, e.currentTarget.classList, e.currentTarget );
         }
     };
 
@@ -33,21 +42,22 @@ const DXToggleMenu = ( props: ToggleMenuProps ) => {
                 buttons.map( ( button: ButtonProps, index: number ) => {
                     const handleMultipleSelectedButtons = ( buttonClicked: ButtonProps, e: any, index: number ) => {
                         let newButtons: number[] = [];
-                        if ( !selectedButton.includes( index ) ) newButtons = [...selectedButton, index];
+                        if ( selectedButton.indexOf( index ) === -1 ) newButtons = [...selectedButton, index];
                         else {
                             newButtons = selectedButton.filter( button => button !== index );
                         }
 
                         setSelectedButton( [...newButtons] );
                         if ( buttonClicked.handleClick ) {
-                            buttonClicked.handleClick( buttonClicked.label, e.target.classList, e.target );
+                            buttonClicked.handleClick( buttonClicked.label, e.currentTarget.classList, e.currentTarget );
                         }
                     };
                     return (
                         <DXButton
                             label={button.label}
                             key={index}
-                            displayType={selectedButton.includes( index ) ? "primary" : "secondary"}
+                            className={getButtonClassName( index )}
+                            displayType={selectedButton.indexOf( index ) !== -1 ? "primary" : "secondary"}
                             disabled={button.disabled ? button.disabled : false}
                             onClick={( e: any ) => handleMultipleSelectedButtons( button, e, index )}
                             data-testid="toggleMenuButton"
@@ -62,7 +72,8 @@ const DXToggleMenu = ( props: ToggleMenuProps ) => {
                         <DXButton
                             key={index}
                             label={button.label}
-                            displayType={selectedButton.includes( index ) ? "primary" : "secondary"}
+                            className={getButtonClassName( index )}
+                            displayType={selectedButton.indexOf( index ) !== -1 ? "primary" : "secondary"}
                             disabled={button.disabled ? button.disabled : false}
                             onClick={( event: any ) => { handleSelectedButton( index, event ); }}
                             data-testid="toggleMenuButton"

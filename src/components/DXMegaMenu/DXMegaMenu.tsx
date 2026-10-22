@@ -14,6 +14,13 @@ export interface MegaMenuProps {
     secondaryLevelContainerId: string;
     parentRef?: React.MutableRefObject<null>;
     showOverlay?: boolean;
+    showLandingCard?: boolean;
+    socialLinks?: {
+        url: string;
+        label: string;
+        iconClass?: string;
+        image?: string;
+    }[];
     icons?: {
         firstLevel?: string;
         secondLevel?: string;
@@ -33,9 +40,12 @@ export interface NavigationNode {
 export interface NavigationItem {
     index: number;
     title: string;
+    selectedTitle?: string;
+    caretOnSelection?: boolean;
     iconClass?: string;
     url?: string;
     target?: string;
+    showChevron?: boolean;
     children?: NavigationItem[];
     bannerProps?: BannerProps[];
     onClick?: Function;
@@ -65,7 +75,7 @@ var thrdSetActive: React.Dispatch<React.SetStateAction<number>>;
 const DXMegaMenu = ( props: MegaMenuProps ) => {
     const wrapperRef = useRef( null );
     const secondLevelRef = useRef( null );
-    const secondLevelRootRef = useRef<{ container: Element; root: Root } | null>( null );
+    const secondLevelRootRef = useRef<{ container: Element; root: Root; } | null>( null );
 
     useOutsideAlerter( props.parentRef || wrapperRef, secondLevelRef );
 
@@ -109,56 +119,75 @@ const DXMegaMenu = ( props: MegaMenuProps ) => {
         }
     }
 
+    const togglePrimaryItem = ( item: NavigationItem ) => {
+        if ( item.children && item.children.length > 0 && props.showOverlay ) {
+            setOverlayActive( true );
+        }
+        if ( currentActive == item.index ) {
+            resetHooks( true, true, true );
+        } else {
+            setActive( item.index );
+            resetHooks( false, true, true );
+            setPrimaryNavItemActive( item );
+        }
+    };
+
+    const toggleSecondaryItem = ( item: NavigationItem ) => {
+        if ( secCurrentActive == item.index ) {
+            resetHooks( false, true, true );
+        } else {
+            resetHooks( false, false, true );
+            secSetActive( item.index );
+        }
+    };
+
     let generateElementByLevel = ( item: NavigationItem, level: number ): ReactElement<any, string> => {
         switch ( level ) {
             case 1: {
                 return (
                     <li className={`nav-item dxMegaMenu__firstLevelItem ${item.children ? "has-children" : ""} ${currentActive == item.index ? "active" : ""}`} key={"primary-navigation-" + item.index}>
-                        <Button variant="light" role={!item.children ? "tab" : undefined} tabIndex={-1} className={`nav-link btn btn-unstyled ${currentActive == item.index ? "active" : ""}`}>
-                            <a id={"primary-link-" + item.index}
-                                aria-label={item.title}
-                                title={item.title}
-                                href={( item.url ) ? item.url : undefined} target={getLinkTarget( item.target )} className="dxMegaMenu__firstLevelContent" data-testid="primary-link"
-                                onClick={( e ) => {
-                                    if ( item.onClick ) {
-                                        e.preventDefault();
-                                        item.onClick();
+                        <div className={`dxMegaMenu__firstLevelControl ${currentActive == item.index ? "active" : ""}`}>
+                            <Button variant="light" role={!item.children ? "tab" : undefined} tabIndex={-1} className={`nav-link btn btn-unstyled ${currentActive == item.index ? "active" : ""}`}>
+                                <a id={"primary-link-" + item.index}
+                                    aria-label={item.title}
+                                    title={item.title}
+                                    href={( item.url ) ? item.url : undefined} target={getLinkTarget( item.target )} className="dxMegaMenu__firstLevelContent" data-testid="primary-link"
+                                    onClick={( e ) => {
+                                        if ( item.children && item.children.length > 0 ) {
+                                            e.preventDefault();
+                                            togglePrimaryItem( item );
+                                            item.onClick?.();
+                                        } else if ( item.onClick ) {
+                                            e.preventDefault();
+                                            item.onClick();
+                                        }
+                                    }}>
+                                    {
+                                        item.iconClass ?
+                                            <i className={item.iconClass + " dxMegaMenu__firstLevelIcon"}></i>
+                                            :
+                                            <>
+                                                {overflowText( currentActive == item.index && item.selectedTitle ? item.selectedTitle : item.title, props.titleCharLimit || 30 )}
+                                                {getLinkIcon( item.target )}
+                                            </>
                                     }
-                                }}>
-                                {
-                                    item.iconClass ?
-                                        <i className={item.iconClass + " dxMegaMenu__firstLevelIcon"}></i>
-                                        :
-                                        <>
-                                            {overflowText( item.title, props.titleCharLimit || 30 )}
-                                            {getLinkIcon( item.target )}
-                                        </>
-                                }
-                            </a>
-                        </Button>
-                        {item.children &&
-                            <Button variant="light" role="tab" className={`nav-link dxMegaMenu__primaryContainer ${currentActive == item.index ? "active" : ""}`}
-                                onClick={( e ) => {
-                                    if ( item.children && item.children.length > 0 && props.showOverlay ) {
-                                        setOverlayActive( true );
+                                </a>
+                            </Button>
+                            {item.children && ( !item.caretOnSelection || currentActive == item.index ) &&
+                                <Button variant="light" role="tab" className={`nav-link dxMegaMenu__primaryContainer ${currentActive == item.index ? "active" : ""}`}
+                                    onClick={( e ) => {
+                                        togglePrimaryItem( item );
+                                        if ( item.onClick && !item.children ) {
+                                            item.onClick();
+                                        }
                                     }
-                                    if ( currentActive == item.index ) {
-                                        resetHooks( true, true, true );
-                                    } else {
-                                        setActive( item.index );
-                                        resetHooks( false, true, true );
-                                        setPrimaryNavItemActive( item );
-                                    }
-                                    if ( item.onClick && !item.children ) {
-                                        item.onClick();
-                                    }
-                                }
 
-                                }
-                            >
-                                <i data-testid="megaMenu__primaryIcon" id={"primary-icon-" + item.index} className={getIcon( props.icons, "firstLevel", "ci-Caret_Down_MD " ) + " dxMegaMenu__dropdownIcon"}
-                                ></i>
-                            </Button>}
+                                    }
+                                >
+                                    <i data-testid="megaMenu__primaryIcon" id={"primary-icon-" + item.index} className={getIcon( props.icons, "firstLevel", "ci-Caret_Down_MD " ) + " dxMegaMenu__dropdownIcon"}
+                                    ></i>
+                                </Button>}
+                        </div>
 
                     </li>
                 );
@@ -176,7 +205,10 @@ const DXMegaMenu = ( props: MegaMenuProps ) => {
                             aria-label={item.title}
                             title={item.title}
                             onClick={( e ) => {
-                                if ( item.onClick ) {
+                                if ( item.children ) {
+                                    e.preventDefault();
+                                    toggleSecondaryItem( item );
+                                } else if ( item.onClick ) {
                                     e.preventDefault();
                                     item.onClick();
                                 }
@@ -188,14 +220,11 @@ const DXMegaMenu = ( props: MegaMenuProps ) => {
                             </p>
 
                         </a >
-                        {item.children &&
+                        {( item.children || item.showChevron ) &&
                             <Button variant="light" className="dxMegaMenu__secondaryIconContainer"
                                 onClick={( e ) => {
-                                    if ( secCurrentActive == item.index ) {
-                                        resetHooks( false, true, true );
-                                    } else {
-                                        resetHooks( false, false, true );
-                                        secSetActive( item.index );
+                                    if ( item.children ) {
+                                        toggleSecondaryItem( item );
                                     }
                                     if ( item.onClick && !item.children ) {
                                         item.onClick();
@@ -320,22 +349,27 @@ const DXMegaMenu = ( props: MegaMenuProps ) => {
 
             return (
                 <Row justify="start" >
-                    <Col xs={3} className="dxMegaMenu__secondaryLevelCol" onClick={( e ) => e.stopPropagation()}>
+                    <div className="dxMegaMenu__secondaryLevelCol" onClick={( e ) => e.stopPropagation()}>
+                        {props.showLandingCard &&
+                            <div className="dxMegaMenu__secondaryLanding">
+                                {( primaryNavItemActive.selectedTitle || primaryNavItemActive.title ) + " Landing"}
+                            </div>
+                        }
                         {
                             itemColumns[0]
                         }
-                    </Col>
+                    </div>
                     {
                         thirdLevelCols[0].length > 0 &&
                         thirdLevelCols[0]
                     }
                     {
                         itemColumns[1].length > 0 &&
-                        <Col xs={3} className="dxMegaMenu__secondaryLevelCol" onClick={( e ) => e.stopPropagation()}>
+                        <div className="dxMegaMenu__secondaryLevelCol" onClick={( e ) => e.stopPropagation()}>
                             {
                                 itemColumns[1]
                             }
-                        </Col>
+                        </div>
                     }
                     {
                         thirdLevelCols[1].length > 0 &&
@@ -440,6 +474,26 @@ const DXMegaMenu = ( props: MegaMenuProps ) => {
                 <ul>
                     {linksHTML}
                 </ul>
+                {props.socialLinks &&
+                    <div className="dxMegaMenu__socialLinks">
+                        {props.socialLinks.map( ( socialLink ) => (
+                            <a
+                                aria-label={socialLink.label}
+                                className="dxMegaMenu__socialLink"
+                                href={socialLink.url}
+                                key={socialLink.label}
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                {socialLink.image ?
+                                    <img src={socialLink.image} alt="" />
+                                    :
+                                    <i className={socialLink.iconClass} aria-hidden="true" />
+                                }
+                            </a>
+                        ) )}
+                    </div>
+                }
             </Col>
         );
     }
