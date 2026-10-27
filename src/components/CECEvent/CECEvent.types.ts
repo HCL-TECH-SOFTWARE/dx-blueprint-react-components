@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import { ReactNode, CSSProperties } from 'react';
 export type DateFormat = 'full' | 'short' | 'month-day' | 'time-only';
 export type VariantType = 'featured' | 'river' | 'featured-compact';

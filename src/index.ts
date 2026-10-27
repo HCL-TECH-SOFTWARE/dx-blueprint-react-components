@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./global/_bootstrap-compat.scss";
 import "./global/_input-inset-compat.scss";

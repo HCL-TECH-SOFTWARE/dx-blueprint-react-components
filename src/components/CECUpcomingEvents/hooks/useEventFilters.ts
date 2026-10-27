@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import { useMemo, useCallback, useState } from 'react';
 import { getEventStartDate, getEventEndDate, hasOccurrenceInMonth, getFirstOccurrenceInMonth, type CECEventData } from '../../CECEvent';
 import { safeParseDXDate as safeParseDate } from '../../../utilities/cec-utils';

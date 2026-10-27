@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 // src/components/CECFeaturedStories/hooks/useResponsiveHeights.ts
 import { useEffect, useMemo, useState } from "react";
 import { DEFAULT_HEIGHT, DEFAULT_HEIGHT_MOBILE } from "../constants";

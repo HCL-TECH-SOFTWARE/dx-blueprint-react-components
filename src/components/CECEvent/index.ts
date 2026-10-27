@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 export { default } from './CECEvent';
 export { getEventStartDate, getEventEndDate } from './CECEvent';
 export * from './CECEvent.types';

@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import "./DXQuote.scss";
 import React from 'react';
 import Container from 'react-bootstrap/Container';

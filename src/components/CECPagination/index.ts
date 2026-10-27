@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 export { default } from './CECPagination';
 export { usePagination } from './CECPagination.hooks';
 export { DefaultVariant, CompactVariant, BulletsVariant } from './CECPagination.variants';

@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import React, { ReactElement } from "react";
 import { ImageProps, LinksProps, getIcon } from "../../utilities";
 import "./DXNewsRoll.scss";

@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import "./DXDataTable.scss";
 import React, { useState, useEffect } from "react";
 import DataTable from 'react-data-table-component';

@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import React, { ReactElement, useRef, useState } from "react";
 import { LinksProps, generateLinkAnchor, getLinkTarget, getLinkIcon, parseContentAndMedia, clickOutsideAlerter, getIcon } from "../../utilities";
 import Button from 'react-bootstrap/Button';

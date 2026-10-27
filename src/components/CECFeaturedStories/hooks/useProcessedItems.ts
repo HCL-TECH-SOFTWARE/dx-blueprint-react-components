@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 // src/components/CECNewsSlider/hooks/useProcessedItems.ts
 import { useMemo } from "react";
 import {

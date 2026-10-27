@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import "./DXAds.scss";
 import React, { useEffect, useState } from "react";
 import DXAd, { AdProps } from "../DXAd/DXAd";

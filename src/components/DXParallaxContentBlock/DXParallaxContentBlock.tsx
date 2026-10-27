@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import React, { ReactElement, useState, useEffect } from "react";
 import "./DXParallaxContentBlock.scss";
 import Button from 'react-bootstrap/Button';

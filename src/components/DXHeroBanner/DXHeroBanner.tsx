@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import React, { createRef, useEffect, useRef } from "react";
 import Typed from "typed.js";
 import { LinksProps, getLinkTarget, getLinkIcon, IconButtonProps, getVideoFormat, getIcon } from "../../utilities";

@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import { renderHook, act } from '@testing-library/react';
 import { useEventFilters } from './useEventFilters';
 import type { CECEventData } from '../../CECEvent/CECEvent.types';

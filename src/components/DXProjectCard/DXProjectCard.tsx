@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import "../../global/loaders.scss";
 import "./DXProjectCard.scss";
 import variables from "../../global/_exportVariables.module.scss";

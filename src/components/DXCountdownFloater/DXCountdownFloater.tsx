@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import variables from "../../global/_exportVariables.module.scss";
 import "./DXCountdownFloater.scss";
 import React, { useEffect, useRef, useState } from "react";

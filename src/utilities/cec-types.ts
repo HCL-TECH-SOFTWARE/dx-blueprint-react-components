@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 // Common news types used by CEC components (MegaNews, NewsOverview, …)
 // BREAKING CHANGE (previous note kept): Removed SortBy/SortOrder exports and
 // NewsProps fields: tagFilter, tags, since, sortBy, sortOrder, numberOfItems.

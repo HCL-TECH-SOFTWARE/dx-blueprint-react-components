@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import React, { Component } from "react";
 import "./DXOnboarding.scss";
 import 'intro.js/introjs.css';

@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import React, { useState, useEffect } from "react";
 import "./DXDownloadCard.scss";
 import DXIcon from "../DXIcon/DXIcon";

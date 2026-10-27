@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import "./DXHalfParallax.scss";
 import React, { ReactElement, useState, useEffect } from 'react';
 import { parseContentAndMedia, ImageProps, LinksProps, getLinkTarget } from "../../utilities";

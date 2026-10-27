@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 // Day mapping for recurrence information
 const getLocalizedWeekday = ( weekday: string, locale?: string ) => {
     // Safe locale detection for SSR environments

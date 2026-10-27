@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import "./DXSearchSuggestions.scss";
 import React, { useState, useEffect, useRef } from "react";
 import { Form, InputGroup } from 'react-bootstrap';

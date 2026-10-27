@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 export const overflowText = ( word: string, limit: number ) => {
     let ending = "...";
     if ( word.length > limit ) {

@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 // Centralized constants (easy to test / override)
 export const SUMMARY_LENGTH = 250;
 export const HARD_MAX_ITEMS = 9;

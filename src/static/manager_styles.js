@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 const rootObserver = new MutationObserver((mutations, observer) => {
     // Wait until the explorer tree is available
     const el = document.querySelector("#storybook-explorer-tree");

@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import "./CECNewsOverview.scss";
 import React, { useCallback, useState, useEffect } from "react";
 import NewsTile from "../CECNewsTile/CECNewsTile";

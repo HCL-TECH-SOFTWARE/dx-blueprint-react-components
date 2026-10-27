@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import "./DXProductSlider.scss";
 import variables from "../../global/_exportVariables.module.scss";

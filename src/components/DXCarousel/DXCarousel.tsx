@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./DXCarousel.scss";
 import React, { useState, useEffect, useRef } from "react";

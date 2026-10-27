@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 // src/components/CECFeaturedStories/CECFeaturedStories.types.ts
 import { BasicComponent } from "../../utilities/BasicComponent/BasicComponent";
 import { ImageProps, LinksProps } from "../../utilities";

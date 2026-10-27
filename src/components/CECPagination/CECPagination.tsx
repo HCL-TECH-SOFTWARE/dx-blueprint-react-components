@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import React, { useMemo, useEffect } from 'react';
 import { PaginationProps, DEFAULT_MESSAGES } from './CECPagination.types';
 import { DefaultVariant, CompactVariant, BulletsVariant } from './CECPagination.variants';

@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import "./DXLinkList.scss";
 import { LinksProps, getLinkTarget, getLinkIcon, LinkIconProps, generateLinkIcon } from "../../utilities";
 import React, { useState, useEffect } from 'react';

@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import resolve from "@rollup/plugin-node-resolve"; //Uses the node resolution algorithm for modules
 import commonjs from "@rollup/plugin-commonjs"; //Converts commonjs modules to ES6 modules
 import typescript from "@rollup/plugin-typescript"; //Teaches rollup how to process Typescript files

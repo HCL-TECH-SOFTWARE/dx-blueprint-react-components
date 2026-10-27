@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 export const DEFAULT_ITEMS_PER_PAGE_OPTIONS = [3, 6, 12];
 export const DEFAULT_MESSAGES = {
   previous: 'Previous',

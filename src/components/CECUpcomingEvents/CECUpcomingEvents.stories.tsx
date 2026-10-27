@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
 import CECUpcomingEvents from './CECUpcomingEvents';
 import type { CECEventData } from '../CECEvent/CECEvent.types';

@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import "./DXJiraTaskCard.scss";
 import React, { useEffect, useState } from "react";
 import { IconButtonProps, ImageProps, LinksProps, StateIcons, TagProps, getIcon, getLinkTarget, renderAvatarProjectMembers } from "../../utilities";

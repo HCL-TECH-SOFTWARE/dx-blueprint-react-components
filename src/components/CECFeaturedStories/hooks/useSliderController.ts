@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 // src/components/CECNewsSlider/hooks/useSliderController.ts
 import { useEffect, useMemo, useState } from "react";
 import { Dir, type ProcessedBlogCard, type Animating } from "../CECFeaturedStories.types";

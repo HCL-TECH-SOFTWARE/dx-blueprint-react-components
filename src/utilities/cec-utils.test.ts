@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 /* ============================================================================
  * HCL CEC utilities tests
  * File: src/utilities/cec-utils.test.ts

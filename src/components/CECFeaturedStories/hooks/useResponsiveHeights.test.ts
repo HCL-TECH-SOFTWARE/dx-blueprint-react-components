@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import { renderHook } from '@testing-library/react';
 import { useResponsiveHeights } from "./useResponsiveHeights";
 // Mock console methods to avoid noise in tests

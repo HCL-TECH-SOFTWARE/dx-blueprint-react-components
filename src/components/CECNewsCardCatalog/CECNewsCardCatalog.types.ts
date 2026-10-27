@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import { BasicComponent } from "../../utilities/BasicComponent/BasicComponent";
 import { ImageProps, LinksProps } from "../../utilities";
 export interface BlogCardProps extends BasicComponent {

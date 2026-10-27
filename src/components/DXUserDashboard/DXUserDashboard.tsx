@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import "./DXUserDashboard.scss";
 import React from "react";
 import { ImageProps, renderAvatarLetters } from "../../utilities";

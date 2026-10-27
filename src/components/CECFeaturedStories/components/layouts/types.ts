@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and      *
  * limitations under the License.                                           *
  * ======================================================================== */
+
 import {ProcessedBlogCard} from "../../CECFeaturedStories.types";
 import {BasicComponent} from "../../../../utilities/BasicComponent/BasicComponent";
 export type LayoutType = 'default' | 'imageLeft';
