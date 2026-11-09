@@ -34,7 +34,7 @@
             font-size: var(--_14-regular-150-font-size);
 
             align-self: center;
-            color: var(--dark-l3);
+            color: var(--secondary-secondary);
             padding: 0.25rem 0.5rem;
             margin: 0;
 
@@ -59,7 +59,7 @@
         }
 
         .dropdown-menu {
-            background-color: var(--white);
+            background-color: var(--light-white);
             border: 1px solid var(--light-light-d2);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
@@ -69,7 +69,7 @@
             border-radius: 0;
             border-width: 0;
             clear: both;
-            color: var(--dark-l3);
+            color: var(--secondary-secondary);
             cursor: pointer;
             display: block;
             font-weight: 400;
@@ -90,7 +90,7 @@
             &:focus,
             &.active {
                 background-color: var(--light-light);
-                color: var(--dark-l3);
+                color: var(--secondary-secondary);
             }
         }
     }
@@ -103,7 +103,7 @@
         font-size: var(--_14-regular-150-font-size);
 
         align-self: center;
-        color: var(--dark-l3);
+        color: var(--secondary-secondary);
         padding: 0.25rem 0.5rem;
 
         @media screen and (min-width: 768px) {
@@ -123,7 +123,7 @@
 
         .page-link,
         button {
-            font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: var(--_16-regular-100-font-family);
             font-weight: 400;
             font-size: 16px;
             line-height: 100%;
@@ -183,7 +183,7 @@
             background-color: transparent;
             border-color: transparent;
             box-shadow: none;
-            color: var(--dark-l4);
+            color: var(--secondary-secondary-l1);
             cursor: not-allowed;
             opacity: 1;
             pointer-events: none;

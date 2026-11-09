@@ -69,7 +69,7 @@
         border-bottom: none;
         border-left: none;
         padding: 0.8125rem 1rem 0.8125rem 1rem;
-        background-color: var(--white);
+        background-color: var(--light-white);
         cursor: pointer;
         color: var(--dark-dark);
         font-family: var(--_20-bold-font-family);
@@ -98,14 +98,14 @@
         }
 
         &--active {
-            color: var(--white);
+            color: var(--light-white);
             background-color: var(--secondary-secondary);
         }
     }
 
     &__container {
         padding: 2.6875rem 1.6875rem 2rem 1.6875rem;
-        background-color: var(--white);
+        background-color: var(--light-white);
         border: 1px solid var(--secondary-secondary-l1);
         border-top-right-radius: .5rem;
         border-bottom-left-radius: .5rem;
@@ -132,7 +132,7 @@
             justify-content: center;
 
             i {
-                color: var(--white);
+                color: var(--light-white);
                 font-size: var(--_20-regular-font-size);
             }
         }

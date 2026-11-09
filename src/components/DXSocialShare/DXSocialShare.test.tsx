@@ -307,7 +307,7 @@ test( "If the user pass the title prop and small on the size, the title should b
     expect( title ).toBeNull();
 } );
 
-test( "If the user pass true on the light prop, the component should have the color style set to var(--white)", () => {
+test( "If the user pass true on the light prop, the component should have the color style set to var(--light-white)", () => {
     const socialShareProps = {
         size: bigSize,
         title: "Share this page:",
@@ -321,5 +321,5 @@ test( "If the user pass true on the light prop, the component should have the co
     };
     render( <DXSocialShare {...socialShareProps} /> );
     const socialShareRender = screen.getByTestId( 'dxSocialShare' );
-    expect( socialShareRender ).toHaveStyle( { color: "var(--white)" } );
+    expect( socialShareRender ).toHaveStyle( { color: "var(--light-white)" } );
 } );

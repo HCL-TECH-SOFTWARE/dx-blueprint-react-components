@@ -63,7 +63,7 @@ let getClassName = ( type?: string ) => {
 
 const DXSocialPresence = ( props: SocialPresenceProps ) => {
     const checkLightMode = ( size: string | undefined, light: boolean | undefined ) => {
-        return size && size !== "small" && light ? { color: "var(--white)" } : undefined;
+        return size && size !== "small" && light ? { color: "var(--light-white)" } : undefined;
     };
     const renderIcons = ( socialMediaLinks?: any ) => {
         return (

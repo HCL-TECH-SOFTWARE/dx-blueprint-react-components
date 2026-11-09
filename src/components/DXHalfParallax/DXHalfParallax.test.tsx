@@ -609,7 +609,7 @@ describe( "DXHalfParallax Hardening", () => {
         expect( removeListenerSpy ).toHaveBeenCalledWith( "change", expect.any( Function ) );
     } );
 
-    test( "Style Engine: strictly evaluates empty strings for background and forces var(--white) fallback", () => {
+    test( "Style Engine: strictly evaluates empty strings for background and forces var(--light-white) fallback", () => {
         // Stryker mutates `cnt.backgroundColor !== ''` to force truthy evaluation of empty strings.
         const parallaxProps = {
             slidesCollection: [{
@@ -625,7 +625,7 @@ describe( "DXHalfParallax Hardening", () => {
 
         // If `!== ''` is mutated, the empty string falls through to the `else` block
         // and returns { backgroundImage: "url()" }. 
-        // If it executes correctly, it returns { background: "var(--white)" } which JSDOM omits.
+        // If it executes correctly, it returns { background: "var(--light-white)" } which JSDOM omits.
         expect( ( slides[0] as HTMLElement ).style.backgroundImage ).not.toContain( "url" );
         expect( ( slides[1] as HTMLElement ).style.backgroundImage ).not.toContain( "url" );
     } );

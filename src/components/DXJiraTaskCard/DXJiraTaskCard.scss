@@ -22,7 +22,7 @@
         align-items: center;
         background-color: transparent;
         padding: 4px 0;
-        border-top: 1px solid var(--dark-l5);
+        border-top: 1px solid var(--secondary-secondary-l2);
         &Info {
             &Main {
                 display: flex;
@@ -176,7 +176,7 @@
             align-items: center;
             border-radius: 2px;
             background-color: var(--light-white);
-            color: var(--dark-l3);
+            color: var(--secondary-secondary);
             padding: .1875rem .5rem .1875rem .5rem;
             font-family: var(--_12-primary-semibold-150-font-family);
             font-size: var(--_12-primary-semibold-150-font-size);
@@ -500,8 +500,8 @@
     }
     .dxEmptyState {
         border-radius: 0;
-        border-top: 1px solid var(--dark-l5);
-        border-bottom: 1px solid var(--dark-l5);
+        border-top: 1px solid var(--secondary-secondary-l2);
+        border-bottom: 1px solid var(--secondary-secondary-l2);
     }
     .dxToggleMenu .dxButton.btn.btn-secondary {
         border-color: var(--light-light-d2);

@@ -56,7 +56,7 @@ const getBackground = ( cnt: Banner | Content ) => {
             return { backgroundImage: `url(${pathImage})` };
         }
     }
-    return { background: "var(--white)" };
+    return { background: "var(--light-white)" };
 };
 const getFontColor = ( cnt: Banner | Content ) => {
     if ( cnt.fontColor && cnt.fontColor.startsWith( '#' ) ) {

@@ -36,13 +36,13 @@ test( "If the user does pass a subtitle it should be in the document", () => {
     expect( subTitle ).toBeInTheDocument();
 } );
 
-test( "If the user does not pass a textColor, the default color for the content will be var(--white)", () => {
+test( "If the user does not pass a textColor, the default color for the content will be var(--light-white)", () => {
     let props = {
         ...requiredArgs
     };
     const { getByTestId } = render( <DXTextBreak {...props} /> );
     const content = getByTestId( 'text-break-content' );
-    expect( content ).toHaveStyle( { color: "var(--white)" } );
+    expect( content ).toHaveStyle( { color: "var(--light-white)" } );
 } );
 
 test( "If the user does pass a textColor, it will be applied on the content", () => {
