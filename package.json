@@ -10,6 +10,7 @@
     "dev": "storybook dev -p 6006",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "lint:tokens": "node scripts/check-css-tokens.mjs",
     "test:unit": "jest --runInBand",
     "test:mutation": "bash scripts/test-mutation.sh"
   },

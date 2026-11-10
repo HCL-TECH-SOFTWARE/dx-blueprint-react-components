@@ -13,6 +13,7 @@ npm run test:unit       # Unit tests + coverage
 npm run test:mutation   # Mutation testing (Stryker)
 npm run lint            # ESLint check
 npm run lint:fix        # ESLint auto-fix
+npm run lint:tokens     # CSS token definition check
 ```
 
 ## Structure
