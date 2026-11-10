@@ -94,6 +94,9 @@
     "THIRD-PARTY-LICENSES"
   ],
   "types": "dist/index.d.ts",
+  "sideEffects": [
+    "**/*.css"
+  ],
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"

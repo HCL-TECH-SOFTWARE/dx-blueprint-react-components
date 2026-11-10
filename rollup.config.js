@@ -21,29 +21,147 @@ import dts from "rollup-plugin-dts"; //rollup your .d.ts files
 import postcss from "rollup-plugin-postcss";
 import fs from "fs-extra";
 import path from "path";
-import hasha from "hasha";
-import url from "postcss-url";
 import image from '@rollup/plugin-image';
 import json from "@rollup/plugin-json";
 
 const packageJson = createRequire(import.meta.url)("./package.json");
-const IMAGES_RX = /\.(png|jpe?g|gif|webp|svg|svg#[A-Za-z]+|eot|ttf|woff)$/;
 const OUT_DIR = "dist";
 
+// Start every build from an empty dist/ so files from older builds cannot linger
+// (preserved modules produce many files). Skipped in watch mode to keep rebuilds fast.
+if (!process.env.ROLLUP_WATCH) {
+  fs.removeSync(OUT_DIR);
+}
+
+// Packages the ESM/CJS builds must not inline: everything the consumer installs
+// alongside this package. Matches the bare name and any subpath (e.g. "react-dom/client").
+const externalPackages = [
+  ...Object.keys(packageJson.dependencies || {}),
+  ...Object.keys(packageJson.peerDependencies || {}),
+];
+// Stylesheets are never external, even inside an external package (e.g.
+// "bootstrap/dist/css/bootstrap.min.css"): they must reach `styleStub` and be dropped,
+// otherwise the JS would keep a CSS import that bundlers then have to resolve.
+const isExternalPackage = (id) =>
+  !/\.(css|scss)$/.test(id) &&
+  externalPackages.some((name) => id === name || id.startsWith(`${name}/`));
+
+// CSS is built in a separate step, so the JS bundles must not contain or import it.
+// Every stylesheet import except *.module.scss resolves to an empty virtual module.
+// *.module.scss stays because its `:export` values (breakpoints, z-indexes) are read from JS.
+const STYLE_RX = /\.(css|scss)$/;
+const MODULE_SCSS_RX = /\.module\.scss$/;
+const STYLE_STUB_ID = "\0style-stub";
+const styleStub = () => ({
+  name: "style-stub",
+  resolveId(source) {
+    if (!STYLE_RX.test(source) || MODULE_SCSS_RX.test(source)) return null;
+    return { id: STYLE_STUB_ID, moduleSideEffects: false };
+  },
+  load(id) {
+    return id === STYLE_STUB_ID ? "export default {};" : null;
+  },
+});
+
+// Resolves dompurify / html-react-parser to a concrete file. Only needed when dependencies
+// are bundled (UMD): plugin-node-resolve picks dompurify's `types` export condition and
+// would resolve to a .d.mts declaration file instead of the real bundle.
+const resolveBundledDeps = () => ({
+  name: "resolve-dompurify",
+  resolveId(source) {
+    if (source === "dompurify") {
+      return path.resolve("node_modules/dompurify/dist/purify.cjs.js");
+    }
+    if (source === "html-react-parser") {
+      return path.resolve("node_modules/html-react-parser/lib/index.js");
+    }
+    return null;
+  },
+});
+
+// Plugins shared by every JS build. `bundleDeps` is true only for UMD.
+// `outDir` is the directory this build writes to: @rollup/plugin-typescript requires the
+// tsconfig `outDir` to sit inside the Rollup output `dir`, so each build passes its own.
+const jsPlugins = ({ bundleDeps, outDir = OUT_DIR }) => [
+  ...(bundleDeps ? [resolveBundledDeps()] : []),
+  styleStub(),
+  image(),
+  resolve({ preferBuiltins: true, browser: true }),
+  json(),
+  typescript({
+    tsconfig: "./tsconfig.json",
+    outDir,
+    compilerOptions: { emitDeclarationOnly: false },
+    include: ["src/**/*.ts", "src/**/*.tsx"],
+    exclude: ["**/__tests__", "**/*.test.ts", "**/*.test.tsx"],
+    declaration: false
+  }),
+  commonjs({
+    requireReturnsDefault: (id) => {
+      if (id.indexOf("styled-components") !== -1) {
+        return "auto";
+      }
+      return "false";
+    }
+  }),
+  // Only *.module.scss is compiled here. Inject and extract are off so nothing is written
+  // to disk; the plugin just turns the `:export { ... }` block into a JS object.
+  postcss({
+    include: /\.module\.scss$/,
+    inject: false,
+    extract: false,
+  }),
+];
+
+// Declares that only CSS files have side effects, so bundlers can tree-shake unused
+// components. Deliberately no `"type": "module"`: with it, webpack 5 treats every file as
+// strict ESM and rejects the extensionless deep imports used by the sources
+// (e.g. "react-bootstrap/Button") with "failed to resolve only because it was resolved
+// as fully specified".
+const esmPackageJson = () => ({
+  name: "esm-package-json",
+  generateBundle(options) {
+    if (options.format !== "es") return;
+    this.emitFile({
+      type: "asset",
+      fileName: "package.json",
+      source: JSON.stringify({ sideEffects: ["**/*.css"] }, null, 2) + "\n",
+    });
+  },
+});
+
+// ESM and CJS are separate builds (not two outputs of one build) because of the `outDir`
+// rule above. Both keep one file per source module and leave dependencies as imports.
+const preservedBuild = (format) => {
+  const dir = `${OUT_DIR}/${format === "es" ? "esm" : "cjs"}`;
+  return {
+    input: "src/index.ts",
+    output: {
+      dir,
+      format,
+      // One file per source module (mirrors src/), so consumers import only what they use.
+      preserveModules: true,
+      preserveModulesRoot: "src",
+      entryFileNames: "[name].js",
+      sourcemap: false,
+      ...(format === "cjs" ? { exports: "named" } : {}),
+    },
+    plugins: [
+      ...jsPlugins({ bundleDeps: false, outDir: dir }),
+      ...(format === "es" ? [esmPackageJson()] : []),
+    ],
+    external: isExternalPackage,
+  };
+};
+
 export default [
+  // ESM + CJS: preserved modules, dependencies stay as imports/requires.
+  preservedBuild("es"),
+  preservedBuild("cjs"),
+  // UMD: one self-contained file for <script> use, global name `TRF`. Only React is external.
   {
     input: "src/index.ts",
     output: [
-      {
-        file: packageJson.main,
-        format: "cjs",
-        sourcemap: false,
-      },
-      {
-        file: packageJson.module,
-        format: "esm",
-        sourcemap: false,
-      },
       {
         file: packageJson.umd,
         format: "umd",
@@ -55,66 +173,7 @@ export default [
         }
       }
     ],
-    plugins: [
-      // Bypass @rollup/plugin-node-resolve exports resolution for DOMPurify v3.
-      // The "types" sub-condition in DOMPurify's package.json exports field causes
-      // plugin-node-resolve v13 to incorrectly resolve to purify.es.d.mts (a TypeScript
-      // declaration file) instead of the actual ESM bundle purify.es.mjs.
-      {
-        name: 'resolve-dompurify',
-        resolveId(source) {
-          if (source === 'dompurify') {
-            return path.resolve('node_modules/dompurify/dist/purify.cjs.js');
-          }
-          if (source === 'html-react-parser') {
-            return path.resolve('node_modules/html-react-parser/lib/index.js');
-          }
-          return null;
-        }
-      },
-      image(),
-      resolve({ jsnext: true, preferBuiltins: true, browser: true }),
-      json(),
-      typescript({
-        tsconfig: "./tsconfig.json",
-        compilerOptions: { emitDeclarationOnly: false },
-        include: ["src/**/*.ts", "src/**/*.tsx"],
-        exclude: ["**/__tests__", "**/*.test.ts", "**/*.test.tsx"],
-        declaration: false
-      }),
-      commonjs({
-        requireReturnsDefault: (id) => {
-          if (id.indexOf("styled-components") !== -1) {
-            return "auto";
-          }
-          return "false";
-        }
-      }),
-      postcss({
-        extract: true,
-        plugins: [
-          url({
-            url: (asset) => {
-              const filename = asset.url.split("?");
-              if (!IMAGES_RX.test(filename[0])) return asset.url;
-
-              const file = fs.readFileSync(asset.absolutePath);
-              const hash = hasha(file, { algorithm: "md5" });
-              const extname = path.extname(asset.absolutePath);
-
-              const hashedFileName = `${hash}${extname}`;
-              fs.ensureDirSync(path.join(OUT_DIR, "_assets"));
-
-              const hashedFilePath = path.join("_assets", hashedFileName); // FS-ish path
-              fs.writeFileSync(path.join(OUT_DIR, hashedFilePath), file);
-
-              // ⬇️ ensure URL is POSIX-style and don't add "?undefined"
-              return "../" + hashedFilePath.replace(/\\/g, "/") + (filename[1] ? "?" + filename[1] : "");
-            },
-          }),
-        ],
-      })
-    ],
+    plugins: jsPlugins({ bundleDeps: true }),
     external: ["react", "react-dom"],
   },
   {
