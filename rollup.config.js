@@ -213,7 +213,11 @@ const publishCss = () => ({
     fs.removeSync(path.join(cssDir, "_css-pass.js"));
 
     const tokens = fs.readFileSync("src/styles/tokens.css", "utf8");
-    const bootstrap = fs.readFileSync("node_modules/bootstrap/dist/css/bootstrap.min.css", "utf8");
+    // Bootstrap's file ends with a source map comment for a .map file that is not published;
+    // leaving it in makes dev servers log "failed to load source map" for every consumer.
+    const bootstrap = fs
+      .readFileSync("node_modules/bootstrap/dist/css/bootstrap.min.css", "utf8")
+      .replace(/\/\*# sourceMappingURL=[^*]*\*\/\s*$/, "\n");
     const components = fs.readFileSync(path.join(cssDir, "components.css"), "utf8");
     fs.writeFileSync(path.join(cssDir, "tokens.css"), tokens);
     fs.writeFileSync(path.join(cssDir, "bootstrap.css"), bootstrap);
