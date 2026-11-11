@@ -8,21 +8,94 @@ A React 19 + TypeScript component library for [HCL Digital Experience](https://w
 npm install @hcl-software/dx-blueprint-react-components
 ```
 
-React and React-DOM 19 are peer dependencies — the library does not bundle them.
+React and React-DOM 19 are peer dependencies — the library does not bundle them. The other runtime dependencies (`react-bootstrap`, `d3`, `moment`, ...) are installed with the package and imported by your bundler, so unused components can be tree-shaken.
 
 ## Quick Start
 
+The JavaScript does not import any CSS. Import the stylesheets you want once, in your app entry:
+
 ```tsx
-import { DXCard, DXButton } from '@hcl-software/dx-blueprint-react-components';
+import "@hcl-software/dx-blueprint-react-components/tokens.css";
+import "@hcl-software/dx-blueprint-react-components/components.css";
+// Optional: only if you want Bootstrap's global styles (many layouts use react-bootstrap grid classes)
+// import "@hcl-software/dx-blueprint-react-components/bootstrap.css";
+import { DXCard, DXButton } from "@hcl-software/dx-blueprint-react-components";
 
 function App() {
   return (
-    <DXCard title="Welcome">
+    <>
+      <DXCard
+        title={{ url: "#", label: "Welcome" }}
+        description="A card with a link title and a button."
+        primaryButton={{ label: "Get Started", onClick: () => {} }}
+      />
       <DXButton label="Get Started" displayType="primary" onClick={() => {}} />
-    </DXCard>
+    </>
   );
 }
 ```
+
+## Styling
+
+### CSS files
+
+| Import | Contents |
+|--------|----------|
+| `@hcl-software/dx-blueprint-react-components/tokens.css` | Default design tokens (colors, typography scales, component hooks) as CSS custom properties. |
+| `@hcl-software/dx-blueprint-react-components/components.css` | Styles for all components, plus the icon fonts and carousel styles they use. Uses the tokens. |
+| `@hcl-software/dx-blueprint-react-components/bootstrap.css` | Bootstrap 5 CSS. Optional. |
+| `@hcl-software/dx-blueprint-react-components/index.css` | Everything in one file: tokens, Bootstrap, then components. For apps that want one import. |
+
+The same all-in-one file is also available at `dist/cjs/index.css`, `dist/esm/index.css` and `dist/umd/index.css`.
+
+### Bootstrap is opt-in
+
+About 50 components are built on `react-bootstrap` (grid `Container`/`Row`/`Col`, `Form`, `Modal`, ...). Those components rely on Bootstrap's CSS for their layout. If you load only `tokens.css` and `components.css`, load `bootstrap.css` too (or your own Bootstrap build) wherever you use them. Load `index.css` instead if you want everything without choosing.
+
+### Fonts
+
+The tokens use Noto Sans with system fallbacks (`"Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif`); a few tokens name Montserrat or Segoe UI first and fall back to the same stack. **No font files are shipped.** If Noto Sans is not installed on the user's device, add it yourself, for example:
+
+- Google Fonts, in your HTML `<head>`:
+
+  ```html
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  ```
+
+- Or self-host with [Fontsource](https://fontsource.org/fonts/noto-sans):
+
+  ```bash
+  npm install @fontsource/noto-sans
+  ```
+
+  ```ts
+  import "@fontsource/noto-sans/400.css";
+  import "@fontsource/noto-sans/600.css";
+  import "@fontsource/noto-sans/700.css";
+  ```
+
+### Overriding tokens
+
+Override any token with a plain rule in your own stylesheet, loaded before or after the library's CSS:
+
+```css
+:root {
+  --primary-primary: #123456;
+}
+```
+
+The package declares its tokens under `:where(:root)`, which has zero specificity, so your values always win regardless of load order. You can also set tokens on any ancestor element to theme part of a page.
+
+### Script tag
+
+For pages without a bundler, load `dist/umd/index.css` and `dist/umd/index.js`. The script exposes the global `TRF` and expects `React` and `ReactDOM` to be loaded first as globals.
+
+## Requirements and limitations
+
+- A bundler that handles CSS imports and package `exports` (Vite, webpack 5, ...) is required. Importing the package straight from Node without a bundler (plain Node ESM, or server rendering without a bundler) is not supported yet.
+- Dependency versions are resolved by your package manager, not baked into the package.
 
 ## What's Included
 
