@@ -94,6 +94,23 @@
     "THIRD-PARTY-LICENSES"
   ],
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "default": "./dist/esm/index.js"
+    },
+    "./tokens.css": "./dist/css/tokens.css",
+    "./components.css": "./dist/css/components.css",
+    "./bootstrap.css": "./dist/css/bootstrap.css",
+    "./index.css": "./dist/cjs/index.css",
+    "./dist/cjs/index.css": "./dist/cjs/index.css",
+    "./dist/esm/index.css": "./dist/esm/index.css",
+    "./dist/umd/index.js": "./dist/umd/index.js",
+    "./dist/umd/index.css": "./dist/umd/index.css",
+    "./package.json": "./package.json"
+  },
   "sideEffects": [
     "**/*.css"
   ],
