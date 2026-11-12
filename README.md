@@ -17,7 +17,9 @@ The JavaScript does not import any CSS. Import the stylesheets you want once, in
 ```tsx
 import "@hcl-software/dx-blueprint-react-components/tokens.css";
 import "@hcl-software/dx-blueprint-react-components/components.css";
-// Optional: only if you want Bootstrap's global styles (many layouts use react-bootstrap grid classes)
+// Needed by the components built on react-bootstrap (for example DXPagination, DXDirectoryCard,
+// DXChartCard); without it their layout breaks. Skip it only if you bring your own Bootstrap 5 CSS
+// or use none of those components. See "Bootstrap is opt-in" below.
 // import "@hcl-software/dx-blueprint-react-components/bootstrap.css";
 import { DXCard, DXButton } from "@hcl-software/dx-blueprint-react-components";
 
@@ -43,14 +45,14 @@ function App() {
 |--------|----------|
 | `@hcl-software/dx-blueprint-react-components/tokens.css` | Default design tokens (colors, typography scales, component hooks) as CSS custom properties. |
 | `@hcl-software/dx-blueprint-react-components/components.css` | Styles for all components, plus the icon fonts and carousel styles they use. Uses the tokens. |
-| `@hcl-software/dx-blueprint-react-components/bootstrap.css` | Bootstrap 5 CSS. Optional. |
+| `@hcl-software/dx-blueprint-react-components/bootstrap.css` | Bootstrap 5 CSS. Needed by components built on `react-bootstrap`, see below. |
 | `@hcl-software/dx-blueprint-react-components/index.css` | Everything in one file: tokens, Bootstrap, then components. For apps that want one import. |
 
 The same all-in-one file is also available at `dist/cjs/index.css`, `dist/esm/index.css` and `dist/umd/index.css`.
 
 ### Bootstrap is opt-in
 
-About 50 components are built on `react-bootstrap` (grid `Container`/`Row`/`Col`, `Form`, `Modal`, ...). Those components rely on Bootstrap's CSS for their layout. If you load only `tokens.css` and `components.css`, load `bootstrap.css` too (or your own Bootstrap build) wherever you use them. Load `index.css` instead if you want everything without choosing.
+About 50 components are built on `react-bootstrap` (grid `Container`/`Row`/`Col`, `Form`, `Modal`, ...). Those components rely on Bootstrap's CSS for their layout. Without it, for example, `DXPagination` renders as a vertical bulleted list and `DXDirectoryCard` and `DXChartCard` lose their layout. If you load only `tokens.css` and `components.css`, load `bootstrap.css` too (or your own Bootstrap 5 build) wherever you use them. Components that are not built on `react-bootstrap`, such as `DXButton` and `DXCard`, render correctly without it. Load `index.css` instead if you want everything without choosing.
 
 ### Fonts
 
