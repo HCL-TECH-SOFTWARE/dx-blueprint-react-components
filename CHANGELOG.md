@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 - Default design tokens in `src/styles/tokens.css` (declared under `:where(:root)`, so consumer overrides always win), published as `tokens.css`.
 - Separate stylesheets: `tokens.css`, `components.css` and `bootstrap.css`, plus `index.css` (all-in-one). `dist/{cjs,esm,umd}/index.css` are still produced.
-- `exports` map in `package.json` (no wildcard; the existing `dist/cjs/index.css` and `dist/umd/*` paths stay reachable) and `sideEffects: ["**/*.css"]`.
+- `exports` map in `package.json` (no wildcard; the existing `dist/cjs/index.css` and `dist/umd/*` paths stay reachable) and `sideEffects: ["**/*.css", "**/*.scss"]` (`.scss` is listed so Storybook, which imports component styles from source, keeps them).
 - Typography helper classes `._10-regular`, `._10-semibold`, `._18-semibold` and `._32-regular` are now part of the built CSS.
 - `npm run lint:tokens`, run in CI, fails when a `var(--token)` used in `src` is not defined.
 

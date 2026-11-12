@@ -112,7 +112,8 @@
     "./package.json": "./package.json"
   },
   "sideEffects": [
-    "**/*.css"
+    "**/*.css",
+    "**/*.scss"
   ],
   "publishConfig": {
     "access": "public",
