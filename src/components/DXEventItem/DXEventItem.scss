@@ -14,7 +14,7 @@
  * ======================================================================== */
 
 .dxEventItem {
-    background: var(--white);
+    background: var(--light-white);
     box-shadow: 0px 2px 4px rgba(39, 40, 51, 0.2);
     border-radius: 8px;
     width: 100%;
@@ -53,7 +53,7 @@
         letter-spacing: var(--_40-primary-bold-125-letter-spacing);
         line-height: var(--_40-primary-bold-125-line-height);
         font-weight: var(--_40-primary-bold-125-font-weight);
-        color: var(--white);
+        color: var(--light-white);
         margin: 0;
     }
 
@@ -66,7 +66,7 @@
         font-weight: var(--_10-primary-semibold-150-font-weight);
         text-transform: var(--_10-primary-semibold-150-text-transform);
         margin: 0;
-        color: var(--white);
+        color: var(--light-white);
     }
 
     &__formNumber {
@@ -75,7 +75,7 @@
         letter-spacing: var(--_20-primary-bold-125-letter-spacing);
         line-height: var(--_20-primary-bold-125-line-height);
         font-weight: var(--_20-primary-bold-125-font-weight);
-        color: var(--white);
+        color: var(--light-white);
         margin: 0;
     }
 

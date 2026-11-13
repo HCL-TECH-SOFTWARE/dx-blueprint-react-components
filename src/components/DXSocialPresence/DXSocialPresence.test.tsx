@@ -421,7 +421,7 @@ test( "If the user pass an url to the instagram prop and clicks on the button, t
     expect( spyWindowOpen ).toHaveBeenCalled();
 } );
 
-test( "If the user pass 'true' on the light prop, the component should have the color style set to var(--white)", () => {
+test( "If the user pass 'true' on the light prop, the component should have the color style set to var(--light-white)", () => {
     let props = {
         size: sizeBig,
         socialMediaLinks: {
@@ -445,5 +445,5 @@ test( "If the user pass 'true' on the light prop, the component should have the 
     };
     const { getByTestId } = render( <DXSocialPresence {...props} /> );
     const component = getByTestId( "social-presence" );
-    expect( component ).toHaveStyle( { color: "var(--white)" } );
+    expect( component ).toHaveStyle( { color: "var(--light-white)" } );
 } );

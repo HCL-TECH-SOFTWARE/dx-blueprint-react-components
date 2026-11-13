@@ -134,7 +134,7 @@
             display: flex;
             justify-content: space-between;
             text-decoration: none;
-            color: var(--dark-darkdark);
+            color: var(--dark-dark);
             font-family: var(--_16-regular-font-family);
             font-size: var(--_16-regular-font-size);
             font-weight: var(--_16-regular-font-weight);
@@ -148,7 +148,7 @@
     }
 
     &__grid {
-        background-color: var(--white);
+        background-color: var(--light-white);
     }
 
     &__row:not(:first-child) {

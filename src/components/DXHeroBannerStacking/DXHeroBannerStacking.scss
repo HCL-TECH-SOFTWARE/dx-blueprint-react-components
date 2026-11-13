@@ -20,7 +20,7 @@
         list-style: none;
         display: grid;
         grid-template-columns: 1fr;
-        grid-template-rows: repeat(var(--HBStacking_numcards), var(--card-height));
+        grid-template-rows: repeat(var(--HBStacking-numcards), var(--card-height));
         gap: var(--HBStacking-cardMargin);
         padding: 0;
         padding-bottom: calc(var(--HBStacking-numcards) * var(--HBStacking-stackTopOffset));

@@ -17,7 +17,9 @@ import "../src/coolicons.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../src/global/_bootstrap-compat.scss";
 import "../src/global/_input-inset-compat.scss";
-import "./design_system_styles.css";
+import "../src/styles/tokens.css";
+import "../src/styles/_typography-helpers.scss";
+import "./fonts.css";
 import "./css/preview/index.css";
 import { Title, Subtitle, Description, Controls, Stories } from '@storybook/addon-docs/blocks';
 

@@ -408,17 +408,17 @@
             }
             button {
                 height: 40px;
-                background-color: var(--white);
+                background-color: var(--light-white);
                 border-radius: 4px;
-                border: 1px solid var(--dark-l5);
+                border: 1px solid var(--secondary-secondary-l2);
                 margin-top: .25rem;
                 a {
                     color: var(--secondary-secondary);
                     text-decoration: none;
                 }
                 &:hover {
-                    background-color: var(--white);
-                    border: 1px solid var(--dark-l3);
+                    background-color: var(--light-white);
+                    border: 1px solid var(--secondary-secondary);
                     transition: all ease .25s;
                     a {
                         color: var(--secondary-secondary);

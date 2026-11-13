@@ -62,20 +62,20 @@
       padding-block: 0.5rem;
       padding-inline-start: 1rem;
       padding-inline-end: 2.5rem;
-      border: 1px solid var(--gray-300, #E7E7ED);
+      border: 1px solid var(--secondary-secondary-l3, #E7E7ED);
       border-radius: 4px;
       font-size: 16px;
       line-height: 1.5;
-      color: var(--gray-900, #272833);
-      background-color: var(--white, #FFFFFF);
+      color: var(--dark-dark, #272833);
+      background-color: var(--light-white, #FFFFFF);
       transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
       &:focus {
         outline: none;
-        border-color: var(--primary, #0062FF);
+        border-color: var(--primary-primary, #0062FF);
         box-shadow: 0 0 0 2px rgba(0, 98, 255, 0.2);
       }
       &::placeholder {
-        color: var(--gray-500, #A7A9BC);
+        color: var(--secondary-secondary-l1, #A7A9BC);
         opacity: 1;
       }
     }
@@ -85,7 +85,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--gray-600, #6B6C7E);
+      color: var(--secondary-secondary, #6B6C7E);
       pointer-events: none;
       width: 16px;
       height: 16px;
@@ -246,9 +246,9 @@
     align-items: flex-end;
     margin-bottom: 1rem;
     padding: 1rem;
-    background-color: var(--gray-50, #F8F9FA);
+    background-color: var(--light-light-l1, #F8F9FA);
     border-radius: 8px;
-    border: 1px solid var(--gray-200, #E7E7ED);
+    border: 1px solid var(--secondary-secondary-l3, #E7E7ED);
   }
   &__date-filter {
     display: flex;
@@ -260,25 +260,25 @@
   &__date-label {
     font-weight: 600;
     font-size: 14px;
-    color: var(--gray-900, #272833);
+    color: var(--dark-dark, #272833);
     margin: 0;
   }
   &__date-input {
     padding: 0.5rem 0.75rem;
-    border: 1px solid var(--gray-300, #E7E7ED);
+    border: 1px solid var(--secondary-secondary-l3, #E7E7ED);
     border-radius: 4px;
     font-size: 14px;
-    color: var(--gray-900, #272833);
-    background-color: var(--white, #FFFFFF);
+    color: var(--dark-dark, #272833);
+    background-color: var(--light-white, #FFFFFF);
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     min-height: 38px;
     &:focus {
       outline: none;
-      border-color: var(--primary, #0062FF);
+      border-color: var(--primary-primary, #0062FF);
       box-shadow: 0 0 0 2px rgba(0, 98, 255, 0.2);
     }
     &::placeholder {
-      color: var(--gray-500, #A7A9BC);
+      color: var(--secondary-secondary-l1, #A7A9BC);
       opacity: 1;
     }
     // Responsive design
@@ -395,7 +395,7 @@
           height: 16px;
           cursor: pointer;
           font-style: normal;
-          font-family: var(--font-family-sans-serif) !important;
+          font-family: var(--_16-semibold-150-font-family) !important;
           color: #0b5fff;
           &::before {
             content: '×';

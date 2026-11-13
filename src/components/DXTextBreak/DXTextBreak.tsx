@@ -74,7 +74,7 @@ const DXTextBreak = ( props: TextBreakProps ) => {
         if ( props.textColor ) {
             styles["color"] = props.textColor;
         } else {
-            styles["color"] = "var(--white)";
+            styles["color"] = "var(--light-white)";
         }
         return styles;
     };

@@ -110,7 +110,7 @@
             letter-spacing: var(--_14-regular-150-letter-spacing);
             color: var(--secondary-secondary);
             &:hover {
-                color: var(--secondary-secondary-d1);
+                color: var(--dark-dark);
             }
             @include mobile {
                 display: flex;

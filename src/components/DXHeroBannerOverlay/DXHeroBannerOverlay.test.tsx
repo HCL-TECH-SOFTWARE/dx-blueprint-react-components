@@ -664,7 +664,7 @@ test( "hero banner contains fallback opacity color", () => {
     let banner = screen.getByTestId( 'hb-overlay-container' );
 
     expect( banner.firstChild ).toHaveStyle( {
-        'background-color': 'var(--white)'
+        'background-color': 'var(--light-white)'
     } );
 } );
 // Video format tests

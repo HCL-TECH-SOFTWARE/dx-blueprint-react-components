@@ -1,0 +1,1674 @@
+/* ======================================================================== *
+ * Copyright 2026 HCL America Inc.                                          *
+ * Licensed under the Apache License, Version 2.0 (the "License");          *
+ * you may not use this file except in compliance with the License.         *
+ * You may obtain a copy of the License at                                  *
+ *                                                                          *
+ * http://www.apache.org/licenses/LICENSE-2.0                               *
+ *                                                                          *
+ * Unless required by applicable law or agreed to in writing, software      *
+ * distributed under the License is distributed on an "AS IS" BASIS,        *
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. *
+ * See the License for the specific language governing permissions and      *
+ * limitations under the License.                                           *
+ * ======================================================================== */
+
+/* Blueprint default design tokens. Override any token with a plain `:root { --token: value; }` rule in your own stylesheet. */
+:where(:root) {
+    /* Colors */
+    --charts-blue: #4b9bff;
+    --charts-cyan: #5fc8ff;
+    --charts-green: #9be169;
+    --charts-indigo: #7785ff;
+    --charts-orange: #ffb46e;
+    --charts-pink: #ff73c3;
+    --charts-purple: #af78ff;
+    --charts-red: #ff5f5f;
+    --charts-teal: #50d2a0;
+    --charts-yellow: #ffd76e;
+    --danger-danger: #da1414;
+    --danger-danger-d1: #c31212;
+    --danger-danger-d2: #ab1010;
+    --danger-danger-l1: #f48989;
+    --danger-danger-l2: #feefef;
+    --dark-dark: #272833;
+    --dark-dark-d1: #1c1c24;
+    --dark-dark-d2: #111116;
+    --dark-dark-l1: #30313f;
+    --dark-dark-l2: #393a4a;
+    --dark-typography-type-dark: #272833;
+    --dark-typography-type-dark-d1: #1c1c24;
+    --dark-typography-type-dark-d2: #111116;
+    --dark-typography-type-dark-l1: #30313f;
+    --dark-typography-type-dark-l2: #393a4a;
+    --gradients-a-gradient-a: #0b5fff;
+    --gradients-a-gradient-a-d1: #0053f0;
+    --gradients-a-gradient-a-d2: #004ad7;
+    --gradients-a-gradient-a-l1: #80acff;
+    --gradients-a-gradient-a-l2: #b3cdff;
+    --gradients-b-gradient-b: #0b5fff;
+    --gradients-b-gradient-b-d1: #0053f0;
+    --gradients-b-gradient-b-d2: #004ad7;
+    --gradients-b-gradient-b-l1: #80acff;
+    --gradients-b-gradient-b-l2: #b3cdff;
+    --info-info: #2e5aac;
+    --info-info-d1: #294f98;
+    --info-info-d2: #234584;
+    --info-info-l1: #89a7e0;
+    --info-info-l2: #eef2fa;
+    --info-gradients-warm-cool-cool-cool: #0061ff;
+    --info-gradients-warm-cool-cool-cool-d1: #0052d4;
+    --info-gradients-warm-cool-cool-cool-d2: #4776e6;
+    --info-gradients-warm-cool-cool-cool-l1: #1fa2ff;
+    --info-gradients-warm-cool-cool-cool-l2: #acb6e5;
+    --info-gradients-warm-cool-warm-warm: #f46b45;
+    --info-gradients-warm-cool-warm-warm-d1: #ff0f7b;
+    --info-gradients-warm-cool-warm-warm-d2: #ec008c;
+    --info-gradients-warm-cool-warm-warm-l1: #ff5858;
+    --info-gradients-warm-cool-warm-warm-l2: #ed4264;
+    --info-gradients-warm-cool-mixed: #ff1b6b;
+    --interactive-digital-red: #b1040e;
+    --light-light: #f1f2f5;
+    --light-light-d1: #e2e4ea;
+    --light-light-d2: #d3d6e0;
+    --light-light-d3: #6b6b6b;
+    --light-light-l1: #f7f8f9;
+    --light-white: #ffffff;
+    --light-typography-type-light: #f1f2f5;
+    --light-typography-type-light-d1: #e2e4ea;
+    --light-typography-type-light-d2: #d3d6e0;
+    --light-typography-type-light-d3: #6b6b6b;
+    --light-typography-type-light-l1: #f7f8f9;
+    --light-typography-type-white: #ffffff;
+    --opacity: rgba(46, 45, 41, 0.5);
+    --primary-primary: #0B7DFF;
+    --primary-primary-d1: #0B7DFF;
+    --primary-primary-d2: #000032;
+    --primary-primary-l1: #80acff;
+    --primary-primary-l2: #b3cdff;
+    --primary-primary-l3: #f0f5ff;
+    --secondary-secondary: #6b6c7e;
+    --secondary-secondary-l1: #a7a9bc;
+    --secondary-secondary-l2: #cdced9;
+    --secondary-secondary-l3: #e7e7ed;
+    --success-success: #287d3c;
+    --success-success-d1: #226a33;
+    --success-success-d2: #1c5629;
+    --success-success-l1: #5aca75;
+    --success-success-l2: #edf9f0;
+    --warning-warning: #b95000;
+    --warning-warning-d1: #9f4500;
+    --warning-warning-d2: #863a00;
+    --warning-warning-l1: #ff8f39;
+    --warning-warning-l2: #fff4ec;
+
+    /* Fonts */
+
+    /* _10-regular */
+    --_10-regular-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_10-regular-font-size: 10px;
+    --_10-regular-letter-spacing: 0px;
+    --_10-regular-line-height: 150%;
+    --_10-regular-font-weight: 400;
+    --_10-regular-text-transform: uppercase;
+    --_10-regular-color: black;
+
+    /* _10-bold */
+    --_10-bold-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_10-bold-font-size: 10px;
+    --_10-bold-letter-spacing: 0px;
+    --_10-bold-line-height: 125%;
+    --_10-bold-font-weight: 700;
+    --_10-bold-text-transform: uppercase;
+    --_10-bold-color: black;
+
+    /* _12-regular-125 */
+    --_12-regular-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_12-regular-125-font-size: 12px;
+    --_12-regular-125-letter-spacing: 0px;
+    --_12-regular-125-line-height: 125%;
+    --_12-regular-125-font-weight: 400;
+    --_12-regular-125-color: black;
+
+    /* _16-bold */
+    --_16-bold-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_16-bold-font-size: 16px;
+    --_16-bold-letter-spacing: 0px;
+    --_16-bold-line-height: 150%;
+    --_16-bold-font-weight: 700;
+    --_16-bold-color: black;
+
+    /* _18-bold */
+    --_18-bold-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_18-bold-font-size: 18px;
+    --_18-bold-letter-spacing: 0px;
+    --_18-bold-line-height: 125%;
+    --_18-bold-font-weight: 700;
+    --_18-bold-color: black;
+
+    /* _20-regular */
+    --_20-regular-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_20-regular-font-size: 20px;
+    --_20-regular-letter-spacing: 0px;
+    --_20-regular-line-height: 150%;
+    --_20-regular-font-weight: 400;
+    --_20-regular-color: black;
+
+    /* _22-semibold */
+    --_22-semibold-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_22-semibold-font-size: 22px;
+    --_22-semibold-letter-spacing: 0px;
+    --_22-semibold-line-height: 150%;
+    --_22-semibold-font-weight: 600;
+    --_22-semibold-color: black;
+
+    /* _24-semibold */
+    --_24-semibold-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_24-semibold-font-size: 24px;
+    --_24-semibold-letter-spacing: 0px;
+    --_24-semibold-line-height: 150%;
+    --_24-semibold-font-weight: 600;
+    --_24-semibold-color: black;
+
+    /* _24-bold */
+    --_24-bold-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_24-bold-font-size: 24px;
+    --_24-bold-letter-spacing: 0px;
+    --_24-bold-line-height: 150%;
+    --_24-bold-font-weight: 700;
+    --_24-bold-color: black;
+
+    /* _28-regular */
+    --_28-regular-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_28-regular-font-size: 28px;
+    --_28-regular-letter-spacing: 0px;
+    --_28-regular-line-height: 150%;
+    --_28-regular-font-weight: 400;
+    --_28-regular-color: black;
+
+    /* _28-bold */
+    --_28-bold-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_28-bold-font-size: 28px;
+    --_28-bold-letter-spacing: 0px;
+    --_28-bold-line-height: 150%;
+    --_28-bold-font-weight: 700;
+    --_28-bold-color: black;
+
+    /* _32-regular */
+    --_32-regular-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_32-regular-font-size: 32px;
+    --_32-regular-letter-spacing: 0px;
+    --_32-regular-line-height: 150%;
+    --_32-regular-font-weight: 400;
+    --_32-regular-color: black;
+
+    /* _32-bold */
+    --_32-bold-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_32-bold-font-size: 32px;
+    --_32-bold-letter-spacing: 0px;
+    --_32-bold-line-height: 150%;
+    --_32-bold-font-weight: 700;
+    --_32-bold-color: black;
+
+    /* _36-regular */
+    --_36-regular-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_36-regular-font-size: 36px;
+    --_36-regular-letter-spacing: 0px;
+    --_36-regular-line-height: 150%;
+    --_36-regular-font-weight: 400;
+    --_36-regular-color: black;
+
+    /* _36-bold */
+    --_36-bold-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_36-bold-font-size: 36px;
+    --_36-bold-letter-spacing: 0px;
+    --_36-bold-line-height: 150%;
+    --_36-bold-font-weight: 700;
+    --_36-bold-color: black;
+
+    /* _40-regular */
+    --_40-regular-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_40-regular-font-size: 40px;
+    --_40-regular-letter-spacing: 0px;
+    --_40-regular-line-height: 150%;
+    --_40-regular-font-weight: 400;
+    --_40-regular-color: black;
+
+    /* _40-semibold */
+    --_40-semibold-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_40-semibold-font-size: 40px;
+    --_40-semibold-letter-spacing: 0px;
+    --_40-semibold-line-height: 150%;
+    --_40-semibold-font-weight: 600;
+    --_40-semibold-color: black;
+
+    /* _40-semibold-100 */
+    --_40-semibold-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_40-semibold-100-font-size: 40px;
+    --_40-semibold-100-letter-spacing: 0px;
+    --_40-semibold-100-line-height: 100%;
+    --_40-semibold-100-font-weight: 600;
+    --_40-semibold-100-color: black;
+
+    /* _40-bold */
+    --_40-bold-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_40-bold-font-size: 40px;
+    --_40-bold-letter-spacing: 0px;
+    --_40-bold-line-height: 125%;
+    --_40-bold-font-weight: 700;
+    --_40-bold-color: black;
+
+    /* _54-bold */
+    --_54-bold-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_54-bold-font-size: 54px;
+    --_54-bold-letter-spacing: 0px;
+    --_54-bold-line-height: 125%;
+    --_54-bold-font-weight: 700;
+    --_54-bold-color: black;
+
+    /* ==== NEW FONT TOKENS ==== */
+
+    /* _10-bold-125 */
+    --_10-bold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_10-bold-125-font-size: 10px;
+    --_10-bold-125-letter-spacing: 0px;
+    --_10-bold-125-line-height: 125%;
+    --_10-bold-125-font-weight: 700;
+    --_10-bold-125-text-transform: uppercase;
+    --_10-bold-125-color: black;
+
+    /* _10-primary-semibold-100 */
+    --_10-primary-semibold-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_10-primary-semibold-100-font-size: 10px;
+    --_10-primary-semibold-100-letter-spacing: 0px;
+    --_10-primary-semibold-100-line-height: 100%;
+    --_10-primary-semibold-100-font-weight: 600;
+    --_10-primary-semibold-100-color: black;
+
+    /* _10-semibold-125 */
+    --_10-semibold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_10-semibold-125-font-size: 10px;
+    --_10-semibold-125-letter-spacing: 0px;
+    --_10-semibold-125-line-height: 125%;
+    --_10-semibold-125-font-weight: 600;
+    --_10-semibold-125-text-transform: uppercase;
+    --_10-semibold-125-color: black;
+
+    /* _10-primary-semibold-150 */
+    --_10-primary-semibold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_10-primary-semibold-150-font-size: 10px;
+    --_10-primary-semibold-150-letter-spacing: 0px;
+    --_10-primary-semibold-150-line-height: 150%;
+    --_10-primary-semibold-150-font-weight: 600;
+    --_10-primary-semibold-150-text-transform: uppercase;
+    --_10-primary-semibold-150-color: black;
+
+    /* _10-primary-regular-100 */
+    --_10-primary-regular-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_10-primary-regular-100-font-size: 10px;
+    --_10-primary-regular-100-letter-spacing: 0px;
+    --_10-primary-regular-100-line-height: 100%;
+    --_10-primary-regular-100-font-weight: 400;
+    --_10-primary-regular-100-text-transform: uppercase;
+    --_10-primary-regular-100-color: black;
+
+    /* _10-primary-regular-125 */
+    --_10-primary-regular-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_10-primary-regular-125-font-size: 10px;
+    --_10-primary-regular-125-letter-spacing: 0px;
+    --_10-primary-regular-125-line-height: 125%;
+    --_10-primary-regular-125-font-weight: 400;
+    --_10-primary-regular-125-text-transform: uppercase;
+    --_10-primary-regular-125-color: black;
+
+    /* _10-primary-regular-150 */
+    --_10-primary-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_10-primary-regular-150-font-size: 10px;
+    --_10-primary-regular-150-letter-spacing: 0px;
+    --_10-primary-regular-150-line-height: 150%;
+    --_10-primary-regular-150-font-weight: 400;
+    --_10-primary-regular-150-text-transform: uppercase;
+    --_10-primary-regular-150-color: black;
+
+    /* _10-regular-150 */
+    --_10-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_10-regular-150-font-size: 10px;
+    --_10-regular-150-letter-spacing: 0px;
+    --_10-regular-150-line-height: 150%;
+    --_10-regular-150-font-weight: 400;
+    --_10-regular-150-text-transform: uppercase;
+    --_10-regular-150-color: black;
+
+    /* _10-secondary-regular-150 */
+    --_10-secondary-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_10-secondary-regular-150-font-size: 10px;
+    --_10-secondary-regular-150-letter-spacing: 0px;
+    --_10-secondary-regular-150-line-height: 150%;
+    --_10-secondary-regular-150-font-weight: 400;
+    --_10-secondary-regular-150-text-transform: uppercase;
+    --_10-secondary-regular-150-color: black;
+
+    /* _10-semibold */
+    --_10-semibold-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_10-semibold-font-size: 10px;
+    --_10-semibold-letter-spacing: 0px;
+    --_10-semibold-line-height: 150%;
+    --_10-semibold-font-weight: 600;
+    --_10-semibold-text-transform: uppercase;
+    --_10-semibold-color: black;
+
+    /* _10-semibold-150 */
+    --_10-semibold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_10-semibold-150-font-size: 10px;
+    --_10-semibold-150-letter-spacing: 0px;
+    --_10-semibold-150-line-height: 150%;
+    --_10-semibold-150-font-weight: 600;
+    --_10-semibold-150-text-transform: uppercase;
+    --_10-semibold-150-color: black;
+
+    /* _12-primary-semibold-100 */
+    --_12-primary-semibold-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_12-primary-semibold-100-font-size: 12px;
+    --_12-primary-semibold-100-letter-spacing: 0px;
+    --_12-primary-semibold-100-line-height: 100%;
+    --_12-primary-semibold-100-font-weight: 600;
+    --_12-primary-semibold-100-color: black;
+
+    /* _12-primary-semibold-150 */
+    --_12-primary-semibold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_12-primary-semibold-150-font-size: 12px;
+    --_12-primary-semibold-150-letter-spacing: 0px;
+    --_12-primary-semibold-150-line-height: 150%;
+    --_12-primary-semibold-150-font-weight: 600;
+    --_12-primary-semibold-150-color: black;
+
+    /* _12-primary-regular-100 */
+    --_12-primary-regular-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_12-primary-regular-100-font-size: 12px;
+    --_12-primary-regular-100-letter-spacing: 0px;
+    --_12-primary-regular-100-line-height: 100%;
+    --_12-primary-regular-100-font-weight: 400;
+    --_12-primary-regular-100-color: black;
+
+    /* _12-primary-regular-125 */
+    --_12-primary-regular-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_12-primary-regular-125-font-size: 12px;
+    --_12-primary-regular-125-letter-spacing: 0px;
+    --_12-primary-regular-125-line-height: 125%;
+    --_12-primary-regular-125-font-weight: 400;
+    --_12-primary-regular-125-color: black;
+
+    /* _12-primary-regular-150 */
+    --_12-primary-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_12-primary-regular-150-font-size: 12px;
+    --_12-primary-regular-150-letter-spacing: 0px;
+    --_12-primary-regular-150-line-height: 150%;
+    --_12-primary-regular-150-font-weight: 400;
+    --_12-primary-regular-150-color: black;
+
+    /* _12-regular */
+    --_12-regular-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_12-regular-font-size: 12px;
+    --_12-regular-letter-spacing: 0px;
+    --_12-regular-line-height: 150%;
+    --_12-regular-font-weight: 400;
+    --_12-regular-color: black;
+
+    /* _12-regular-150 */
+    --_12-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_12-regular-150-font-size: 12px;
+    --_12-regular-150-letter-spacing: 0px;
+    --_12-regular-150-line-height: 150%;
+    --_12-regular-150-font-weight: 400;
+    --_12-regular-150-color: black;
+
+    /* _12-secondary-regular-125 */
+    --_12-secondary-regular-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_12-secondary-regular-125-font-size: 12px;
+    --_12-secondary-regular-125-letter-spacing: 0px;
+    --_12-secondary-regular-125-line-height: 125%;
+    --_12-secondary-regular-125-font-weight: 400;
+    --_12-secondary-regular-125-color: black;
+
+    /* _12-secondary-regular-150 */
+    --_12-secondary-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_12-secondary-regular-150-font-size: 12px;
+    --_12-secondary-regular-150-letter-spacing: 0px;
+    --_12-secondary-regular-150-line-height: 150%;
+    --_12-secondary-regular-150-font-weight: 400;
+    --_12-secondary-regular-150-color: black;
+
+    /* _12-semibold */
+    --_12-semibold-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_12-semibold-font-size: 12px;
+    --_12-semibold-letter-spacing: 0px;
+    --_12-semibold-line-height: 150%;
+    --_12-semibold-font-weight: 600;
+    --_12-semibold-color: black;
+
+    /* _12-semibold-150 */
+    --_12-semibold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_12-semibold-150-font-size: 12px;
+    --_12-semibold-150-letter-spacing: 0px;
+    --_12-semibold-150-line-height: 150%;
+    --_12-semibold-150-font-weight: 600;
+    --_12-semibold-150-color: black;
+
+    /* _14-bold-150 */
+    --_14-bold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_14-bold-150-font-size: 14px;
+    --_14-bold-150-letter-spacing: 0px;
+    --_14-bold-150-line-height: 150%;
+    --_14-bold-150-font-weight: 700;
+    --_14-bold-150-color: black;
+
+    /* _14-bold-125 */
+    --_14-bold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_14-bold-125-font-size: 14px;
+    --_14-bold-125-letter-spacing: 0px;
+    --_14-bold-125-line-height: 125%;
+    --_14-bold-125-font-weight: 700;
+    --_14-bold-125-color: black;
+
+    /* _14-regular-125 */
+    --_14-regular-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_14-regular-125-font-size: 14px;
+    --_14-regular-125-letter-spacing: 0px;
+    --_14-regular-125-line-height: 125%;
+    --_14-regular-125-font-weight: 400;
+    --_14-regular-125-color: black;
+
+    /* _14-montserrat-semibold */
+    --_14-montserrat-semibold-font-family: "Montserrat", "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_14-montserrat-semibold-font-size: 14px;
+    --_14-montserrat-semibold-letter-spacing: 0px;
+    --_14-montserrat-semibold-line-height: 150%;
+    --_14-montserrat-semibold-font-weight: 600;
+    --_14-montserrat-semibold-color: black;
+
+    /* _14-primary-bold-100 */
+    --_14-primary-bold-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_14-primary-bold-100-font-size: 14px;
+    --_14-primary-bold-100-letter-spacing: 0px;
+    --_14-primary-bold-100-line-height: 100%;
+    --_14-primary-bold-100-font-weight: 700;
+    --_14-primary-bold-100-color: black;
+
+    /* _14-primary-bold-125 */
+    --_14-primary-bold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_14-primary-bold-125-font-size: 14px;
+    --_14-primary-bold-125-letter-spacing: 0px;
+    --_14-primary-bold-125-line-height: 125%;
+    --_14-primary-bold-125-font-weight: 700;
+    --_14-primary-bold-125-color: black;
+
+    /* _14-primary-bold-150 */
+    --_14-primary-bold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_14-primary-bold-150-font-size: 14px;
+    --_14-primary-bold-150-letter-spacing: 0px;
+    --_14-primary-bold-150-line-height: 150%;
+    --_14-primary-bold-150-font-weight: 700;
+    --_14-primary-bold-150-color: black;
+
+    /* _14-primary-regular-100 */
+    --_14-primary-regular-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_14-primary-regular-100-font-size: 14px;
+    --_14-primary-regular-100-letter-spacing: 0px;
+    --_14-primary-regular-100-line-height: 100%;
+    --_14-primary-regular-100-font-weight: 400;
+    --_14-primary-regular-100-color: black;
+
+    /* _14-primary-regular-125 */
+    --_14-primary-regular-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_14-primary-regular-125-font-size: 14px;
+    --_14-primary-regular-125-letter-spacing: 0px;
+    --_14-primary-regular-125-line-height: 125%;
+    --_14-primary-regular-125-font-weight: 400;
+    --_14-primary-regular-125-color: black;
+
+    /* _14-primary-regular-150 */
+    --_14-primary-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_14-primary-regular-150-font-size: 14px;
+    --_14-primary-regular-150-letter-spacing: 0px;
+    --_14-primary-regular-150-line-height: 150%;
+    --_14-primary-regular-150-font-weight: 400;
+    --_14-primary-regular-150-color: black;
+
+    /* _14-primary-semibold-100 */
+    --_14-primary-semibold-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_14-primary-semibold-100-font-size: 14px;
+    --_14-primary-semibold-100-letter-spacing: 0px;
+    --_14-primary-semibold-100-line-height: 100%;
+    --_14-primary-semibold-100-font-weight: 600;
+    --_14-primary-semibold-100-color: black;
+
+    /* _14-primary-semibold-125 */
+    --_14-primary-semibold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_14-primary-semibold-125-font-size: 14px;
+    --_14-primary-semibold-125-letter-spacing: 0px;
+    --_14-primary-semibold-125-line-height: 125%;
+    --_14-primary-semibold-125-font-weight: 600;
+    --_14-primary-semibold-125-color: black;
+
+    /* _14-primary-semibold-150 */
+    --_14-primary-semibold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_14-primary-semibold-150-font-size: 14px;
+    --_14-primary-semibold-150-letter-spacing: 0px;
+    --_14-primary-semibold-150-line-height: 150%;
+    --_14-primary-semibold-150-font-weight: 600;
+    --_14-primary-semibold-150-color: black;
+
+    /* _14-regular */
+    --_14-regular-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_14-regular-font-size: 14px;
+    --_14-regular-letter-spacing: 0px;
+    --_14-regular-line-height: 150%;
+    --_14-regular-font-weight: 400;
+    --_14-regular-color: black;
+
+    /* _14-regular-150 */
+    --_14-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_14-regular-150-font-size: 14px;
+    --_14-regular-150-letter-spacing: 0px;
+    --_14-regular-150-line-height: 150%;
+    --_14-regular-150-font-weight: 400;
+    --_14-regular-150-color: black;
+
+    /* _14-secondary-regular-150 */
+    --_14-secondary-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_14-secondary-regular-150-font-size: 14px;
+    --_14-secondary-regular-150-letter-spacing: 0px;
+    --_14-secondary-regular-150-line-height: 150%;
+    --_14-secondary-regular-150-font-weight: 400;
+    --_14-secondary-regular-150-color: black;
+
+    /* _14-semibold */
+    --_14-semibold-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_14-semibold-font-size: 14px;
+    --_14-semibold-letter-spacing: 0px;
+    --_14-semibold-line-height: 150%;
+    --_14-semibold-font-weight: 600;
+    --_14-semibold-color: black;
+
+    /* _14-semibold-125 */
+    --_14-semibold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_14-semibold-125-font-size: 14px;
+    --_14-semibold-125-letter-spacing: 0px;
+    --_14-semibold-125-line-height: 125%;
+    --_14-semibold-125-font-weight: 600;
+    --_14-semibold-125-color: black;
+
+    /* _14-semibold-150 */
+    --_14-semibold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_14-semibold-150-font-size: 14px;
+    --_14-semibold-150-letter-spacing: 0px;
+    --_14-semibold-150-line-height: 150%;
+    --_14-semibold-150-font-weight: 600;
+    --_14-semibold-150-color: black;
+
+    /* _16-bold-125 */
+    --_16-bold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_16-bold-125-font-size: 16px;
+    --_16-bold-125-letter-spacing: 0px;
+    --_16-bold-125-line-height: 125%;
+    --_16-bold-125-font-weight: 700;
+    --_16-bold-125-color: black;
+
+    /* _16-bold-150 */
+    --_16-bold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_16-bold-150-font-size: 16px;
+    --_16-bold-150-letter-spacing: 0px;
+    --_16-bold-150-line-height: 150%;
+    --_16-bold-150-font-weight: 700;
+    --_16-bold-150-color: black;
+
+    /* _16-link-text */
+    --_16-link-text-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_16-link-text-font-size: 16px;
+    --_16-link-text-letter-spacing: 0px;
+    --_16-link-text-line-height: 150%;
+    --_16-link-text-font-weight: 400;
+    --_16-link-text-text-decoration: underline;
+    --_16-link-text-color: black;
+
+    /* _16-montserrat-bold */
+    --_16-montserrat-bold-font-family: "Montserrat", "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_16-montserrat-bold-font-size: 16px;
+    --_16-montserrat-bold-letter-spacing: 0px;
+    --_16-montserrat-bold-line-height: 150%;
+    --_16-montserrat-bold-font-weight: 700;
+    --_16-montserrat-bold-color: black;
+
+    /* _16-primary-bold-150 */
+    --_16-primary-bold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_16-primary-bold-150-font-size: 16px;
+    --_16-primary-bold-150-letter-spacing: 0px;
+    --_16-primary-bold-150-line-height: 150%;
+    --_16-primary-bold-150-font-weight: 700;
+    --_16-primary-bold-150-color: black;
+
+    /* _16-primary-regular-100 */
+    --_16-primary-regular-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_16-primary-regular-100-font-size: 16px;
+    --_16-primary-regular-100-letter-spacing: 0px;
+    --_16-primary-regular-100-line-height: 100%;
+    --_16-primary-regular-100-font-weight: 400;
+    --_16-primary-regular-100-color: black;
+
+    /* _16-primary-regular-125 */
+    --_16-primary-regular-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_16-primary-regular-125-font-size: 16px;
+    --_16-primary-regular-125-letter-spacing: 0px;
+    --_16-primary-regular-125-line-height: 125%;
+    --_16-primary-regular-125-font-weight: 400;
+    --_16-primary-regular-125-color: black;
+
+    /* _16-primary-regular-150 */
+    --_16-primary-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_16-primary-regular-150-font-size: 16px;
+    --_16-primary-regular-150-letter-spacing: 0px;
+    --_16-primary-regular-150-line-height: 150%;
+    --_16-primary-regular-150-font-weight: 400;
+    --_16-primary-regular-150-color: black;
+
+    /* _16-primary-semibold-100 */
+    --_16-primary-semibold-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_16-primary-semibold-100-font-size: 16px;
+    --_16-primary-semibold-100-letter-spacing: 0px;
+    --_16-primary-semibold-100-line-height: 100%;
+    --_16-primary-semibold-100-font-weight: 600;
+    --_16-primary-semibold-100-color: black;
+
+    /* _16-primary-semibold-125 */
+    --_16-primary-semibold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_16-primary-semibold-125-font-size: 16px;
+    --_16-primary-semibold-125-letter-spacing: 0px;
+    --_16-primary-semibold-125-line-height: 125%;
+    --_16-primary-semibold-125-font-weight: 600;
+    --_16-primary-semibold-125-color: black;
+
+    /* _16-primary-bold-125 */
+    --_16-primary-bold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_16-primary-bold-125-font-size: 16px;
+    --_16-primary-bold-125-letter-spacing: 0px;
+    --_16-primary-bold-125-line-height: 125%;
+    --_16-primary-bold-125-font-weight: 700;
+    --_16-primary-bold-125-color: black;
+
+    /* _16-primary-semibold-150 */
+    --_16-primary-semibold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_16-primary-semibold-150-font-size: 16px;
+    --_16-primary-semibold-150-letter-spacing: 0px;
+    --_16-primary-semibold-150-line-height: 150%;
+    --_16-primary-semibold-150-font-weight: 600;
+    --_16-primary-semibold-150-color: black;
+
+    /* _16-regular */
+    --_16-regular-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_16-regular-font-size: 16px;
+    --_16-regular-letter-spacing: 0px;
+    --_16-regular-line-height: 150%;
+    --_16-regular-font-weight: 400;
+    --_16-regular-color: black;
+
+    /* _16-regular-150 */
+    --_16-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_16-regular-150-font-size: 16px;
+    --_16-regular-150-letter-spacing: 0px;
+    --_16-regular-150-line-height: 150%;
+    --_16-regular-150-font-weight: 400;
+    --_16-regular-150-color: black;
+
+    /* _16-regular-100 */
+    --_16-regular-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_16-regular-100-font-size: 16px;
+    --_16-regular-100-letter-spacing: 0px;
+    --_16-regular-100-line-height: 100%;
+    --_16-regular-100-font-weight: 400;
+    --_16-regular-100-color: black;
+
+    /* _16-regular-125 */
+    --_16-regular-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_16-regular-125-font-size: 16px;
+    --_16-regular-125-letter-spacing: 0px;
+    --_16-regular-125-line-height: 125%;
+    --_16-regular-125-font-weight: 400;
+    --_16-regular-125-color: black;
+
+    /* _16-secondary-regular-150 */
+    --_16-secondary-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_16-secondary-regular-150-font-size: 16px;
+    --_16-secondary-regular-150-letter-spacing: 0px;
+    --_16-secondary-regular-150-line-height: 150%;
+    --_16-secondary-regular-150-font-weight: 400;
+    --_16-secondary-regular-150-color: black;
+
+    /* _16-semibold */
+    --_16-semibold-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_16-semibold-font-size: 16px;
+    --_16-semibold-letter-spacing: 0px;
+    --_16-semibold-line-height: 150%;
+    --_16-semibold-font-weight: 600;
+    --_16-semibold-color: black;
+
+    /* _16-semibold-150 */
+    --_16-semibold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_16-semibold-150-font-size: 16px;
+    --_16-semibold-150-letter-spacing: 0px;
+    --_16-semibold-150-line-height: 150%;
+    --_16-semibold-150-font-weight: 600;
+    --_16-semibold-150-color: black;
+
+    /* _18-bold-100 */
+    --_18-bold-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_18-bold-100-font-size: 18px;
+    --_18-bold-100-letter-spacing: 0px;
+    --_18-bold-100-line-height: 100%;
+    --_18-bold-100-font-weight: 700;
+
+    /* _18-bold-125 */
+    --_18-bold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_18-bold-125-font-size: 18px;
+    --_18-bold-125-letter-spacing: 0px;
+    --_18-bold-125-line-height: 125%;
+    --_18-bold-125-font-weight: 700;
+    --_18-bold-125-color: black;
+
+    /* _18-primary-bold-100 */
+    --_18-primary-bold-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_18-primary-bold-100-font-size: 18px;
+    --_18-primary-bold-100-letter-spacing: 0px;
+    --_18-primary-bold-100-line-height: 100%;
+    --_18-primary-bold-100-font-weight: 700;
+    --_18-primary-bold-100-color: black;
+
+    /* _18-primary-bold-125 */
+    --_18-primary-bold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_18-primary-bold-125-font-size: 18px;
+    --_18-primary-bold-125-letter-spacing: 0px;
+    --_18-primary-bold-125-line-height: 125%;
+    --_18-primary-bold-125-font-weight: 700;
+    --_18-primary-bold-125-color: black;
+
+    /* _18-primary-regular-100 */
+    --_18-primary-regular-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_18-primary-regular-100-font-size: 18px;
+    --_18-primary-regular-100-letter-spacing: 0px;
+    --_18-primary-regular-100-line-height: 100%;
+    --_18-primary-regular-100-font-weight: 400;
+    --_18-primary-regular-100-color: black;
+
+    /* _18-primary-regular-125 */
+    --_18-primary-regular-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_18-primary-regular-125-font-size: 18px;
+    --_18-primary-regular-125-letter-spacing: 0px;
+    --_18-primary-regular-125-line-height: 125%;
+    --_18-primary-regular-125-font-weight: 400;
+    --_18-primary-regular-125-color: black;
+
+    /* _18-primary-regular-150 */
+    --_18-primary-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_18-primary-regular-150-font-size: 18px;
+    --_18-primary-regular-150-letter-spacing: 0px;
+    --_18-primary-regular-150-line-height: 150%;
+    --_18-primary-regular-150-font-weight: 400;
+    --_18-primary-regular-150-color: black;
+
+    /* _18-primary-semibold-100 */
+    --_18-primary-semibold-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_18-primary-semibold-100-font-size: 18px;
+    --_18-primary-semibold-100-letter-spacing: 0px;
+    --_18-primary-semibold-100-line-height: 100%;
+    --_18-primary-semibold-100-font-weight: 600;
+    --_18-primary-semibold-100-color: black;
+
+    /* _18-primary-semibold-150 */
+    --_18-primary-semibold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_18-primary-semibold-150-font-size: 18px;
+    --_18-primary-semibold-150-letter-spacing: 0px;
+    --_18-primary-semibold-150-line-height: 150%;
+    --_18-primary-semibold-150-font-weight: 600;
+    --_18-primary-semibold-150-color: black;
+
+    /* _18-primary-semibold-125 */
+    --_18-primary-semibold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_18-primary-semibold-125-font-size: 18px;
+    --_18-primary-semibold-125-letter-spacing: 0px;
+    --_18-primary-semibold-125-line-height: 125%;
+    --_18-primary-semibold-125-font-weight: 600;
+    --_18-primary-semibold-125-color: black;
+
+    /* _18-regular-100 */
+    --_18-regular-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_18-regular-100-font-size: 18px;
+    --_18-regular-100-letter-spacing: 0px;
+    --_18-regular-100-line-height: 100%;
+    --_18-regular-100-font-weight: 400;
+    --_18-regular-100-color: black;
+
+    /* _18-regular-125 */
+    --_18-regular-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_18-regular-125-font-size: 18px;
+    --_18-regular-125-letter-spacing: 0px;
+    --_18-regular-125-line-height: 125%;
+    --_18-regular-125-font-weight: 400;
+    --_18-regular-125-color: black;
+
+    /* _18-regular */
+    --_18-regular-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_18-regular-font-size: 18px;
+    --_18-regular-letter-spacing: 0px;
+    --_18-regular-line-height: 150%;
+    --_18-regular-font-weight: 400;
+    --_18-regular-color: black;
+
+    /* _18-regular-150 */
+    --_18-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_18-regular-150-font-size: 18px;
+    --_18-regular-150-letter-spacing: 0px;
+    --_18-regular-150-line-height: 150%;
+    --_18-regular-150-font-weight: 400;
+    --_18-regular-150-color: black;
+
+    /* _18-regular-link-body */
+    --_18-regular-link-body-font-family: "Segoe UI", "Noto Sans", "NotoSans", system-ui, -apple-system, sans-serif;
+    --_18-regular-link-body-font-size: 18px;
+    --_18-regular-link-body-letter-spacing: 0px;
+    --_18-regular-link-body-line-height: 150%;
+    --_18-regular-link-body-font-weight: 400;
+    --_18-regular-link-body-text-decoration: underline;
+    --_18-regular-link-body-color: black;
+
+    /* _18-secondary-regular-125 */
+    --_18-secondary-regular-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_18-secondary-regular-125-font-size: 18px;
+    --_18-secondary-regular-125-letter-spacing: 0px;
+    --_18-secondary-regular-125-line-height: 125%;
+    --_18-secondary-regular-125-font-weight: 400;
+    --_18-secondary-regular-125-color: black;
+
+    /* _18-secondary-regular-150 */
+    --_18-secondary-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_18-secondary-regular-150-font-size: 18px;
+    --_18-secondary-regular-150-letter-spacing: 0px;
+    --_18-secondary-regular-150-line-height: 150%;
+    --_18-secondary-regular-150-font-weight: 400;
+    --_18-secondary-regular-150-color: black;
+
+    /* _18-semibold */
+    --_18-semibold-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_18-semibold-font-size: 18px;
+    --_18-semibold-letter-spacing: 0px;
+    --_18-semibold-line-height: 150%;
+    --_18-semibold-font-weight: 600;
+    --_18-semibold-color: black;
+
+    /* _18-semibold-125 */
+    --_18-semibold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_18-semibold-125-font-size: 18px;
+    --_18-semibold-125-letter-spacing: 0px;
+    --_18-semibold-125-line-height: 125%;
+    --_18-semibold-125-font-weight: 600;
+    --_18-semibold-125-color: black;
+
+    /* _18-semibold-150 */
+    --_18-semibold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_18-semibold-150-font-size: 18px;
+    --_18-semibold-150-letter-spacing: 0px;
+    --_18-semibold-150-line-height: 150%;
+    --_18-semibold-150-font-weight: 600;
+    --_18-semibold-150-color: black;
+
+    /* _18-semibold-cards-title */
+    --_18-semibold-cards-title-font-family: "Segoe UI", "Noto Sans", "NotoSans", system-ui, -apple-system, sans-serif;
+    --_18-semibold-cards-title-font-size: 18px;
+    --_18-semibold-cards-title-letter-spacing: 0px;
+    --_18-semibold-cards-title-line-height: 120%;
+    --_18-semibold-cards-title-font-weight: 600;
+    --_18-semibold-cards-title-color: black;
+
+    /* _20-bold */
+    --_20-bold-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_20-bold-font-size: 20px;
+    --_20-bold-letter-spacing: 0px;
+    --_20-bold-line-height: 125%;
+    --_20-bold-font-weight: 700;
+    --_20-bold-color: black;
+
+    /* _20-bold-100 */
+    --_20-bold-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_20-bold-100-font-size: 20px;
+    --_20-bold-100-letter-spacing: 0px;
+    --_20-bold-100-line-height: 100%;
+    --_20-bold-100-font-weight: 700;
+    --_20-bold-100-color: black;
+
+    /* _20-bold-125 */
+    --_20-bold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_20-bold-125-font-size: 20px;
+    --_20-bold-125-letter-spacing: 0px;
+    --_20-bold-125-line-height: 125%;
+    --_20-bold-125-font-weight: 700;
+    --_20-bold-125-color: black;
+
+    /* _20-bold-150 */
+    --_20-bold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_20-bold-150-font-size: 20px;
+    --_20-bold-150-letter-spacing: 0px;
+    --_20-bold-150-line-height: 150%;
+    --_20-bold-150-font-weight: 700;
+    --_20-bold-150-color: black;
+
+    /* _20-primary-semibold-125 */
+    --_20-primary-semibold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_20-primary-semibold-125-font-size: 20px;
+    --_20-primary-semibold-125-letter-spacing: 0px;
+    --_20-primary-semibold-125-line-height: 125%;
+    --_20-primary-semibold-125-font-weight: 600;
+    --_20-primary-semibold-125-color: black;
+
+    /* _20-primary-bold-125 */
+    --_20-primary-bold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_20-primary-bold-125-font-size: 20px;
+    --_20-primary-bold-125-letter-spacing: 0px;
+    --_20-primary-bold-125-line-height: 125%;
+    --_20-primary-bold-125-font-weight: 700;
+    --_20-primary-bold-125-color: black;
+
+    /* _20-primary-bold-150 */
+    --_20-primary-bold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_20-primary-bold-150-font-size: 20px;
+    --_20-primary-bold-150-letter-spacing: 0px;
+    --_20-primary-bold-150-line-height: 150%;
+    --_20-primary-bold-150-font-weight: 700;
+    --_20-primary-bold-150-color: black;
+
+    /* _20-primary-regular-150 */
+    --_20-primary-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_20-primary-regular-150-font-size: 20px;
+    --_20-primary-regular-150-letter-spacing: 0px;
+    --_20-primary-regular-150-line-height: 150%;
+    --_20-primary-regular-150-font-weight: 400;
+    --_20-primary-regular-150-color: black;
+
+    /* _20-primary-semibold-100 */
+    --_20-primary-semibold-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_20-primary-semibold-100-font-size: 20px;
+    --_20-primary-semibold-100-letter-spacing: 0px;
+    --_20-primary-semibold-100-line-height: 100%;
+    --_20-primary-semibold-100-font-weight: 600;
+    --_20-primary-semibold-100-color: black;
+
+    /* _20-primary-semibold-150 */
+    --_20-primary-semibold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_20-primary-semibold-150-font-size: 20px;
+    --_20-primary-semibold-150-letter-spacing: 0px;
+    --_20-primary-semibold-150-line-height: 150%;
+    --_20-primary-semibold-150-font-weight: 600;
+    --_20-primary-semibold-150-color: black;
+
+    /* _20-regular-125 */
+    --_20-regular-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_20-regular-125-font-size: 20px;
+    --_20-regular-125-letter-spacing: 0px;
+    --_20-regular-125-line-height: 125%;
+    --_20-regular-125-font-weight: 400;
+    --_20-regular-125-color: black;
+
+    /* _20-regular-150 */
+    --_20-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_20-regular-150-font-size: 20px;
+    --_20-regular-150-letter-spacing: 0px;
+    --_20-regular-150-line-height: 150%;
+    --_20-regular-150-font-weight: 400;
+    --_20-regular-150-color: black;
+
+    /* _20-secondary-regular-150 */
+    --_20-secondary-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_20-secondary-regular-150-font-size: 20px;
+    --_20-secondary-regular-150-letter-spacing: 0px;
+    --_20-secondary-regular-150-line-height: 150%;
+    --_20-secondary-regular-150-font-weight: 400;
+    --_20-secondary-regular-150-color: black;
+
+    /* _20-semibold */
+    --_20-semibold-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_20-semibold-font-size: 20px;
+    --_20-semibold-letter-spacing: 0px;
+    --_20-semibold-line-height: 150%;
+    --_20-semibold-font-weight: 600;
+    --_20-semibold-color: black;
+
+    /* _20-semibold-150 */
+    --_20-semibold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_20-semibold-150-font-size: 20px;
+    --_20-semibold-150-letter-spacing: 0px;
+    --_20-semibold-150-line-height: 150%;
+    --_20-semibold-150-font-weight: 600;
+    --_20-semibold-150-color: black;
+
+    /* _24-bold-125 */
+    --_24-bold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_24-bold-125-font-size: 24px;
+    --_24-bold-125-letter-spacing: 0px;
+    --_24-bold-125-line-height: 125%;
+    --_24-bold-125-font-weight: 700;
+    --_24-bold-125-color: black;
+
+    /* _24-montserrat-semibold-title-banner */
+    --_24-montserrat-semibold-title-banner-font-family: "Montserrat", "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_24-montserrat-semibold-title-banner-font-size: 24px;
+    --_24-montserrat-semibold-title-banner-letter-spacing: 0px;
+    --_24-montserrat-semibold-title-banner-line-height: 100%;
+    --_24-montserrat-semibold-title-banner-font-weight: 600;
+    --_24-montserrat-semibold-title-banner-color: black;
+
+    /* _24-primary-bold-100 */
+    --_24-primary-bold-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_24-primary-bold-100-font-size: 24px;
+    --_24-primary-bold-100-letter-spacing: 0px;
+    --_24-primary-bold-100-line-height: 100%;
+    --_24-primary-bold-100-font-weight: 700;
+    --_24-primary-bold-100-color: black;
+
+    /* _24-primary-bold-125 */
+    --_24-primary-bold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_24-primary-bold-125-font-size: 24px;
+    --_24-primary-bold-125-letter-spacing: 0px;
+    --_24-primary-bold-125-line-height: 100%;
+    --_24-primary-bold-125-font-weight: 700;
+    --_24-primary-bold-125-color: black;
+
+    /* _24-primary-bold-150 */
+    --_24-primary-bold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_24-primary-bold-150-font-size: 24px;
+    --_24-primary-bold-150-letter-spacing: 0px;
+    --_24-primary-bold-150-line-height: 150%;
+    --_24-primary-bold-150-font-weight: 700;
+    --_24-primary-bold-150-color: black;
+
+    /* _24-primary-regular-150 */
+    --_24-primary-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_24-primary-regular-150-font-size: 24px;
+    --_24-primary-regular-150-letter-spacing: 0px;
+    --_24-primary-regular-150-line-height: 150%;
+    --_24-primary-regular-150-font-weight: 400;
+    --_24-primary-regular-150-color: black;
+
+    /* _24-primary-semibold-100 */
+    --_24-primary-semibold-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_24-primary-semibold-100-font-size: 24px;
+    --_24-primary-semibold-100-letter-spacing: 0px;
+    --_24-primary-semibold-100-line-height: 100%;
+    --_24-primary-semibold-100-font-weight: 600;
+    --_24-primary-semibold-100-color: black;
+
+    /* _24-primary-semibold-125 */
+    --_24-primary-semibold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_24-primary-semibold-125-font-size: 24px;
+    --_24-primary-semibold-125-letter-spacing: 0px;
+    --_24-primary-semibold-125-line-height: 125%;
+    --_24-primary-semibold-125-font-weight: 600;
+    --_24-primary-semibold-125-color: black;
+
+    /* _24-primary-semibold-150 */
+    --_24-primary-semibold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_24-primary-semibold-150-font-size: 24px;
+    --_24-primary-semibold-150-letter-spacing: 0px;
+    --_24-primary-semibold-150-line-height: 150%;
+    --_24-primary-semibold-150-font-weight: 600;
+    --_24-primary-semibold-150-color: black;
+
+    /* _24-regular */
+    --_24-regular-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_24-regular-font-size: 24px;
+    --_24-regular-letter-spacing: 0px;
+    --_24-regular-line-height: 100%;
+    --_24-regular-font-weight: 400;
+    --_24-regular-color: black;
+
+    /* _24-regular-150 */
+    --_24-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_24-regular-150-font-size: 24px;
+    --_24-regular-150-letter-spacing: 0px;
+    --_24-regular-150-line-height: 150%;
+    --_24-regular-150-font-weight: 400;
+    --_24-regular-150-color: black;
+
+    /* _24-regular-125 */
+    --_24-regular-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_24-regular-125-font-size: 24px;
+    --_24-regular-125-letter-spacing: 0px;
+    --_24-regular-125-line-height: 125%;
+    --_24-regular-125-font-weight: 400;
+    --_24-regular-125-color: black;
+
+    /* _24-regular-quotes */
+    --_24-regular-quotes-font-family: "Segoe UI", "Noto Sans", "NotoSans", system-ui, -apple-system, sans-serif;
+    --_24-regular-quotes-font-size: 24px;
+    --_24-regular-quotes-letter-spacing: 0px;
+    --_24-regular-quotes-line-height: 125%;
+    --_24-regular-quotes-font-weight: 600;
+    --_24-regular-quotes-color: black;
+
+    /* _24-secondary-regular-150 */
+    --_24-secondary-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_24-secondary-regular-150-font-size: 24px;
+    --_24-secondary-regular-150-letter-spacing: 0px;
+    --_24-secondary-regular-150-line-height: 150%;
+    --_24-secondary-regular-150-font-weight: 400;
+    --_24-secondary-regular-150-color: black;
+
+    /* _24-semibold-125 */
+    --_24-semibold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_24-semibold-125-font-size: 24px;
+    --_24-semibold-125-letter-spacing: 0px;
+    --_24-semibold-125-line-height: 125%;
+    --_24-semibold-125-font-weight: 600;
+    --_24-semibold-125-color: black;
+
+    /* _24-semibold-150 */
+    --_24-semibold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_24-semibold-150-font-size: 24px;
+    --_24-semibold-150-letter-spacing: 0px;
+    --_24-semibold-150-line-height: 150%;
+    --_24-semibold-150-font-weight: 600;
+    --_24-semibold-150-color: black;
+
+    /* _28-bold-125 */
+    --_28-bold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_28-bold-125-font-size: 28px;
+    --_28-bold-125-letter-spacing: 0px;
+    --_28-bold-125-line-height: 125%;
+    --_28-bold-125-font-weight: 700;
+    --_28-bold-125-color: black;
+
+    /* _28-montserrat-semibold */
+    --_28-montserrat-semibold-font-family: "Montserrat", "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_28-montserrat-semibold-font-size: 28px;
+    --_28-montserrat-semibold-letter-spacing: 0px;
+    --_28-montserrat-semibold-line-height: 150%;
+    --_28-montserrat-semibold-font-weight: 600;
+    --_28-montserrat-semibold-color: black;
+
+    /* _28-primary-bold-100 */
+    --_28-primary-bold-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_28-primary-bold-100-font-size: 28px;
+    --_28-primary-bold-100-letter-spacing: 0px;
+    --_28-primary-bold-100-line-height: 100%;
+    --_28-primary-bold-100-font-weight: 700;
+    --_28-primary-bold-100-color: black;
+
+    /* _28-primary-bold-125 */
+    --_28-primary-bold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_28-primary-bold-125-font-size: 28px;
+    --_28-primary-bold-125-letter-spacing: 0px;
+    --_28-primary-bold-125-line-height: 125%;
+    --_28-primary-bold-125-font-weight: 700;
+    --_28-primary-bold-125-color: black;
+
+    /* _28-primary-bold-150 */
+    --_28-primary-bold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_28-primary-bold-150-font-size: 28px;
+    --_28-primary-bold-150-letter-spacing: 0px;
+    --_28-primary-bold-150-line-height: 150%;
+    --_28-primary-bold-150-font-weight: 700;
+    --_28-primary-bold-150-color: black;
+
+    /* _28-primary-regular-150 */
+    --_28-primary-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_28-primary-regular-150-font-size: 28px;
+    --_28-primary-regular-150-letter-spacing: 0px;
+    --_28-primary-regular-150-line-height: 150%;
+    --_28-primary-regular-150-font-weight: 400;
+    --_28-primary-regular-150-color: black;
+
+    /* _28-primary-semibold-125 */
+    --_28-primary-semibold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_28-primary-semibold-125-font-size: 28px;
+    --_28-primary-semibold-125-letter-spacing: 0px;
+    --_28-primary-semibold-125-line-height: 125%;
+    --_28-primary-semibold-125-font-weight: 600;
+    --_28-primary-semibold-125-color: black;
+
+    /* _28-primary-semibold-150 */
+    --_28-primary-semibold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_28-primary-semibold-150-font-size: 28px;
+    --_28-primary-semibold-150-letter-spacing: 0px;
+    --_28-primary-semibold-150-line-height: 150%;
+    --_28-primary-semibold-150-font-weight: 600;
+    --_28-primary-semibold-150-color: black;
+
+    /* _28-regular-150 */
+    --_28-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_28-regular-150-font-size: 28px;
+    --_28-regular-150-letter-spacing: 0px;
+    --_28-regular-150-line-height: 150%;
+    --_28-regular-150-font-weight: 400;
+    --_28-regular-150-color: black;
+
+    /* _28-secondary-regular-150 */
+    --_28-secondary-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_28-secondary-regular-150-font-size: 28px;
+    --_28-secondary-regular-150-letter-spacing: 0px;
+    --_28-secondary-regular-150-line-height: 150%;
+    --_28-secondary-regular-150-font-weight: 400;
+    --_28-secondary-regular-150-color: black;
+
+    /* _28-semibold */
+    --_28-semibold-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_28-semibold-font-size: 28px;
+    --_28-semibold-letter-spacing: 0px;
+    --_28-semibold-line-height: 150%;
+    --_28-semibold-font-weight: 600;
+    --_28-semibold-color: black;
+
+    /* _28-semibold-150 */
+    --_28-semibold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_28-semibold-150-font-size: 28px;
+    --_28-semibold-150-letter-spacing: 0px;
+    --_28-semibold-150-line-height: 150%;
+    --_28-semibold-150-font-weight: 600;
+    --_28-semibold-150-color: black;
+
+    /* _32-bold-125 */
+    --_32-bold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_32-bold-125-font-size: 32px;
+    --_32-bold-125-letter-spacing: 0px;
+    --_32-bold-125-line-height: 125%;
+    --_32-bold-125-font-weight: 700;
+    --_32-bold-125-color: black;
+
+    /* _32-primary-bold-100 */
+    --_32-primary-bold-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_32-primary-bold-100-font-size: 32px;
+    --_32-primary-bold-100-letter-spacing: 0px;
+    --_32-primary-bold-100-line-height: 100%;
+    --_32-primary-bold-100-font-weight: 700;
+    --_32-primary-bold-100-color: black;
+
+    /* _32-primary-bold-125 */
+    --_32-primary-bold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_32-primary-bold-125-font-size: 32px;
+    --_32-primary-bold-125-letter-spacing: 0px;
+    --_32-primary-bold-125-line-height: 125%;
+    --_32-primary-bold-125-font-weight: 700;
+    --_32-primary-bold-125-color: black;
+
+    /* _32-primary-bold-150 */
+    --_32-primary-bold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_32-primary-bold-150-font-size: 32px;
+    --_32-primary-bold-150-letter-spacing: 0px;
+    --_32-primary-bold-150-line-height: 150%;
+    --_32-primary-bold-150-font-weight: 700;
+    --_32-primary-bold-150-color: black;
+
+    /* _32-primary-regular-150 */
+    --_32-primary-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_32-primary-regular-150-font-size: 32px;
+    --_32-primary-regular-150-letter-spacing: 0px;
+    --_32-primary-regular-150-line-height: 150%;
+    --_32-primary-regular-150-font-weight: 400;
+    --_32-primary-regular-150-color: black;
+
+    /* _32-primary-semibold-100 */
+    --_32-primary-semibold-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_32-primary-semibold-100-font-size: 32px;
+    --_32-primary-semibold-100-letter-spacing: 0px;
+    --_32-primary-semibold-100-line-height: 100%;
+    --_32-primary-semibold-100-font-weight: 600;
+    --_32-primary-semibold-100-color: black;
+
+    /* _32-primary-semibold-125 */
+    --_32-primary-semibold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_32-primary-semibold-125-font-size: 32px;
+    --_32-primary-semibold-125-letter-spacing: 0px;
+    --_32-primary-semibold-125-line-height: 125%;
+    --_32-primary-semibold-125-font-weight: 600;
+    --_32-primary-semibold-125-color: black;
+
+    /* _32-primary-semibold-150 */
+    --_32-primary-semibold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_32-primary-semibold-150-font-size: 32px;
+    --_32-primary-semibold-150-letter-spacing: 0px;
+    --_32-primary-semibold-150-line-height: 150%;
+    --_32-primary-semibold-150-font-weight: 600;
+    --_32-primary-semibold-150-color: black;
+
+    /* _32-regular-150 */
+    --_32-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_32-regular-150-font-size: 32px;
+    --_32-regular-150-letter-spacing: 0px;
+    --_32-regular-150-line-height: 150%;
+    --_32-regular-150-font-weight: 400;
+    --_32-regular-150-color: black;
+
+    /* _32-secondary-regular-150 */
+    --_32-secondary-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_32-secondary-regular-150-font-size: 32px;
+    --_32-secondary-regular-150-letter-spacing: 0px;
+    --_32-secondary-regular-150-line-height: 150%;
+    --_32-secondary-regular-150-font-weight: 400;
+    --_32-secondary-regular-150-color: black;
+
+    /* _32-regular-125 */
+    --_32-regular-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_32-regular-125-font-size: 32px;
+    --_32-regular-125-letter-spacing: 0px;
+    --_32-regular-125-line-height: 125%;
+    --_32-regular-125-font-weight: 400;
+    --_32-regular-125-color: black;
+
+    /* _32-semibold-125 */
+    --_32-semibold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_32-semibold-125-font-size: 32px;
+    --_32-semibold-125-letter-spacing: 0px;
+    --_32-semibold-125-line-height: 125%;
+    --_32-semibold-125-font-weight: 600;
+    --_32-semibold-125-color: black;
+
+    /* _32-semibold-150 */
+    --_32-semibold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_32-semibold-150-font-size: 32px;
+    --_32-semibold-150-letter-spacing: 0px;
+    --_32-semibold-150-line-height: 150%;
+    --_32-semibold-150-font-weight: 600;
+    --_32-semibold-150-color: black;
+
+    /* _36-bold-125 */
+    --_36-bold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_36-bold-125-font-size: 36px;
+    --_36-bold-125-letter-spacing: 0px;
+    --_36-bold-125-line-height: 125%;
+    --_36-bold-125-font-weight: 700;
+    --_36-bold-125-color: black;
+
+    /* _36-primary-regular-150 */
+    --_36-primary-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_36-primary-regular-150-font-size: 36px;
+    --_36-primary-regular-150-letter-spacing: 0px;
+    --_36-primary-regular-150-line-height: 150%;
+    --_36-primary-regular-150-font-weight: 400;
+    --_36-primary-regular-150-color: black;
+
+    /* _36-regular-150 */
+    --_36-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_36-regular-150-font-size: 36px;
+    --_36-regular-150-letter-spacing: 0px;
+    --_36-regular-150-line-height: 150%;
+    --_36-regular-150-font-weight: 400;
+    --_36-regular-150-color: black;
+
+    /* _36-regular-125 */
+    --_36-regular-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_36-regular-125-font-size: 36px;
+    --_36-regular-125-letter-spacing: 0px;
+    --_36-regular-125-line-height: 125%;
+    --_36-regular-125-font-weight: 400;
+    --_36-regular-125-color: black;
+
+    /* _36-secondary-regular-150 */
+    --_36-secondary-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_36-secondary-regular-150-font-size: 36px;
+    --_36-secondary-regular-150-letter-spacing: 0px;
+    --_36-secondary-regular-150-line-height: 150%;
+    --_36-secondary-regular-150-font-weight: 400;
+    --_36-secondary-regular-150-color: black;
+
+    /* _36-semibold */
+    --_36-semibold-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_36-semibold-font-size: 36px;
+    --_36-semibold-letter-spacing: 0px;
+    --_36-semibold-line-height: 150%;
+    --_36-semibold-font-weight: 600;
+    --_36-semibold-color: black;
+
+    /* _36-semibold-150 */
+    --_36-semibold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_36-semibold-150-font-size: 36px;
+    --_36-semibold-150-letter-spacing: 0px;
+    --_36-semibold-150-line-height: 150%;
+    --_36-semibold-150-font-weight: 600;
+    --_36-semibold-150-color: black;
+
+    /* _36-semibold-125 */
+    --_36-semibold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_36-semibold-125-font-size: 36px;
+    --_36-semibold-125-letter-spacing: 0px;
+    --_36-semibold-125-line-height: 125%;
+    --_36-semibold-125-font-weight: 600;
+    --_36-semibold-125-color: black;
+
+    /* _40-bold-125 */
+    --_40-bold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_40-bold-125-font-size: 40px;
+    --_40-bold-125-letter-spacing: 0px;
+    --_40-bold-125-line-height: 125%;
+    --_40-bold-125-font-weight: 700;
+    --_40-bold-125-color: black;
+
+    /* _40-primary-bold-125 */
+    --_40-primary-bold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_40-primary-bold-125-font-size: 40px;
+    --_40-primary-bold-125-letter-spacing: 0px;
+    --_40-primary-bold-125-line-height: 125%;
+    --_40-primary-bold-125-font-weight: 700;
+    --_40-primary-bold-125-color: black;
+
+    /* _40-primary-semibold-100 */
+    --_40-primary-semibold-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_40-primary-semibold-100-font-size: 40px;
+    --_40-primary-semibold-100-letter-spacing: 0px;
+    --_40-primary-semibold-100-line-height: 100%;
+    --_40-primary-semibold-100-font-weight: 600;
+    --_40-primary-semibold-100-color: black;
+
+    /* _40-primary-semibold-150 */
+    --_40-primary-semibold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_40-primary-semibold-150-font-size: 40px;
+    --_40-primary-semibold-150-letter-spacing: 0px;
+    --_40-primary-semibold-150-line-height: 150%;
+    --_40-primary-semibold-150-font-weight: 600;
+    --_40-primary-semibold-150-color: black;
+
+    /* _40-primary-regular-150 */
+    --_40-primary-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_40-primary-regular-150-font-size: 40px;
+    --_40-primary-regular-150-letter-spacing: 0px;
+    --_40-primary-regular-150-line-height: 150%;
+    --_40-primary-regular-150-font-weight: 400;
+    --_40-primary-regular-150-color: black;
+
+    /* _40-regular-150 */
+    --_40-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_40-regular-150-font-size: 40px;
+    --_40-regular-150-letter-spacing: 0px;
+    --_40-regular-150-line-height: 150%;
+    --_40-regular-150-font-weight: 400;
+    --_40-regular-150-color: black;
+
+    /* _40-secondary-regular-150 */
+    --_40-secondary-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_40-secondary-regular-150-font-size: 40px;
+    --_40-secondary-regular-150-letter-spacing: 0px;
+    --_40-secondary-regular-150-line-height: 150%;
+    --_40-secondary-regular-150-font-weight: 400;
+    --_40-secondary-regular-150-color: black;
+
+    /* _40-semibold-150 */
+    --_40-semibold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_40-semibold-150-font-size: 40px;
+    --_40-semibold-150-letter-spacing: 0px;
+    --_40-semibold-150-line-height: 150%;
+    --_40-semibold-150-font-weight: 600;
+    --_40-semibold-150-color: black;
+
+    /* _54-primary-bold-100 */
+    --_54-primary-bold-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_54-primary-bold-100-font-size: 54px;
+    --_54-primary-bold-100-letter-spacing: 0px;
+    --_54-primary-bold-100-line-height: 100%;
+    --_54-primary-bold-100-font-weight: 700;
+    --_54-primary-bold-100-color: black;
+
+    /* _54-primary-bold-150 */
+    --_54-primary-bold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_54-primary-bold-150-font-size: 54px;
+    --_54-primary-bold-150-letter-spacing: 0px;
+    --_54-primary-bold-150-line-height: 150%;
+    --_54-primary-bold-150-font-weight: 700;
+    --_54-primary-bold-150-color: black;
+
+    /* _54-semi-bold-150 */
+    --_54-primary-semibold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_54-primary-semibold-150-font-size: 54px;
+    --_54-primary-semibold-150-letter-spacing: 0px;
+    --_54-primary-semibold-150-line-height: 150%;
+    --_54-primary-semibold-150-font-weight: 600;
+    --_54-primary-semibold-150-color: black;
+
+    /* _54-primary-regular-150 */
+    --_54-primary-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_54-primary-regular-150-font-size: 54px;
+    --_54-primary-regular-150-letter-spacing: 0px;
+    --_54-primary-regular-150-line-height: 150%;
+    --_54-primary-regular-150-font-weight: 400;
+    --_54-primary-regular-150-color: black;
+
+    /* _54-regular-150 */
+    --_54-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_54-regular-150-font-size: 54px;
+    --_54-regular-150-letter-spacing: 0px;
+    --_54-regular-150-line-height: 150%;
+    --_54-regular-150-font-weight: 400;
+    --_54-regular-150-color: black;
+
+    /* _54-secondary-regular-150 */
+    --_54-secondary-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_54-secondary-regular-150-font-size: 54px;
+    --_54-secondary-regular-150-letter-spacing: 0px;
+    --_54-secondary-regular-150-line-height: 150%;
+    --_54-secondary-regular-150-font-weight: 400;
+    --_54-secondary-regular-150-color: black;
+
+    /* ==== Additional tokens ==== */
+
+    /* Typography scales used by components */
+
+    /* _8-regular-150 */
+    --_8-regular-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_8-regular-150-font-size: 8px;
+    --_8-regular-150-letter-spacing: 0px;
+    --_8-regular-150-line-height: 150%;
+    --_8-regular-150-font-weight: 400;
+
+    /* _8-semibold-150 */
+    --_8-semibold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_8-semibold-150-font-size: 8px;
+    --_8-semibold-150-letter-spacing: 0px;
+    --_8-semibold-150-line-height: 150%;
+    --_8-semibold-150-font-weight: 600;
+
+    /* _10-secondary-regular-125 */
+    --_10-secondary-regular-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_10-secondary-regular-125-font-size: 10px;
+    --_10-secondary-regular-125-letter-spacing: 0px;
+    --_10-secondary-regular-125-line-height: 125%;
+    --_10-secondary-regular-125-font-weight: 400;
+
+    /* _12-bold-100 */
+    --_12-bold-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_12-bold-100-font-size: 12px;
+    --_12-bold-100-letter-spacing: 0px;
+    --_12-bold-100-line-height: 100%;
+    --_12-bold-100-font-weight: 700;
+
+    /* _12-bold-125 */
+    --_12-bold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_12-bold-125-font-size: 12px;
+    --_12-bold-125-letter-spacing: 0px;
+    --_12-bold-125-line-height: 125%;
+    --_12-bold-125-font-weight: 700;
+
+    /* _20-semibold-125 */
+    --_20-semibold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_20-semibold-125-font-size: 20px;
+    --_20-semibold-125-letter-spacing: 0px;
+    --_20-semibold-125-line-height: 125%;
+    --_20-semibold-125-font-weight: 600;
+
+    /* _24-primary-regular-125 */
+    --_24-primary-regular-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_24-primary-regular-125-font-size: 24px;
+    --_24-primary-regular-125-letter-spacing: 0px;
+    --_24-primary-regular-125-line-height: 125%;
+    --_24-primary-regular-125-font-weight: 400;
+
+    /* _28-primary-regular-100 */
+    --_28-primary-regular-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_28-primary-regular-100-font-size: 28px;
+    --_28-primary-regular-100-letter-spacing: 0px;
+    --_28-primary-regular-100-line-height: 100%;
+    --_28-primary-regular-100-font-weight: 400;
+
+    /* _28-primary-semibold-100 */
+    --_28-primary-semibold-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_28-primary-semibold-100-font-size: 28px;
+    --_28-primary-semibold-100-letter-spacing: 0px;
+    --_28-primary-semibold-100-line-height: 100%;
+    --_28-primary-semibold-100-font-weight: 600;
+
+    /* _32-primary-regular-100 */
+    --_32-primary-regular-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_32-primary-regular-100-font-size: 32px;
+    --_32-primary-regular-100-letter-spacing: 0px;
+    --_32-primary-regular-100-line-height: 100%;
+    --_32-primary-regular-100-font-weight: 400;
+
+    /* _36-primary-bold-100 */
+    --_36-primary-bold-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_36-primary-bold-100-font-size: 36px;
+    --_36-primary-bold-100-letter-spacing: 0px;
+    --_36-primary-bold-100-line-height: 100%;
+    --_36-primary-bold-100-font-weight: 700;
+
+    /* _36-primary-bold-150 */
+    --_36-primary-bold-150-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_36-primary-bold-150-font-size: 36px;
+    --_36-primary-bold-150-letter-spacing: 0px;
+    --_36-primary-bold-150-line-height: 150%;
+    --_36-primary-bold-150-font-weight: 700;
+
+    /* _40-primary-bold-100 */
+    --_40-primary-bold-100-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_40-primary-bold-100-font-size: 40px;
+    --_40-primary-bold-100-letter-spacing: 0px;
+    --_40-primary-bold-100-line-height: 100%;
+    --_40-primary-bold-100-font-weight: 700;
+
+    /* _54-primary-semibold-125 */
+    --_54-primary-semibold-125-font-family: "Noto Sans", "NotoSans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --_54-primary-semibold-125-font-size: 54px;
+    --_54-primary-semibold-125-letter-spacing: 0px;
+    --_54-primary-semibold-125-line-height: 125%;
+    --_54-primary-semibold-125-font-weight: 600;
+
+    /* Colors */
+    --action-primary-inverted: #ffffff;
+
+    /* Component theming hooks (override on :root or on any ancestor element) */
+    --cec-color-background: #fff;
+    --cec-color-background-hover: #e9ecef;
+    --cec-color-background-subtle: #f8f9fa;
+    --cec-color-border: #CDCED9;
+    --cec-color-primary: #0062ff;
+    --cec-color-primary-hover: #0047cc;
+    --cec-color-text-primary: #272833;
+    --cec-color-text-secondary: #6B6C7E;
+    --cec-event-transition: none;
+    --cec-text-primary: #333;
+    --nov-summary-fs: 1rem;
+    --nov-summary-lines: 2;
+    --nov-title-lines: 2;
+    --tile-summary-color: currentcolor;
+}

@@ -1,0 +1,54 @@
+/* ======================================================================== *
+ * Copyright 2026 HCL America Inc.                                          *
+ * Licensed under the Apache License, Version 2.0 (the "License");          *
+ * you may not use this file except in compliance with the License.         *
+ * You may obtain a copy of the License at                                  *
+ *                                                                          *
+ * http://www.apache.org/licenses/LICENSE-2.0                               *
+ *                                                                          *
+ * Unless required by applicable law or agreed to in writing, software      *
+ * distributed under the License is distributed on an "AS IS" BASIS,        *
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. *
+ * See the License for the specific language governing permissions and      *
+ * limitations under the License.                                           *
+ * ======================================================================== */
+
+/* Typography helper classes used by components. Same rules as the Blueprint design system; values come from the tokens in tokens.css. */
+
+._10-regular {
+    font-family: var(--_10-regular-font-family);
+    font-size: var(--_10-regular-font-size);
+    letter-spacing: var(--_10-regular-letter-spacing);
+    line-height: var(--_10-regular-line-height);
+    font-weight: var(--_10-regular-font-weight);
+    text-transform: var(--_10-regular-text-transform);
+    color: var(--_10-regular-color);
+}
+
+._10-semibold {
+    font-family: var(--_10-semibold-font-family);
+    font-size: var(--_10-semibold-font-size);
+    letter-spacing: var(--_10-semibold-letter-spacing);
+    line-height: var(--_10-semibold-line-height);
+    font-weight: var(--_10-semibold-font-weight);
+    text-transform: var(--_10-semibold-text-transform);
+    color: var(--_10-semibold-color);
+}
+
+._18-semibold {
+    font-family: var(--_18-semibold-font-family);
+    font-size: var(--_18-semibold-font-size);
+    letter-spacing: var(--_18-semibold-letter-spacing);
+    line-height: var(--_18-semibold-line-height);
+    font-weight: var(--_18-semibold-font-weight);
+    color: var(--_18-semibold-color);
+}
+
+._32-regular {
+    font-family: var(--_32-regular-font-family);
+    font-size: var(--_32-regular-font-size);
+    letter-spacing: var(--_32-regular-letter-spacing);
+    line-height: var(--_32-regular-line-height);
+    font-weight: var(--_32-regular-font-weight);
+    color: var(--_32-regular-color);
+}

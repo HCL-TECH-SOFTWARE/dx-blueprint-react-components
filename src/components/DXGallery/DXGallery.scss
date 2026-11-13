@@ -60,7 +60,7 @@
             z-index: $firstLevel;
             background: linear-gradient(180deg, rgba(39, 40, 51, 0.62) 0%, rgba(39, 40, 51, 0) 100%);
             padding: 0.75rem;
-            color: var(--white);
+            color: var(--light-white);
         }
         .dxGallery__arrow.dxButton.btn.btn-secondary,
         .dxGallery__arrow {
@@ -150,7 +150,7 @@
             position: absolute;
             margin-top: 1.625rem;
             padding-inline: 0.6875rem;
-            color: var(--white);
+            color: var(--light-white);
         }
     }
     &__description {

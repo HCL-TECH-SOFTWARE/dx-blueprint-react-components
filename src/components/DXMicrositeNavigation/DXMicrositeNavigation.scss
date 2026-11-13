@@ -162,7 +162,7 @@
 
     &__label {
         padding-left: 13px;
-        color: var(---light-white);
+        color: var(--light-white);
         font-family: var(--_24-primary-semibold-125-font-family);
         font-size: var(--_24-primary-semibold-125-font-size);
         letter-spacing: var(--_24-primary-semibold-125-letter-spacing);
@@ -367,15 +367,15 @@
         font-family: var(--_16-primary-regular-100-font-family);
         font-size: var(--_16-primary-regular-100-font-size);
         letter-spacing: var(--_16-primary-regular-100-letter-spacing);
-        line-height: var(--_primary-regular-100-line-height);
-        font-weight: var(--_primary-regular-100-font-weight);
+        line-height: var(--_16-primary-regular-100-line-height);
+        font-weight: var(--_16-primary-regular-100-font-weight);
 
         &::placeholder {
             font-family: var(--_16-primary-regular-100-font-family);
             font-size: var(--_16-primary-regular-100-font-size);
             letter-spacing: var(--_16-primary-regular-100-letter-spacing);
-            line-height: var(--_primary-regular-100-line-height);
-            font-weight: var(--_primary-regular-100-font-weight);
+            line-height: var(--_16-primary-regular-100-line-height);
+            font-weight: var(--_16-primary-regular-100-font-weight);
             color: var(--secondary-secondary);
         }
 

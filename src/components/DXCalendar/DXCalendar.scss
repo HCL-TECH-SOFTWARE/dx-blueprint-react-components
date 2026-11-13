@@ -110,7 +110,7 @@
             font-weight: var(--_24-primary-regular-150-font-weight);
             line-height: var(--_24-primary-regular-150-line-height);
             letter-spacing: var(--_24-primary-regular-150-letter-spacing);
-            color: var(--white);
+            color: var(--light-white);
 
             &.other {
                 color: var(--primary-primary-l1);
@@ -139,7 +139,7 @@
 
     &__details {
         position: relative;
-        background: var(--white);
+        background: var(--light-white);
         margin-top: 5px;
         border-radius: 4px;
         margin-left: 10px;

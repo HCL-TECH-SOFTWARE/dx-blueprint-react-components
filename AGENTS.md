@@ -1,6 +1,6 @@
 # HCL DX Blueprint — Agent Guidelines
 
-React 19 + TypeScript component library. Rollup builds CJS/ESM/UMD bundles. Storybook 10 for documentation.
+React 19 + TypeScript component library. Rollup builds ESM/CJS (one file per module, dependencies external), a bundled UMD, and separate CSS files. Storybook 10 for documentation.
 
 ## Commands
 
@@ -13,6 +13,7 @@ npm run test:unit       # Unit tests + coverage
 npm run test:mutation   # Mutation testing (Stryker)
 npm run lint            # ESLint check
 npm run lint:fix        # ESLint auto-fix
+npm run lint:tokens     # CSS token definition check
 ```
 
 ## Structure
@@ -22,6 +23,7 @@ src/
 ├── components/     # DX* and CEC* families; barrel: index.ts
 ├── utilities/      # Shared helpers; barrel: index.ts
 ├── global/         # Global SCSS tokens
+├── styles/         # tokens.css (default design tokens), typography helpers
 └── index.ts        # Library entry point
 docs/               # Guide-level MDX (Storybook pages)
 ```

@@ -340,11 +340,11 @@
     z-index: 1050;
 
     .dropdown-item {
-        font-family: var(--_14-primary-regular-font-family, var(--_14-regular-150-font-family));
-        font-size: var(--_14-primary-regular-font-size, var(--_14-regular-150-font-size));
-        font-weight: var(--_14-primary-regular-font-weight, var(--_14-regular-150-font-weight));
-        line-height: var(--_14-primary-regular-line-height, var(--_14-regular-150-line-height));
-        letter-spacing: var(--_14-primary-regular-letter-spacing, var(--_14-regular-150-letter-spacing));
+        font-family: var(--_14-regular-150-font-family);
+        font-size: var(--_14-regular-150-font-size);
+        font-weight: var(--_14-regular-150-font-weight);
+        line-height: var(--_14-regular-150-line-height);
+        letter-spacing: var(--_14-regular-150-letter-spacing);
         -webkit-font-smoothing: antialiased;
         color: var(--secondary-secondary);
         padding: 0.5rem 1rem;

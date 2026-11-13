@@ -34,7 +34,7 @@
 
         button.dxButton.btn {
             color: var(--primary-primary);
-            background-color: var(--white);
+            background-color: var(--light-white);
             border: 1px solid var(--primary-primary);
             font-family: var(--_16-semibold-150-font-family);
             font-size: var(--_16-semibold-150-font-size);
@@ -77,7 +77,7 @@
 
     &__header {
         width: 100%;
-        background-color: var(--white);
+        background-color: var(--light-white);
         font-family: var(--_16-primary-semibold-150-font-family);
         font-size: var(--_16-primary-semibold-150-font-size);
         font-weight: var(--_16-primary-semibold-150-font-weight);

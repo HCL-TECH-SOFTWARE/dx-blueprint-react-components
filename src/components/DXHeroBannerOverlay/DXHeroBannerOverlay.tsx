@@ -159,7 +159,7 @@ const DXHeroBannerOverlay = ( props: HeroBannerOverlayProps ) => {
     const getBackgroundMediaStyles = () => {
         let verifiedHeightDesktop: string = DEFAULT_DESKTOP_HEIGHT;
         let verifiedHeightMobile: string = DEFAULT_MOBILE_HEIGHT;
-        let opacity: string = "var(--white)";
+        let opacity: string = "var(--light-white)";
         let marginLeft: string = "0";
         let marginRight: string = "0";
 

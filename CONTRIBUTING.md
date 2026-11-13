@@ -83,6 +83,7 @@ Any unexpected `console.warn` or `console.error` during tests will fail CI. Allo
 ```bash
 npm run lint        # Check for errors (must pass with 0 errors)
 npm run lint:fix    # Auto-fix what can be fixed
+npm run lint:tokens # Check that every var(--token) used in src is defined
 ```
 
 ## Building

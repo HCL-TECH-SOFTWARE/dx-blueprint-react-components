@@ -16,7 +16,7 @@
 .dxRiverContent {
     width: 288px;
     max-width: 100%;
-    background-color: var(--white);
+    background-color: var(--light-white);
 
     &__header {
         background-color: #B3CDFF;
@@ -91,7 +91,7 @@
         max-height: 0;
         text-align: justify;
         overflow: hidden;
-        background-color: var(--white);
+        background-color: var(--light-white);
         color: #272833;
         padding: 0;
         transition: all .5s;
