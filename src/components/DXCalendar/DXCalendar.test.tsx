@@ -18,25 +18,31 @@ import '@testing-library/jest-dom';
 import { render, fireEvent, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import DXCalendar from "./DXCalendar";
-import moment from "moment";
 import { CalendarChangedIconsArgs } from "./DXCalendar.stories";
 
-const TODAY = moment();
+const TODAY = new Date();
+
+// Small native helpers so the expectations do not depend on the date code under test.
+const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const pad2 = ( n: number ) => ( n < 10 ? "0" + n : "" + n );
+const toIsoDate = ( d: Date ) => `${d.getFullYear()}-${pad2( d.getMonth() + 1 )}-${pad2( d.getDate() )}`;
+// The date of weekday `n` (0 = Sunday, values outside 0-6 reach into other weeks) in the week of `date`.
+const weekdayOf = ( date: Date, n: number ) => new Date( date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + n );
 
 const events = [
     {
         name: "Press conference",
-        date: `${TODAY.year()}-${TODAY.format( "MM" )}-${TODAY.date()}`,
+        date: `${TODAY.getFullYear()}-${pad2( TODAY.getMonth() + 1 )}-${TODAY.getDate()}`,
         link: "/test1"
     },
     {
         name: "Social Party",
-        date: `${TODAY.year()}-${TODAY.format( "MM" )}-${TODAY.date()}`,
+        date: `${TODAY.getFullYear()}-${pad2( TODAY.getMonth() + 1 )}-${TODAY.getDate()}`,
         link: "/test2"
     },
     {
         name: "Final Son's exam",
-        date: `${TODAY.year()}-${TODAY.format( "MM" )}-${TODAY.date()}`,
+        date: `${TODAY.getFullYear()}-${pad2( TODAY.getMonth() + 1 )}-${TODAY.getDate()}`,
         link: "/test3"
     }
 ];
@@ -49,7 +55,7 @@ test( "The component will show today's month when it's rendered", () => {
     };
     const { getByTestId } = render( <DXCalendar {...props} /> );
     let month = getByTestId( "calendar-month" );
-    expect( month.textContent ).toContain( TODAY.format( "MMMM" ) );
+    expect( month.textContent ).toContain( MONTH_NAMES[TODAY.getMonth()] );
 } );
 
 test( "The 'today' class will be on today's element", () => {
@@ -59,7 +65,7 @@ test( "The 'today' class will be on today's element", () => {
     };
     const { container } = render( <DXCalendar {...props} /> );
     let today = container.querySelector( ".dxCalendar .today" );
-    let dayNumberString = TODAY.date() < 10 ? "0" + TODAY.date().toString() : TODAY.date().toString();
+    let dayNumberString = pad2( TODAY.getDate() );
     expect( today?.textContent ).toEqual( dayNumberString );
 } );
 
@@ -167,7 +173,7 @@ test( "If the user does pass a custom color for the event, the style should be a
     let props = {
         events: [{
             name: "Press conference",
-            date: `${TODAY.year()}-${TODAY.format( "MM" )}-${TODAY.date()}`,
+            date: `${TODAY.getFullYear()}-${pad2( TODAY.getMonth() + 1 )}-${TODAY.getDate()}`,
             link: "/test1",
             color: "red"
         }]
@@ -236,9 +242,9 @@ test( "If today's events length is larger than 2 and the user passes the seeMore
 // Test for the arrow position
 test( "If the user click on the first monday of the month, the arrow will have the style of 'left: 20%'", async () => {
     let testDay: any = null;
-    let todayClone = TODAY.clone().year( TODAY.toDate().getFullYear() ).month( TODAY.toDate().getMonth() ).date( 1 ).day( 8 );
-    if ( todayClone.date() > 7 ) {
-        todayClone.day( -6 );
+    let todayClone = weekdayOf( new Date( TODAY.getFullYear(), TODAY.getMonth(), 1 ), 8 );
+    if ( todayClone.getDate() > 7 ) {
+        todayClone = weekdayOf( todayClone, -6 );
     }
     testDay = todayClone;
     let props = {
@@ -248,7 +254,7 @@ test( "If the user click on the first monday of the month, the arrow will have t
     let allDays = container.querySelectorAll( ".dxCalendar__day" ) as NodeListOf<HTMLButtonElement>;
     let day: HTMLButtonElement = document.createElement( 'button' );
     allDays.forEach( ( dayItem: HTMLButtonElement ) => {
-        if ( !dayItem.disabled && dayItem.childNodes[1].textContent === testDay.format( "DD" ) ) {
+        if ( !dayItem.disabled && dayItem.childNodes[1].textContent === pad2( testDay.getDate() ) ) {
             day = dayItem;
         }
     } );
@@ -261,7 +267,7 @@ test( "If the user click on the first monday of the month, the arrow will have t
 } );
 
 test( "If the user click on the first tuesday of the month, the arrow will have the style of 'left: 20%'", async () => {
-    let todayClone = TODAY.clone().year( TODAY.toDate().getFullYear() ).month( TODAY.toDate().getMonth() ).date( 1 ).day( 9 );
+    let todayClone = weekdayOf( new Date( TODAY.getFullYear(), TODAY.getMonth(), 1 ), 9 );
     let testDay = todayClone;
     let props = {
         events: events,
@@ -270,7 +276,7 @@ test( "If the user click on the first tuesday of the month, the arrow will have 
     let allDays = container.querySelectorAll( ".dxCalendar__day" ) as NodeListOf<HTMLButtonElement>;
     let day = document.createElement( 'button' );
     allDays.forEach( ( dayItem: HTMLButtonElement ) => {
-        if ( !dayItem.disabled && dayItem.childNodes[1].textContent === testDay.format( "DD" ) ) {
+        if ( !dayItem.disabled && dayItem.childNodes[1].textContent === pad2( testDay.getDate() ) ) {
             day = dayItem;
         }
     } );
@@ -282,7 +288,7 @@ test( "If the user click on the first tuesday of the month, the arrow will have 
 } );
 
 test( "If the user click on the first wednesday of the month, the arrow will have the style of 'left: 20%'", async () => {
-    let todayClone = TODAY.clone().year( TODAY.toDate().getFullYear() ).month( TODAY.toDate().getMonth() ).date( 1 ).day( 10 );
+    let todayClone = weekdayOf( new Date( TODAY.getFullYear(), TODAY.getMonth(), 1 ), 10 );
     let testDay = todayClone;
     let props = {
         events: events,
@@ -291,7 +297,7 @@ test( "If the user click on the first wednesday of the month, the arrow will hav
     let allDays = container.querySelectorAll( ".dxCalendar__day" ) as NodeListOf<HTMLButtonElement>;
     let day = document.createElement( 'button' );
     allDays.forEach( ( dayItem: HTMLButtonElement ) => {
-        if ( !dayItem.disabled && dayItem.childNodes[1].textContent === testDay.format( "DD" ) ) {
+        if ( !dayItem.disabled && dayItem.childNodes[1].textContent === pad2( testDay.getDate() ) ) {
             day = dayItem;
         }
     } );
@@ -303,7 +309,7 @@ test( "If the user click on the first wednesday of the month, the arrow will hav
 } );
 
 test( "If the user click on the first thursday of the month, the arrow will have the style of 'left: 20%'", async () => {
-    let todayClone = TODAY.clone().year( TODAY.toDate().getFullYear() ).month( TODAY.toDate().getMonth() ).date( 1 ).day( 11 );
+    let todayClone = weekdayOf( new Date( TODAY.getFullYear(), TODAY.getMonth(), 1 ), 11 );
     let testDay = todayClone;
     let props = {
         events: events,
@@ -312,7 +318,7 @@ test( "If the user click on the first thursday of the month, the arrow will have
     let allDays = container.querySelectorAll( ".dxCalendar__day" ) as NodeListOf<HTMLButtonElement>;
     let day = document.createElement( 'button' );
     allDays.forEach( ( dayItem: HTMLButtonElement ) => {
-        if ( !dayItem.disabled && dayItem.childNodes[1].textContent === testDay.format( "DD" ) ) {
+        if ( !dayItem.disabled && dayItem.childNodes[1].textContent === pad2( testDay.getDate() ) ) {
             day = dayItem;
         }
     } );
@@ -324,7 +330,7 @@ test( "If the user click on the first thursday of the month, the arrow will have
 } );
 
 test( "If the user click on the first friday of the month, the arrow will have the style of 'left: 20%'", async () => {
-    let todayClone = TODAY.clone().year( TODAY.toDate().getFullYear() ).month( TODAY.toDate().getMonth() ).date( 1 ).day( 12 );
+    let todayClone = weekdayOf( new Date( TODAY.getFullYear(), TODAY.getMonth(), 1 ), 12 );
     let testDay = todayClone;
     let props = {
         events: events,
@@ -333,7 +339,7 @@ test( "If the user click on the first friday of the month, the arrow will have t
     let allDays = container.querySelectorAll( ".dxCalendar__day" ) as NodeListOf<HTMLButtonElement>;
     let day = document.createElement( 'button' );
     allDays.forEach( ( dayItem: HTMLButtonElement ) => {
-        if ( !dayItem.disabled && dayItem.childNodes[1].textContent === testDay.format( "DD" ) ) {
+        if ( !dayItem.disabled && dayItem.childNodes[1].textContent === pad2( testDay.getDate() ) ) {
             day = dayItem;
         }
     } );
@@ -345,7 +351,7 @@ test( "If the user click on the first friday of the month, the arrow will have t
 } );
 
 test( "If the user click on the first saturday of the month, the arrow will have the style of 'left: 20%'", async () => {
-    let todayClone = TODAY.clone().year( TODAY.toDate().getFullYear() ).month( TODAY.toDate().getMonth() ).date( 1 ).day( 13 );
+    let todayClone = weekdayOf( new Date( TODAY.getFullYear(), TODAY.getMonth(), 1 ), 13 );
     let testDay = todayClone;
     let props = {
         events: events,
@@ -354,7 +360,7 @@ test( "If the user click on the first saturday of the month, the arrow will have
     let allDays = container.querySelectorAll( ".dxCalendar__day" ) as NodeListOf<HTMLButtonElement>;
     let day = document.createElement( 'button' );
     allDays.forEach( ( dayItem: HTMLButtonElement ) => {
-        if ( !dayItem.disabled && dayItem.childNodes[1].textContent === testDay.format( "DD" ) ) {
+        if ( !dayItem.disabled && dayItem.childNodes[1].textContent === pad2( testDay.getDate() ) ) {
             day = dayItem;
         }
     } );
@@ -366,7 +372,7 @@ test( "If the user click on the first saturday of the month, the arrow will have
 } );
 
 test( "If the user click on the first sunday of the month, the arrow will have the style of 'left: 20%'", async () => {
-    let todayClone = TODAY.clone().year( TODAY.toDate().getFullYear() ).month( TODAY.toDate().getMonth() ).date( 1 ).day( 14 );
+    let todayClone = weekdayOf( new Date( TODAY.getFullYear(), TODAY.getMonth(), 1 ), 14 );
     let testDay = todayClone;
     let props = {
         events: events,
@@ -375,7 +381,7 @@ test( "If the user click on the first sunday of the month, the arrow will have t
     let allDays = container.querySelectorAll( ".dxCalendar__day" ) as NodeListOf<HTMLButtonElement>;
     let day = document.createElement( 'button' );
     allDays.forEach( ( dayItem: HTMLButtonElement ) => {
-        if ( !dayItem.disabled && dayItem.childNodes[1].textContent === testDay.format( "DD" ) ) {
+        if ( !dayItem.disabled && dayItem.childNodes[1].textContent === pad2( testDay.getDate() ) ) {
             day = dayItem;
         }
     } );
@@ -492,7 +498,7 @@ test( "If the user press the Escape key when focusing a day from a different wee
 
 // Test when changing the month
 test( "If the user clicks on the previous button, the month showed will be one before", async () => {
-    let monthBefore = TODAY.clone().subtract( 1, "month" );
+    let monthBefore = MONTH_NAMES[( TODAY.getMonth() + 11 ) % 12];
     let props = {
         events,
         seeMoreText: "See more"
@@ -501,11 +507,11 @@ test( "If the user clicks on the previous button, the month showed will be one b
     let previous = getByTestId( "calendar-prev" );
     await userEvent.click( previous );
     let month = getByTestId( "calendar-month" );
-    expect( month.textContent ).toContain( monthBefore.format( "MMMM" ) );
+    expect( month.textContent ).toContain( monthBefore );
 } );
 
 test( "If the user press the Enter key when focusing the previous button, the month showed will be one before", () => {
-    let monthBefore = TODAY.clone().subtract( 1, "month" );
+    let monthBefore = MONTH_NAMES[( TODAY.getMonth() + 11 ) % 12];
     let props = {
         events,
         seeMoreText: "See more"
@@ -520,11 +526,11 @@ test( "If the user press the Enter key when focusing the previous button, the mo
         charCode: 13,
     } );
     let month = getByTestId( "calendar-month" );
-    expect( month.textContent ).toContain( monthBefore.format( "MMMM" ) );
+    expect( month.textContent ).toContain( monthBefore );
 } );
 
 test( "If the user press the Space key when focusing the previous button, the month showed will be one before", () => {
-    let monthBefore = TODAY.clone().subtract( 1, "month" );
+    let monthBefore = MONTH_NAMES[( TODAY.getMonth() + 11 ) % 12];
     let props = {
         events,
         seeMoreText: "See more"
@@ -539,7 +545,7 @@ test( "If the user press the Space key when focusing the previous button, the mo
         charCode: 32,
     } );
     let month = getByTestId( "calendar-month" );
-    expect( month.textContent ).toContain( monthBefore.format( "MMMM" ) );
+    expect( month.textContent ).toContain( monthBefore );
 } );
 
 test( "If the user press the Escape key when focusing the previous button, the month showed will stay the same", () => {
@@ -557,11 +563,11 @@ test( "If the user press the Escape key when focusing the previous button, the m
         charCode: 27,
     } );
     let month = getByTestId( "calendar-month" );
-    expect( month.textContent ).toContain( TODAY.format( "MMMM" ) );
+    expect( month.textContent ).toContain( MONTH_NAMES[TODAY.getMonth()] );
 } );
 
 test( "If the user clicks on the next button, the month showed will be one after", async () => {
-    let monthAfter = TODAY.clone().add( 1, "month" );
+    let monthAfter = MONTH_NAMES[( TODAY.getMonth() + 1 ) % 12];
     let props = {
         events,
         seeMoreText: "See more"
@@ -570,11 +576,11 @@ test( "If the user clicks on the next button, the month showed will be one after
     let next = getByTestId( "calendar-next" );
     await userEvent.click( next );
     let month = getByTestId( "calendar-month" );
-    expect( month.textContent ).toContain( monthAfter.format( "MMMM" ) );
+    expect( month.textContent ).toContain( monthAfter );
 } );
 
 test( "If the user press the Enter key while focusing the next button, the month showed will be one after", () => {
-    let monthAfter = TODAY.clone().add( 1, "month" );
+    let monthAfter = MONTH_NAMES[( TODAY.getMonth() + 1 ) % 12];
     let props = {
         events,
         seeMoreText: "See more"
@@ -589,11 +595,11 @@ test( "If the user press the Enter key while focusing the next button, the month
         charCode: 13,
     } );
     let month = getByTestId( "calendar-month" );
-    expect( month.textContent ).toContain( monthAfter.format( "MMMM" ) );
+    expect( month.textContent ).toContain( monthAfter );
 } );
 
 test( "If the user press the Space key while focusing the next button, the month showed will be one after", () => {
-    let monthAfter = TODAY.clone().add( 1, "month" );
+    let monthAfter = MONTH_NAMES[( TODAY.getMonth() + 1 ) % 12];
     let props = {
         events,
         seeMoreText: "See more"
@@ -608,7 +614,7 @@ test( "If the user press the Space key while focusing the next button, the month
         charCode: 32,
     } );
     let month = getByTestId( "calendar-month" );
-    expect( month.textContent ).toContain( monthAfter.format( "MMMM" ) );
+    expect( month.textContent ).toContain( monthAfter );
 } );
 
 test( "If the user press the Escape key while focusing the next button, the month showed will stay the same", () => {
@@ -626,7 +632,7 @@ test( "If the user press the Escape key while focusing the next button, the mont
         charCode: 27,
     } );
     let month = getByTestId( "calendar-month" );
-    expect( month.textContent ).toContain( TODAY.format( "MMMM" ) );
+    expect( month.textContent ).toContain( MONTH_NAMES[TODAY.getMonth()] );
 } );
 
 test( "If the user change months, all the details boxes should have the class 'inactive'", async () => {
@@ -656,6 +662,19 @@ test( "If the user selects an event from the details box, and passes a function 
     const detailsBox = container.querySelector( ".dxCalendar__details.active .dxCalendar__detailsEvent" ) as HTMLElement;
     await userEvent.click( detailsBox );
     expect( mockFn ).toBeCalled();
+} );
+
+test( "The function passed on selectEvent receives the original event object, whose date is still the string it was given", async () => {
+    let mockFn = jest.fn();
+    const { container } = render( <DXCalendar events={events} _selectEvent={mockFn} /> );
+    const detailsBox = container.querySelector( ".dxCalendar__details.active .dxCalendar__detailsEvent" ) as HTMLElement;
+    await userEvent.click( detailsBox );
+    expect( mockFn ).toHaveBeenCalledTimes( 1 );
+    const received = mockFn.mock.calls[0][0];
+    expect( events ).toContain( received ); // the very same object that was passed in, not a copy
+    expect( received.name ).toBe( events[0].name );
+    expect( typeof received.date ).toBe( "string" );
+    expect( received ).not.toHaveProperty( "_source" );
 } );
 
 test( "If the user selects and event from the details box, and it does not pass a function on selectEvent, the window.open should be called", async () => {
@@ -717,7 +736,7 @@ test( "strict math boundary: forwardFill rigorously aborts when month ends on Sa
 } );
 
 test( "strict array slicing: generateEvents strictly slices exactly 2 items for colored dots", () => {
-    const todayDate = moment().format( "YYYY-MM-DD" );
+    const todayDate = toIsoDate( new Date() );
     // Provide exactly 4 events for today.
     const fourEvents = Array.from( { length: 4 } ).map( ( _, i ) => ( {
         name: `Event ${i}`,
@@ -756,7 +775,7 @@ test( "state lifecycle & default branches: activeDay resets to -1 on month chang
 
 test( "falsy coercion & prop types: _selectEvent strictly evaluates undefined to fallback to window.open", async () => {
     const spyWindowOpen = jest.spyOn( window, 'open' ).mockImplementation( jest.fn() );
-    const todayDate = moment().format( "YYYY-MM-DD" );
+    const todayDate = toIsoDate( new Date() );
 
     // Explicitly pass undefined to target the `props._selectEvent !== undefined` conditional branch
     const { container } = render(

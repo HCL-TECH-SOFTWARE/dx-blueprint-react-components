@@ -18,7 +18,7 @@ import React, { useState, useEffect } from "react";
 import DXButton from "../DXButton/DXButton";
 import Modal from 'react-bootstrap/Modal';
 import { Form } from 'react-bootstrap';
-import moment from "moment";
+import { addDays, addMonths, formatDate, isSameDay, isSameMonth, parseDateWithFormat, startOfMonth, startOfWeek } from "../../utilities/dateTime";
 import DXToggleMenu, { ToggleMenuProps } from "../DXToggleMenu/DXToggleMenu";
 import { LinksProps, SliderIcons, getIcon, getLinkTarget } from "../../utilities";
 
@@ -42,11 +42,13 @@ export interface ExtendedSliderIcons extends SliderIcons {
 const DXFullCalendar = ( props: FullCalendarProps ) => {
     // STATES AND VARIABLES
     // Calendar
-    const today = moment();
-    const todayMonth = moment().date( 1 );
-    const todayWeek = moment().startOf( "week" );
-    const [currentMonth, setCurrentMonth] = useState<any>( moment().date( 1 ) );
-    const [currentWeek, setCurrentWeek] = useState<any>( today.clone().startOf( "week" ) );
+    const today = new Date();
+    const todayMonth = startOfMonth( new Date() );
+    // A new object on every render on purpose: it is a dependency of the week-label effect below,
+    // which therefore runs after each render and follows the prev/next navigation.
+    const todayWeek = startOfWeek( new Date() );
+    const [currentMonth, setCurrentMonth] = useState<Date>( startOfMonth( new Date() ) );
+    const [currentWeek, setCurrentWeek] = useState<Date>( startOfWeek( today ) );
     let weekDays: any[] = [];
     let monthDays: any[] = [];
     const [weekMonth, setWeekMonth] = useState( "" );
@@ -87,27 +89,28 @@ const DXFullCalendar = ( props: FullCalendarProps ) => {
     // CALENDAR LOGIC
     const getMonthDays = () => {
         // Check and fill if there is days from the past month
-        let iterablePastMonth = currentMonth.clone();
-        let dayOfWeek = iterablePastMonth.day();
+        let iterablePastMonth = currentMonth;
+        let dayOfWeek = iterablePastMonth.getDay();
 
-        iterablePastMonth.subtract( dayOfWeek + 1, "days" );
+        iterablePastMonth = addDays( iterablePastMonth, -( dayOfWeek + 1 ) );
         for ( let i = dayOfWeek; i > 0; i-- ) {
-            monthDays.push( iterablePastMonth.add( 1, "days" ).clone() );
+            iterablePastMonth = addDays( iterablePastMonth, 1 );
+            monthDays.push( iterablePastMonth );
         }
         // Get the days of the month
-        let iterableMonth = currentMonth.clone();
-        while ( iterableMonth.month() === currentMonth.month() ) {
-            monthDays.push( iterableMonth.clone() );
-            iterableMonth.add( 1, 'days' );
+        let iterableMonth = currentMonth;
+        while ( iterableMonth.getMonth() === currentMonth.getMonth() ) {
+            monthDays.push( iterableMonth );
+            iterableMonth = addDays( iterableMonth, 1 );
         }
         // Check and fill if there is days from the next month
-        let iterableNextMonth = currentMonth.clone();
-        iterableNextMonth.add( 1, 'months' ).subtract( 1, 'days' );
-        let nextMonthDayOfWeek = iterableNextMonth.day();
+        let iterableNextMonth = addDays( addMonths( currentMonth, 1 ), -1 );
+        let nextMonthDayOfWeek = iterableNextMonth.getDay();
 
         if ( nextMonthDayOfWeek === 6 ) { return; }
         for ( let i = nextMonthDayOfWeek; i < 6; i++ ) {
-            monthDays.push( iterableNextMonth.add( 1, "days" ).clone() );
+            iterableNextMonth = addDays( iterableNextMonth, 1 );
+            monthDays.push( iterableNextMonth );
         }
     };
 
@@ -115,35 +118,35 @@ const DXFullCalendar = ( props: FullCalendarProps ) => {
         let weekStart = currentWeek;
         let daysFromTheWeek = [];
         for ( let i = 0; i <= 6; i++ ) { // Get the following 7 days
-            daysFromTheWeek.push( moment( weekStart ).add( i, "day" ) );
+            daysFromTheWeek.push( addDays( weekStart, i ) );
         }
         weekDays = [...daysFromTheWeek];
     };
 
-    const getWeekMonth = ( daysOfWeek: any[] ) => {
+    const getWeekMonth = ( daysOfWeek: Date[] ) => {
         // Get the proper month display
         let isTodayInTheWeek: boolean = false;
         let monthsInTheWeek: any = {};
         let yearsInTheWeek: any = {};
         daysOfWeek.forEach( day => {
-            if ( !Object.keys( monthsInTheWeek ).includes( day.format( "MMMM" ) ) ) {
-                monthsInTheWeek[day.format( "MMMM" )] = 1;
+            if ( !Object.keys( monthsInTheWeek ).includes( formatDate( day, "MMMM" ) ) ) {
+                monthsInTheWeek[formatDate( day, "MMMM" )] = 1;
             } else {
-                monthsInTheWeek[day.format( "MMMM" )] = monthsInTheWeek[day.format( "MMMM" )] + 1;
+                monthsInTheWeek[formatDate( day, "MMMM" )] = monthsInTheWeek[formatDate( day, "MMMM" )] + 1;
             }
-            if ( day.format( "YYYY-MM-DD" ) === today.format( "YYYY-MM-DD" ) ) {
+            if ( formatDate( day, "YYYY-MM-DD" ) === formatDate( today, "YYYY-MM-DD" ) ) {
                 isTodayInTheWeek = true;
             }
         } );
         daysOfWeek.forEach( day => {
-            if ( !Object.keys( yearsInTheWeek ).includes( day.format( "YYYY" ) ) ) {
-                yearsInTheWeek[day.format( "YYYY" )] = 1;
+            if ( !Object.keys( yearsInTheWeek ).includes( formatDate( day, "YYYY" ) ) ) {
+                yearsInTheWeek[formatDate( day, "YYYY" )] = 1;
             } else {
-                yearsInTheWeek[day.format( "YYYY" )] = yearsInTheWeek[day.format( "YYYY" )] + 1;
+                yearsInTheWeek[formatDate( day, "YYYY" )] = yearsInTheWeek[formatDate( day, "YYYY" )] + 1;
             }
         } );
         if ( isTodayInTheWeek ) {
-            setWeekMonth( today.format( "MMMM YYYY" ) );
+            setWeekMonth( formatDate( today, "MMMM YYYY" ) );
         } else {
             let finalMonth = "";
             let finalYear = "";
@@ -189,25 +192,24 @@ const DXFullCalendar = ( props: FullCalendarProps ) => {
         }
     };
 
-    const momentizeEvents = ( evs: Event[] ) => {
-        let momentEvents = evs.map( ( ev: Event ) => {
-            let momentDate = moment( ev.date, 'YYYY-MM-DD' );
-            let editedData = { ...ev, date: momentDate };
+    const parseEvents = ( evs: Event[] ) => {
+        let parsedEvents = evs.map( ( ev: Event ) => {
+            let editedData = { ...ev, date: parseDateWithFormat( ev.date, 'YYYY-MM-DD' ) };
             return editedData;
         } );
-        propsEvents = momentEvents;
-        setEvents( [...momentEvents] );
+        propsEvents = parsedEvents;
+        setEvents( [...parsedEvents] );
         setFilteredEvents( [...applyFilters( activeFilters, filteredEvents )] );
     };
 
     const next = ( ev: any ) => {
         if ( ev.type === "click" || ( ev.type === "keydown" && ev.keyCode === 13 ) || ( ev.type === "keydown" && ev.keyCode === 32 ) ) {
             if ( view === "month" ) {
-                setCurrentMonth( currentMonth.add( 1, "month" ) );
+                setCurrentMonth( addMonths( currentMonth, 1 ) );
                 setReturnToToday( !returnToToday );
                 monthDays = [];
             } else if ( view === "week" ) {
-                setCurrentWeek( currentWeek.add( 1, "week" ) );
+                setCurrentWeek( addDays( currentWeek, 7 ) );
                 setReturnToToday( !returnToToday );
                 weekDays = [];
             }
@@ -217,11 +219,11 @@ const DXFullCalendar = ( props: FullCalendarProps ) => {
     const prev = ( ev: any ) => {
         if ( ev.type === "click" || ( ev.type === "keydown" && ev.keyCode === 13 ) || ( ev.type === "keydown" && ev.keyCode === 32 ) ) {
             if ( view === "month" ) {
-                setCurrentMonth( currentMonth.subtract( 1, "month" ) );
+                setCurrentMonth( addMonths( currentMonth, -1 ) );
                 setReturnToToday( !returnToToday );
                 monthDays = [];
             } else if ( view === "week" ) {
-                setCurrentWeek( currentWeek.subtract( 1, "week" ) );
+                setCurrentWeek( addDays( currentWeek, -7 ) );
                 setReturnToToday( !returnToToday );
                 weekDays = [];
             }
@@ -259,7 +261,7 @@ const DXFullCalendar = ( props: FullCalendarProps ) => {
             setShowFilters( true );
         }
         if ( props.events && props.events.length > 0 ) {
-            momentizeEvents( props.events );
+            parseEvents( props.events );
             getFilters( props.events );
         }
         return () => {
@@ -274,18 +276,18 @@ const DXFullCalendar = ( props: FullCalendarProps ) => {
     }, [view, todayWeek] );
 
     // RENDER AND VISUAL LOGIC
-    const isItOnTheMonth = ( day: any ) => {
+    const isItOnTheMonth = ( day: Date ) => {
         if ( view === "month" ) {
-            return day.month() === currentMonth.month() ? "dxFullCalendar__day" : "dxFullCalendar__day--other";
+            return day.getMonth() === currentMonth.getMonth() ? "dxFullCalendar__day" : "dxFullCalendar__day--other";
         }
         if ( view === "week" ) {
-            return day.month() === today.month() ? "dxFullCalendar__day" : "dxFullCalendar__day--other";
+            return day.getMonth() === today.getMonth() ? "dxFullCalendar__day" : "dxFullCalendar__day--other";
         }
     };
 
-    const renderEvents = ( day: any, evs: any[] ) => {
+    const renderEvents = ( day: Date, evs: any[] ) => {
         let todaysEvents = evs.filter( ( ev: any ) => {
-            if ( ev.date.isSame( day, 'month' ) && ev.date.isSame( day, 'day' ) ) {
+            if ( isSameMonth( ev.date, day ) && isSameDay( ev.date, day ) ) {
                 return ev;
             }
         } );
@@ -315,9 +317,9 @@ const DXFullCalendar = ( props: FullCalendarProps ) => {
         if ( monthDays && monthDays.length > 0 ) {
             return Array( monthDays.length / 7 ).fill( null ).map( ( item: null, weekIndex: number ) => (
                 <div className="dxFullCalendar__week" key={weekIndex} data-testid="full-calendar-week">
-                    {monthDays.slice( weekIndex * 7, ( weekIndex + 1 ) * 7 ).map( ( day: any, index: number ) => (
+                    {monthDays.slice( weekIndex * 7, ( weekIndex + 1 ) * 7 ).map( ( day: Date, index: number ) => (
                         <div className={isItOnTheMonth( day )} key={index}>
-                            <p className="dxFullCalendar__number">{day.format( "DD" )}</p>
+                            <p className="dxFullCalendar__number">{formatDate( day, "DD" )}</p>
                             {renderEvents( day, evs )}
                         </div>
                     ) )}
@@ -332,9 +334,9 @@ const DXFullCalendar = ( props: FullCalendarProps ) => {
         if ( weekDays && weekDays.length > 0 ) {
             return (
                 <div className="dxFullCalendar__week" data-testid="full-calendar-week">
-                    {weekDays.map( ( day: any, index: number ) => (
+                    {weekDays.map( ( day: Date, index: number ) => (
                         <div className={isItOnTheMonth( day )} key={index}>
-                            <p className="dxFullCalendar__number">{day.format( "DD" )}</p>
+                            <p className="dxFullCalendar__number">{formatDate( day, "DD" )}</p>
                             {renderEvents( day, filteredEvents )}
                         </div>
                     ) )}
@@ -521,7 +523,7 @@ const DXFullCalendar = ( props: FullCalendarProps ) => {
             <div className={isLandscape ? "dxFullCalendar__calendar" : "dxFullCalendar__calendar dxFullCalendar__calendar--blur"}>
                 <div className="dxFullCalendar__title">
                     <div data-testid="full-calendar-current-month">{
-                        view === "month" ? currentMonth.format( "MMMM YYYY" ) :
+                        view === "month" ? formatDate( currentMonth, "MMMM YYYY" ) :
                             view === "week" ? weekMonth : "Error"
                     }</div>
                 </div>
@@ -605,7 +607,7 @@ const DXFullCalendar = ( props: FullCalendarProps ) => {
                     <Modal show={showModal} onHide={handleClose} data-testid="calendar-modal" className="dxFullCalendar__modal">
                         <Modal.Header>
                             <Modal.Title>
-                                <span>{modalDay.format( "MMMM DD, YYYY" )}</span>
+                                <span>{formatDate( modalDay, "MMMM DD, YYYY" )}</span>
                                 <i tabIndex={0} className="ci-Close_MD" onClick={handleClose}></i>
                             </Modal.Title>
                         </Modal.Header>

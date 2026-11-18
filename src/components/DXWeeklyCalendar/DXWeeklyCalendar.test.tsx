@@ -690,7 +690,7 @@ describe( "DXWeeklyCalendar Hardening", () => {
         expect( screen.queryByTestId( "calendar-modal" ) ).not.toBeInTheDocument();
     } );
 
-    test( "Initialization Boundary: gracefully bypasses momentizeEvents mapping when events array is mathematically empty", () => {
+    test( "Initialization Boundary: gracefully bypasses parseEvents mapping when events array is mathematically empty", () => {
         // Stryker mutates `props.events.length > 0` to `>= 0` or drops it.
         // An empty array should safely bypass the internal mapping iteration.
         const { container } = render( <DXWeeklyCalendar fullCalendarLink="/test" events={[]} /> );
