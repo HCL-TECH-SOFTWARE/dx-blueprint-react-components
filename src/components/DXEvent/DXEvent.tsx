@@ -18,7 +18,7 @@ import React, { useState, useEffect } from 'react';
 import { LinksProps, getLinkTarget, IconButtonProps, getIcon } from "../../utilities";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
 import DXButton from "../DXButton/DXButton";
-import moment from "moment";
+import { formatDate, parseDate } from "../../utilities/dateTime";
 import { CardComponent } from "../../utilities/CardComponent/CardComponent";
 import { normalizeLocaleNumerals } from "../../utilities/cec-utils";
 interface EventDate {
@@ -84,44 +84,49 @@ const DXEvent = ( props: EventProps ) => {
         const normFrom = from ? normalizeLocaleNumerals( from ) : from;
         const normTo = to ? normalizeLocaleNumerals( to ) : to;
         // Guard: bail out early for empty or unparseable dates.
-        if ( !normFrom || !moment( normFrom ).isValid() ) return;
+        const parsedFrom = normFrom ? parseDate( normFrom ) : null;
+        if ( !normFrom || !parsedFrom ) return;
         let resolvedFrom = normFrom;
         let resolvedTo = normTo;
+        let resolvedFromDate: Date | null = parsedFrom;
+        let resolvedToDate: Date | null = normTo ? parseDate( normTo ) : null;
         // Always display dates in chronological order regardless of the order
         // the data source (e.g. WCM in AR locale) provides them.
         if ( normTo && normTo !== "" ) {
-            const fromMs = moment( normFrom ).valueOf();
-            const toMs = moment( normTo ).valueOf();
+            const fromMs = parsedFrom.getTime();
+            const toMs = resolvedToDate ? resolvedToDate.getTime() : NaN;
             if ( !isNaN( fromMs ) && !isNaN( toMs ) && toMs < fromMs ) {
                 resolvedFrom = normTo;
                 resolvedTo = normFrom;
+                resolvedFromDate = resolvedToDate;
+                resolvedToDate = parsedFrom;
             }
         }
         const fromDate: EventDate = {
-            shortMonth: moment( resolvedFrom ).format( "MMM" ).toUpperCase(),
-            month: moment( resolvedFrom ).format( "MMMM" ),
-            day: moment( resolvedFrom ).format( "DD" ),
-            dayOfWeek: moment( resolvedFrom ).format( "dddd" ),
-            year: moment( resolvedFrom ).format( "YYYY" ),
+            shortMonth: formatDate( resolvedFromDate, "MMM" ).toUpperCase(),
+            month: formatDate( resolvedFromDate, "MMMM" ),
+            day: formatDate( resolvedFromDate, "DD" ),
+            dayOfWeek: formatDate( resolvedFromDate, "dddd" ),
+            year: formatDate( resolvedFromDate, "YYYY" ),
         };
         if ( resolvedFrom.includes( "T" ) ) {
             fromDate.hour = props.eventTime24hrFormat
-                ? moment( resolvedFrom ).format( "HH:mm" )
-                : moment( resolvedFrom ).format( "h:mma" );
+                ? formatDate( resolvedFromDate, "HH:mm" )
+                : formatDate( resolvedFromDate, "h:mma" );
         }
         setDateFrom( { ...fromDate } );
-        if ( resolvedTo && resolvedTo !== "" && moment( resolvedTo ).isValid() ) {
+        if ( resolvedTo && resolvedTo !== "" && resolvedToDate ) {
             const toDate: EventDate = {
-                shortMonth: moment( resolvedTo ).format( "MMM" ).toUpperCase(),
-                month: moment( resolvedTo ).format( "MMMM" ),
-                day: moment( resolvedTo ).format( "DD" ),
-                dayOfWeek: moment( resolvedTo ).format( "dddd" ),
-                year: moment( resolvedTo ).format( "YYYY" ),
+                shortMonth: formatDate( resolvedToDate, "MMM" ).toUpperCase(),
+                month: formatDate( resolvedToDate, "MMMM" ),
+                day: formatDate( resolvedToDate, "DD" ),
+                dayOfWeek: formatDate( resolvedToDate, "dddd" ),
+                year: formatDate( resolvedToDate, "YYYY" ),
             };
             if ( resolvedTo.includes( "T" ) ) {
                 toDate.hour = props.eventTime24hrFormat
-                    ? moment( resolvedTo ).format( "HH:mm" )
-                    : moment( resolvedTo ).format( "h:mma" );
+                    ? formatDate( resolvedToDate, "HH:mm" )
+                    : formatDate( resolvedToDate, "h:mma" );
             }
             setDateTo( { ...toDate } );
         }

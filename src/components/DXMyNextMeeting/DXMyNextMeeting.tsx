@@ -16,7 +16,7 @@
 import React from "react";
 import "./DXMyNextMeeting.scss";
 import { LinksProps, getIcon, getLinkTarget } from "../../utilities";
-import moment from "moment";
+import { formatDate, parseISODate } from "../../utilities/dateTime";
 
 export interface NextMeetingProps {
     title: string,
@@ -34,12 +34,15 @@ const DXMyNextMeeting = ( props: NextMeetingProps ) => {
     let startDateTimeValidated = true;
     let endDateTimeValidated = true;
 
-    if ( !moment( props.startDateTime, moment.ISO_8601 ).isValid() ) {
+    const startDateTime = parseISODate( props.startDateTime );
+    const endDateTime = parseISODate( props.endDateTime );
+
+    if ( !startDateTime ) {
         console.warn( "Invalid value for DXMyNextMeeting: startDateTime doesn't comply with the ISO 8601 format" );
         startDateTimeValidated = false;
     }
 
-    if ( !moment( props.endDateTime, moment.ISO_8601 ).isValid() ) {
+    if ( !endDateTime ) {
         console.warn( "Invalid value for DXMyNextMeeting: endDateTime doesn't comply with the ISO 8601 format" );
         endDateTimeValidated = false;
     }
@@ -54,7 +57,7 @@ const DXMyNextMeeting = ( props: NextMeetingProps ) => {
                 <p className="dxMyNextMeeting__title" data-testid={"MNM__title"} >{props.title}</p>
                 {startDateTimeValidated && endDateTimeValidated &&
                     <p className="dxMyNextMeeting__time" data-testid={"MNM__time"} >
-                        {`${moment( props.startDateTime, moment.ISO_8601 ).format( "HH:mm" )} - ${moment( props.endDateTime, moment.ISO_8601 ).format( "HH:mm" )}`}
+                        {`${formatDate( startDateTime, "HH:mm" )} - ${formatDate( endDateTime, "HH:mm" )}`}
                     </p>
                 }
             </div>

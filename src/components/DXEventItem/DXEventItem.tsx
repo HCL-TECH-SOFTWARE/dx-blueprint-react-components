@@ -15,8 +15,8 @@
 
 import "./DXEventItem.scss";
 import React from 'react';
-import moment from "moment";
 import { LinksProps, getLinkTarget, getValuesFromDateFormat, DateValues, overflowText } from "../../utilities";
+import { dateFromParts, formatDate, parseDateWithFormat } from "../../utilities/dateTime";
 import { CardComponent } from "../../utilities/CardComponent/CardComponent";
 
 export interface EventItemProps extends CardComponent {
@@ -40,11 +40,16 @@ const DXEventItem = ( props: EventItemProps ) => {
         return eventDateFormatted.day;
     };
 
+    const getDayOfWeek = ( eventDate: string | undefined, format?: string ) => {
+        const eventDateFormatted: DateValues = getValuesFromDateFormat( eventDate ? eventDate : '', format ? format : DEFAULT_DATE_FORMAT );
+        return formatDate( dateFromParts( eventDateFormatted.year, eventDateFormatted.month, eventDateFormatted.day ), "ddd" );
+    };
+
     const renderEventMetadata = () => (
         <div className="dxEventItem__metadata"
             data-testid="event-metadata">
             <p className="dxEventItem__dayOfWeek" data-testid="event-item-dayOfWeek" >
-                {moment( props.eventDate, props.dateFormat ? props.dateFormat : DEFAULT_DATE_FORMAT ).format( "ddd" )}
+                {getDayOfWeek( props.eventDate, props.dateFormat )}
             </p>
             <h3 className="dxEventItem__day" data-testid="event-item-day">{getDay( props.eventDate, props.dateFormat )}</h3>
         </div>
@@ -95,8 +100,8 @@ const DXEventItem = ( props: EventItemProps ) => {
                         {
                             props.variant === "event" ? (
                                 <p className="dxEventItem__time">
-                                    {moment( props.eventStartTime, "HH:mm" ).format( "hh:mm A" )} -
-                                    {moment( props.eventEndTime, "HH:mm" ).format( "hh:mm A" )}
+                                    {formatDate( parseDateWithFormat( props.eventStartTime, "HH:mm" ), "hh:mm A" )} -
+                                    {formatDate( parseDateWithFormat( props.eventEndTime, "HH:mm" ), "hh:mm A" )}
                                 </p>
                             ) : ""
                         }

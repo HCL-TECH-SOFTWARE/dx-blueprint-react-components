@@ -305,7 +305,7 @@ describe( 'CECEvent Component', () => {
         const { rerender } = render( <CECEvent event={mockEvent} eventTime24hrFormat={false} /> );
         // Test 24-hour format
         rerender( <CECEvent event={mockEvent} eventTime24hrFormat={true} /> );
-        // The actual time format is handled by moment in the component,
+        // The actual time format is handled by the date helpers in the component,
         // so we just check that the component renders without errors
         expect( screen.getByTestId( 'cec-event' ) ).toBeInTheDocument();
     } );

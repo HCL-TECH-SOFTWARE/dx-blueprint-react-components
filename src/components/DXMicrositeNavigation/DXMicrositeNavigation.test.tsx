@@ -18,11 +18,11 @@ import DXMicrositeNavigation, { MicrositeProps } from "./DXMicrositeNavigation";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render, fireEvent } from "@testing-library/react";
-import moment from 'moment';
 
 let mockFunction = jest.fn( e => e.preventDefault() );
-let startTime = moment().add( 1, "hours" ).toISOString();
-let endTime = moment().add( 2, "hours" ).toISOString();
+const HOUR_IN_MS = 60 * 60 * 1000;
+let startTime = new Date( Date.now() + HOUR_IN_MS ).toISOString();
+let endTime = new Date( Date.now() + 2 * HOUR_IN_MS ).toISOString();
 
 const MicrositeNavigationArgs: MicrositeProps = {
     sliderMenu: {
