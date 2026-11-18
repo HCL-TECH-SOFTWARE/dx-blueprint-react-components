@@ -15,7 +15,6 @@
 
 import React, { useEffect, useState } from "react";
 import "./DXVideo.scss";
-import axios from "axios";
 import { LinksProps } from "../../utilities";
 export interface VideoProps {
     playlist: string,
@@ -237,18 +236,25 @@ const DXVideo = ( props: VideoProps ) => {
     };
     const requestApi = ( url: string, keyToken: string ) => {
         setLoading( true );
-        axios
-            .get( url, {
-                headers: {
-                    'Authorization': keyToken
-                }
-            } )
+        fetch( url, {
+            headers: {
+                'Authorization': keyToken
+            }
+        } )
             .then( ( res ) => {
+                // fetch only rejects on network failure; a non-2xx status has to be turned into an error here
+                if ( !res.ok ) {
+                    throw new Error( `Request failed with status ${res.status}` );
+                }
+                return res.json();
+            } )
+            .then( ( data ) => {
                 if ( props.service === 'youtube' ) {
-                    setResponseYoutube( res );
+                    // The component reads the playlist from `.data`, as it did with the previous HTTP client's response wrapper
+                    setResponseYoutube( { data } );
                 }
                 if ( props.service === 'vimeo' ) {
-                    setResponseVimeo( res.data );
+                    setResponseVimeo( data );
                 }
                 setLoading( false );
             } )

@@ -18,9 +18,9 @@ import '@testing-library/jest-dom';
 import DXVideo from "./DXVideo";
 import { listVideosYoutubeArgs, listFolderVimeoArgs, showCasesVideosVimeoArgs } from "./DXVideo.stories";
 import { render, screen } from '@testing-library/react';
-import axios from 'axios';
-jest.mock( 'axios' );
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+const mockFetch = jest.fn();
+// The mocks below keep the { data: <response body> } shape of the original fixtures; fetch resolves with the body itself
+const mockFetchJson = ( body: unknown ) => mockFetch.mockResolvedValue( { ok: true, status: 200, json: async () => body } );
 const responseYoutubeMock = {
     data: {
         "kind": "youtube#playlistItemListResponse",
@@ -400,11 +400,19 @@ const responseVimeoMock = {
     "statusText": "OK",
 };
 describe( "Video component", () => {
-    beforeEach( () => jest.clearAllMocks() );
+    const originalFetch = global.fetch;
+    beforeEach( () => {
+        jest.clearAllMocks();
+        mockFetch.mockReset();
+        global.fetch = mockFetch as unknown as typeof fetch;
+    } );
+    afterEach( () => {
+        global.fetch = originalFetch;
+    } );
     test( "List Video updated for an user of US from Vimeo", async () => {
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseVimeoMock ) );
+        mockFetchJson( responseVimeoMock.data );
         render( <DXVideo {...listFolderVimeoArgs} /> );
-        expect( mockedAxios.get ).toHaveBeenCalled();
+        expect( mockFetch ).toHaveBeenCalled();
         await act( async () => {
             await new Promise( r => setTimeout( r, 600 ) );
         } );
@@ -420,9 +428,9 @@ describe( "Video component", () => {
         expect( videosSection ).toBeInTheDocument();
     } );
     test( "Render playlist url as expected from YouTube", async () => {
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseYoutubeMock ) );
+        mockFetchJson( responseYoutubeMock.data );
         render( <DXVideo {...listVideosYoutubeArgs} /> );
-        expect( mockedAxios.get ).toHaveBeenCalled();
+        expect( mockFetch ).toHaveBeenCalled();
         await act( async () => {
             await new Promise( r => setTimeout( r, 600 ) );
         } );
@@ -437,11 +445,11 @@ describe( "Video component", () => {
         expect( videosSection ).toBeInTheDocument();
     } );
     test( "Render playlist url as expected from YouTube with the id list", async () => {
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseYoutubeMock ) );
+        mockFetchJson( responseYoutubeMock.data );
         let props = listVideosYoutubeArgs;
         props.playlist = "PLlGPzfcuhqdsx40fp4G6qo0mu3WvgXw2K";
         render( <DXVideo {...props} /> );
-        expect( mockedAxios.get ).toHaveBeenCalled();
+        expect( mockFetch ).toHaveBeenCalled();
         await act( async () => {
             await new Promise( r => setTimeout( r, 600 ) );
         } );
@@ -459,9 +467,9 @@ describe( "Video component", () => {
         let props = listVideosYoutubeArgs;
         props.playlist = "https://youtube.com/playlist?list=PLlGPzfcuhqdsx40fp4G6qo0mu3WvgXw2K";
         delete props.layout;
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseYoutubeMock ) );
+        mockFetchJson( responseYoutubeMock.data );
         render( <DXVideo {...props} /> );
-        expect( mockedAxios.get ).toHaveBeenCalled();
+        expect( mockFetch ).toHaveBeenCalled();
         await act( async () => {
             await new Promise( r => setTimeout( r, 600 ) );
         } );
@@ -477,7 +485,7 @@ describe( "Video component", () => {
         expect( videosSection ).toBeInTheDocument();
     } );
     test( "List Video Error on request", async () => {
-        mockedAxios.get.mockResolvedValue( Promise.reject(
+        mockFetch.mockRejectedValue(
             {
                 "error": {
                     "code": 400,
@@ -492,20 +500,46 @@ describe( "Video component", () => {
                         }
                     ]
                 }
-            } ) );
+            } );
         const error = jest.spyOn( console, "error" );
         render( <DXVideo {...listVideosYoutubeArgs} /> );
-        expect( mockedAxios.get ).toHaveBeenCalled();
+        expect( mockFetch ).toHaveBeenCalled();
         await act( async () => {
             await new Promise( r => setTimeout( r, 600 ) );
         } );
         expect( error ).toHaveBeenCalled();
         error.mockRestore();
     } );
-    test( "Render showCase list videos from Vimeo", async () => {
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseVimeoMock ) );
+    test( "A non-2xx response is treated as an error: it is logged and the loading state stays active", async () => {
+        // fetch resolves (does not reject) for HTTP error statuses, so the component has to check `ok` itself
+        const json = jest.fn().mockResolvedValue( { error: { code: 403, message: "Forbidden" } } );
+        mockFetch.mockResolvedValue( { ok: false, status: 403, json } );
+        const error = jest.spyOn( console, "error" ).mockImplementation( () => {} );
+        render( <DXVideo {...listVideosYoutubeArgs} playlist="PLlGPzfcuhqdsx40fp4G6qo0mu3WvgXw2K" /> );
+        await act( async () => {
+            await new Promise( r => setTimeout( r, 600 ) );
+        } );
+        expect( error ).toHaveBeenCalledTimes( 1 );
+        expect( error.mock.calls[0][0] ).toEqual( new Error( "Request failed with status 403" ) );
+        expect( json ).not.toHaveBeenCalled();
+        expect( screen.getByTestId( "loading" ) ).toBeInTheDocument();
+        error.mockRestore();
+    } );
+    test( "A response body that is not valid JSON is treated as an error", async () => {
+        mockFetch.mockResolvedValue( { ok: true, status: 200, json: async () => { throw new SyntaxError( "Unexpected token" ); } } );
+        const error = jest.spyOn( console, "error" ).mockImplementation( () => {} );
         render( <DXVideo {...showCasesVideosVimeoArgs} /> );
-        expect( mockedAxios.get ).toHaveBeenCalled();
+        await act( async () => {
+            await new Promise( r => setTimeout( r, 600 ) );
+        } );
+        expect( error ).toHaveBeenCalledTimes( 1 );
+        expect( screen.getByTestId( "loading" ) ).toBeInTheDocument();
+        error.mockRestore();
+    } );
+    test( "Render showCase list videos from Vimeo", async () => {
+        mockFetchJson( responseVimeoMock.data );
+        render( <DXVideo {...showCasesVideosVimeoArgs} /> );
+        expect( mockFetch ).toHaveBeenCalled();
         await act( async () => {
             await new Promise( r => setTimeout( r, 600 ) );
         } );
@@ -521,11 +555,11 @@ describe( "Video component", () => {
         expect( videosSection ).toBeInTheDocument();
     } );
     test( "Render showCase list videos from Vimeo but with url `https://vimeo.com/manage/showcases/10389678/info` ", async () => {
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseVimeoMock ) );
+        mockFetchJson( responseVimeoMock.data );
         let props = showCasesVideosVimeoArgs;
         props.playlist = "https://vimeo.com/manage/showcases/10389678/info";
         render( <DXVideo {...props} /> );
-        expect( mockedAxios.get ).toHaveBeenCalled();
+        expect( mockFetch ).toHaveBeenCalled();
         await act( async () => {
             await new Promise( r => setTimeout( r, 600 ) );
         } );
@@ -541,11 +575,11 @@ describe( "Video component", () => {
         expect( videosSection ).toBeInTheDocument();
     } );
     test( "Render folder list videos from Vimeo but with url `https://vimeo.com/manage/folders/2314585` ", async () => {
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseVimeoMock ) );
+        mockFetchJson( responseVimeoMock.data );
         let props = listFolderVimeoArgs;
         props.playlist = "https://vimeo.com/manage/folders/2314585";
         render( <DXVideo {...props} /> );
-        expect( mockedAxios.get ).toHaveBeenCalled();
+        expect( mockFetch ).toHaveBeenCalled();
         await act( async () => {
             await new Promise( r => setTimeout( r, 600 ) );
         } );
@@ -562,7 +596,7 @@ describe( "Video component", () => {
     } );
     test( "YouTube embed URLs include hl param when dir prop is rtl", async () => {
         document.documentElement.setAttribute( 'lang', 'ar' );
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseYoutubeMock ) );
+        mockFetchJson( responseYoutubeMock.data );
         const props = { ...listVideosYoutubeArgs, layout: 'horizontal' as const, dir: 'rtl' as const };
         render( <DXVideo {...props} /> );
         await act( async () => {
@@ -578,7 +612,7 @@ describe( "Video component", () => {
     } );
     test( "YouTube embed URLs fall back to ?hl=ar when dir is rtl but document lang is a non-RTL language", async () => {
         document.documentElement.setAttribute( 'lang', 'en' );
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseYoutubeMock ) );
+        mockFetchJson( responseYoutubeMock.data );
         const props = { ...listVideosYoutubeArgs, layout: 'horizontal' as const, dir: 'rtl' as const };
         render( <DXVideo {...props} /> );
         await act( async () => {
@@ -594,7 +628,7 @@ describe( "Video component", () => {
     } );
     test( "YouTube embed URLs use correct hl param for Hebrew (non-Arabic RTL language)", async () => {
         document.documentElement.setAttribute( 'lang', 'he' );
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseYoutubeMock ) );
+        mockFetchJson( responseYoutubeMock.data );
         const props = { ...listVideosYoutubeArgs, layout: 'horizontal' as const, dir: 'rtl' as const };
         render( <DXVideo {...props} /> );
         await act( async () => {
@@ -606,7 +640,7 @@ describe( "Video component", () => {
         await act( async () => { document.documentElement.removeAttribute( 'lang' ); } );
     } );
     test( "YouTube embed URLs do not include hl param when dir prop is ltr", async () => {
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseYoutubeMock ) );
+        mockFetchJson( responseYoutubeMock.data );
         const props = { ...listVideosYoutubeArgs, layout: 'horizontal' as const, dir: 'ltr' as const };
         render( <DXVideo {...props} /> );
         await act( async () => {
@@ -620,7 +654,7 @@ describe( "Video component", () => {
     test( "YouTube embed URL hl param updates reactively when document lang changes after mount", async () => {
         // Ensure no lang attribute so documentLang initialises to ''
         document.documentElement.removeAttribute( 'lang' );
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseYoutubeMock ) );
+        mockFetchJson( responseYoutubeMock.data );
         const props = { ...listVideosYoutubeArgs, layout: 'horizontal' as const, dir: 'rtl' as const };
         render( <DXVideo {...props} /> );
         await act( async () => {
@@ -640,7 +674,7 @@ describe( "Video component", () => {
         await act( async () => { document.documentElement.removeAttribute( 'lang' ); } );
     } );
     test( "DXQ-49653: layout=undefined defaults to horizontal layoutClass", async () => {
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseYoutubeMock ) );
+        mockFetchJson( responseYoutubeMock.data );
         const props = { ...listVideosYoutubeArgs }; // no layout prop
         render( <DXVideo {...props} /> );
         await act( async () => {
@@ -651,7 +685,7 @@ describe( "Video component", () => {
         expect( listEl.className ).toContain( 'dxVideo__list--horizontal' );
     } );
     test( "DXQ-49653: Vimeo titleDescription is empty — no titleDescription element", async () => {
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseVimeoMock ) );
+        mockFetchJson( responseVimeoMock.data );
         render( <DXVideo {...listFolderVimeoArgs} /> );
         await act( async () => {
             await new Promise( r => setTimeout( r, 600 ) );
@@ -661,7 +695,7 @@ describe( "Video component", () => {
         expect( titleDesc ).toBeNull();
     } );
     test( "DXQ-49653: YouTube titleDescription is non-empty — titleDescription element rendered", async () => {
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseYoutubeMock ) );
+        mockFetchJson( responseYoutubeMock.data );
         const props = { ...listVideosYoutubeArgs, layout: 'horizontal' as const };
         render( <DXVideo {...props} /> );
         await act( async () => {
@@ -672,7 +706,7 @@ describe( "Video component", () => {
         expect( titleDesc ).toBeInTheDocument();
     } );
     test( "DXQ-49653: getYouTubeHlParam returns '' when resolvedDir is ltr", async () => {
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseYoutubeMock ) );
+        mockFetchJson( responseYoutubeMock.data );
         const props = { ...listVideosYoutubeArgs, layout: 'horizontal' as const, dir: 'ltr' as const };
         render( <DXVideo {...props} /> );
         await act( async () => {
@@ -685,7 +719,7 @@ describe( "Video component", () => {
     } );
     test( "DXQ-49653: getYouTubeHlParam — RTL language 'fa' produces ?hl=fa", async () => {
         document.documentElement.setAttribute( 'lang', 'fa' );
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseYoutubeMock ) );
+        mockFetchJson( responseYoutubeMock.data );
         const props = { ...listVideosYoutubeArgs, layout: 'horizontal' as const, dir: 'rtl' as const };
         render( <DXVideo {...props} /> );
         await act( async () => {
@@ -708,7 +742,7 @@ describe( "Video component", () => {
                 ]
             }
         };
-        mockedAxios.get.mockResolvedValue( Promise.resolve( multiVimeoMock ) );
+        mockFetchJson( multiVimeoMock.data );
         render( <DXVideo {...listFolderVimeoArgs} /> );
         await act( async () => {
             await new Promise( r => setTimeout( r, 600 ) );
@@ -718,7 +752,7 @@ describe( "Video component", () => {
         expect( screen.getByText( 'Vimeo Video 3' ) ).toBeInTheDocument();
     } );
     test( "DXQ-49653: YouTube renderMoreVideoslist renders all items", async () => {
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseYoutubeMock ) );
+        mockFetchJson( responseYoutubeMock.data );
         const props = { ...listVideosYoutubeArgs, layout: 'horizontal' as const };
         render( <DXVideo {...props} /> );
         await act( async () => {
@@ -729,23 +763,23 @@ describe( "Video component", () => {
         expect( videos.length ).toBeGreaterThanOrEqual( 2 );
     } );
     test( "DXQ-49653: dir=rtl sets dir attribute on root element", async () => {
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseYoutubeMock ) );
+        mockFetchJson( responseYoutubeMock.data );
         const props = { ...listVideosYoutubeArgs, dir: 'rtl' as const };
         render( <DXVideo {...props} /> );
         const rootEl = screen.getByTestId( 'dx-video' );
         expect( rootEl ).toHaveAttribute( 'dir', 'rtl' );
     } );
     test( "DXQ-49653: showCase URL format with /info suffix parsed correctly", async () => {
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseVimeoMock ) );
+        mockFetchJson( responseVimeoMock.data );
         const props = { ...showCasesVideosVimeoArgs };
         render( <DXVideo {...props} /> );
-        expect( mockedAxios.get ).toHaveBeenCalled();
-        const callUrl = mockedAxios.get.mock.calls[0][0];
+        expect( mockFetch ).toHaveBeenCalled();
+        const callUrl = mockFetch.mock.calls[0][0];
         // The showcase URL with /info suffix should strip /info and build api URL
         expect( callUrl ).toContain( 'api.vimeo.com/me/albums/' );
     } );
     test( "DXQ-49653: view-more link has correct href and target", async () => {
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseYoutubeMock ) );
+        mockFetchJson( responseYoutubeMock.data );
         const props = { ...listVideosYoutubeArgs, layout: 'horizontal' as const };
         render( <DXVideo {...props} /> );
         await act( async () => {
@@ -762,7 +796,7 @@ describe( "Video component", () => {
                 items: []
             }
         };
-        mockedAxios.get.mockResolvedValue( Promise.resolve( emptyYoutubeMock ) );
+        mockFetchJson( emptyYoutubeMock.data );
         render( <DXVideo {...listVideosYoutubeArgs} playlist="PLlGPzfcuhqdsx40fp4G6qo0mu3WvgXw2K" layout="horizontal" /> );
         await act( async () => {
             await new Promise( r => setTimeout( r, 600 ) );
@@ -778,7 +812,7 @@ describe( "Video component", () => {
                 data: []
             }
         };
-        mockedAxios.get.mockResolvedValue( Promise.resolve( emptyVimeoMock ) );
+        mockFetchJson( emptyVimeoMock.data );
         render( <DXVideo {...listFolderVimeoArgs} playlist="https://vimeo.com/manage/folders/12345" layout="vertical" /> );
         await act( async () => {
             await new Promise( r => setTimeout( r, 600 ) );
@@ -787,37 +821,37 @@ describe( "Video component", () => {
         expect( mainVideoIframe?.getAttribute( 'src' ) ).toBeNull();
     } );
     test( "YouTube API request constructs the correct URL with exact query parameters", async () => {
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseYoutubeMock ) );
+        mockFetchJson( responseYoutubeMock.data );
         const props = { ...listVideosYoutubeArgs, apiKey: 'TEST_API_KEY', playlist: 'PLAYLIST_123' };
         render( <DXVideo {...props} /> );
-        expect( mockedAxios.get ).toHaveBeenCalledWith(
+        expect( mockFetch ).toHaveBeenCalledWith(
             'https://youtube.googleapis.com/youtube/v3/playlistItems?playlistId=PLAYLIST_123&maxResults=6&part=snippet,id,contentDetails&key=TEST_API_KEY',
             { headers: { Authorization: '' } }
         );
     } );
     test( "Vimeo showcase URL format without info suffix evaluates ifShowCase as false", async () => {
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseVimeoMock ) );
+        mockFetchJson( responseVimeoMock.data );
         const props = { ...showCasesVideosVimeoArgs, apiKey: 'VIMEO_KEY', playlist: "https://vimeo.com/manage/showcases/123456" };
         render( <DXVideo {...props} /> );
-        expect( mockedAxios.get ).toHaveBeenCalledWith(
+        expect( mockFetch ).toHaveBeenCalledWith(
             'https://api.vimeo.com/me/albums/false/videos',
             { headers: { Authorization: 'Bearer VIMEO_KEY' } }
         );
     } );
     test( "Vimeo folder path with short format folder parses project ID correctly", async () => {
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseVimeoMock ) );
+        mockFetchJson( responseVimeoMock.data );
         const props = { ...listFolderVimeoArgs, apiKey: 'VIMEO_KEY', playlist: "https://vimeo.com/folder/987654" };
         render( <DXVideo {...props} /> );
-        expect( mockedAxios.get ).toHaveBeenCalledWith(
+        expect( mockFetch ).toHaveBeenCalledWith(
             'https://api.vimeo.com/me/projects/987654/videos',
             { headers: { Authorization: 'Bearer VIMEO_KEY' } }
         );
     } );
     test( "Vimeo folder path with manage folders parses project ID correctly", async () => {
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseVimeoMock ) );
+        mockFetchJson( responseVimeoMock.data );
         const props = { ...listFolderVimeoArgs, apiKey: 'VIMEO_KEY', playlist: "https://vimeo.com/manage/folders/555444" };
         render( <DXVideo {...props} /> );
-        expect( mockedAxios.get ).toHaveBeenCalledWith(
+        expect( mockFetch ).toHaveBeenCalledWith(
             'https://api.vimeo.com/me/projects/555444/videos',
             { headers: { Authorization: 'Bearer VIMEO_KEY' } }
         );
@@ -833,7 +867,7 @@ describe( "Video component", () => {
             ...responseVimeoMock,
             data: { data: tenItems }
         };
-        mockedAxios.get.mockResolvedValue( Promise.resolve( multiVimeoMock ) );
+        mockFetchJson( multiVimeoMock.data );
         render( <DXVideo {...listFolderVimeoArgs} playlist="https://vimeo.com/manage/folders/123" layout="vertical" /> );
         await act( async () => {
             await new Promise( r => setTimeout( r, 600 ) );
@@ -856,7 +890,7 @@ describe( "Video component", () => {
             }
             return originalGetComputedStyle( el );
         };
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseYoutubeMock ) );
+        mockFetchJson( responseYoutubeMock.data );
         const props = { ...listVideosYoutubeArgs, dir: undefined };
         render( <DXVideo {...props} playlist="PLlGPzfcuhqdsx40fp4G6qo0mu3WvgXw2K" /> );
         const rootEl = screen.getByTestId( 'dx-video' );
@@ -872,7 +906,7 @@ describe( "Video component", () => {
     } );
     test( "DocumentLang handles sub-tags and case insensitivity correctly", async () => {
         document.documentElement.setAttribute( 'lang', 'AR-eg' );
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseYoutubeMock ) );
+        mockFetchJson( responseYoutubeMock.data );
         const props = { ...listVideosYoutubeArgs, layout: 'horizontal' as const, dir: 'rtl' as const, playlist: "PLlGPzfcuhqdsx40fp4G6qo0mu3WvgXw2K" };
         render( <DXVideo {...props} /> );
         await act( async () => {
@@ -884,7 +918,7 @@ describe( "Video component", () => {
         await act( async () => { document.documentElement.removeAttribute( 'lang' ); } );
     } );
     test( "List Video Error leaves the loading state active", async () => {
-        mockedAxios.get.mockRejectedValue( new Error( "Network Error" ) );
+        mockFetch.mockRejectedValue( new TypeError( "Failed to fetch" ) );
         const consoleSpy = jest.spyOn( console, "error" ).mockImplementation( () => {} );
         render( <DXVideo {...listVideosYoutubeArgs} playlist="PLlGPzfcuhqdsx40fp4G6qo0mu3WvgXw2K" /> );
         await act( async () => {
@@ -895,7 +929,7 @@ describe( "Video component", () => {
     } );
     test( "all rendered iframes are successfully deferred with loading='lazy'", async () => {
         // Mock a successful YouTube response that generates multiple iframes
-        mockedAxios.get.mockResolvedValue( Promise.resolve( responseYoutubeMock ) );
+        mockFetchJson( responseYoutubeMock.data );
         const props = { ...listVideosYoutubeArgs, layout: 'horizontal' as const };
         const { container } = render( <DXVideo {...props} /> );
         // Wait for the mock API to resolve and inject the iframes
