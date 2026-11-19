@@ -17,8 +17,6 @@ import "./DXDataTable.scss";
 import React, { useState, useEffect } from "react";
 import DataTable from 'react-data-table-component';
 import { parseContentAndMedia } from "../../utilities";
-import { StyleSheetManager } from "styled-components";
-import isPropValid from '@emotion/is-prop-valid';
 
 export interface Column {
     id: string,
@@ -97,9 +95,7 @@ const DXDataTable = ( props: DataTableProps ) => {
     }, [] );
     return (
         <div className="dxDataTable">
-            <StyleSheetManager shouldForwardProp={isPropValid} >
-                <DataTable {...dataTablePrps} />
-            </StyleSheetManager>
+            <DataTable {...dataTablePrps} />
         </div>
     );
 };

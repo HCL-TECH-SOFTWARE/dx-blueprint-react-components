@@ -59,21 +59,25 @@ test( "The component should render the correct amount of rows", () => {
     expect( rows ).toHaveLength( props.data.length );
 } );
 
-// Note: The class for the striped row is different on storybook, but adapt it to the class that jest renders
-test( "If the user pass the striped prop to the component, the element first row of the table should be grey", () => {
+// jsdom does not load the SCSS and cannot resolve the table's CSS variables, so the stripe is asserted through the row class
+test( "If the user pass the striped prop to the component, every other row is marked as striped, starting with the first", () => {
     let props = {
         columns: oneColumn,
-        data: oneItem,
+        data: [...oneItem, { ...oneItem[0], id: 2 }, { ...oneItem[0], id: 3 }],
         striped: true
     };
 
     const { container } = render( <DXDataTable {...props} /> );
-    let stripedRows = container.querySelector( ".dxDataTable .rdt_Table .rdt_TableBody .rdt_TableRow" );
-    let computedStyle
-    if(stripedRows != null){
-        computedStyle = window.getComputedStyle(stripedRows);
-        expect(computedStyle.backgroundColor).toBe('rgb(250, 250, 250)')
-    }
+    const rows = container.querySelectorAll( ".dxDataTable .rdt_Table .rdt_TableBody .rdt_TableRow" );
+    expect( rows ).toHaveLength( 3 );
+    expect( rows[0] ).toHaveClass( "rdt_rowStriped" );
+    expect( rows[1] ).not.toHaveClass( "rdt_rowStriped" );
+    expect( rows[2] ).toHaveClass( "rdt_rowStriped" );
+} );
+
+test( "If the user does not pass the striped prop no row is marked as striped", () => {
+    const { container } = render( <DXDataTable columns={oneColumn} data={[...oneItem, { ...oneItem[0], id: 2 }]} /> );
+    expect( container.querySelector( ".rdt_rowStriped" ) ).toBeNull();
 } );
 
 test( "If the user does pass the noTableHead prop the element 'rdt_TableHead' should be null", () => {
