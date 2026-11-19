@@ -95,7 +95,7 @@ Used as a layout and form foundation (`Container`, `Row`, `Col`, `Form`). Will r
 - **SCSS globals** in `src/global/`: z-index levels (10–110), responsive breakpoints (375px–1200px)
 - **No CSS-in-JS** — all styles are compiled SCSS
 - **JS-accessible tokens** via `_exportVariables.module.scss` for breakpoint/z-index values in component logic
-- **`!important` is prohibited** — the library must remain overridable by consumers
+- **`!important` is prohibited** — the library must remain overridable by consumers. The only exceptions are declarations that must outrank an inline style written by something else (the Popper tooltip arrow in `DXNewsletterBanner`, react-slick in `DXScrollableCard`, author HTML in the `CECNewsDialog` body); each carries a `// keep !important` comment
 
 ### Responsive Breakpoints
 
@@ -148,7 +148,8 @@ DXComponentName/
 | `button.tsx` | `ButtonProps`, `IconButtonProps` types and helpers |
 | `image.tsx` | `ImageProps`, `GalleryImageProps` |
 | `htmlparser.tsx` | HTML sanitization (`DOMPurify`), content parsing |
-| `date.tsx` | Date formatting, month names, moment-style helpers |
+| `date.tsx` | Date format parsing, month names, weekday helpers |
+| `dateTime.ts` | Internal (not exported) English date parsing, formatting and calendar arithmetic on the native `Date` |
 | `icons.tsx` | Icon resolution (`getIcon`, `StateIcons`, `SliderIcons`) |
 | `navigation.tsx` | Overlay management, click-outside alerter |
 | `chart.tsx` | Chart/graph data structures (D3-backed) |
@@ -244,6 +245,4 @@ Storybook addons: docs, links, SCSS support, MDX GFM.
 | `react-bootstrap` | Layout and form components |
 | `d3` | Data visualization (charts, tree maps) |
 | `dompurify` | HTML sanitization |
-| `moment` | Date formatting |
-| `styled-components` | CSS-in-JS for select components |
-| `axios` | HTTP client |
+| `react-data-table-component` | `DXDataTable` (injects its own stylesheet when imported) |

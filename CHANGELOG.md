@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- Removed the `moment`, `axios`, `styled-components` and `@emotion/is-prop-valid` dependencies. Dates are handled by an internal English-only helper on the native `Date` (same output for ISO input) and `DXVideo` requests its playlists with `fetch`.
+- `DXCalendar` passes the original event object to `_selectEvent`; its `date` is the string you supplied, where it used to be a copy holding a `moment` object.
+- `DXEventItem` builds its weekday label from the parsed `dateFormat` parts. The result is unchanged for common formats, correct for four-digit years and month-name formats (it was wrong or "Invalid date"), and shows "Invalid date" for compact two-digit-year formats such as `YYMMDD`, whose day number was already wrong.
+- Upgraded `react-data-table-component` from 7.5.3 to 8.12.0. `DXDataTable` looks the same apart from the pagination controls (a bordered "Rows per page" box and lighter arrows) and a thinner row expander icon. v8 adds its stylesheet to the page when the package is imported and has no CSP nonce option, so a strict `style-src` policy blocks the table styles.
+- Removed `!important` from the component styles so consumer CSS can override them. Four declarations keep it because they must outrank an inline style set by Popper (the `DXNewsletterBanner` tooltip arrow), react-slick (`DXScrollableCard`) or content authors (images in the `CECNewsDialog` body); each has a comment.
+- The news dialog styles live in one place (`CECNewsDialog`). When the combined `components.css` is used together with `CECMegaNews` the dialog now has the standalone dialog look (smaller title, different header padding) and shows its lead image.
 - ESM and CJS builds keep one file per module and import their dependencies instead of inlining them, so bundlers can tree-shake. In a local webpack 5 and esbuild test, importing only `DXButton` went from about 700 KB to about 5 KB minified.
 - The JavaScript no longer imports any CSS. Import `tokens.css` and `components.css` (and optionally `bootstrap.css`), or the all-in-one `index.css`.
 - Bootstrap's CSS is only included if you import `bootstrap.css` or `index.css`.

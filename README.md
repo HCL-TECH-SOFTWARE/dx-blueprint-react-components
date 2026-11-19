@@ -8,7 +8,7 @@ A React 19 + TypeScript component library for [HCL Digital Experience](https://w
 npm install @hcl-software/dx-blueprint-react-components
 ```
 
-React and React-DOM 19 are peer dependencies — the library does not bundle them. The other runtime dependencies (`react-bootstrap`, `d3`, `moment`, ...) are installed with the package and imported by your bundler, so unused components can be tree-shaken.
+React and React-DOM 19 are peer dependencies — the library does not bundle them. The other runtime dependencies (`react-bootstrap`, `d3`, ...) are installed with the package and imported by your bundler, so unused components can be tree-shaken.
 
 ## Quick Start
 
