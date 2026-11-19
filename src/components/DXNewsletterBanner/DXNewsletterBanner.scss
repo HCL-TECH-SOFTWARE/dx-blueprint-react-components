@@ -187,6 +187,7 @@
 .tooltip.bs-tooltip-bottom .tooltip-arrow,
 .tooltip[data-popper-placement^="bottom"] .tooltip-arrow {
     background-color: transparent;
+    // keep !important: Popper writes inline `left`/`transform` on the arrow and only !important outranks inline styles
     left: 0.5rem !important;
     transform: none !important;
     display: block;

@@ -398,15 +398,15 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: transparent !important;
-        color: var(--secondary-secondary) !important;
+        background-color: transparent;
+        color: var(--secondary-secondary);
         border: none;
 
         &:hover,
         &:focus,
         &:active {
-            background-color: transparent !important;
-            color: var(--primary-primary) !important;
+            background-color: transparent;
+            color: var(--primary-primary);
             border: none;
             box-shadow: none;
         }
@@ -429,7 +429,7 @@
         * They should NOT have a visible background.
         */
         & .dxVerticalNav ul {
-            background-color: transparent !important;
+            background-color: transparent;
             padding-left: 0;
             margin: 0;
         }

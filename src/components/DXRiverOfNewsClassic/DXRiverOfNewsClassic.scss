@@ -68,11 +68,12 @@
         line-height: var(--_18-primary-semibold-150-line-height);
         font-weight: var(--_18-primary-semibold-150-font-weight);
 
-        &:hover,
-        &:active {
+        // `.btn.btn-outline-secondary` keeps this above Bootstrap's own :hover/:active rules
+        &.btn.btn-outline-secondary:hover,
+        &.btn.btn-outline-secondary:active {
             background-color: rgba(108, 117, 125, 0.1);
-            border-color: #6c757d !important;
-            color: #000000 !important;
+            border-color: #6c757d;
+            color: #000000;
         }
 
         @include mobile {

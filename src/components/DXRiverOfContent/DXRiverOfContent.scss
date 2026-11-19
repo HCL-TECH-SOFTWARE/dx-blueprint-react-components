@@ -50,9 +50,10 @@
             color: #272833;
         }
 
-        .dxButton.btn:hover i,
-        .dxButton.btn.btn-primary:hover i {
-            color: #272833 !important;
+        // Same `.btn.btn` doubling as DXButton's own hover rules, plus the header class, so this wins the tie
+        .dxButton.btn.btn.btn:hover i,
+        .dxButton.btn.btn.btn-primary:hover i {
+            color: #272833;
         }
 
 
