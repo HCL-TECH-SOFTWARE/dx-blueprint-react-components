@@ -98,7 +98,6 @@ const ImageLeftLayout: React.FC<SlideLayoutProps> = ( {
                 objectFit: 'cover',
                 objectPosition: 'center',
                 opacity: imageLoaded ? 1 : 0,
-                transition: 'opacity 0.3s ease-in-out',
                 zIndex: 1,
                 backfaceVisibility: 'hidden',
                 transform: 'translateZ(0)',

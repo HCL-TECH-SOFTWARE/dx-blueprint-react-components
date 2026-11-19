@@ -152,7 +152,8 @@ const SlideContent: React.FC<SlideContentProps> = ( {
                         target={getLinkTarget( item?.link?.target )}
                         className="cecFeaturedStories__titleLink"
                         title={item?.link?.label}
-                        style={getTextStyle( 'title' )}
+                        // Colour and font size come from the stylesheet (inherited colour, hover and small-screen rules)
+                        style={{ ...getTextStyle( 'title' ), color: undefined, fontSize: undefined }}
                         onClick={( e ) => handleLinkClick( e, item?.link?.url, item?.link?.target )}
                         tabIndex={isActive ? undefined : -1}
                         aria-disabled={!isActive}

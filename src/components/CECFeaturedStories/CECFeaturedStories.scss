@@ -36,10 +36,10 @@
   .cecFeaturedStories__slide {
     text-align: right;
     &--left {
-      transform: translateX(100%) !important;
+      transform: translateX(100%);
     }
     &--right {
-      transform: translateX(-100%) !important;
+      transform: translateX(-100%);
     }
   }
   .cecFeaturedStories__pagination {
@@ -64,7 +64,7 @@
     }
   }
   .cecFeaturedStories__navButton {
-    transform: none !important;
+    transform: none;
   }
   .cecFeaturedStories__bottomContent,
   .cecFeaturedStories__slideContent,
@@ -446,13 +446,18 @@
         display: block;
         width: 100%;
         color: inherit;
+        // Font size lives here (not inline) so the small-screen size needs no hard override
+        font-size: 2rem;
         text-decoration: none;
+        @media (max-width: 768px) {
+          font-size: 1.75rem;
+        }
         &:hover,
         &:active,
         &:focus {
-          color: color-mix(in srgb, currentColor 70%, #000 30%) !important;
+          color: color-mix(in srgb, currentColor 70%, #000 30%);
           text-decoration: none;
-          outline: none !important;
+          outline: none;
         }
       }
     }
@@ -464,7 +469,7 @@
       color: inherit;
       text-shadow: none;
       opacity: 1;
-      visibility: visible !important;
+      visibility: visible;
       font-weight: 400;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -509,7 +514,7 @@
       &:focus-visible,
       &:active {
         background-color: var(--primary-primary-d1);
-        text-decoration-line: underline !important;
+        text-decoration-line: underline;
         outline: none;
       }
     }
@@ -531,7 +536,7 @@
       }
     }
     >* {
-      pointer-events: auto !important;
+      pointer-events: auto;
       // RTL support for direct children
       [dir='rtl'] &,
       .rtl & {
@@ -613,7 +618,7 @@
         color: var(--light-white);
       }
       svg {
-        transform: none !important;
+        transform: none;
         filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.3));
       }
     }
@@ -650,7 +655,7 @@
     }
     // Disable RTL flipping for navigation buttons
     [dir='rtl'] & {
-      transform: translateY(-50%) !important;
+      transform: translateY(-50%);
     }
     // Ensure the icon inside the button is properly centered
     svg {
@@ -658,7 +663,7 @@
       height: 16px;
       display: block;
       margin: 0 auto;
-      transform: none !important;
+      transform: none;
       filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.3));
     }
   }
@@ -720,7 +725,7 @@
     border-radius: 50%;
     background-color: var(--bullet-inactive-color);
     margin: 0 0.25rem;
-    border: 0 !important;
+    border: 0;
     display: inline-block;
     appearance: none;
     -webkit-appearance: none;
@@ -762,8 +767,8 @@
   /* ===== Image-left layout: remove hard min-heights; keep structure ===== */
   &--imageLeft {
     .cecFeaturedStories__slide {
-      background-image: none !important;
-      background-color: #ffffff !important;
+      background-image: none;
+      background-color: #ffffff;
       color: var(--text-color-light);
       padding: 1rem 1rem 1rem 1rem;
       &::before {
@@ -803,12 +808,12 @@
       backface-visibility: hidden;
       transform: translateZ(0);
       will-change: transform;
-      transition: none !important;
+      transition: none;
       &.no-hover-effect {
-        transform: translateZ(0) !important;
-        transition: none !important;
+        transform: translateZ(0);
+        transition: none;
         &:hover {
-          transform: translateZ(0) !important;
+          transform: translateZ(0);
         }
       }
       &:hover {
@@ -833,8 +838,7 @@
         border-radius: 12px;
         position: relative;
         z-index: 3;
-        transition: none !important;
-        transform: translateZ(0) scale(1) !important;
+        transition: none;
         pointer-events: none;
       }
       &:hover img {
@@ -950,9 +954,6 @@
     }
     &__slideContent {
       padding: 2rem 1.5rem;
-    }
-    &__title a {
-      font-size: 1.75rem !important;
     }
     &__excerpt {
       font-size: 1.1rem;
