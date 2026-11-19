@@ -43,28 +43,31 @@
         @media (max-width: 768px) {
             margin-bottom: 0.75rem;
         }
-        // Use CSS custom property for exact column widths (supports any elementsPerRow value)
-        // Only applies above mobile breakpoint so xs=12 (full width) still works on small screens
+    }
+    // Use CSS custom property for exact column widths (supports any elementsPerRow value)
+    // Only applies above mobile breakpoint so xs=12 (full width) still works on small screens.
+    // Written under the root class so it outranks Bootstrap's `.col-*` rules.
+    & &__col {
         @media (min-width: 576px) {
-            flex: 0 0 var(--cec-col-width) !important;
-            max-width: var(--cec-col-width) !important;
+            flex: 0 0 var(--cec-col-width);
+            max-width: var(--cec-col-width);
         }
     }
     // Critical: Ensure first child div in columns has height: 100% (same as DXEventCatalog)
     [class*="col-"] {
         &>div:first-child {
-            height: 100% !important;
+            height: 100%;
         }
     }
     // More specific selector for our columns
     &__col {
         &>div:first-child {
-            height: 100% !important;
+            height: 100%;
         }
         // Even more specific selectors
         &.cec-upcoming-events__col {
             &>div:first-child {
-                height: 100% !important;
+                height: 100%;
             }
         }
     }
