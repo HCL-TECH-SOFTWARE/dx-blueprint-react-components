@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, fireEvent, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -816,3 +817,5 @@ test( "DOM polyfill traps: innerText fallback branch executes when textContent i
     const details = week?.querySelector( '.dxCalendar__details' );
     expect( details ).toHaveClass( "active" );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXCalendar events={events} {...extra} /> );

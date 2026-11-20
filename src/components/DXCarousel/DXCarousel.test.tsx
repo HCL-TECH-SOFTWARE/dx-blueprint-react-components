@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render } from "@testing-library/react";
@@ -211,3 +212,4 @@ test( "if no items are added, the DXEmpty view should be rendered", () => {
     expect( body ).toBeInTheDocument();
 } );
 
+itSupportsExtensionProps( ( extra ) => <DXCarousel items={itemsArgs} size="medium" {...extra} /> );

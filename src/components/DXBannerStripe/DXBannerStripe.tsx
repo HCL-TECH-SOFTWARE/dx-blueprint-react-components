@@ -20,6 +20,8 @@ import Row from 'react-bootstrap/Row';
 import { IconButtonProps, getVideoFormat } from "../../utilities";
 import DXCountdownFloater, { CountdownProps } from '../DXCountdownFloater/DXCountdownFloater';
 import "./DXBannerStripe.scss";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface BannerStripeProps {
     index: number;
@@ -46,7 +48,9 @@ export interface ForegroundProps {
     countdown?: CountdownProps;
 }
 
-const DXBannerStripe = ( props: BannerStripeProps ) => {
+const DXBannerStripe = ( props: ExtendableProps<BannerStripeProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { index: _index, header: _header, body: _body, textPosition: _textPosition, textColor: _textColor, background: _background, foreground: _foreground, buttons: _buttons, bodyClass: _bodyClass, className, ref, ...rest } = props;
 
     // TODO: Move this to an util
     const hexToRgb = ( colorValue: string ) => {
@@ -277,7 +281,7 @@ const DXBannerStripe = ( props: BannerStripeProps ) => {
     };
 
     return (
-        <div id={`dxBannerStripe${props.index}`} className={`dxBannerStripe ${getMediaVariant()}`} data-testid="banner-stripe">
+        <div {...rest} ref={ref} id={`dxBannerStripe${props.index}`} className={classNames( `dxBannerStripe ${getMediaVariant()}`, className )} data-testid="banner-stripe">
             <style>{getBackgroundMediaStyles()}</style>
             <Row className={"dxBannerStripe__opacityFilter"}>
                 {renderContent( props )}

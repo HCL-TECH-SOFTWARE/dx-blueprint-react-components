@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import CECNewsDialog, { type CECNewsDialogProps } from "./CECNewsDialog";
@@ -684,3 +685,5 @@ describe( "CECNewsDialog", () => {
     } );
   } );
 } );
+
+itSupportsExtensionProps( ( extra ) => <CECNewsDialog open={true} item={createMockNewsItem()} onClose={mockOnClose} {...extra} /> );

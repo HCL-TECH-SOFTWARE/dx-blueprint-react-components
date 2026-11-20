@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render } from "@testing-library/react";
 import DXAd from "./DXAd";
@@ -116,3 +117,4 @@ test( "If the background color '#82d87f' passed, the add should have it", () => 
     } );
 } )
 
+itSupportsExtensionProps( ( extra ) => <DXAd text="Explore it" {...extra} /> );

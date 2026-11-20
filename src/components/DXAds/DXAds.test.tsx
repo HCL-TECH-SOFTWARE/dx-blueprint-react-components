@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render } from "@testing-library/react";
 import { ads2Args, ads3Args, ads4Args, ads6Args } from "./DXAds.stories";
@@ -111,3 +112,5 @@ test( "If six ads received, it should be two divs rendered with the class of row
     const rows = container.querySelectorAll( '.row' );
     expect( rows ).toHaveLength( 2 );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXAds {...ads2Args} {...extra} /> );

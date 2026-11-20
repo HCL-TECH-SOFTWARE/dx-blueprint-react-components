@@ -17,6 +17,8 @@ import "./DXAd.scss";
 import { ImageProps } from "../../utilities/image";
 
 import React, { useEffect, useRef } from 'react';
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface AdProps {
     img?: ImageProps,
@@ -25,11 +27,13 @@ export interface AdProps {
     backgroundColor?: string,
 }
 
-const DXAd = ( props: AdProps ) => {
-    const ref = useRef<HTMLDivElement>( null );
+const DXAd = ( props: ExtendableProps<AdProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { img: _img, icon: _icon, text: _text, backgroundColor: _backgroundColor, className, ref, ...rest } = props;
+    const backgroundRef = useRef<HTMLDivElement>( null );
     const applyBackgoundColor = () => {
         if ( props.backgroundColor ) {
-            const ad = ref.current;
+            const ad = backgroundRef.current;
             if ( ad ) {
                 ad.style.backgroundColor = props.backgroundColor;
             }
@@ -47,9 +51,9 @@ const DXAd = ( props: AdProps ) => {
     };
 
     return (
-        <div className="dxAd">
+        <div {...rest} ref={ref} className={classNames( "dxAd", className )}>
             <div className="dxAd__background"
-                ref={ref}
+                ref={backgroundRef}
                 style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${props.img && props.img?.url ? props.img.url : ""}')` }}
                 aria-label={props.img?.altText}>
                 <div className={`dxAd__content ${getDetailsClass()}`} data-testid="ad-details">

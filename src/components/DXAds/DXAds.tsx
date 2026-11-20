@@ -16,12 +16,16 @@
 import "./DXAds.scss";
 import React, { useEffect, useState } from "react";
 import DXAd, { AdProps } from "../DXAd/DXAd";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface AdsProps {
     ads: AdProps[];
 }
 
-const DXAds = ( props: AdsProps ) => {
+const DXAds = ( props: ExtendableProps<AdsProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { ads: _ads, className, ref, ...rest } = props;
     const [cols, setCols] = useState( 12 );
     const setColNumber = () => {
         if ( props.ads.length > 0 ) {
@@ -80,7 +84,7 @@ const DXAds = ( props: AdsProps ) => {
         }
     };
     return (
-        <div className="dxAds">
+        <div {...rest} ref={ref} className={classNames( "dxAds", className )}>
             {renderAds()}
         </div>
     );

@@ -16,6 +16,8 @@
 import React, { useEffect, useCallback } from "react";
 import "./CECNewsDialog.scss";
 import type { NewsItemProps } from "../../utilities/cec-types";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 import {
   decodeHtmlEntities,
   formatSmartDate,
@@ -28,12 +30,15 @@ export interface CECNewsDialogProps {
   onClose: () => void;
   linkTarget?: "_self" | "_blank";
 }
-const CECNewsDialog: React.FC<CECNewsDialogProps> = ({
+const CECNewsDialog = ({
   open,
   item,
   onClose,
   linkTarget = "_blank",
-}) => {
+  className,
+  ref,
+  ...rest
+}: ExtendableProps<CECNewsDialogProps, "div">) => {
   const rawTitle = item?.title ?? item?.link?.label ?? "Untitled Post";
   const title = rawTitle.trim();
   const prettyDate = formatSmartDate(item?.publishedDate || item?.date, item?.dateFormat);
@@ -59,7 +64,9 @@ const CECNewsDialog: React.FC<CECNewsDialogProps> = ({
   }, [open, onKey]);
   return (
     <div
-      className={`newsDialog__overlay${open ? " active" : ""}`}
+      {...rest}
+      ref={ref}
+      className={classNames(`newsDialog__overlay${open ? " active" : ""}`, className)}
       role="dialog"
       aria-modal="true"
       aria-label={title}

@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render } from "@testing-library/react";
 import DXCaseCard from "./DXCaseCard";
@@ -57,3 +58,7 @@ test( "If the user does pass 'var(--danger-danger)' color for the label, the sty
     let label = container.querySelector( '[data-testid="case-card-label"]' ) as HTMLElement;
     expect( label ).toHaveStyle( { color: "var(--danger-danger)", borderColor: "var(--danger-danger)" } );
 } );
+
+itSupportsExtensionProps( ( extra ) => (
+    <DXCaseCard title="Case title" subtitle="HR" label={{ label: "Label Text" }} options={[{ label: "Option 1", onClick: () => {} }]} {...extra} />
+) );

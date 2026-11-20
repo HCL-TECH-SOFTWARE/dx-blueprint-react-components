@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { screen, render, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -201,5 +202,14 @@ describe( "DXBannerStripe - Hardened Mutation Suite", () => {
             const warningNode = container.querySelector( ".dxBannerStripe__videoContainer p" );
             expect( warningNode?.textContent ).toBe( "Unsopported video format passed" );
         } );
+    } );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXBannerStripe index={7} header="Test Header" {...extra} /> );
+
+describe( "DXBannerStripe - extension props keep the scoped id", () => {
+    it( "does not let a consumer id replace the generated one (its scoped style depends on it)", () => {
+        const { container } = render( <DXBannerStripe index={7} header="Test Header" id="other" /> );
+        expect( ( container.firstElementChild as HTMLElement ).id ).toBe( "dxBannerStripe7" );
     } );
 } );
