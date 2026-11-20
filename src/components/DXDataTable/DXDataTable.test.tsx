@@ -19,6 +19,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import DXDataTable from "./DXDataTable";
 import { dataArgs } from "./DXDataTable.stories";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 
 let oneColumn = [
     {
@@ -208,4 +209,14 @@ test( `If the user pass the prop expandableRows and the data does
     await userEvent.click( button );
     const content = container.querySelector( ".dxDataTable .rdt_Table .rdt_TableBody .rdt_ExpanderRow #my-content" );
     expect( content ).toBeInTheDocument();
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXDataTable columns={oneColumn} data={oneItem} {...extra} /> );
+
+test( "the component's own props are not forwarded to the root element", () => {
+    const { container } = render( <DXDataTable columns={oneColumn} data={oneItem} striped pagination noExpandContentMsg="none" /> );
+    const root = container.firstElementChild as HTMLElement;
+    ["striped", "pagination", "noexpandcontentmsg", "columns", "data"].forEach( ( attribute ) => {
+        expect( root ).not.toHaveAttribute( attribute );
+    } );
 } );

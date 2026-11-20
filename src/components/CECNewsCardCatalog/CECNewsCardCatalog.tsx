@@ -40,6 +40,8 @@ import {
   formatSmartDate
 } from "../../utilities/cec-utils";
 import CECPagination from "../CECPagination/CECPagination";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 import {
   BlogCardProps,
   CECNewsCardCatalogProps as ExternalCECNewsCardCatalogProps,
@@ -102,8 +104,13 @@ function isValidItems( items: unknown ): items is BlogCardProps[] {
 const DEFAULT_DATE_FORMAT = "MM/DD/YY";
 const DEFAULT_FILTER_TYPE = "select";
 const DEFAULT_PAGINATION = { sets: ["3", "6", "9"], active: 1, activeSet: 6 };
-const CECNewsCardCatalog = ( rawProps: CECNewsCardCatalogProps ) => {
+const CECNewsCardCatalog = ( rawProps: ExtendableProps<CECNewsCardCatalogProps, "div"> ) => {
   const props = unwrapDXProps<CECNewsCardCatalogProps>( rawProps );
+  // className, ref and extra DOM props come from the RAW props (next to a { data } wrapper); `props` only supplies the component's own props.
+  // Every own prop is pulled out (under a throwaway name, the real ones are read from `props` below) so none of them reaches the DOM.
+  const { items: _items, totalItems: _totalItems, filterType: _filterType, paginationProps: _paginationProps, summaryLength: _summaryLength, searchLabel: _searchLabel, searchPlaceholder: _searchPlaceholder, hideFilters: _hideFilters, dateFormat: _dateFormat, elementsPerRow: _elementsPerRow, tagFilter: _tagFilter, numberOfItems: _numberOfItems, _edit: __edit, className: rawClassName, ref, ...rawRest } = rawProps;
+  // DX hands these components loosely typed data, so only DOM-safe extras are forwarded (this also drops the data/config/props wrapper keys)
+  const rest = pickDomProps( rawRest );
   const {
     items,
     summaryLength = 120,
@@ -286,7 +293,10 @@ const CECNewsCardCatalog = ( rawProps: CECNewsCardCatalogProps ) => {
   }, [filteredItems, active, activeSet] );
   return (
     <div
-      className="cecNewsCardCatalog"
+      {...rest}
+      ref={ref}
+      // A className inside the { data } wrapper (props) and one next to it (rawProps) both apply
+      className={classNames( "cecNewsCardCatalog", props !== rawProps && ( props as { className?: string; } ).className, rawClassName )}
       data-testid="cec-news-card-catalog"
       data-build="cec-news-1.5.0"
       data-filter={Array.isArray( tagFilter ) ? tagFilter.join( "," ) : ( tagFilter || "" )}

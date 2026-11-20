@@ -17,6 +17,7 @@ import React from 'react';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import CECFeaturedStories from './CECFeaturedStories';
+import { itSupportsExtensionProps } from '../../testUtils/extensionContract';
 import { HARD_MAX_ITEMS, SUMMARY_LENGTH } from "./constants";
 // Mock the component's internal behavior
 jest.mock( "./hooks/useProcessedItems", () => ( {
@@ -2308,5 +2309,32 @@ describe( "CECFeaturedStories Hardening", () => {
     const btn = container.querySelector( ".cec-play-pause-button" );
     expect( btn ).toHaveClass( "cecFeaturedStories__playPause__right" );
     jest.restoreAllMocks();
+  } );
+} );
+
+// The root carries a per-instance generated class (cecFeaturedStories__container_<random>)
+itSupportsExtensionProps( ( extra ) => <CECFeaturedStories items={makeItems( 2 )} autoPlay={false} {...extra} />, { ignoreClasses: /^cecFeaturedStories__container_/ } );
+
+describe( 'CECFeaturedStories extension props next to a { data } wrapper', () => {
+  const renderWrapped = ( extra: Record<string, unknown> ) => {
+    const ref = React.createRef<HTMLElement>();
+    const props = { data: { items: makeItems( 2 ), autoPlay: false }, ref, ...extra } as object;
+    const { container } = render( <CECFeaturedStories {...props} /> );
+    return { root: container.firstElementChild as HTMLElement, ref };
+  };
+
+  test( 'className, ref and DOM attributes passed next to data reach the root, and the wrapper key does not', () => {
+    const { root, ref } = renderWrapped( { className: 'bp-outer', 'data-contract': 'yes' } );
+    expect( root ).toHaveClass( 'cecFeaturedStories', 'bp-outer' );
+    expect( root ).toHaveAttribute( 'data-contract', 'yes' );
+    expect( root ).not.toHaveAttribute( 'data' );
+    expect( ref.current ).toBe( root );
+  } );
+
+  test( 'a className inside the data wrapper and one next to it both apply', () => {
+    const ref = React.createRef<HTMLElement>();
+    const props = { data: { items: makeItems( 2 ), autoPlay: false, className: 'bp-inner' }, className: 'bp-outer', ref } as object;
+    const { container } = render( <CECFeaturedStories {...props} /> );
+    expect( container.firstElementChild ).toHaveClass( 'cecFeaturedStories', 'bp-inner', 'bp-outer' );
   } );
 } );

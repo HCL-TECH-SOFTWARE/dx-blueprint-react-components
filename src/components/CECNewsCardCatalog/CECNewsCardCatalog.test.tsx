@@ -18,6 +18,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import CECNewsCardCatalog from './CECNewsCardCatalog';
 import type { BlogCardProps, CECNewsCardCatalogProps } from './CECNewsCardCatalog.types';
+import { itSupportsExtensionProps } from '../../testUtils/extensionContract';
 // Mock the utility modules
 jest.mock( '../../utilities', () => ( {
   getColNumber: jest.fn( ( elementsPerRow: number ) => ( { xs: 12 / elementsPerRow } ) ),
@@ -2083,5 +2084,31 @@ describe( 'CECNewsCardCatalog', () => {
         expect( screen.getByTestId( 'cec-news-card-catalog' ) ).toBeInTheDocument();
       } );
     } );
+  } );
+} );
+
+itSupportsExtensionProps( ( extra ) => <CECNewsCardCatalog {...createMockProps()} {...extra} /> );
+
+describe( 'CECNewsCardCatalog extension props next to a { data } wrapper', () => {
+  const renderWrapped = ( extra: Record<string, unknown> ) => {
+    const ref = React.createRef<HTMLElement>();
+    const props = { data: { items: createMockProps().items, autoPlay: false }, ref, ...extra } as object;
+    const { container } = render( <CECNewsCardCatalog {...props} /> );
+    return { root: container.firstElementChild as HTMLElement, ref };
+  };
+
+  test( 'className, ref and DOM attributes passed next to data reach the root, and the wrapper key does not', () => {
+    const { root, ref } = renderWrapped( { className: 'bp-outer', 'data-contract': 'yes' } );
+    expect( root ).toHaveClass( 'cecNewsCardCatalog', 'bp-outer' );
+    expect( root ).toHaveAttribute( 'data-contract', 'yes' );
+    expect( root ).not.toHaveAttribute( 'data' );
+    expect( ref.current ).toBe( root );
+  } );
+
+  test( 'a className inside the data wrapper and one next to it both apply', () => {
+    const ref = React.createRef<HTMLElement>();
+    const props = { data: { items: createMockProps().items, autoPlay: false, className: 'bp-inner' }, className: 'bp-outer', ref } as object;
+    const { container } = render( <CECNewsCardCatalog {...props} /> );
+    expect( container.firstElementChild ).toHaveClass( 'cecNewsCardCatalog', 'bp-inner', 'bp-outer' );
   } );
 } );
