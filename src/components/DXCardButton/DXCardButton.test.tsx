@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -297,4 +298,26 @@ test( "When the image finish its rendering, the element 'loader__container' shou
     fireEvent.load( cover );
     let loaderContainer = container.querySelector( ".loader__container" );
     expect( loaderContainer ).toHaveClass( "d-none" );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXCardButton {...cardButtonArgs} {...extra} /> );
+
+test( "a consumer onClick runs first and can stop the redirect with preventDefault", async () => {
+    const open = jest.spyOn( window, "open" ).mockImplementation( () => null );
+    const consumer = jest.fn( ( e: React.MouseEvent ) => e.preventDefault() );
+    const { container } = render( <DXCardButton {...cardButtonArgs} onClick={consumer} /> );
+    await userEvent.click( container.querySelector( ".dxCardBtn" ) as HTMLElement );
+    expect( consumer ).toHaveBeenCalledTimes( 1 );
+    expect( open ).not.toHaveBeenCalled();
+    open.mockRestore();
+} );
+
+test( "a consumer onClick that does not prevent the default still lets the redirect run", async () => {
+    const open = jest.spyOn( window, "open" ).mockImplementation( () => null );
+    const consumer = jest.fn();
+    const { container } = render( <DXCardButton {...cardButtonArgs} onClick={consumer} /> );
+    await userEvent.click( container.querySelector( ".dxCardBtn" ) as HTMLElement );
+    expect( consumer ).toHaveBeenCalledTimes( 1 );
+    expect( open ).toHaveBeenCalledTimes( 1 );
+    open.mockRestore();
 } );

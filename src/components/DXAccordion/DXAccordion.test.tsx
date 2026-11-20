@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, fireEvent, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -250,4 +251,15 @@ test( "if the user clicks on the accordion within a generic catalog, only one ac
     const openedAccordion = container.querySelectorAll( '.dxAccordion--display-enabled' );
     expect( accordions.length ).toBe( props.body.items.length );
     expect( openedAccordion.length ).toBe( 1 );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXAccordion label="Question" body="Answer" {...extra} /> );
+
+test( "extra props do not replace the component's own dir, and unknown props do not reach the DOM", () => {
+    const props = { label: "Question", body: "Answer", dir: "rtl", unknownProp: "x", "data-extra": "yes" } as React.ComponentProps<typeof DXAccordion>;
+    const { container } = render( <DXAccordion {...props} /> );
+    const root = container.querySelector( ".dxAccordion" ) as HTMLElement;
+    expect( root ).toHaveAttribute( "dir", "rtl" );
+    expect( root ).toHaveAttribute( "data-extra", "yes" );
+    expect( root ).not.toHaveAttribute( "unknownprop" );
 } );

@@ -19,6 +19,8 @@ import React, { useState } from "react";
 import { ImageProps } from "../../utilities";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
 import { CardComponent } from "../../utilities/CardComponent/CardComponent";
+import { pickDomProps, chainHandlers } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface CardButtonProps extends BasicComponent, CardComponent {
     header: string,
@@ -43,7 +45,10 @@ export const slugify = ( str: string ) => str
     .replace( /[\s_-]+/g, '-' )
     .replace( /^-+|-+$/g, '' );
 
-const DXCardButton = ( props: CardButtonProps ) => {
+const DXCardButton = ( props: CardButtonProps & { className?: string; ref?: React.Ref<HTMLButtonElement>; } ) => {
+    // Own props are pulled out; only DOM-safe extras reach the root (the props type has an index signature).
+    const { header: _header, body: _body, img: _img, link: _link, direction: _direction, cta: _cta, _edit, _search, index: _index, className, ref, ...rest } = props;
+    const { onClick: consumerOnClick, ...domAttrs } = pickDomProps( rest );
     // States
     const [loaded, setLoaded] = useState( false );
     const redirectTo = ( link: string ) => {
@@ -89,7 +94,13 @@ const DXCardButton = ( props: CardButtonProps ) => {
     };
 
     return (
-        <button className="dxCardBtn" onClick={() => redirectTo( props.link )} aria-label={slugify( props.header )}>
+        <button
+            {...domAttrs}
+            ref={ref}
+            className={classNames( "dxCardBtn", className )}
+            // The consumer's handler runs first and can stop the redirect with preventDefault
+            onClick={chainHandlers( consumerOnClick as React.MouseEventHandler<HTMLButtonElement> | undefined, () => redirectTo( props.link ) )}
+            aria-label={slugify( props.header )}>
             <div className={getContainerClass()} data-testid="card-button-container">
                 <div className={props.body ? 'dxCardBtn__text' : 'dxCardBtn__text dxCardBtn__text--fill'}>
                     <h3 data-testid="card-button-header">

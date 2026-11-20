@@ -23,6 +23,8 @@ import { LinksProps, getLinkTarget, ImageProps, IconButtonProps, ButtonProps, ge
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
 import { parseDate } from "../../utilities/dateTime";
 import { CardComponent } from "../../utilities/CardComponent/CardComponent";
+import { pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 export interface Event {
     date: string,
     dateFormat?: string,
@@ -55,7 +57,10 @@ export interface CardProps extends BasicComponent, CardComponent {
     dropdownOpen?: boolean,
     _edit?: any,
 }
-const DXCard = ( props: CardProps ) => {
+const DXCard = ( props: CardProps & { className?: string; ref?: React.Ref<HTMLDivElement>; } ) => {
+    // Own props are pulled out; only DOM-safe extras reach the root (the props type has an index signature).
+    const { title: _title, cover: _cover, coverSticker: _coverSticker, checkbox: _checkbox, label: _label, metaLabel: _metaLabel, options: _options, description: _description, bodyMetadata: _bodyMetadata, event: _event, iconData: _iconData, images: _images, primaryButton: _primaryButton, secondaryButton: _secondaryButton, bottomLabel: _bottomLabel, dropdownOpen: _dropdownOpen, _edit, _search, index: _index, className, ref, ...rest } = props;
+    const domAttrs = pickDomProps( rest );
     const [kebabId] = useState( () => Math.random().toString( 36 ).substring( 2, 9 ) );
     // States
     const [loaded, setLoaded] = useState( false );
@@ -204,7 +209,7 @@ const DXCard = ( props: CardProps ) => {
         }
     };
     return (
-        <div className="dxCard">
+        <div {...domAttrs} ref={ref} className={classNames( "dxCard", className )}>
             {renderImage( props.cover, props.coverSticker, props.checkbox )}
             <div className="dxCard__container">
                 {props.checkbox && !props.cover ? (

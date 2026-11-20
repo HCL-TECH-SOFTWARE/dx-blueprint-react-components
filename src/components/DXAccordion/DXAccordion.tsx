@@ -19,6 +19,8 @@ import { StateIcons, getIcon, parseContentAndMedia } from "../../utilities";
 import DXDownloadGroup from "../DXDownloadGroup";
 import { DownloadGroupProps } from "../DXDownloadGroup/DXDownloadGroup";
 import { CardComponent } from "../../utilities/CardComponent/CardComponent";
+import { pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export const slugify = ( str: string ) => str
     .toLowerCase()
@@ -38,7 +40,10 @@ export interface AccordionProps extends CardComponent {
     dir?: 'ltr' | 'rtl';
 }
 
-const DXAccordion = ( props: AccordionProps ) => {
+const DXAccordion = ( props: AccordionProps & { className?: string; ref?: React.Ref<HTMLDivElement>; } ) => {
+    // Own props are pulled out; only DOM-safe extras reach the root (the props type has an index signature).
+    const { label: _label, body: _body, files: _files, _catalogHandler: _ch, _catalogIndex: _ci, active: _active, icons: _icons, dir: _dir, _search, index: _index, className, ref, ...rest } = props;
+    const domAttrs = pickDomProps( rest );
 
     const getDocumentDir = (): 'ltr' | 'rtl' => {
         if ( typeof document === 'undefined' ) return 'ltr';
@@ -89,8 +94,10 @@ const DXAccordion = ( props: AccordionProps ) => {
 
     return (
         <div
+            {...domAttrs}
+            ref={ref}
             dir={resolvedDir}
-            className={`dxAccordion${props.active ? ' dxAccordion--display-enabled' : ''}`}
+            className={classNames( `dxAccordion${props.active ? ' dxAccordion--display-enabled' : ''}`, className )}
         >
             <div className="dxAccordion__header">
                 <button
