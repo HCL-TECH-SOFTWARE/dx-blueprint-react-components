@@ -15,6 +15,7 @@
 
 import React from 'react';
 import { DefaultVariantProps, CompactVariantProps, BulletsVariantProps } from './CECPagination.types';
+import { ExtendableProps } from '../../utilities/extendable';
 // UI Element Components
 const LeftArrowIcon = ( { className = '' } ) => (
     <svg className={className} width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -312,7 +313,8 @@ export const Bullets = ( {
     );
 };
 // Variant Components using reusable UI elements
-export const DefaultVariant: React.FC<DefaultVariantProps> = ( {
+/** When `showPagination` is false nothing is rendered, so `className`, `ref` and extra props are not applied. */
+export const DefaultVariant = ( {
     currentPage,
     totalPages,
     onPageChange,
@@ -331,7 +333,9 @@ export const DefaultVariant: React.FC<DefaultVariantProps> = ( {
     maxVisiblePages = 5,
     showPagination = true,
     messages = {},
-} ) => {
+    ref,
+    ...rest
+}: ExtendableProps<DefaultVariantProps, 'div'> ) => {
     if ( !showPagination ) return null;
     const handlePrevious = () => {
         if ( currentPage > 1 && !disabled ) {
@@ -354,7 +358,7 @@ export const DefaultVariant: React.FC<DefaultVariantProps> = ( {
         }
     };
     return (
-        <div className={`cec-pagination-container ${className}`} dir={dir} role="navigation">
+        <div {...rest} ref={ref} className={`cec-pagination-container ${className}`} dir={dir} role="navigation">
             {}
             {showItemsPerPageDropdown && onItemsPerPageChange && itemsPerPage && (
                 <div className="cec-pagination__left">
@@ -424,7 +428,7 @@ export const DefaultVariant: React.FC<DefaultVariantProps> = ( {
         </div>
     );
 };
-export const CompactVariant: React.FC<CompactVariantProps> = ( {
+export const CompactVariant = ( {
     currentPage,
     totalPages,
     onPageChange,
@@ -433,7 +437,9 @@ export const CompactVariant: React.FC<CompactVariantProps> = ( {
     dir = 'ltr',
     ariaLabels = {},
     messages = {},
-} ) => {
+    ref,
+    ...rest
+}: ExtendableProps<CompactVariantProps, 'div'> ) => {
     const handlePrevious = () => {
         if ( currentPage > 1 && !disabled ) {
             onPageChange( currentPage - 1 );
@@ -445,7 +451,7 @@ export const CompactVariant: React.FC<CompactVariantProps> = ( {
         }
     };
     return (
-        <div className={`cec-pagination-compact ${className}`} dir={dir} role="navigation">
+        <div {...rest} ref={ref} className={`cec-pagination-compact ${className}`} dir={dir} role="navigation">
             <PaginationButton
                 onClick={handlePrevious}
                 disabled={currentPage === 1 || disabled}
@@ -468,7 +474,7 @@ export const CompactVariant: React.FC<CompactVariantProps> = ( {
         </div>
     );
 };
-export const BulletsVariant: React.FC<BulletsVariantProps> = ( {
+export const BulletsVariant = ( {
     currentPage,
     totalPages,
     onPageChange,
@@ -477,9 +483,11 @@ export const BulletsVariant: React.FC<BulletsVariantProps> = ( {
     dir = 'ltr',
     ariaLabels = {},
     position = 'center',
-} ) => {
+    ref,
+    ...rest
+}: ExtendableProps<BulletsVariantProps, 'div'> ) => {
     return (
-        <div className={`cec-pagination-container ${className}`} dir={dir} role="navigation">
+        <div {...rest} ref={ref} className={`cec-pagination-container ${className}`} dir={dir} role="navigation">
             <Bullets
                 currentPage={currentPage}
                 totalPages={totalPages}

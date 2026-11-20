@@ -17,6 +17,7 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import CECMegaNews from "./CECMegaNews";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import type { NewsItemProps } from "../../utilities/cec-types";
 // Mock child components
 jest.mock( "../CECNewsTile/CECNewsTile", () => ( {
@@ -1049,3 +1050,5 @@ describe( "CECMegaNews", () => {
         } );
     } );
 } );
+
+itSupportsExtensionProps( ( extra ) => <CECMegaNews items={mockItems} {...extra} /> );

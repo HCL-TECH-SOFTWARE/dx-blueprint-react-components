@@ -23,6 +23,7 @@ import CECNewsTile, {
     NewsTileProps
 } from './CECNewsTile';
 import type { NewsItemProps } from '../../utilities/cec-types';
+import { itSupportsExtensionProps } from '../../testUtils/extensionContract';
 // Mock utility functions
 jest.mock( '../../utilities/cec-utils', () => ( {
     decodeHtmlEntities: jest.fn( ( html: string ) => html ),
@@ -641,3 +642,5 @@ describe( 'CECNewsTile', () => {
         } );
     } );
 } );
+
+itSupportsExtensionProps( ( extra ) => <CECNewsTile item={createMockNewsItem()} {...extra} /> );

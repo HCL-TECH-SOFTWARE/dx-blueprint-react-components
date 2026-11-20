@@ -17,6 +17,7 @@ import React from "react";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import DXIcon from "./DXIcon";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 
 describe( "DXIcon", () => {
 
@@ -157,3 +158,5 @@ describe( "DXIcon", () => {
             .toHaveClass( expectedClass );
     } );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXIcon name="search" {...extra} /> );

@@ -18,6 +18,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import CECPagination from './CECPagination';
 import { DEFAULT_ITEMS_PER_PAGE_OPTIONS } from './CECPagination.types';
+import { itSupportsExtensionProps } from '../../testUtils/extensionContract';
 describe( 'CECPagination', () => {
     const defaultProps = {
         currentPage: 1,
@@ -1801,4 +1802,11 @@ describe( 'CECPagination', () => {
             expect( container.className ).toContain( 'custom-injection-class' );
         } );
     } );
+} );
+
+describe( 'CECPagination extension props per variant', () => {
+    const base = { currentPage: 1, totalPages: 3, onPageChange: jest.fn(), itemsPerPage: 6, totalItems: 18 };
+    itSupportsExtensionProps( ( extra ) => <CECPagination {...base} {...extra} /> );
+    itSupportsExtensionProps( ( extra ) => <CECPagination {...base} variant="compact" {...extra} /> );
+    itSupportsExtensionProps( ( extra ) => <CECPagination {...base} variant="bullets" {...extra} /> );
 } );

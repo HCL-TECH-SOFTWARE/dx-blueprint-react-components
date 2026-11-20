@@ -16,6 +16,7 @@
 import React from "react";
 import "./CECNewsTile.scss";
 import type { NewsItemProps } from "../../utilities/cec-types";
+import { ExtendableProps } from "../../utilities/extendable";
 import { decodeHtmlEntities, extractFirstImageFromContent, formatSmartDate, isFalsyImageUrl, safeParseDXDate } from "../../utilities/cec-utils";
 export type NewsTileMode = "card" | "divider";
 export type NewsTileImagePosition = "left" | "right" | "top";
@@ -53,7 +54,7 @@ const clampText = ( s: string, max = 150, ellipsis = "..." ) => {
   const base = s.slice( 0, max ).trimEnd().replace( /[\.\u2026]+$/, "" );
   return base + ellipsis;
 };
-const NewsTile: React.FC<NewsTileProps> = ( {
+const NewsTile = ( {
   item,
   mode = "card",
   imagePosition = "top",
@@ -70,7 +71,9 @@ const NewsTile: React.FC<NewsTileProps> = ( {
   onClick,
   className,
   ariaLabel,
-} ) => {
+  ref,
+  ...rest
+}: ExtendableProps<NewsTileProps, "article"> ) => {
   const title = ( item.title ?? item.link?.label ?? "Untitled Post" ).trim();
   const visibleTitle = clampText( title, 78, "..." );
   // Prefer the normalized imageUrl injected by the list components.
@@ -143,6 +146,8 @@ const NewsTile: React.FC<NewsTileProps> = ( {
     .join( " " );
   return (
     <article
+      {...rest}
+      ref={ref}
       className={tileClasses}
       data-has-image={hasImage.toString()}
       onClick={

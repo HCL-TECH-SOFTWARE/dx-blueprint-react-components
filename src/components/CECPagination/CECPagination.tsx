@@ -16,8 +16,10 @@
 import React, { useMemo, useEffect } from 'react';
 import { PaginationProps, DEFAULT_MESSAGES } from './CECPagination.types';
 import { DefaultVariant, CompactVariant, BulletsVariant } from './CECPagination.variants';
+import { ExtendableProps } from '../../utilities/extendable';
 import './CECPagination.scss';
-const CECPagination: React.FC<PaginationProps> = ( {
+/** When `variant` renders nothing (the default variant with `showPagination={false}`), `className`, `ref` and extra props are not applied. */
+const CECPagination = ( {
     currentPage,
     totalPages,
     onPageChange,
@@ -38,7 +40,10 @@ const CECPagination: React.FC<PaginationProps> = ( {
     disabled = false,
     dir = 'ltr',
     messages = {},
-} ) => {
+    locale,
+    ref,
+    ...rest
+}: ExtendableProps<PaginationProps, 'div'> ) => {
     // Calculate totalPages internally when totalItems and itemsPerPage are provided
     const calculatedTotalPages = useMemo( () => {
         if ( totalItems > 0 && itemsPerPage && itemsPerPage > 0 ) {
@@ -102,6 +107,8 @@ const CECPagination: React.FC<PaginationProps> = ( {
         case 'compact':
             return (
                 <CompactVariant
+                    {...rest}
+                    ref={ref}
                     {...commonProps}
                     messages={{
                         previous: DEFAULT_MESSAGES.previous,
@@ -110,11 +117,13 @@ const CECPagination: React.FC<PaginationProps> = ( {
                 />
             );
         case 'bullets':
-            return <BulletsVariant {...commonProps} />;
+            return <BulletsVariant {...rest} ref={ref} {...commonProps} />;
         case 'default':
         default:
             return (
                 <DefaultVariant
+                    {...rest}
+                    ref={ref}
                     {...commonProps}
                     itemsPerPage={itemsPerPage}
                     onItemsPerPageChange={onItemsPerPageChange}

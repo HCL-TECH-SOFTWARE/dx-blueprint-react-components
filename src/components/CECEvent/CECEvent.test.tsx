@@ -17,6 +17,7 @@ import React from 'react';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import CECEvent, { getEventStartDate, getEventEndDate } from './CECEvent';
 import type { CECEventData, CECEventRecurrence, DateFormat } from './CECEvent.types';
+import { itSupportsExtensionProps } from '../../testUtils/extensionContract';
 import '@testing-library/jest-dom';
 // Helper function to create mock event with proper typing
 const createMockEvent = ( overrides: Partial<CECEventData> = {} ): CECEventData => ( {
@@ -3216,4 +3217,21 @@ describe( 'CECEvent Hardening', () => {
             expect( desc?.textContent?.trim() ).toBe( 'Start End' );
         } );
     } );
+} );
+
+itSupportsExtensionProps( ( extra ) => <CECEvent event={mockEvent} {...extra} /> );
+
+test( 'extra props that are not DOM attributes are dropped instead of reaching the root element', () => {
+    const { container } = render( <CECEvent event={mockEvent} {...{ notADomProp: 'x', title: 'Tip' } as object} /> );
+    expect( container.firstElementChild?.getAttribute( 'notadomprop' ) ).toBeNull();
+    expect( container.firstElementChild?.getAttribute( 'title' ) ).toBe( 'Tip' );
+} );
+
+test( 'a consumer onKeyDown on the event root runs first and can stop the component\'s own click handling', () => {
+    const onEventClick = jest.fn();
+    const onKeyDown = jest.fn( ( e: React.KeyboardEvent ) => e.preventDefault() );
+    const { container } = render( <CECEvent event={mockEvent} onEventClick={onEventClick} {...{ onKeyDown } as object} /> );
+    fireEvent.keyDown( container.firstElementChild as Element, { key: 'Enter' } );
+    expect( onKeyDown ).toHaveBeenCalledTimes( 1 );
+    expect( onEventClick ).not.toHaveBeenCalled();
 } );
