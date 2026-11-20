@@ -19,11 +19,6 @@ import path from "path";
 /**
  * Meta-test: every component exported from `src/components/index.ts` must call `itSupportsExtensionProps(` in its own
  * test file, which checks className merging, DOM rest props, ref forwarding and no console errors.
- *
- * It is SKIPPED until every component has been migrated (it would list all of them as missing). To see the current list
- * of components still missing the contract, run it locally with the environment variable set:
- *
- *   CHECK_EXTENSION_CONTRACT=1 npx jest src/components/extensionContract.test.ts
  */
 const componentsDir = __dirname;
 const exportRegex = /export\s*\{\s*default\s+as\s+(\w+)\s*\}\s*from\s*["']\.\/(\w+)["']/g;
@@ -48,9 +43,7 @@ const missingContract = (): string[] =>
             fs.readFileSync( path.join( componentsDir, folder, file ), "utf8" ).indexOf( "itSupportsExtensionProps(" ) !== -1 ) )
         .map( ( { name } ) => name );
 
-const describeContract = process.env.CHECK_EXTENSION_CONTRACT ? describe : describe.skip;
-
-describeContract( "extension props contract coverage", () => {
+describe( "extension props contract coverage", () => {
     it( "finds every component exported from the index", () => {
         expect( exportedComponents().length ).toBeGreaterThan( 100 );
     } );
