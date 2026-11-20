@@ -15,10 +15,12 @@
 
 import "./DXEventTabs.scss";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import DXButton from "../DXButton/DXButton";
 import { getValuesFromDateFormat, getMonthPrefix, overflowText, DateValues, SliderIcons, getIcon } from "../../utilities";
 import DXEmptyState, { EmptyStateProps } from "../DXEmptyState/DXEmptyState";
+import { ExtendableProps, mergeRefs } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 interface EventElement {
     id: string,
@@ -51,7 +53,9 @@ interface ExtendedSliderIcons extends SliderIcons {
 // TODO: To support multiple instances in a single page the tabviews implementation would have to be refactored to make sure
 // the navigation is consistent within a single instance.
 //
-const DXEventTabs = ( props: EventTabsProps ) => {
+const DXEventTabs = ( props: ExtendableProps<EventTabsProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { tabs: _tabs, eventsPerPage: _eventsPerPage, eventsPerPageMobile: _eventsPerPageMobile, empty: _empty, dateFormat: _dateFormat, eventNameCharLimit: _eventNameCharLimit, icons: _icons, className, ref, ...rest } = props;
     const [activeTab, setActiveTab] = useState( 0 );
     const [activePage, setActivePage] = useState( 1 );
     const [mobile, setMobile] = useState( false );
@@ -65,6 +69,8 @@ const DXEventTabs = ( props: EventTabsProps ) => {
     const DEFAULT_DATE_FORMAT = "MM/DD/YY";
     let componentSize = 0;
     const componentRef = useRef<HTMLDivElement>( null );
+    // The internal ref (used to measure the width) and the consumer ref both point at the root
+    const mergedRootRef = useMemo( () => mergeRefs( componentRef, ref ), [ref] );
 
     const changeActive = ( e: any, index: number ) => {
         if ( e.type === "click" || ( e.type === "keydown" && e.keyCode === 13 ) || ( e.type === "keydown" && e.keyCode === 32 ) ) {
@@ -364,7 +370,7 @@ const DXEventTabs = ( props: EventTabsProps ) => {
     };
 
     return (
-        <div className="dxEventTabs" ref={componentRef}>
+        <div {...rest} ref={mergedRootRef} className={classNames( "dxEventTabs", className )}>
             <div className={mobile ? "dxEventTabs__tabsMobile" : "dxEventTabs__tabs"}>
                 <ul>{renderTabs( props.tabs, mobile )}</ul>
             </div>

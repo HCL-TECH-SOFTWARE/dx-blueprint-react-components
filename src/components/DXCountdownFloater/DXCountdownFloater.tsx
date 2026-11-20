@@ -15,7 +15,9 @@
 
 import variables from "../../global/_exportVariables.module.scss";
 import "./DXCountdownFloater.scss";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { ExtendableProps, mergeRefs } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 interface Time {
     mt: number,
@@ -31,7 +33,9 @@ export interface CountdownProps {
     textColor?: string;
 }
 
-const DXCountdownFloater = ( props: CountdownProps ) => {
+const DXCountdownFloater = ( props: ExtendableProps<CountdownProps, "main"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { date: _date, showSeconds: _showSeconds, textColor: _textColor, className, ref, ...rest } = props;
 
     let [hideCountdown, setHideCountdown] = useState( false );
 
@@ -50,6 +54,8 @@ const DXCountdownFloater = ( props: CountdownProps ) => {
     let totalSeconds = 0;
     let interval: any = null;
     let componentRef = useRef<HTMLDivElement>( null );
+    // The internal ref (used to measure the width) and the consumer ref both point at the root
+    const mergedRootRef = useMemo( () => mergeRefs( componentRef, ref ), [ref] );
     const MAX_WIDTH_MOBILE = parseInt( variables.xs.split( "px" ) );
 
     const setTimeLeft = () => {
@@ -187,7 +193,7 @@ const DXCountdownFloater = ( props: CountdownProps ) => {
     }, [props.showSeconds, props.date] );
 
     return (
-        <main className="dxCountdown" role="timer" aria-roledescription={`This is a countdown for ${props.date}`} ref={componentRef}>
+        <main {...rest} className={classNames( "dxCountdown", className )} role="timer" aria-roledescription={`This is a countdown for ${props.date}`} ref={mergedRootRef}>
             {!hideCountdown ? (
                 <div className="dxCountdown__holder">
                     {/** Mobile Markup */}

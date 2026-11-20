@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, act } from "@testing-library/react";
 import DXCountdownFloater from "./DXCountdownFloater";
@@ -185,3 +186,5 @@ describe( "DXCountdownFloater - Hardened Mutation Suite", () => {
         } );
     } );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXCountdownFloater date="2099-01-01T00:00:00.000Z" {...extra} /> );

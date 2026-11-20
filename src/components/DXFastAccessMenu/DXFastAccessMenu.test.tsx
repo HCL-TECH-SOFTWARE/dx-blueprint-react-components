@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent } from "@testing-library/react";
 import DXFastAccessMenu from "./DXFastAccessMenu";
@@ -251,3 +252,5 @@ test( "If header icon changes if parameter is send", () => {
     render( <DXFastAccessMenu {...FastAccessMenuChangedIconsArgs} /> );
     expect( screen.getByTestId( "FAM__headerIcon" ) ).toHaveClass( FastAccessMenuChangedIconsArgs.icons?.header! );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXFastAccessMenu {...FastAccessMenuArgs} {...extra} /> );

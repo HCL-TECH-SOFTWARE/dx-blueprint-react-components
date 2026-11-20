@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, fireEvent, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -1563,3 +1564,5 @@ describe( "DXFullCalendar Hardening", () => {
         expect( calendarElement.className ).not.toContain( "dxFullCalendar__calendar--blur" );
     } );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXFullCalendar events={[]} {...extra} /> );

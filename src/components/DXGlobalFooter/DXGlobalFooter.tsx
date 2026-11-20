@@ -22,6 +22,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import { LinksProps, getLinkTarget, getLinkIcon } from "../../utilities";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface FooterProps {
     logo: string;
@@ -32,7 +34,9 @@ export interface FooterProps {
     primaryLinks: LinksProps[];
     secondaryLinks: LinksProps[];
 }
-const DXGlobalFooter = ( props: FooterProps ) => {
+const DXGlobalFooter = ( props: ExtendableProps<FooterProps, "footer"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { logo: _logo, altLogo: _altLogo, logoMobile: _logoMobile, altMobile: _altMobile, copyright: _copyright, primaryLinks: _primaryLinks, secondaryLinks: _secondaryLinks, className, ref, ...rest } = props;
     const renderLogo = () => {
         return (
             <div className="dxGlobalFooter__logoContainer">
@@ -106,7 +110,7 @@ const DXGlobalFooter = ( props: FooterProps ) => {
         }
     };
     return (
-        <footer className="dxGlobalFooter">
+        <footer {...rest} ref={ref} className={classNames( "dxGlobalFooter", className )}>
             <Container>
                 <Row>
                     <Col xs={12} md={3} className="dxGlobalFooter__title">

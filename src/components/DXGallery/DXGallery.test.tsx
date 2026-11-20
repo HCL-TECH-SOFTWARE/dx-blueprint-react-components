@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, fireEvent, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -854,3 +855,5 @@ describe( "DXGallery Hardening", () => {
         expect( descriptionContainers.length ).toStrictEqual( 0 );
     } );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXGallery title="A Beautiful Sky" date="August 15, 2022" images={imagesArgs} {...extra} /> );

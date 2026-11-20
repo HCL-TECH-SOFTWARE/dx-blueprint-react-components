@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, fireEvent, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -1467,3 +1468,5 @@ test( "If event icon changes if parameter is send", () => {
 
     expect( eventElement.querySelector( "i" ) ).toHaveClass( EventTabsChangedIconsArgs.icons.event );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXEventTabs tabs={tabsArgs} {...extra} /> );

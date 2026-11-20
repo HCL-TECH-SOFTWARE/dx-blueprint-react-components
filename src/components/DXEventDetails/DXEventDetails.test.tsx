@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -1195,3 +1196,7 @@ describe( "DXEventDetails Hardening", () => {
         } );
     } );
 } );
+
+itSupportsExtensionProps( ( extra ) => (
+    <DXEventDetails title="Birthday Party" eventFrom="2021-10-27" eventTo="2021-11-07" beginHour="19:00:00" endHour="21:00:00" location="My Home" addressLines={["Main Avenue #68 pc.75638"]} {...extra} />
+) );
