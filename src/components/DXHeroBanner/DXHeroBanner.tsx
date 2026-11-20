@@ -20,6 +20,8 @@ import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent
 import "./DXHeroBanner.scss";
 import DXSearchSuggestions, { SSuggestionsProps } from "../DXSearchSuggestions/DXSearchSuggestions";
 import DXButton from "../DXButton/DXButton";
+import { classNames } from "../../utilities/classNames";
+import { ExtendableProps } from "../../utilities/extendable";
 
 export interface HeroBannerProps extends BasicComponent {
     index: number;
@@ -62,7 +64,9 @@ export interface ShapeProps {
     alignment?: string;
 }
 
-const DXHeroBanner = ( props: HeroBannerProps ) => {
+const DXHeroBanner = ( props: ExtendableProps<HeroBannerProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { index, header, subheader, body, textAlign, textColor, background, foreground, primaryButton, secondaryButton, link, searchSuggestion, icons, animatedText, _edit, className, ref, ...rest } = props;
     const DEFAULT_DESKTOP_HEIGHT = "450px";
     const DEFAULT_MOBILE_HEIGHT = "520px";
     const ANIMATED_TEXT_SPEED = 50;
@@ -190,7 +194,7 @@ const DXHeroBanner = ( props: HeroBannerProps ) => {
     }, [props.animatedText] );
 
     return (
-        <div className="dxHeroBanner" id={`dxHeroBanner-${props.index}`} data-testid="hero-banner">
+        <div {...rest} ref={ref} className={classNames( "dxHeroBanner", className )} id={`dxHeroBanner-${props.index}`} data-testid="hero-banner">
             <style>{getBackgroundMediaStyles()}</style>
             <div className="dxHeroBanner__container" data-testid="hero-banner-container">
                 <div className="dxHeroBanner__opacityFilter">

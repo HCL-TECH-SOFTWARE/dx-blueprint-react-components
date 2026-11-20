@@ -18,6 +18,7 @@ import '@testing-library/jest-dom';
 import { render, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import DXButton, { ButtonProps } from "./DXButton";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 
 // Testing that the attributes, will be assign
 test( "If the user pass the label prop, that will be the textContent of the button", () => {
@@ -305,4 +306,34 @@ test( "If the user pass displayType as unstyled, the button will have the class 
     const { container } = render( <DXButton {...props} /> );
     let button = container.querySelector( ".dxButton" );
     expect( button ).toHaveClass( "btn-unstyled" );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXButton label="Click me" {...extra} /> );
+
+test( "a consumer aria-label is kept when the label is visible", () => {
+    const { container } = render( <DXButton label="Save" aria-label="Save the document" /> );
+    expect( container.querySelector( ".dxButton" )?.getAttribute( "aria-label" ) ).toBe( "Save the document" );
+} );
+
+test( "the label wins as aria-label when it is hidden", () => {
+    const { container } = render( <DXButton label="Save" hideLabel aria-label="ignored" /> );
+    expect( container.querySelector( ".dxButton" )?.getAttribute( "aria-label" ) ).toBe( "Save" );
+} );
+
+test( "a consumer onKeyDown runs first and can stop the component's own keyboard handling", () => {
+    const onClick = jest.fn();
+    const onKeyDown = jest.fn( ( e: React.KeyboardEvent ) => e.preventDefault() );
+    const { container } = render( <DXButton label="Save" onClick={onClick} onKeyDown={onKeyDown} /> );
+    fireEvent.keyDown( container.querySelector( ".dxButton" ) as Element, { key: "Enter", keyCode: 13 } );
+    expect( onKeyDown ).toHaveBeenCalledTimes( 1 );
+    expect( onClick ).not.toHaveBeenCalled();
+} );
+
+test( "the component's own keyboard handling still runs when the consumer's onKeyDown does not prevent it", () => {
+    const onClick = jest.fn();
+    const onKeyDown = jest.fn();
+    const { container } = render( <DXButton label="Save" onClick={onClick} onKeyDown={onKeyDown} /> );
+    fireEvent.keyDown( container.querySelector( ".dxButton" ) as Element, { key: "Enter", keyCode: 13 } );
+    expect( onKeyDown ).toHaveBeenCalledTimes( 1 );
+    expect( onClick ).toHaveBeenCalledTimes( 1 );
 } );

@@ -16,6 +16,7 @@
 import "./DXButton.scss";
 import Button from 'react-bootstrap/Button';
 import React, { FormEventHandler, MouseEventHandler, MutableRefObject } from "react";
+import { ExtendableProps } from "../../utilities/extendable";
 
 export type DisplayType = "primary" | "secondary" | "unstyled" | undefined;
 export type ButtonType = "button" | "submit" | "reset" | undefined;
@@ -47,7 +48,13 @@ export interface HelperAttrs {
     "data-testid"?: string;
 }
 
-const DXButton: React.FC<ButtonProps & HelperAttrs> = ( props: ButtonProps & HelperAttrs ) => {
+/**
+ * Extra props (data-*, aria-*, handlers, ...) and \`ref\` go to the root button. \`reactRef\` is kept for compatibility;
+ * when both are given, \`ref\` wins.
+ */
+const DXButton = ( props: ExtendableProps<ButtonProps & HelperAttrs, "button"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { label, hideLabel, id, role, ariaExpanded, type, hidden, disabled, className, value, style, reactRef, onClick, displayType, icon, tabIndex, "data-testid": dataTestId, ref, ...rest } = props;
     const getButtonClass = () => {
         let className = "dxButton";
         if ( props.hideLabel ) {
@@ -72,20 +79,24 @@ const DXButton: React.FC<ButtonProps & HelperAttrs> = ( props: ButtonProps & Hel
     };
 
     return (
-        <Button className={getButtonClass()}
+        <Button {...rest} className={getButtonClass()}
             variant={props.displayType ? props.displayType : "primary"}
             style={props.style ? { ...props.style } : undefined}
             id={props.id ? props.id : undefined}
-            ref={props.reactRef ? props.reactRef : undefined}
+            ref={ref ?? ( props.reactRef ? props.reactRef : undefined )}
             role={props.role ? props.role : "button"}
-            aria-label={props.hideLabel ? props.label : undefined}
-            aria-expanded={props.ariaExpanded ? props.ariaExpanded : undefined}
+            aria-label={props.hideLabel ? props.label : rest["aria-label"]}
+            aria-expanded={props.ariaExpanded ? props.ariaExpanded : rest["aria-expanded"]}
             type={props.type ? props.type : "button"}
             hidden={props.hidden ? props.hidden : undefined}
             value={props.value ? props.value : undefined}
             disabled={props.disabled ? props.disabled : undefined}
             onClick={( e ) => handleEvent( e )}
-            onKeyDown={( e ) => handleEvent( e )}
+            onKeyDown={( e ) => {
+                // The consumer's handler runs first and can stop the component's own keyboard handling
+                rest.onKeyDown?.( e );
+                if ( !e.defaultPrevented ) handleEvent( e );
+            }}
             tabIndex={props.tabIndex}
             data-testid={props["data-testid"] ? props["data-testid"] : undefined}>
             {props.icon && props.icon.class && props.icon.position != "right" &&
