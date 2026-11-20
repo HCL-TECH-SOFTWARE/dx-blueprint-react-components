@@ -18,6 +18,7 @@ import '@testing-library/jest-dom';
 import { fireEvent, render } from "@testing-library/react";
 import DXNavigationHeader2 from "./DXNavigationHeader2";
 import { NavigationHeader2Args } from "./DXNavigationHeader2.stories";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 
 test( "Test if the Navigation Header renders the Portal Logo component", () => {
     render( <DXNavigationHeader2 {...NavigationHeader2Args} /> );
@@ -177,4 +178,15 @@ test( "mobile view falls back to main logo when secondary is absent", () => {
 
     unmount();
     restore();
+} );
+
+describe( "DXNavigationHeader2 extension props, desktop layout", () => {
+    itSupportsExtensionProps( ( extra ) => <DXNavigationHeader2 {...NavigationHeader2Args} {...extra} /> );
+} );
+
+describe( "DXNavigationHeader2 extension props, mobile layout (passed on to DXNavigationHeaderMobile)", () => {
+    let restoreMatchMedia: () => void;
+    beforeEach( () => { restoreMatchMedia = setupMobileMatchMedia(); } );
+    afterEach( () => restoreMatchMedia() );
+    itSupportsExtensionProps( ( extra ) => <DXNavigationHeader2 {...NavigationHeader2Args} {...extra} /> );
 } );

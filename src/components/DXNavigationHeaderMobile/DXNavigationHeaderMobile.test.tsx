@@ -18,6 +18,7 @@ import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render, screen, act, fireEvent, within } from "@testing-library/react";
 import DXNavigationHeaderMobile, { NavigationItem } from "./DXNavigationHeaderMobile";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 
 
 // Mobile Header navigation image tests
@@ -779,3 +780,5 @@ describe( "DXNavigationHeaderMobile Mutation Score Hardening", () => {
     } );
 
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXNavigationHeaderMobile navigationItems={[]} navigationImage="test-logo.png" searchSubmit={() => {}} {...extra} /> );

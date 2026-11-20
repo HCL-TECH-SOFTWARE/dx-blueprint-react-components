@@ -21,6 +21,8 @@ import Col from 'react-bootstrap/Col';
 import { LinksProps, getIcon } from "../../utilities";
 import DXMyLinksCard from "../DXMyLinksCard";
 import DXEmptyState, { EmptyStateProps } from "../DXEmptyState/DXEmptyState";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface MySavedLinksProps {
     links: LinksProps[];
@@ -32,7 +34,9 @@ export interface MySavedLinksProps {
     };
 }
 
-const DXMySavedLinks = ( props: MySavedLinksProps ) => {
+const DXMySavedLinks = ( props: ExtendableProps<MySavedLinksProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { links, link, title, empty, icons, className, ref, ...rest } = props;
 
     const renderCards = () => {
         return props.links.map((link, index) => (
@@ -80,7 +84,9 @@ const DXMySavedLinks = ( props: MySavedLinksProps ) => {
 
     return (
         <Container
-            className="dxMySavedLinks"
+            {...rest}
+            ref={ref}
+            className={classNames( "dxMySavedLinks", className )}
             data-testid="msl-parent"
         >
             <Row className="dxMySavedLinks__header">

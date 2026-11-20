@@ -16,6 +16,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import DXEventItem from "./DXEventItem";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { overflowText, getValuesFromDateFormat } from "../../utilities";
 
@@ -175,4 +176,18 @@ test( 'If the event item url is not sent, it should be displayed an "#"', () => 
     const { getByTestId } = render( <DXEventItem {...props} /> );
     const card = getByTestId( "event-item-card" ) as HTMLAnchorElement;
     expect( card.href ).toContain( "#" );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXEventItem {...eventData} {...extra} /> );
+itSupportsExtensionProps( ( extra ) => <DXEventItem {...formData} {...extra} /> );
+
+test( "props that are not DOM attributes are not forwarded to the root", () => {
+    const { container } = render( <DXEventItem {...eventData} {...{ notADomProp: "x", title: "Tip" } as object} /> );
+    expect( container.firstElementChild?.getAttribute( "notadomprop" ) ).toBeNull();
+    expect( container.firstElementChild?.getAttribute( "title" ) ).toBe( "Tip" );
+} );
+
+test( "with an unknown variant nothing is rendered, so className and extra props have nowhere to go", () => {
+    const { container } = render( <DXEventItem {...eventData} {...{ variant: "other" } as object} className="bp-contract" /> );
+    expect( container ).toBeEmptyDOMElement();
 } );

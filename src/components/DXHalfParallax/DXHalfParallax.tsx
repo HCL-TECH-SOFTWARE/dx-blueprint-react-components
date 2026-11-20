@@ -16,6 +16,8 @@
 import "./DXHalfParallax.scss";
 import React, { ReactElement, useState, useEffect } from 'react';
 import { parseContentAndMedia, ImageProps, LinksProps, getLinkTarget } from "../../utilities";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 export interface ParallaxProps {
     slidesCollection: Fold[];
 };
@@ -65,7 +67,13 @@ const getFontColor = ( cnt: Banner | Content ) => {
     }
     return { color: "var(--dark-dark)" };
 };
-const DXHalfParallax = ( props: ParallaxProps ) => {
+/**
+ * `className`, `ref` and extra props go to the `.dxHalfParallax` root (desktop and mobile layouts). When no slides are
+ * given, a plain message paragraph is rendered instead and `className`, `ref` and extra props are not applied.
+ */
+const DXHalfParallax = ( props: ExtendableProps<ParallaxProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { slidesCollection, className, ref, ...rest } = props;
     let [mobile, setMobile] = useState( false );
     const mql: MediaQueryList = matchMedia( "(max-width: 576px)" );
     const validateMobile = function () {
@@ -260,7 +268,7 @@ const DXHalfParallax = ( props: ParallaxProps ) => {
                 parallaxSlides.push( renderSlidesMobile( fold, index ) );
             } );
             return (
-                <div className="dxHalfParallax">
+                <div {...rest} ref={ref} className={classNames( "dxHalfParallax", className )}>
                     {
                         parallaxSlides
                     }
@@ -277,7 +285,7 @@ const DXHalfParallax = ( props: ParallaxProps ) => {
                 }
             } );
             return (
-                <div className="dxHalfParallax">
+                <div {...rest} ref={ref} className={classNames( "dxHalfParallax", className )}>
                     {
                         parallaxSlides
                     }

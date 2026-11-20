@@ -18,6 +18,7 @@ import '@testing-library/jest-dom';
 import { render, screen } from "@testing-library/react";
 import DXModalWindows from "./DXModalWindows";
 import { ModalWindowsArgs, DefaultExampleArgs, ModalWindowsIFrameArgs, ModalWindowsRichTextArgs } from "./DXModalWindows.stories";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import userEvent from "@testing-library/user-event";
 
 describe( "ModalWindows component", () => {
@@ -233,3 +234,5 @@ describe( "ModalWindows component", () => {
     } );
 
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXModalWindows {...ModalWindowsArgs} {...extra} /> );

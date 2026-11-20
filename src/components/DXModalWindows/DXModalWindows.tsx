@@ -18,6 +18,8 @@ import "./DXModalWindows.scss";
 import { IconButtonProps, ImageProps, parseContentAndMedia } from "../../utilities";
 import Modal from 'react-bootstrap/Modal';
 import DXButton, { DisplayType } from "../DXButton/DXButton";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface ModalWindowsProps {
     index: number,
@@ -35,8 +37,13 @@ export interface ModalWindowsProps {
 export declare type Size = 'full-screen' | 'lg' | 'sm' | undefined;
 export declare type Status = 'danger' | 'info' | 'success' | 'warning' | undefined;
 
-const DXModalWindows = ( props: ModalWindowsProps ) => {
-    const ref = React.useRef<any | null>();
+/**
+ * `className`, `ref` and extra props go to the wrapper `div` (the modal itself is rendered by react-bootstrap in a portal,
+ * so it is not the root).
+ */
+const DXModalWindows = ( props: ExtendableProps<ModalWindowsProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { index, openModal, title, text, image, primaryButton, secondaryButton, unstyledButton, type, size, disableDisplayFlex, className, ref, ...rest } = props;
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -168,7 +175,7 @@ const DXModalWindows = ( props: ModalWindowsProps ) => {
     };
 
     return (
-        <div className="dxModalWindows" id={"dxModalWindows-" + props.index} ref={ref}>
+        <div {...rest} ref={ref} className={classNames( "dxModalWindows", className )} id={"dxModalWindows-" + props.index}>
             { renderModal( props.type, props.size )}
         </div >
     );

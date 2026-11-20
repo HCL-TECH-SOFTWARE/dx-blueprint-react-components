@@ -26,6 +26,8 @@ import DXSearchInput, { SearchInputProps } from "../DXSearchInput/DXSearchInput"
 import DXUtilityZone, { UtilityZoneProps } from "../DXUtilityZone/DXUtilityZone";
 import DXPortalLogos, { PortalLogosProps } from "../DXPortalLogos/DXPortalLogos";
 import DXNavigationHeaderMobile, { MobileNavigationProps } from "../DXNavigationHeaderMobile/DXNavigationHeaderMobile";
+import { pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface NavigationProps {
     nextMeeting?: NextMeetingProps;
@@ -83,7 +85,14 @@ const getMobileBreakpointSnapshot = () => {
 
 const getMobileBreakpointServerSnapshot = () => false;
 
+/**
+ * `className`, `ref` and extra DOM props (data-*, aria-*, ...) go to the root of whichever layout renders: the desktop
+ * header, or `DXNavigationHeaderMobile` below the mobile breakpoint. The props type stays loose (`any`), as before.
+ */
 const DXNavigationHeader2 = ( props: any ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { nextMeeting, drawer, searchInput, portalLogos, utilityZone, megaMenu, className, ref, ...rest } = props;
+    const domProps = pickDomProps( rest );
     const isMobile = useSyncExternalStore(
         subscribeToMobileBreakpoint,
         getMobileBreakpointSnapshot,
@@ -103,11 +112,11 @@ const DXNavigationHeader2 = ( props: any ) => {
             utilityZone: props.utilityZone,
         };
 
-        return <DXNavigationHeaderMobile {...mobileProps} />;
+        return <DXNavigationHeaderMobile {...domProps} ref={ref} className={className} {...mobileProps} />;
     }
 
     return (
-        <div className="dxNavigationHeader2">
+        <div {...domProps} ref={ref} className={classNames( "dxNavigationHeader2", className )}>
             <Container className="dxNavigationHeader2__main">
                 <div className="dxNavigationHeader2__header row">
                     <div className="dxNavigationHeader2__logo">
