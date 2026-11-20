@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
@@ -79,3 +80,5 @@ test( "If icon changes", () => {
     render( <PrivacyFilter {...PrivacyFilterChangedIconsArgs} /> );
     expect( screen.getByTestId( "pf-icon" ) ).toHaveClass( PrivacyFilterChangedIconsArgs.icons?.hide! );
 } );
+
+itSupportsExtensionProps( ( extra ) => <PrivacyFilter {...DefaultPrivacyFilterArgs} {...extra} /> );

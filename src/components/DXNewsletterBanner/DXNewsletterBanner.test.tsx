@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React, { FormEventHandler } from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
@@ -905,4 +906,12 @@ describe( "Email Validation Tooltip", () => {
             expect( input ).toHaveAttribute( 'aria-errormessage', '' );
         } );
     } );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXNewsletterBanner {...( { heading: "Subscribe", type: "link", link: { url: "https://hcl-software.com", label: "Go" } } as React.ComponentProps<typeof DXNewsletterBanner> )} {...extra} /> );
+
+test( "a consumer style is merged with the component's own background style", () => {
+    const props = { heading: "Subscribe", type: "link", link: { url: "https://hcl-software.com", label: "Go" } } as React.ComponentProps<typeof DXNewsletterBanner>;
+    const { container } = render( <DXNewsletterBanner {...props} style={{ marginTop: "7px" }} /> );
+    expect( ( container.firstElementChild as HTMLElement ).style.marginTop ).toBe( "7px" );
 } );

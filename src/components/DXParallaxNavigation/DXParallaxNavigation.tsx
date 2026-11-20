@@ -17,6 +17,8 @@ import React, { ReactElement, useState, useEffect } from "react";
 import Button from 'react-bootstrap/Button';
 import { LinksProps } from "../../utilities";
 import "./DXParallaxNavigation.scss";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface ParallaxNavigationProps {
     position?: "right" | "left";
@@ -28,7 +30,9 @@ export interface LinkWithIcon {
     link: LinksProps;
 }
 
-const DXParallaxNavigation = ( props: ParallaxNavigationProps ) => {
+const DXParallaxNavigation = ( props: ExtendableProps<ParallaxNavigationProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { position: _position, items: _items, className, ref, ...rest } = props;
 
     const [isMobile, setIsMobile] = useState<boolean>( false );
     const widthMobile = 768;
@@ -83,7 +87,7 @@ const DXParallaxNavigation = ( props: ParallaxNavigationProps ) => {
     };
 
     return (
-        <div data-testid={`${testIdRight}`} className="dxParallaxNavigation">
+        <div {...rest} ref={ref} data-testid={`${testIdRight}`} className={classNames( "dxParallaxNavigation", className )}>
             <div data-testid="pnb-wrapper" className={`dxParallaxNavigation__wrapper ${alignmentVariant}`}>
                 {renderParallaxNavigation()}
             </div>
