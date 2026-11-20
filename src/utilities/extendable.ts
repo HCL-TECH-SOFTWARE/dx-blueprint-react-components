@@ -50,3 +50,33 @@ export const pickDomProps = ( rest: Record<string, unknown> ): Record<string, un
     } );
     return picked;
 };
+
+/**
+ * Merges several refs (object or callback refs) into one callback ref, for roots that need an internal ref of their own
+ * and must also forward the consumer's `ref`. Keep the result stable (`useMemo`) so React does not detach and re-attach it on every render.
+ *
+ * Internal helper: it is intentionally not exported from `utilities/index.ts`.
+ */
+export const mergeRefs = <T>( ...refs: Array<React.Ref<T> | undefined> ) => ( node: T | null ): void => {
+    refs.forEach( ( ref ) => {
+        if ( typeof ref === "function" ) {
+            ref( node );
+        } else if ( ref ) {
+            ( ref as React.MutableRefObject<T | null> ).current = node;
+        }
+    } );
+};
+
+/**
+ * Chains a consumer's event handler with the component's own: the consumer's runs first and the component's is skipped
+ * when the consumer called `event.preventDefault()`.
+ *
+ * Internal helper: it is intentionally not exported from `utilities/index.ts`.
+ */
+export const chainHandlers = <E extends { defaultPrevented: boolean; }>(
+    consumer: ( ( event: E ) => void ) | undefined,
+    own: ( event: E ) => void
+) => ( event: E ): void => {
+    if ( consumer ) consumer( event );
+    if ( !event.defaultPrevented ) own( event );
+};

@@ -36,6 +36,8 @@ export interface ExtensionProps {
 export interface ExtensionContractOptions {
     /** Where the component's root element is. Defaults to the first element child of the render container. */
     getRoot?: ( container: HTMLElement ) => Element | null;
+    /** Root classes that are generated per instance (for example a random suffix) and so cannot be compared between two renders. */
+    ignoreClasses?: RegExp;
 }
 
 export const itSupportsExtensionProps = (
@@ -61,7 +63,9 @@ export const itSupportsExtensionProps = (
             const root = getRoot( extended.container );
             expect( root ).not.toBeNull();
             expect( root?.classList.contains( "bp-contract" ) ).toBe( true );
-            originalClasses.forEach( ( cls ) => expect( root?.classList.contains( cls ) ).toBe( true ) );
+            originalClasses
+                .filter( ( cls ) => !options?.ignoreClasses?.test( cls ) )
+                .forEach( ( cls ) => expect( root?.classList.contains( cls ) ).toBe( true ) );
         } );
 
         it( "passes extra DOM attributes (data-*, aria-*) to the root", () => {

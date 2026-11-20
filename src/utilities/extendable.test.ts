@@ -13,7 +13,7 @@
  * limitations under the License.                                           *
  * ======================================================================== */
 
-import { pickDomProps } from "./extendable";
+import { chainHandlers, mergeRefs, pickDomProps } from "./extendable";
 
 describe( "pickDomProps", () => {
     test( "keeps data-*, aria-*, id, role, title, style, tabIndex, lang and hidden", () => {
@@ -62,7 +62,58 @@ describe( "pickDomProps", () => {
         expect( input ).toEqual( { id: "a", items: [1] } );
     } );
 
+    test( "drops the DX wrapper keys data, config and props", () => {
+        expect( pickDomProps( { data: {}, config: {}, props: {}, id: "a" } ) ).toEqual( { id: "a" } );
+    } );
+
     test( "returns an empty object for an empty input", () => {
         expect( pickDomProps( {} ) ).toEqual( {} );
+    } );
+} );
+
+describe( "mergeRefs", () => {
+    test( "sets an object ref and calls a callback ref with the node", () => {
+        const objectRef = { current: null as HTMLElement | null };
+        const callbackRef = jest.fn();
+        const node = document.createElement( "div" );
+        mergeRefs<HTMLElement>( objectRef, callbackRef )( node );
+        expect( objectRef.current ).toBe( node );
+        expect( callbackRef ).toHaveBeenCalledWith( node );
+    } );
+
+    test( "passes null to every ref when the node is removed", () => {
+        const objectRef = { current: document.createElement( "div" ) as HTMLElement | null };
+        const callbackRef = jest.fn();
+        mergeRefs<HTMLElement>( objectRef, callbackRef )( null );
+        expect( objectRef.current ).toBeNull();
+        expect( callbackRef ).toHaveBeenCalledWith( null );
+    } );
+
+    test( "ignores undefined and null refs", () => {
+        const objectRef = { current: null as HTMLElement | null };
+        const node = document.createElement( "div" );
+        expect( () => mergeRefs<HTMLElement>( undefined, null, objectRef )( node ) ).not.toThrow();
+        expect( objectRef.current ).toBe( node );
+    } );
+} );
+
+describe( "chainHandlers", () => {
+    test( "runs the consumer handler first, then the component's", () => {
+        const calls: string[] = [];
+        chainHandlers( () => calls.push( "consumer" ), () => calls.push( "own" ) )( { defaultPrevented: false } );
+        expect( calls ).toEqual( ["consumer", "own"] );
+    } );
+
+    test( "skips the component's handler when the consumer prevented the default", () => {
+        const own = jest.fn();
+        const event = { defaultPrevented: false, preventDefault() { this.defaultPrevented = true; } };
+        chainHandlers( ( e: typeof event ) => e.preventDefault(), own )( event );
+        expect( own ).not.toHaveBeenCalled();
+    } );
+
+    test( "runs only the component's handler when there is no consumer handler", () => {
+        const own = jest.fn();
+        chainHandlers( undefined, own )( { defaultPrevented: false } );
+        expect( own ).toHaveBeenCalledTimes( 1 );
     } );
 } );
