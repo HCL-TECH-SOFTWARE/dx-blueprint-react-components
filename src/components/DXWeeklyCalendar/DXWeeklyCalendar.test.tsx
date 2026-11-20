@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from 'react';
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render, screen, fireEvent, act } from "@testing-library/react";
@@ -713,3 +714,5 @@ describe( "DXWeeklyCalendar Hardening", () => {
         removeSpy.mockRestore();
     } );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXWeeklyCalendar fullCalendarLink="/test" events={singleEvent} {...extra} /> );

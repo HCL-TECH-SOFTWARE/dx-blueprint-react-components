@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -216,3 +217,5 @@ test( "If the user focus on the button and press the Escape key, the function wi
     } );
     expect( mock ).not.toHaveBeenCalled();
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXTextBreak {...requiredArgs} {...extra} /> );

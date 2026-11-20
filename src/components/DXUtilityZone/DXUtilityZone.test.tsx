@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, fireEvent, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -305,3 +306,5 @@ test( "If the overlay hides when clicking it", async () => {
     } );
     expect( screen.getByTestId( "utilityZone__overlay" ) ).not.toHaveClass( "dxUtilityZone__overlay--state-active" );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXUtilityZone items={itemsArgs} {...extra} /> );

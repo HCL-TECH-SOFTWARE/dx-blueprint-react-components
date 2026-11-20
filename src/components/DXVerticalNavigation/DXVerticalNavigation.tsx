@@ -17,6 +17,8 @@ import "./DXVerticalNavigation.scss";
 import React, { useState, useEffect } from "react";
 import DXButton from "../DXButton";
 import { LinksProps, getLinkTarget, StateIcons, getIcon } from "../../utilities";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface NavigationItem extends LinksProps {
     active?: boolean;
@@ -29,7 +31,9 @@ export interface VerticalNavigationProps {
     icons?: StateIcons;
 }
 
-const DXVerticalNavigation = ( props: VerticalNavigationProps ) => {
+const DXVerticalNavigation = ( props: ExtendableProps<VerticalNavigationProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { items: _items, icons: _icons, className, ref, ...rest } = props;
     const [openedItems, setOpenedItems] = useState<string[]>( [] );
 
     const OPEN_ICON_DEFAULT = "ci-Caret_Down_MD";
@@ -156,7 +160,7 @@ const DXVerticalNavigation = ( props: VerticalNavigationProps ) => {
     };
 
     return (
-        <div className="dxVerticalNav" data-testid="test">
+        <div {...rest} ref={ref} className={classNames( "dxVerticalNav", className )} data-testid="test">
             <ul className="nav nav-nested">
                 {renderItems( props.items, 0 )}
             </ul>

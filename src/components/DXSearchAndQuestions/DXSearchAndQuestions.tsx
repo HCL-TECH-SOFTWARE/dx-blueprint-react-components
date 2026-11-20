@@ -19,6 +19,8 @@ import { DXQuestionsTabsProps } from "../DXQuestionsTabs/DXQuestionsTabs";
 import DXSearchSuggestions from "../DXSearchSuggestions";
 import { SSuggestionsProps } from "../DXSearchSuggestions/DXSearchSuggestions";
 import "./DXSearchAndQuestions.scss";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface DXSearchAndQuestionsProps {
     backgroundImage?: string,
@@ -42,7 +44,9 @@ export const hexToRgb = ( colorValue: string ) => {
     } : null;
 };
 
-const DXSearchAndQuestions = ( props: DXSearchAndQuestionsProps ) => {
+const DXSearchAndQuestions = ( props: ExtendableProps<DXSearchAndQuestionsProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { backgroundImage: _backgroundImage, backgroundColor: _backgroundColor, sqBackgroundColor: _sqBackgroundColor, sqBackgroundOpacity: _sqBackgroundOpacity, questionsTabs: _questionsTabs, searchSuggestions: _searchSuggestions, className, ref, ...rest } = props;
 
     var bgRGB: any = {};
     var colorValue = props.sqBackgroundColor || "#ffffff";
@@ -63,9 +67,11 @@ const DXSearchAndQuestions = ( props: DXSearchAndQuestionsProps ) => {
 
     return (
         <div
-            className="dxSearchAndQuestions"
+            {...rest}
+            ref={ref}
+            className={classNames( "dxSearchAndQuestions", className )}
             data-testid="DXSnQMainContainer"
-            style={backgroundStyles}
+            style={{ ...rest.style, ...backgroundStyles }}
         >
             <div
                 data-testid="DXSnQMiddleContainer"

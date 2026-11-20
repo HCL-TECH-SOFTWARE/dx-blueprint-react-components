@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from "@testing-library/react";
 import DXSearchSuggestions from "./DXSearchSuggestions";
@@ -278,3 +279,5 @@ test( "If icon changes if params are set", () => {
     render( <DXSearchSuggestions {...ssArgs} icons={icons} /> );
     expect( screen.getByTestId( "ss-icon" ) ).toHaveClass( icons.search );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXSearchSuggestions {...ssArgs} {...extra} /> );

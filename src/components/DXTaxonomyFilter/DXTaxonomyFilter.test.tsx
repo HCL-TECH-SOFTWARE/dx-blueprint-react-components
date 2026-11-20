@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, fireEvent, act, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -939,3 +940,5 @@ describe( "DXTaxonomyFilter Hardening", () => {
     expect( getByText( "You can only pass up to 5 filters" ) ).toBeInTheDocument();
   } );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXTaxonomyFilter {...taxonomyPropsArgs} {...extra} /> );

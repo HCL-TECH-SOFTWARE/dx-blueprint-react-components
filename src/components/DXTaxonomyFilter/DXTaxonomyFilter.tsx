@@ -19,6 +19,8 @@ import DXButton from "../DXButton/DXButton";
 import DXToggleMenu from "../DXToggleMenu";
 import { Form, InputGroup } from 'react-bootstrap';
 import { getIcon } from "../../utilities";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface TaxFilterProps {
     type: string;
@@ -46,7 +48,9 @@ export interface TaxonomyFilterProps {
     };
 }
 
-const DXTaxonomyFilter = ( props: TaxonomyFilterProps ) => {
+const DXTaxonomyFilter = ( props: ExtendableProps<TaxonomyFilterProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { totalItems: _totalItems, filterLimit: _filterLimit, filters: _filters, filteredCount: _filteredCount, filterItems: _filterItems, searchLabel: _searchLabel, searchPlaceholder: _searchPlaceholder, hideSearch: _hideSearch, hideClearFilters: _hideClearFilters, onClearFilters: _onClearFilters, clearFiltersLabel: _clearFiltersLabel, icons: _icons, className, ref, ...rest } = props;
     // state filterLimit is set to 3 by default, but can be overridden by the prop
     const [filterLimit, setFilterLimit] = useState( props.filterLimit || 3 );
     const [errorMsg, setErrorMsg] = useState( "" );
@@ -325,7 +329,7 @@ const DXTaxonomyFilter = ( props: TaxonomyFilterProps ) => {
     };
 
     return (
-        <div data-testid="taxonomy-filter-component" className="dxTaxonomyFilter">
+        <div {...rest} ref={ref} data-testid="taxonomy-filter-component" className={classNames( "dxTaxonomyFilter", className )}>
             <DXButton
                 className="dxTaxonomyFilter__actionButton d-flex d-sm-none"
                 onClick={showFilters}

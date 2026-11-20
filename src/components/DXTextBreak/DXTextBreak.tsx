@@ -17,6 +17,8 @@ import "./DXTextBreak.scss";
 import React from "react";
 import DXButton from "../DXButton/DXButton";
 import { IconButtonProps } from "../../utilities";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface TextBreakProps {
     title: String,
@@ -30,7 +32,9 @@ export interface TextBreakProps {
     textColor?: string,
 }
 
-const DXTextBreak = ( props: TextBreakProps ) => {
+const DXTextBreak = ( props: ExtendableProps<TextBreakProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { title: _title, subtitle: _subtitle, button: _button, align: _align, background: _background, textColor: _textColor, className, ref, ...rest } = props;
     const getBackgroundStyles = () => {
         let styles: { [k: string]: any; } = {};
         if ( props.background.image ) {
@@ -116,7 +120,7 @@ const DXTextBreak = ( props: TextBreakProps ) => {
     };
 
     return (
-        <div className="dxTextBreak">
+        <div {...rest} ref={ref} className={classNames( "dxTextBreak", className )}>
             <div className="dxTextBreak__background" style={getBackgroundStyles()} data-testid="text-break-background">
                 <div className="dxTextBreak__container row">
                     <div className={getAlignment()} style={getContentStyles()} data-testid="text-break-content">

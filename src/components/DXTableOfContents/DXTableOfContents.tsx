@@ -15,6 +15,8 @@
 
 import "./DXTableOfContents.scss";
 import React from "react";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface Item {
     id: string,
@@ -29,7 +31,9 @@ export interface TableProps {
     secondLevelStyle?: string,
     thirdLevelStyle?: string,
 }
-const DXTableOfContents = ( props: TableProps ) => {
+const DXTableOfContents = ( props: ExtendableProps<TableProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { title: _title, items: _items, firstLevelStyle: _firstLevelStyle, secondLevelStyle: _secondLevelStyle, thirdLevelStyle: _thirdLevelStyle, className, ref, ...rest } = props;
     const MAX_LEVELS = 3;
 
     const getClassName = ( level: number ) => {
@@ -69,7 +73,7 @@ const DXTableOfContents = ( props: TableProps ) => {
     };
 
     return (
-        <div className="dxTableContents" role="doc-toc">
+        <div {...rest} ref={ref} className={classNames( "dxTableContents", className )} role="doc-toc">
             <style>{getCustomListStyles()}</style>
             <h3 className="dxTableContents__title">{props.title}</h3>
             {props.items && props.items.length <= 0 ? (

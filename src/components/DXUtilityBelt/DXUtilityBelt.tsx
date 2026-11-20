@@ -15,6 +15,8 @@
 
 import "./DXUtilityBelt.scss";
 import React from "react";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 interface BeltIcon {
     button: {
@@ -31,7 +33,9 @@ export interface UtilityBeltProps {
     displayType?: ( "primary" | "secondary" | "unstyled" ),
 }
 
-const DXUtilityBelt = ( props: UtilityBeltProps ) => {
+const DXUtilityBelt = ( props: ExtendableProps<UtilityBeltProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { items: _items, textVariant: _textVariant, align: _align, displayType: _displayType, className, ref, ...rest } = props;
 
     const handleClick = ( e: any, item: BeltIcon ) => {
         if ( e.type === "click" || ( e.type === "keydown" && e.keyCode === 13 ) || ( e.type === "keydown" && e.keyCode === 32 ) ) {
@@ -70,7 +74,7 @@ const DXUtilityBelt = ( props: UtilityBeltProps ) => {
     };
 
     return (
-        <div className={`dxUtilityBelt ${getAlignment()}`}>
+        <div {...rest} ref={ref} className={classNames( `dxUtilityBelt ${getAlignment()}`, className )}>
             {renderItems( props.items )}
         </div>
     );

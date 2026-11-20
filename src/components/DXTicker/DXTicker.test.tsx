@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
@@ -225,3 +226,5 @@ test( "If icons change", () => {
     expect( screen.getByTestId( "ticker__moreLink" ).querySelector( "i" ) ).toHaveClass( icons.link );
     expect( screen.getByTestId( "ticker__percentage" ).querySelector( "i" ) ).toHaveClass( icons.up );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXTicker {...TickerArgs} {...extra} /> );

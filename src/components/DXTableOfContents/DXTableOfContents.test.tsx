@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render } from "@testing-library/react";
 import DXTableOfContents from "./DXTableOfContents";
@@ -253,3 +254,5 @@ test( "If thirdLevelStyle is 'upper-roman', that style will be applied", () => {
     const thirdLevel = container.querySelector( ".dxTableContents__third" );
     expect( thirdLevel ).toHaveStyle( 'list-style-type: upper-roman' );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXTableOfContents {...TableArgs} {...extra} /> );

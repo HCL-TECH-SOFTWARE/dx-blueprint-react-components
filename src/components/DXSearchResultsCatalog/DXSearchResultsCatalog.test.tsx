@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { act, render, screen } from "@testing-library/react";
 import DXSearchResultsCatalog from "./DXSearchResultsCatalog";
@@ -213,3 +214,5 @@ test( "if the user passes elementsPerRow as 4, the card should have the class co
     let card = container.querySelector( ".dxSRCatalog__item" );
     expect( card ).toHaveClass( "col-lg-3" );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXSearchResultsCatalog {...( { items: itemsArgs } as React.ComponentProps<typeof DXSearchResultsCatalog> )} {...extra} /> );
