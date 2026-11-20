@@ -16,11 +16,13 @@
 import "../../global/loaders.scss";
 import "./DXProjectCard.scss";
 import variables from "../../global/_exportVariables.module.scss";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import DXButton from "../DXButton/DXButton";
 import { IconButtonProps, ImageProps, StateIcons, renderAvatarLetters, getIcon, renderAvatarProjectMembers } from "../../utilities";
 import Badge from 'react-bootstrap/Badge';
 import { CardComponent } from "../../utilities/CardComponent/CardComponent";
+import { pickDomProps, mergeRefs } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 export interface ProjectCardProps extends CardComponent {
     name: string,
     img?: ImageProps,
@@ -38,12 +40,17 @@ export interface ProjectCardProps extends CardComponent {
     action: IconButtonProps;
     icons?: StateIcons;
 }
-const DXProjectCard = ( props: ProjectCardProps ) => {
+const DXProjectCard = ( props: ProjectCardProps & { className?: string; ref?: React.Ref<HTMLDivElement>; } ) => {
+    // Own props are pulled out; only DOM-safe extras reach the root (the props type has an index signature).
+    const { name: _name, img: _img, symbol: _symbol, tags: _tags, manager: _manager, members: _members, action: _action, icons: _icons, _search, index: _index, className, ref, ...rest } = props;
+    const domAttrs = pickDomProps( rest );
     const [loaded, setLoaded] = useState( false );
     const [showInfo, setShowInfo] = useState( false );
     const [mobile, setMobile] = useState( false );
     const [activeTooltip, setActiveTooltip] = useState( -1 );
     let componentRef = useRef<HTMLDivElement>( null );
+    // The internal ref and the consumer ref both point at the root
+    const mergedRootRef = useMemo( () => mergeRefs( componentRef, ref ), [ref] );
     const MAX_WIDTH_CONTAINER = parseInt( variables.md.split( "px" ) );
     const validateMobile = function () {
         let width = componentRef.current && componentRef.current.offsetWidth;
@@ -100,7 +107,7 @@ const DXProjectCard = ( props: ProjectCardProps ) => {
         );
     };
     return (
-        <div className='dxProjectCard' ref={componentRef}>
+        <div {...domAttrs} ref={mergedRootRef} className={classNames( "dxProjectCard", className )}>
             <div className='row'>
                 <div className="col-12 col-md-6">
                     <div className='dxProjectCard__data'>

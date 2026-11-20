@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen } from "@testing-library/react";
 import DXQuote, { QuoteProps } from "./DXQuote";
@@ -275,3 +276,5 @@ describe( "Custom icons", () => {
         expect( screen.getByTestId( "quotes-quoteClose" ) ).toHaveClass( "ci-Chat_Remove" );
     } );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXQuote index={1} body="This is a Quote test." thumbnail={{ url: "https://via.placeholder.com/150", altText: "Picture of Author Name" }} authorName="Author Name" {...extra} /> );

@@ -19,6 +19,8 @@ import React, { useState } from "react";
 import DXSocialPresence, { SocialPresenceProps } from "../DXSocialPresence/DXSocialPresence";
 import { ImageProps, renderAvatarLetters } from "../../utilities";
 import { CardComponent } from "../../utilities/CardComponent/CardComponent";
+import { pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface ProfileCardProps extends CardComponent {
     name: string;
@@ -37,11 +39,14 @@ const renderSocialSection = ( socialPresenceProps: SocialPresenceProps ) => {
     );
 };
 
-const DXProfileCard = ( props: ProfileCardProps ) => {
+const DXProfileCard = ( props: ProfileCardProps & { className?: string; ref?: React.Ref<HTMLDivElement>; } ) => {
+    // Own props are pulled out; only DOM-safe extras reach the root (the props type has an index signature).
+    const { name: _name, image: _image, socialMedia: _socialMedia, showSocialMedia: _showSocialMedia, _search, index: _index, className, ref, ...rest } = props;
+    const domAttrs = pickDomProps( rest );
     // States
     const [loaded, setLoaded] = useState( false );
     return (
-        <div className="dxProfileCard">
+        <div {...domAttrs} ref={ref} className={classNames( "dxProfileCard", className )}>
             <div className="dxProfileCard__image" data-testid="pc-imageContainer">
                 {props.image ? (
                     <>

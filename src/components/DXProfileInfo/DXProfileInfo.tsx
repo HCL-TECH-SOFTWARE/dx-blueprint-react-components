@@ -19,6 +19,8 @@ import "./DXProfileInfo.scss";
 import DXButton, { DisplayType } from "../DXButton/DXButton";
 import DXSocialPresence, { SocialPresenceProps } from "../DXSocialPresence/DXSocialPresence";
 import DXMap from "../DXMap/DXMap";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface ProfileInfoProps {
     image?: ImageProps;
@@ -43,7 +45,9 @@ export interface ProfileInfoProps {
     enableCollapsed?: boolean;
 }
 
-const DXProfileInfo = ( props: ProfileInfoProps ) => {
+const DXProfileInfo = ( props: ExtendableProps<ProfileInfoProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { image: _image, fullName: _fullName, jobTitle: _jobTitle, department: _department, location: _location, office: _office, email: _email, phone: _phone, primaryButton: _primaryButton, secondaryButton: _secondaryButton, address: _address, socialPresence: _socialPresence, icons: _icons, optionalButtons: _optionalButtons, iframeUrl: _iframeUrl, editAction: _editAction, enableCollapsed: _enableCollapsed, className, ref, ...rest } = props;
     const [isExpanded, setIsExpanded] = useState( false );
 
     const generateGoogleMapsUrl = ( address: string ) => {
@@ -207,7 +211,7 @@ const DXProfileInfo = ( props: ProfileInfoProps ) => {
     };
 
     return (
-        <div data-testid="dxProfileInfo" className="dxProfileInfo">
+        <div {...rest} ref={ref} data-testid="dxProfileInfo" className={classNames( "dxProfileInfo", className )}>
             <div data-testid="dxProfileInfoWrapper" className="dxProfileInfo__wrapper">
                 {renderTopInformation()}
                 {props.optionalButtons && renderOptionalButtons()}

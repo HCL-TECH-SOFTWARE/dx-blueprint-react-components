@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import "@testing-library/jest-dom";
 import { render, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -516,4 +517,14 @@ describe( "Mobile behavior", () => {
         expect( icon ).toHaveClass( props.icons.open );
     } );
 
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXProjectCard {...projectArgs} {...extra} /> );
+
+test( "extra props: unknown props do not reach the DOM", () => {
+    const props = { ...projectArgs, unknownProp: "x", "data-extra": "yes" } as React.ComponentProps<typeof DXProjectCard>;
+    const { container } = render( <DXProjectCard {...props} /> );
+    const root = container.firstElementChild as HTMLElement;
+    expect( root ).toHaveAttribute( "data-extra", "yes" );
+    expect( root ).not.toHaveAttribute( "unknownprop" );
 } );

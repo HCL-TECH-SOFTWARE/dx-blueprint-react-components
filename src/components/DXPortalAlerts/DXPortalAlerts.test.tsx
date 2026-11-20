@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen } from "@testing-library/react";
 import DXPortalAlerts, { PortalAlertsProps } from "./DXPortalAlerts";
@@ -90,3 +91,5 @@ test( "if icon changes", () => {
     const { container } = render( <DXPortalAlerts type="general" {...props} /> );
     expect( screen.getByTestId( 'portalAlert-icon' ) ).toHaveClass( "ci-User_Circle" );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXPortalAlerts type="general" {...AlertArgs} {...extra} /> );

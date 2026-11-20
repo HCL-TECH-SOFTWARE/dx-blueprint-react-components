@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen } from "@testing-library/react";
 import DXProfileInfo from "./DXProfileInfo";
@@ -251,3 +252,5 @@ test( "If you tap on the Edit Image button it should run the custom function", a
 
     expect( mockFunction ).toHaveBeenCalled();
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXProfileInfo {...UserProfileCollapsedArgs} {...extra} /> );
