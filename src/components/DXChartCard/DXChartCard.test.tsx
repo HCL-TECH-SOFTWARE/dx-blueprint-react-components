@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import DXChartCard from "./DXChartCard";
@@ -473,3 +474,5 @@ describe( "ChartCard component", () => {
         } );
     } );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXChartCard {...onlyNameArgs} {...extra} /> );

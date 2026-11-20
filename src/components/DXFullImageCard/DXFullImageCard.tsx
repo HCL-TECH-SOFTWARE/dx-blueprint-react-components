@@ -19,6 +19,8 @@ import React, { useState } from "react";
 import { ImageProps, getValuesFromDateFormat, getFullMonth } from "../../utilities";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
 import { CardComponent } from "../../utilities/CardComponent/CardComponent";
+import { pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface FullImageCardProps extends BasicComponent, CardComponent {
     image: ImageProps,
@@ -28,7 +30,10 @@ export interface FullImageCardProps extends BasicComponent, CardComponent {
     dateFormat?: string;
 }
 
-const DXFullImageCard = ( props: FullImageCardProps ) => {
+const DXFullImageCard = ( props: FullImageCardProps & { className?: string; ref?: React.Ref<HTMLDivElement>; } ) => {
+    // Own props are pulled out; only DOM-safe extras reach the root (the props type has an index signature).
+    const { image: _image, subtitle: _subtitle, description: _description, link: _link, dateFormat: _dateFormat, _edit, _search, index: _index, className, ref, ...rest } = props;
+    const domAttrs = pickDomProps( rest );
     const [loaded, setLoaded] = useState( false );
     const DEFAULT_DATE_FORMAT = "MM/DD/YY";
     const setDate = ( text: string, format?: string ) => {
@@ -51,7 +56,7 @@ const DXFullImageCard = ( props: FullImageCardProps ) => {
         return styles;
     };
     return (
-        <div className="dxFullImageCard">
+        <div {...domAttrs} ref={ref} className={classNames( "dxFullImageCard", className )}>
             <a href={props.link}
                 className="dxFullImageCard__link"
                 title={props.description}

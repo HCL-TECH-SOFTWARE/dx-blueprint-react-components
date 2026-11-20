@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, fireEvent, screen } from "@testing-library/react";
 import DXDownloadCard from "./DXDownloadCard";
@@ -339,4 +340,22 @@ test( "If File Type icon changes if value is set", () => {
     };
     render( <DXDownloadCard {...props} /> );
     expect( screen.getByTestId( "dc-file-icon" ) ).toHaveClass( props.icons.doc );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXDownloadCard {...downloadArgs} {...extra} /> );
+
+test( "a consumer onClick runs first and can stop the download with preventDefault", async () => {
+    const downloadFn = jest.fn();
+    const consumer = jest.fn( ( e: React.MouseEvent ) => e.preventDefault() );
+    const { container } = render( <DXDownloadCard {...downloadArgs} _downloadFn={downloadFn} onClick={consumer} /> );
+    await userEvent.click( container.querySelector( ".dxDownloadCard" ) as HTMLElement );
+    expect( consumer ).toHaveBeenCalledTimes( 1 );
+    expect( downloadFn ).not.toHaveBeenCalled();
+} );
+
+test( "a consumer onKeyDown runs before the component's own handling", () => {
+    const consumer = jest.fn();
+    const { container } = render( <DXDownloadCard {...downloadArgs} onKeyDown={consumer} /> );
+    fireEvent.keyDown( container.querySelector( ".dxDownloadCard" ) as HTMLElement, { key: "Tab" } );
+    expect( consumer ).toHaveBeenCalledTimes( 1 );
 } );

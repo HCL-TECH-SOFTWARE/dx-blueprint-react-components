@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render, screen, act } from "@testing-library/react";
@@ -775,4 +776,15 @@ describe( "DXEvent Hardening", () => {
             expect( location ).toBeNull();
         } );
     } );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXEvent {...eventData} variant="featured" {...extra} /> );
+
+test( "extra props: unknown props do not reach the DOM and the resolved dir stays", () => {
+    const props = { ...eventData, variant: "featured", dir: "rtl", unknownProp: "x", "data-extra": "yes" } as React.ComponentProps<typeof DXEvent>;
+    const { container } = render( <DXEvent {...props} /> );
+    const root = container.firstElementChild as HTMLElement;
+    expect( root ).toHaveAttribute( "data-extra", "yes" );
+    expect( root ).toHaveAttribute( "dir", "rtl" );
+    expect( root ).not.toHaveAttribute( "unknownprop" );
 } );

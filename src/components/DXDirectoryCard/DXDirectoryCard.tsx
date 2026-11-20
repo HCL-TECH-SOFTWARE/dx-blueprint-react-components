@@ -20,6 +20,8 @@ import { LinksProps, TagProps, renderAvatarLetters, IconButtonProps, StateIcons,
 import DXButton, { DisplayType } from '../DXButton/DXButton';
 import Badge from 'react-bootstrap/Badge';
 import { CardComponent } from '../../utilities/CardComponent/CardComponent';
+import { pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 export interface DirectoryCardProps extends CardComponent {
     index: number,
     title: string,
@@ -31,7 +33,10 @@ export interface DirectoryCardProps extends CardComponent {
     secondaryButtons?: IconButtonProps[];
     icons?: StateIcons;
 }
-const DXDirectoryCard = ( props: DirectoryCardProps ) => {
+const DXDirectoryCard = ( props: DirectoryCardProps & { className?: string; ref?: React.Ref<HTMLDivElement>; } ) => {
+    // Own props are pulled out; only DOM-safe extras reach the root (the props type has an index signature).
+    const { index: _index, title: _title, subtitle: _subtitle, image: _image, labels: _labels, primaryButtons: _primaryButtons, secondaryButtons: _secondaryButtons, icons: _icons, _search, className, ref, ...rest } = props;
+    const domAttrs = pickDomProps( rest );
     const MAX_WIDTH_CONTAINER = 768;
     const METADATA_MAX = 2;
     const [loaded, setLoaded] = useState( false );
@@ -223,8 +228,10 @@ const DXDirectoryCard = ( props: DirectoryCardProps ) => {
     };
     return (
         <div
+            {...domAttrs}
+            ref={ref}
             id={`dxDirectoryCard-${props.index}`}
-            className="dxDirectoryCard"
+            className={classNames( "dxDirectoryCard", className )}
             data-testid="dx-directory-card"
             aria-label='dxDirectoryCard'
         >

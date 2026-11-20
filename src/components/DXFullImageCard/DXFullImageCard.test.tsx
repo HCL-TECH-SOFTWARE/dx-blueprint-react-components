@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { fireEvent, render } from "@testing-library/react";
 import DXFullImageCard, { FullImageCardProps } from "./DXFullImageCard";
@@ -81,3 +82,12 @@ test( "If the date format is valid, the value will be correct", () => {
     expect( date.textContent ).toEqual( `${getFullMonth( expectedDate.month )} ${expectedDate.day}, ${expectedDate.year}` );
 } );
 
+itSupportsExtensionProps( ( extra ) => <DXFullImageCard {...fullImageArgs} {...extra} /> );
+
+test( "extra props: unknown props do not reach the DOM", () => {
+    const props = { ...fullImageArgs, unknownProp: "x", "data-extra": "yes" } as React.ComponentProps<typeof DXFullImageCard>;
+    const { container } = render( <DXFullImageCard {...props} /> );
+    const root = container.firstElementChild as HTMLElement;
+    expect( root ).toHaveAttribute( "data-extra", "yes" );
+    expect( root ).not.toHaveAttribute( "unknownprop" );
+} );

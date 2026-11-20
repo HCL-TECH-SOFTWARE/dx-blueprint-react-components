@@ -17,6 +17,8 @@ import React, { useState, useEffect } from "react";
 import "./DXDownloadCard.scss";
 import DXIcon from "../DXIcon/DXIcon";
 import { getIcon } from "../../utilities";
+import { ExtendableProps, chainHandlers } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface DownloadCardProps {
     url: string,
@@ -40,7 +42,10 @@ export interface DownloadCardProps {
     };
 }
 
-const DXDownloadCard = ( props: DownloadCardProps ) => {
+const DXDownloadCard = ( props: ExtendableProps<DownloadCardProps, "button"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { url: _url, fileName: _fileName, size: _size, _downloadFn, icons: _icons, className, ref, ...rest } = props;
+    const { onClick: consumerOnClick, onKeyDown: consumerOnKeyDown, ...domRest } = rest;
     // STATES
     const [fileName, setFileName] = useState( "" );
     const [extension, setExtension] = useState( "" );
@@ -116,7 +121,13 @@ const DXDownloadCard = ( props: DownloadCardProps ) => {
     }, [props.url] );
 
     return (
-        <button className="dxDownloadCard" onClick={( e ) => handleDownload( props.url, e )} onKeyDown={( e ) => handleDownload( props.url, e )}>
+        <button
+            {...domRest}
+            ref={ref}
+            className={classNames( "dxDownloadCard", className )}
+            // The consumer's handlers run first and can stop the download with preventDefault
+            onClick={chainHandlers( consumerOnClick, ( e ) => handleDownload( props.url, e ) )}
+            onKeyDown={chainHandlers( consumerOnKeyDown, ( e ) => handleDownload( props.url, e ) )}>
             <div className="dxDownloadCard__body">
                 <div className="dxDownloadCard__info">
                     <div className="dxDownloadCard__icon">

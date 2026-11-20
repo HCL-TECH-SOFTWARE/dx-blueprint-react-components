@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen } from "@testing-library/react";
 import DXDashboardCard from "./DXDashboardCard";
@@ -56,3 +57,5 @@ describe( "DashboardCard component", () => {
     } );
 
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXDashboardCard {...cardsArgs} {...extra} /> );

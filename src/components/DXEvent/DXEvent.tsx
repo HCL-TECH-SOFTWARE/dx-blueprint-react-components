@@ -21,6 +21,8 @@ import DXButton from "../DXButton/DXButton";
 import { formatDate, parseDate } from "../../utilities/dateTime";
 import { CardComponent } from "../../utilities/CardComponent/CardComponent";
 import { normalizeLocaleNumerals } from "../../utilities/cec-utils";
+import { pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 interface EventDate {
     shortMonth: string,
     month: string,
@@ -48,7 +50,10 @@ export interface EventProps extends BasicComponent, CardComponent {
         location?: string,
     };
 }
-const DXEvent = ( props: EventProps ) => {
+const DXEvent = ( props: EventProps & { className?: string; ref?: React.Ref<HTMLDivElement>; } ) => {
+    // Own props are pulled out; only DOM-safe extras reach the root (the props type has an index signature).
+    const { variant: _variant, dir: _dir, eventFrom: _eventFrom, eventTo: _eventTo, eventType: _eventType, eventName: _eventName, eventLocation: _eventLocation, eventButton: _eventButton, eventTime24hrFormat: _eventTime24hrFormat, showExternalIcon: _showExternalIcon, compact: _compact, icons: _icons, _edit, _search, index: _index, className, ref, ...rest } = props;
+    const domAttrs = pickDomProps( rest );
     // STATES
     const [dateFrom, setDateFrom] = useState<any>( {} );
     const [dateTo, setDateTo] = useState<any>( {} );
@@ -281,7 +286,7 @@ const DXEvent = ( props: EventProps ) => {
     };
     const isRiverCompact = props.variant === "river" && props.compact;
     return (
-        <div className={`dxEvent ${getVariant( props.variant )}${isRiverCompact ? ' dxEvent--riverCompact' : ''}${resolvedDir === 'rtl' ? ' dxEvent--rtl' : ''}`} dir={resolvedDir}>
+        <div {...domAttrs} ref={ref} className={classNames( `dxEvent ${getVariant( props.variant )}${isRiverCompact ? ' dxEvent--riverCompact' : ''}${resolvedDir === 'rtl' ? ' dxEvent--rtl' : ''}`, className )} dir={resolvedDir}>
             {
                 props.variant === "featured" ? (
                     <div className="dxEvent--featured__calendarIcon">
