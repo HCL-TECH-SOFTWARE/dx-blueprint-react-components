@@ -26,6 +26,8 @@ import DXCardButton, { CardButtonProps } from "../DXCardButton/DXCardButton";
 import { ImageProps, LinksProps, NavigationItemProps, StateIcons, getIcon, getLinkTarget } from "../../utilities";
 import DXMyNextMeeting, { NextMeetingProps } from "../DXMyNextMeeting/DXMyNextMeeting";
 import DXVerticalNavigation, { NavigationItem, VerticalNavigationProps } from "../DXVerticalNavigation/DXVerticalNavigation";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface MicrositeProps {
     sliderMenu: MicrositeSliderProps;
@@ -54,7 +56,9 @@ export interface MicrositeNavigationProps {
     footerButton: CardButtonProps;
 }
 
-const DXMicrositeNavigation = ( props: MicrositeProps ) => {
+const DXMicrositeNavigation = ( props: ExtendableProps<MicrositeProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { sliderMenu: _sliderMenu, navigation: _navigation, icons: _icons, className, ref, ...rest } = props;
     const [open, setOpen] = useState( false );
 
     const showContent = ( e: any ) => {
@@ -88,7 +92,7 @@ const DXMicrositeNavigation = ( props: MicrositeProps ) => {
     };
 
     return (
-        <div className="dxMicrosite" data-testid="microsite">
+        <div {...rest} ref={ref} className={classNames( "dxMicrosite", className )} data-testid="microsite">
             <Container fluid="xl" className="dxSliderMenu" >
                 <Row>
                     <Col xs={7}>

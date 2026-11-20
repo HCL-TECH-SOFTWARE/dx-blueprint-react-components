@@ -23,8 +23,9 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import SliderButton from "./components/SliderButton";
 import { SliderIcons } from "../../utilities";
-import { SlideSink } from "../../utilities/extendable";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
+import { ExtendableProps, SlideSink } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface MiniCatalogProps extends BasicComponent {
     index: number,
@@ -35,7 +36,9 @@ export interface MiniCatalogProps extends BasicComponent {
 /*
 ** @deprecated: From @version 1.32.0-alpha use DXGenericMiniCatalog instead
 */
-const DXMiniCatalog = ( props: MiniCatalogProps ) => {
+const DXMiniCatalog = ( props: ExtendableProps<MiniCatalogProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { index: _index, items: _items, icons: _icons, _edit, className, ref, ...rest } = props;
     const MAX_WIDTH_MOBILE = 390;
     let componentSize = 0;
     const items: CardProps[] = props.items.map( ( item: CardProps, index: number ) => ( { ...item, index: index } ) );
@@ -154,7 +157,7 @@ const DXMiniCatalog = ( props: MiniCatalogProps ) => {
     }, [items] );
 
     return (
-        <div className="dxMiniCatalog" id={`dxMiniCatalog-${props.index}`}>
+        <div {...rest} ref={ref} className={classNames( "dxMiniCatalog", className )} id={`dxMiniCatalog-${props.index}`}>
             {
                 items.length === 0 ? (
                     <p>No items received</p>

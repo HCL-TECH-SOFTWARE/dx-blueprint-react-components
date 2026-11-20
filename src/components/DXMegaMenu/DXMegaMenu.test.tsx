@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen, within, act, waitFor } from "@testing-library/react";
 // @ts-ignore: Bypassing strict ESM/CommonJS default export resolution
@@ -1599,3 +1600,5 @@ describe( "DXMegaMenu Hardening", () => {
         } );
     } );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXMegaMenu {...MegaMenuArgs} {...extra} /> );

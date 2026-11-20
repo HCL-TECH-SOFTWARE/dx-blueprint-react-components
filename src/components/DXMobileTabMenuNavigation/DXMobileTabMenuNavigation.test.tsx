@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -802,3 +803,5 @@ test( "If Close icon changes when icon class value is set", async () => {
     await userEvent.click( item );
     expect( getByTestId( "mobile-tab-menu-overlay-close" ).querySelector( "i" ) ).toHaveClass( props.icons.close );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXMobileTabMenuNavigation items={[{ title: "Help", contentId: ".help-content", icon: "ci-Circle_Help" }]} {...extra} /> );

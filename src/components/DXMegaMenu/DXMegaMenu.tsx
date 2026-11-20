@@ -13,13 +13,15 @@
  * limitations under the License.                                           *
  * ======================================================================== */
 
-import React, { ReactElement, useEffect, useRef, useState } from "react";
+import React, { ReactElement, useEffect, useRef, useState, useMemo } from "react";
 import "./DXMegaMenu.scss";
 import { LinksProps, getIcon, getLinkIcon, getLinkTarget, renderOverlayElement, overflowText } from "../../utilities";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import { createRoot, Root } from 'react-dom/client';
+import { ExtendableProps, mergeRefs } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface MegaMenuProps {
     navigationItems: NavigationItem[];
@@ -87,8 +89,12 @@ var secSetActive: React.Dispatch<React.SetStateAction<number>>;
 var thrdCurrentActive: number;
 var thrdSetActive: React.Dispatch<React.SetStateAction<number>>;
 
-const DXMegaMenu = ( props: MegaMenuProps ) => {
-    const wrapperRef = useRef( null );
+const DXMegaMenu = ( props: ExtendableProps<MegaMenuProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { navigationItems: _navigationItems, active: _active, menuImage: _menuImage, globalLinks: _globalLinks, secondaryLevelContainerId: _secondaryLevelContainerId, parentRef: _parentRef, showOverlay: _showOverlay, showLandingCard: _showLandingCard, socialLinks: _socialLinks, icons: _icons, titleCharLimit: _titleCharLimit, className, ref, ...rest } = props;
+    const wrapperRef = useRef<HTMLDivElement>( null );
+    // The internal ref and the consumer ref both point at the root
+    const mergedRootRef = useMemo( () => mergeRefs( wrapperRef, ref ), [ref] );
     const secondLevelRef = useRef( null );
     const secondLevelRootRef = useRef<{ container: Element; root: Root; } | null>( null );
 
@@ -556,7 +562,7 @@ const DXMegaMenu = ( props: MegaMenuProps ) => {
     };
 
     return (
-        <div className="dxMegaMenu" ref={wrapperRef}>
+        <div {...rest} ref={mergedRootRef} className={classNames( "dxMegaMenu", className )}>
             <ul className="nav nav-tabs dxMegaMenu__primaryLevel" role="tablist">
                 {renderFirstLevel()}
             </ul>

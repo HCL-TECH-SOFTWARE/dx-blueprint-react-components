@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React, { FormEventHandler } from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 // @ts-ignore: Bypassing strict ESM/CommonJS default export resolution
 import userEvent from "@testing-library/user-event";
@@ -902,3 +903,5 @@ describe( "DXNavigationHeader - Hardened Mutation Suite", () => {
         } );
     } );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXNavigationHeader {...NavigationArgs} {...extra} /> );

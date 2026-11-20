@@ -17,6 +17,8 @@ import "./DXMobileTabMenuNavigation.scss";
 import React, { useState } from "react";
 import DXButton from "../DXButton/DXButton";
 import { ImageProps, getIcon } from "../../utilities";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 interface NavItems {
     title: string,
@@ -33,7 +35,9 @@ export interface MobileTabMenuNavigationProps {
     };
 }
 
-const DXMobileTabMenuNavigation = ( props: MobileTabMenuNavigationProps ) => {
+const DXMobileTabMenuNavigation = ( props: ExtendableProps<MobileTabMenuNavigationProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { items: _items, dark: _dark, icons: _icons, className, ref, ...rest } = props;
     // STATE
     const [active, setActive] = useState( -1 );
     const [showOverlay, setShowOverlay] = useState( false );
@@ -207,7 +211,7 @@ const DXMobileTabMenuNavigation = ( props: MobileTabMenuNavigationProps ) => {
     };
 
     return (
-        <div className="dxMTabMenuNav">
+        <div {...rest} ref={ref} className={classNames( "dxMTabMenuNav", className )}>
             <div className={showOverlay ? "dxMTabMenuNav__overlayWrapper" : "dxMTabMenuNav__overlayWrapper--hide"}
                 data-testid="mobile-tab-menu-overlay">
                 {renderOverlays( props.items )}
