@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -250,4 +251,16 @@ test( "Slider icons change", () => {
 
     expect( screen.getByTestId( "slider-next-button" ).querySelector( "i" ) ).toHaveClass( props.icons?.next! );
     expect( screen.getByTestId( "slider-prev-button" ).querySelector( "i" ) ).toHaveClass( props.icons?.prev! );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXFullImageMiniCatalog index={1} items={itemsArgs.slice( 0, 3 )} {...extra} /> );
+
+test( "In the slider layout, the props react-slick injects into its children do not reach the cards", () => {
+    const { container } = render( <DXFullImageMiniCatalog index={1} items={sliderItemsArgs} /> );
+    const cards = container.querySelectorAll( ".dxFullImageCard" );
+    expect( cards.length ).toBeGreaterThan( 0 );
+    cards.forEach( ( card ) => {
+        expect( card.classList.contains( "slick-slide" ) ).toBe( false );
+        expect( card.hasAttribute( "data-index" ) ).toBe( false );
+    } );
 } );

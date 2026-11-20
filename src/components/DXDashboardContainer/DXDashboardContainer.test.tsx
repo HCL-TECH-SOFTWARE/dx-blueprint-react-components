@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -153,3 +154,5 @@ test( "How component behaves on incorrect custom component prop", () => {
     expect( warn ).toHaveBeenCalledWith( "Incorrect TAG for children element was not found in the library: " + childElement.customChild.type );
     warn.mockRestore();
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXDashboardContainer title="Title" elements={[]} {...extra} /> );

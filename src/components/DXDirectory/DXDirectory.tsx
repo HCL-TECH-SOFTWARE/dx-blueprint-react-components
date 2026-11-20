@@ -18,6 +18,8 @@ import React, { useState, useEffect } from "react";
 import DXDirectoryCard, { DirectoryCardProps } from "../DXDirectoryCard/DXDirectoryCard";
 import DXPagination from "../DXPagination/DXPagination";
 import DXTaxonomyFilter, { TaxFilterProps, TaxonomyFilterProps } from "../DXTaxonomyFilter/DXTaxonomyFilter";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface DirectoryProps {
     items: DirectoryItem[];
@@ -52,7 +54,9 @@ const hasValidPaginationProps = ( properties: any ) => {
 /*
 ** @deprecated: From @version 1.31.0-alpha use DXGenericCatalog instead
 */
-const DXDirectory = ( props: DirectoryProps ) => {
+const DXDirectory = ( props: ExtendableProps<DirectoryProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { items: _items, paginationProps: _paginationProps, totalItems: _totalItems, filterType: _filterType, categories: _categories, hideFilters: _hideFilters, searchLabel: _searchLabel, searchPlaceholder: _searchPlaceholder, className, ref, ...rest } = props;
     const items: DirectoryItem[] = props.items.map( ( item: DirectoryItem, index: number ) => ( { ...item, index: index } ) );
     /** STATES */
     // TaxonomyFilter
@@ -184,7 +188,7 @@ const DXDirectory = ( props: DirectoryProps ) => {
     };
 
     return (
-        <div className="dxDirectory">
+        <div {...rest} ref={ref} className={classNames( "dxDirectory", className )}>
             {
                 !props.hideFilters ? (
                     hasValidTaxonomyProps( props ) ? (

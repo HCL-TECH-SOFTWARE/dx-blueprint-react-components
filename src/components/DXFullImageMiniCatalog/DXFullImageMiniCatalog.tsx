@@ -25,6 +25,8 @@ import Slider from "react-slick";
 import SliderButton from "./components/SliderButton";
 import { SliderIcons } from "../../utilities";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
+import { ExtendableProps, SlideSink } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface FullImageMiniCatalogProps extends BasicComponent {
     index: number,
@@ -35,7 +37,9 @@ export interface FullImageMiniCatalogProps extends BasicComponent {
 /*
 ** @deprecated: From @version 1.32.0-alpha use DXGenericMiniCatalog instead
 */
-const DXFullImageMiniCatalog = ( props: FullImageMiniCatalogProps ) => {
+const DXFullImageMiniCatalog = ( props: ExtendableProps<FullImageMiniCatalogProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { index: _index, items: _items, icons: _icons, _edit, className, ref, ...rest } = props;
     const MAX_WIDTH_MOBILE = 390;
     let componentSize = 0;
     const items: FullImageCardProps[] = props.items.map( ( item: FullImageCardProps, index: number ) => ( { ...item, index: index } ) );
@@ -98,7 +102,8 @@ const DXFullImageMiniCatalog = ( props: FullImageMiniCatalogProps ) => {
                 <Slider {...settings} className="dxFullImgMiniC__slider">
                     {
                         items.map( ( item: FullImageCardProps ) => (
-                            <FullImageCard {...item} key={item.index} />
+                            // react-slick clones its direct children with className/style/tabIndex/onClick; the sink keeps them off the card
+                            <SlideSink key={item.index}><FullImageCard {...item} /></SlideSink>
                         ) )
                     }
                 </Slider>
@@ -154,7 +159,7 @@ const DXFullImageMiniCatalog = ( props: FullImageMiniCatalogProps ) => {
     }, [props.items] );
 
     return (
-        <div className="dxFullImgMiniC" id={`dxFullImgMiniC-${props.index}`}>
+        <div {...rest} ref={ref} className={classNames( "dxFullImgMiniC", className )} id={`dxFullImgMiniC-${props.index}`}>
             {items.length === 0 ? (
                 <p>No items received</p>
             ) : items.length > 0 && items.length < 5 ? (
@@ -163,7 +168,8 @@ const DXFullImageMiniCatalog = ( props: FullImageMiniCatalogProps ) => {
                 <Slider {...settings} className="dxFullImgMiniC__slider">
                     {
                         items.map( ( item: FullImageCardProps ) => (
-                            <DXFullImageCard {...item} key={item.index} />
+                            // react-slick clones its direct children with className/style/tabIndex/onClick; the sink keeps them off the card
+                            <SlideSink key={item.index}><DXFullImageCard {...item} /></SlideSink>
                         ) )
                     }
                 </Slider>

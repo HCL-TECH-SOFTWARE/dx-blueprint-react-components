@@ -23,6 +23,8 @@ import DXTaxonomyFilter, { TaxFilterProps, TaxonomyFilterProps } from "../DXTaxo
 import { getColNumber } from "../../utilities";
 import { formatDate, parseDate } from "../../utilities/dateTime";
 import { normalizeLocaleNumerals } from "../../utilities/cec-utils";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 export interface EventCatalogProps {
     items: EventCatalogItem[],
     totalItems: number,
@@ -55,7 +57,9 @@ const hasValidPaginationProps = ( properties: any ) => {
 /*
 ** @deprecated: From @version 1.31.0-alpha use DXGenericCatalog instead
 */
-const DXEventCatalog = ( props: EventCatalogProps ) => {
+const DXEventCatalog = ( props: ExtendableProps<EventCatalogProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { items: _items, totalItems: _totalItems, paginationProps: _paginationProps, filterType: _filterType, categories: _categories, hideFilters: _hideFilters, elementsPerRow: _elementsPerRow, searchLabel: _searchLabel, searchPlaceholder: _searchPlaceholder, hideTypeFilter: _hideTypeFilter, dir: _dir, className, ref, ...rest } = props;
     /** States */
     const [filteredItems, setFilteredItems] = useState( props.items );
     const [filteredCount, setFilteredCount] = useState( props.items.length );
@@ -306,7 +310,7 @@ const DXEventCatalog = ( props: EventCatalogProps ) => {
         );
     };
     return (
-        <div className={`dxEventCatalog${resolvedDir === 'rtl' ? ' dxEventCatalog--rtl' : ''}`} dir={resolvedDir}>
+        <div {...rest} ref={ref} className={classNames( `dxEventCatalog${resolvedDir === 'rtl' ? ' dxEventCatalog--rtl' : ''}`, className )} dir={resolvedDir}>
             {
                 !props.hideFilters ? (
                     hasValidTaxonomyProps( props ) ? (

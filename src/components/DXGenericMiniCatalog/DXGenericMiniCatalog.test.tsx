@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -326,3 +327,5 @@ test( "If Next icon is changed if prop is set", () => {
     expect( prevIcon.querySelector( "i" ) ).toHaveClass( props.body.icons?.prev! );
     expect( nextIcon.querySelector( "i" ) ).toHaveClass( props.body.icons?.next! );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXGenericMiniCatalog {...MiniCatalogGridArgs} {...extra} /> );

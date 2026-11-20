@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, fireEvent, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -576,3 +577,13 @@ test('should exclude empty or whitespace-only values from filter dropdowns', asy
     expect(optionValues).not.toContain(' ');
   
   });
+
+itSupportsExtensionProps( ( extra ) => (
+    <DXFullImageCatalog
+        items={itemsArgs}
+        paginationProps={{ sets: ["2", "4", "8"], active: 1, activeSet: 4 }}
+        totalItems={itemsArgs.length}
+        categories={["subject"]}
+        filterType="select"
+        {...extra} />
+) );

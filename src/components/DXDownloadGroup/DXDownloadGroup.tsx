@@ -16,13 +16,17 @@
 import "./DXDownloadGroup.scss";
 import React from "react";
 import DXDownloadCard, { DownloadCardProps } from "../DXDownloadCard/DXDownloadCard";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface DownloadGroupProps {
     downloads: DownloadCardProps[],
     title?: string,
 }
 
-const DXDownloadGroup = ( props: DownloadGroupProps ) => {
+const DXDownloadGroup = ( props: ExtendableProps<DownloadGroupProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { downloads: _downloads, title: _title, className, ref, ...rest } = props;
     const renderColDownloads = ( downloads: DownloadCardProps[] ) => {
         return downloads.map( ( download, key ) => (
             <div key={key} className="dxDownloadGroup__item">
@@ -32,7 +36,7 @@ const DXDownloadGroup = ( props: DownloadGroupProps ) => {
     };
 
     return (
-        <div className="dxDownloadGroup">
+        <div {...rest} ref={ref} className={classNames( "dxDownloadGroup", className )}>
             {props.title ? (
                 <p className="dxDownloadGroup__title">{props.title}</p>
             ) : null}
