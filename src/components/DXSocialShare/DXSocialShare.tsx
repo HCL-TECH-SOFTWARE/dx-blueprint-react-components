@@ -19,6 +19,8 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import "./DXSocialShare.scss";
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface SocialShareProps {
     title?: string,
@@ -73,7 +75,9 @@ let getClassName = ( type?: string ) => {
 };
 
 
-const DXSocialShare = ( props: SocialShareProps ) => {
+const DXSocialShare = ( props: ExtendableProps<SocialShareProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { title: _title, size: _size, light: _light, socialMediaActions: _socialMediaActions, pageDetails: _pageDetails, className, ref, ...rest } = props;
     const checkLightMode = ( size: string | undefined, light: boolean | undefined ) => {
         return size && size !== "small" && light ? { color: "var(--light-white)" } : undefined;
     };
@@ -135,7 +139,7 @@ const DXSocialShare = ( props: SocialShareProps ) => {
     };
 
     return (
-        <div className='dxSocialShare'>
+        <div {...rest} ref={ref} className={classNames( "dxSocialShare", className )}>
             {props.size !== "small" && props.title ?
                 <p className="dxSocialShare__title" style={checkLightMode( props.size, props.light )}>
                     {props.title}

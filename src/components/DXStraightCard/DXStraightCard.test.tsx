@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen } from "@testing-library/react";
 import { RichTextBreadcrumbsArgs, StraightCardArgs } from "./DXStraightCard.stories";
@@ -128,4 +129,14 @@ test( "If icons change when props are set", () => {
     expect.assertions(2);
     expect( screen.getByTestId("StCard-chevron").querySelector("i") ).toHaveClass( icons.link );
     expect( screen.getAllByTestId("StCard-breadIcon")[0] ).toHaveClass( icons.breadcrumb );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXStraightCard {...StraightCardArgs} {...extra} /> );
+
+test( "extra props: unknown props do not reach the DOM", () => {
+    const props = { ...StraightCardArgs, unknownProp: "x", "data-extra": "yes" } as React.ComponentProps<typeof DXStraightCard>;
+    const { container } = render( <DXStraightCard {...props} /> );
+    const root = container.firstElementChild as HTMLElement;
+    expect( root ).toHaveAttribute( "data-extra", "yes" );
+    expect( root ).not.toHaveAttribute( "unknownprop" );
 } );

@@ -16,6 +16,8 @@
 import React, { useEffect, useState } from "react";
 import "./DXVideo.scss";
 import { LinksProps } from "../../utilities";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 export interface VideoProps {
     playlist: string,
     apiKey: string,
@@ -85,7 +87,9 @@ const RTL_LANGUAGES = [
     'nqo', // N'Ko
     'syr', // Syriac
 ];
-const DXVideo = ( props: VideoProps ) => {
+const DXVideo = ( props: ExtendableProps<VideoProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { playlist: _playlist, apiKey: _apiKey, service: _service, layout: _layout, link: _link, dir: _dir, className, ref, ...rest } = props;
     const [responseYoutube, setResponseYoutube] = useState( {} as typeResponseYoutube );
     const [responseVimeo, setResponseVimeo] = useState( {} as typeResponseVimeo );
     const [isLoading, setLoading] = useState( true );
@@ -264,7 +268,7 @@ const DXVideo = ( props: VideoProps ) => {
             } );
     };
     return (
-        <div className="dxVideo--loading" data-testid="dx-video" dir={resolvedDir}>
+        <div {...rest} ref={ref} className={classNames( "dxVideo--loading", className )} data-testid="dx-video" dir={resolvedDir}>
             {isLoading ? (
                 <h4 data-testid="loading">Loading...</h4>
             ) : (

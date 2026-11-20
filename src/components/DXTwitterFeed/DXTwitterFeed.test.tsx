@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from 'react';
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen } from "@testing-library/react";
 import DXTwitterFeed, { TwitterFeedProps } from "./DXTwitterFeed";
@@ -90,3 +91,5 @@ describe( "Spinner", () => {
         expect( spinner ).toHaveClass( 'text-primary' );
     } );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXTwitterFeed {...twitterFeedProps} {...extra} /> );

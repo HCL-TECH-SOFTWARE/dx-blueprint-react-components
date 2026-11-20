@@ -19,6 +19,8 @@ import { LinksProps, generateLinkAnchor, ImageProps, getIcon } from "../../utili
 import { NumericButtonProps } from "../../utilities/button";
 import "./DXSocialCard.scss";
 import { CardComponent } from "../../utilities/CardComponent/CardComponent";
+import { pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface SocialCardProps extends CardComponent {
     title: LinksProps;
@@ -38,7 +40,10 @@ export interface SocialCardProps extends CardComponent {
     };
 }
 
-const DXSocialCard = ( props: SocialCardProps ) => {
+const DXSocialCard = ( props: SocialCardProps & { className?: string; ref?: React.Ref<HTMLDivElement>; } ) => {
+    // Own props are pulled out; only DOM-safe extras reach the root (the props type has an index signature).
+    const { title: _title, authorText: _authorText, showAuthorImage: _showAuthorImage, compactNoBodySpacing: _compactNoBodySpacing, likes: _likes, comments: _comments, body: _body, image: _image, sticker: _sticker, type: _type, icons: _icons, _search, index: _index, className, ref, ...rest } = props;
+    const domAttrs = pickDomProps( rest );
     const hasBody = Boolean( props.body && props.body.trim().length > 0 );
     const cardType = props.type || "primary";
     const shouldAddNoBodySpacing = !hasBody && cardType !== "small";
@@ -48,7 +53,7 @@ const DXSocialCard = ( props: SocialCardProps ) => {
         : "";
 
     return (
-        <div className="dxSocialCard">
+        <div {...domAttrs} ref={ref} className={classNames( "dxSocialCard", className )}>
             {
                 props.image &&
                 <img

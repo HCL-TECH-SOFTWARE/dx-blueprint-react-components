@@ -18,6 +18,8 @@ import { generateLinkAnchor, getFullMonth, getIcon, getValuesFromDateFormat, Lin
 import Badge from 'react-bootstrap/Badge';
 import "./DXStraightCard.scss";
 import { CardComponent } from "../../utilities/CardComponent/CardComponent";
+import { pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 export interface StraightCardProps extends CardComponent {
     title: LinksProps;
     date?: string;
@@ -32,7 +34,10 @@ export interface StraightCardProps extends CardComponent {
         link?: string;
     };
 }
-const DXStraightCard = ( props: StraightCardProps ) => {
+const DXStraightCard = ( props: StraightCardProps & { className?: string; ref?: React.Ref<HTMLDivElement>; } ) => {
+    // Own props are pulled out; only DOM-safe extras reach the root (the props type has an index signature).
+    const { title: _title, date: _date, tags: _tags, dateFormat: _dateFormat, breadcrumb: _breadcrumb, subtitle: _subtitle, showLink: _showLink, showChevron: _showChevron, icons: _icons, _search, index: _index, className, ref, ...rest } = props;
+    const domAttrs = pickDomProps( rest );
     const DEFAULT_DATE_FORMAT = "MM/DD/YY";
     const showChevron = Boolean( props.showChevron );
     const showLink = Boolean( props.showLink );
@@ -89,7 +94,7 @@ const DXStraightCard = ( props: StraightCardProps ) => {
         return elements;
     };
     return (
-        <div className="dxStraightCard">
+        <div {...domAttrs} ref={ref} className={classNames( "dxStraightCard", className )}>
             <div className={`dxStraightCard__main dxStraightCard__main--${showChevron ? "withChevron" : "noChevron"}`}>
                 {
                     props.breadcrumb &&

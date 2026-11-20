@@ -20,6 +20,8 @@ import React from "react";
 import { getLinkTarget } from "../../utilities";
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 interface SocialMedia {
     display?: boolean,
@@ -61,7 +63,9 @@ let getClassName = ( type?: string ) => {
     }
 };
 
-const DXSocialPresence = ( props: SocialPresenceProps ) => {
+const DXSocialPresence = ( props: ExtendableProps<SocialPresenceProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { title: _title, size: _size, light: _light, socialMediaLinks: _socialMediaLinks, className, ref, ...rest } = props;
     const checkLightMode = ( size: string | undefined, light: boolean | undefined ) => {
         return size && size !== "small" && light ? { color: "var(--light-white)" } : undefined;
     };
@@ -122,7 +126,7 @@ const DXSocialPresence = ( props: SocialPresenceProps ) => {
     };
                     
     return (
-        <div className="dxSocialPresence">
+        <div {...rest} ref={ref} className={classNames( "dxSocialPresence", className )}>
             {props.size !== "small" && props.title ?
                 <p className="dxSocialPresence__title" style={checkLightMode( props.size, props.light )}>
                     {props.title}

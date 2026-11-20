@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render, fireEvent, screen } from "@testing-library/react";
@@ -385,3 +386,5 @@ test( "If icon changes when iconClass property is configured", () => {
         /> );
     expect( screen.getByTestId( "river-header-icon" ) ).toHaveClass( "ci-Arrow_Down_SM" );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXRiverOfContent {...riverOfContentTestArgs} {...extra} /> );

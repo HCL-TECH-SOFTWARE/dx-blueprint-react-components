@@ -14,9 +14,11 @@
  * ======================================================================== */
 
 import "./DXRiverOfContent.scss";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import DXButton from "../DXButton/DXButton";
 import { LinksProps, getIcon, getLinkTarget } from "../../utilities";
+import { ExtendableProps, mergeRefs } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface RiverOfContentProps {
     index: number,
@@ -30,9 +32,13 @@ export interface RiverOfContentProps {
     };
 }
 
-const DXRiverOfContent = ( props: RiverOfContentProps ) => {
+const DXRiverOfContent = ( props: ExtendableProps<RiverOfContentProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { index: _index, header: _header, links: _links, headerCharLimit: _headerCharLimit, itemCharLimit: _itemCharLimit, collapsible: _collapsible, icons: _icons, className, ref, ...rest } = props;
     const [open, setOpen] = useState( false );
     const componentRef = useRef<HTMLDivElement>( null );
+    // The internal ref and the consumer ref both point at the root
+    const mergedRootRef = useMemo( () => mergeRefs( componentRef, ref ), [ref] );
     const buttonRef = useRef<HTMLButtonElement>( null );
     const contentRef = useRef<HTMLDivElement>( null );
 
@@ -99,7 +105,7 @@ const DXRiverOfContent = ( props: RiverOfContentProps ) => {
     };
 
     return (
-        <div className="dxRiverContent" id={`dxRiverContent-${props.index}`} ref={componentRef}>
+        <div {...rest} ref={mergedRootRef} className={classNames( "dxRiverContent", className )} id={`dxRiverContent-${props.index}`}>
             <div className={"dxRiverContent__header " + verifyTextOverflow( props.header, true )} >
                 {
                     props.collapsible ? (

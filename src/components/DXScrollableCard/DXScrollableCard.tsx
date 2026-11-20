@@ -14,11 +14,13 @@
  * ======================================================================== */
 
 import "./DXScrollableCard.scss";
-import React, { ReactElement, useRef } from "react";
+import React, { ReactElement, useRef, useMemo } from "react";
 import { LinksProps, SliderIcons, getIcon, getLinkTarget, renderAvatarLetters } from "../../utilities";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { ExtendableProps, mergeRefs } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface ScrollableCardProps {
     items: CardInfo[];
@@ -51,10 +53,14 @@ const SliderButton = ( props: SliderButtonProps ) => {
 };
 
 
-const DXScrollableCard = ( props: ScrollableCardProps ) => {
+const DXScrollableCard = ( props: ExtendableProps<ScrollableCardProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { items: _items, icons: _icons, className, ref, ...rest } = props;
     const METADATA_LIMIT = 2;
     const MAX_LINKS = 2;
     const refComponent = useRef<HTMLDivElement>( null );
+    // The internal ref and the consumer ref both point at the root
+    const mergedRootRef = useMemo( () => mergeRefs( refComponent, ref ), [ref] );
 
     const onChangeSlides = () => {
         const firstSlide = refComponent.current?.querySelectorAll( `.dxScrollableCard .slick-slide` )[0];
@@ -133,7 +139,7 @@ const DXScrollableCard = ( props: ScrollableCardProps ) => {
     };
 
     return (
-        <div className="dxScrollableCard" ref={refComponent} data-testid="scrollable-card">
+        <div {...rest} ref={mergedRootRef} className={classNames( "dxScrollableCard", className )} data-testid="scrollable-card">
             {
                 props.items.length === 0 ? (
                     <p>No items received</p>

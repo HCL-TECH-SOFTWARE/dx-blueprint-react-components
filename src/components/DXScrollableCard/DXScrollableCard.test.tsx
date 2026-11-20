@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen } from "@testing-library/react";
 import DXScrollableCard from "./DXScrollableCard";
@@ -105,3 +106,5 @@ test( " If icon chages if parameter is set", () => {
 
     expect( screen.getByTestId( "slider-next-button" ).querySelector( "i" ) ).toHaveClass( "ci-Arrow_Right_MD" );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXScrollableCard {...scrollableCardsArgs} {...extra} /> );

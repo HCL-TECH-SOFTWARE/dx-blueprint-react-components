@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -322,3 +323,5 @@ test( "If the user does not pass a badge value the badge will be null", () => {
     const badge = document.querySelector( ".dxToolButton__badge" ) as HTMLElement;
     expect( badge ).toBeNull();
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXToolButton icon="ci-Calendar" label="Check" onClick={() => {}} {...extra} /> );

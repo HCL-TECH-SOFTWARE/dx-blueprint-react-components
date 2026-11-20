@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import DXSocialCard, { SocialCardProps } from "./DXSocialCard";
@@ -198,4 +199,14 @@ test( "If Likes Icon change when params are set", () => {
 test( "If Commens Icon change when params are set", () => {
     render( <DXSocialCard {...SocialChangedIconsArgs} /> );
     expect( screen.getByTestId( "SC-commentCount" ).querySelector( "i" ) ).toHaveClass( SocialChangedIconsArgs.icons?.comments! );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXSocialCard {...PrimaryArgs} {...extra} /> );
+
+test( "extra props: unknown props do not reach the DOM", () => {
+    const props = { ...PrimaryArgs, unknownProp: "x", "data-extra": "yes" } as React.ComponentProps<typeof DXSocialCard>;
+    const { container } = render( <DXSocialCard {...props} /> );
+    const root = container.firstElementChild as HTMLElement;
+    expect( root ).toHaveAttribute( "data-extra", "yes" );
+    expect( root ).not.toHaveAttribute( "unknownprop" );
 } );

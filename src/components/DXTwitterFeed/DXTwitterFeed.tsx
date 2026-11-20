@@ -16,6 +16,8 @@
 import React, { useEffect, useState } from 'react';
 import "./DXTwitterFeed.scss";
 import Spinner from 'react-bootstrap/Spinner';
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface TwitterFeedProps {
     title?: string,
@@ -25,7 +27,9 @@ export interface TwitterFeedProps {
     options?: any,
 }
 
-const DXTwitterFeed = ( props: TwitterFeedProps ) => {
+const DXTwitterFeed = ( props: ExtendableProps<TwitterFeedProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { title: _title, description: _description, type: _type, url: _url, options: _options, className, ref, ...rest } = props;
     const [scriptLoaded, setScriptLoaded] = useState( false );
     const [isFeedLoading, setIsFeedLoading] = useState( true );
 
@@ -96,7 +100,7 @@ const DXTwitterFeed = ( props: TwitterFeedProps ) => {
     };
 
     return (
-        <div className='dxTwitterFeed' data-testid="twitter-feed">
+        <div {...rest} ref={ref} className={classNames( "dxTwitterFeed", className )} data-testid="twitter-feed">
             {props.title && <h3 className='dxTwitterFeed__title' data-testid="twitter-feed-title">{props.title}</h3>}
             {props.description && <p className='dxTwitterFeed__description' data-testid="twitter-feed-description">{props.description}</p>}
             <Spinner animation="border" variant="primary" className={( isFeedLoading ? "dxTwitterFeed__spinner" : "dxTwitterFeed__spinner--hidden" )} data-testid="twitter-feed-spinner" />
