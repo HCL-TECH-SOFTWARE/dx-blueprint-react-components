@@ -23,6 +23,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import SliderButton from "./components/SliderButton";
 import { SliderIcons } from "../../utilities";
+import { SlideSink } from "../../utilities/extendable";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
 
 export interface MiniCatalogProps extends BasicComponent {
@@ -96,7 +97,8 @@ const DXMiniCatalog = ( props: MiniCatalogProps ) => {
                 <Slider {...settings} className="dxMiniCatalog__slider">
                     {
                         items.map( ( item, index ) => (
-                            <DXCard {...item} key={index} />
+                            // react-slick clones its direct children with className/style/tabIndex/onClick; the sink keeps them off the card
+                            <SlideSink key={index}><DXCard {...item} /></SlideSink>
                         ) )
                     }
                 </Slider>
@@ -162,7 +164,8 @@ const DXMiniCatalog = ( props: MiniCatalogProps ) => {
                     <Slider {...settings} className="dxMiniCatalog__slider">
                         {
                             items.map( ( item: CardProps ) => (
-                                <DXCard {...item} key={item.index} />
+                                // react-slick clones its direct children with className/style/tabIndex/onClick; the sink keeps them off the card
+                                <SlideSink key={item.index}><DXCard {...item} /></SlideSink>
                             ) )
                         }
                     </Slider>

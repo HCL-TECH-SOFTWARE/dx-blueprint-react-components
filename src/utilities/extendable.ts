@@ -80,3 +80,12 @@ export const chainHandlers = <E extends { defaultPrevented: boolean; }>(
     if ( consumer ) consumer( event );
     if ( !event.defaultPrevented ) own( event );
 };
+
+/**
+ * Renders its children and ignores every other prop. Use it as the direct child of a carousel (react-slick) around a component
+ * that accepts extension props: the carousel clones its children with `className`, `style`, `tabIndex`, `aria-hidden` and `onClick`,
+ * and those must not land on the component's root (they never did before the component accepted extension props).
+ *
+ * Internal helper: it is intentionally not exported from `utilities/index.ts`.
+ */
+export const SlideSink = ( { children }: { children?: React.ReactNode; } ) => React.createElement( React.Fragment, null, children );

@@ -13,7 +13,9 @@
  * limitations under the License.                                           *
  * ======================================================================== */
 
-import { chainHandlers, mergeRefs, pickDomProps } from "./extendable";
+import React from "react";
+import { render } from "@testing-library/react";
+import { SlideSink, chainHandlers, mergeRefs, pickDomProps } from "./extendable";
 
 describe( "pickDomProps", () => {
     test( "keeps data-*, aria-*, id, role, title, style, tabIndex, lang and hidden", () => {
@@ -115,5 +117,16 @@ describe( "chainHandlers", () => {
         const own = jest.fn();
         chainHandlers( undefined, own )( { defaultPrevented: false } );
         expect( own ).toHaveBeenCalledTimes( 1 );
+    } );
+} );
+
+describe( "SlideSink", () => {
+    it( "renders its children and drops the props a carousel injects", () => {
+        const Probe = ( props: Record<string, unknown> ) => React.createElement( "span", { "data-testid": "probe", "data-keys": Object.keys( props ).sort().join( "," ) } );
+        const slide = React.createElement( SlideSink, null, React.createElement( Probe, { own: "yes" } ) );
+        // what react-slick does with each direct child
+        const cloned = React.cloneElement( slide, { className: "slick-slide", style: { width: 10 }, tabIndex: -1, "aria-hidden": true, onClick: () => undefined } as object );
+        const { getByTestId } = render( cloned );
+        expect( getByTestId( "probe" ).getAttribute( "data-keys" ) ).toBe( "own" );
     } );
 } );
