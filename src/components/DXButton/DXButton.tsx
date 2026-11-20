@@ -49,8 +49,8 @@ export interface HelperAttrs {
 }
 
 /**
- * Extra props (data-*, aria-*, handlers, ...) and \`ref\` go to the root button. \`reactRef\` is kept for compatibility;
- * when both are given, \`ref\` wins.
+ * Extra props (data-*, aria-*, handlers, ...) and `ref` go to the root button. `reactRef` is kept for compatibility;
+ * when both are given, `ref` wins.
  */
 const DXButton = ( props: ExtendableProps<ButtonProps & HelperAttrs, "button"> ) => {
     // Own props are pulled out so only DOM attributes reach the root.
