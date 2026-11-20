@@ -25,6 +25,8 @@ import { ToggleMenuProps } from "../DXToggleMenu/DXToggleMenu";
 import DXButton from "../DXButton";
 import DXEmptyState, { EmptyStateProps } from "../DXEmptyState/DXEmptyState";
 import { CardComponent } from "../../utilities/CardComponent/CardComponent";
+import { pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 interface JiraTaskItem {
     title: LinksProps;
@@ -58,7 +60,10 @@ export interface ProjectCardProps {
     action?: IconButtonProps;
 }
 
-const DXJiraTaskCard = ( props: JiraTaskCardProps ) => {
+const DXJiraTaskCard = ( props: JiraTaskCardProps & { className?: string; ref?: React.Ref<HTMLDivElement>; } ) => {
+    // Own props are pulled out; only DOM-safe extras reach the root (the props type has an index signature).
+    const { tasks: _tasks, projectInfo: _projectInfo, empty: _empty, icons: _icons, dropdownOpen: _dropdownOpen, _search, index: _index, className, ref, ...rest } = props;
+    const domAttrs = pickDomProps( rest );
 
     const [showTasks, setShowTasks] = useState( props.dropdownOpen || false );
     const [activeFilters, setActiveFilters] = useState<any>( [] );
@@ -370,7 +375,7 @@ const DXJiraTaskCard = ( props: JiraTaskCardProps ) => {
     };
 
     return (
-        <div className="dxJiraTaskCard" data-testid="dxJiraTaskCard">
+        <div {...domAttrs} ref={ref} className={classNames( "dxJiraTaskCard", className )} data-testid="dxJiraTaskCard">
             {projectCard()}
             {showTasks && jiraTaskList()}
         </div>

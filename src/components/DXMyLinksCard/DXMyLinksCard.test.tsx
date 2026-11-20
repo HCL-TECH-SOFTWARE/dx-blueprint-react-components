@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render } from "@testing-library/react";
@@ -153,3 +154,5 @@ test( "If clicking the kebab toggle invokes the Dropdown's onToggle handler with
 
     expect( toggle ).toBeInTheDocument();
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXMyLinksCard {...LinksCardLinkArgs} {...extra} /> );

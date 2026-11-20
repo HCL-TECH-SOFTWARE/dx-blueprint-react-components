@@ -23,6 +23,8 @@ import Col from 'react-bootstrap/Col';
 import DXPagination from "../DXPagination/DXPagination";
 import { getColNumber, ImageProps, IconButtonProps } from "../../utilities";
 import DXEmptyState from "../DXEmptyState";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 interface TabContentItem {
     image?: ImageProps,
@@ -67,7 +69,9 @@ const hasValidPaginationProps = ( properties: any ) => {
         'active' in properties.paginationProps && 'activeSet' in properties.paginationProps;
 };
 
-const DXInteractiveTabs = ( props: InteractiveTabsProps ) => {
+const DXInteractiveTabs = ( props: ExtendableProps<InteractiveTabsProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { tabs: _tabs, mediaPosition: _mediaPosition, maxMediaHeight: _maxMediaHeight, className, ref, ...rest } = props;
     // States
 
     // Tabs
@@ -243,7 +247,7 @@ const DXInteractiveTabs = ( props: InteractiveTabsProps ) => {
     };
 
     return (
-        <div className="dxInteractiveTabs">
+        <div {...rest} ref={ref} className={classNames( "dxInteractiveTabs", className )}>
             {props.tabs && props.tabs.length ? (
                 <>
                     <div className="dxInteractiveTabs__tabs">

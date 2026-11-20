@@ -19,6 +19,8 @@ import ReactDOM from "react-dom";
 import DXButton from "../DXButton/DXButton";
 import { getIcon, getLinkTarget, LinksProps, IconButtonProps } from "../../utilities";
 import "./DXMyLinksCard.scss";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface LinksCardProps {
     label: LinksProps | string;
@@ -51,7 +53,9 @@ const PortalDropdownMenu = React.forwardRef<HTMLDivElement, any>( ( { show, clos
 } );
 PortalDropdownMenu.displayName = 'PortalDropdownMenu';
 
-const DXMyLinksCard = ( props: LinksCardProps ) => {
+const DXMyLinksCard = ( props: ExtendableProps<LinksCardProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { label: _label, subLabel: _subLabel, upButton: _upButton, downButton: _downButton, dropdown: _dropdown, icons: _icons, dropdownOpen: _dropdownOpen, className, ref, ...rest } = props;
 
     const rendeDropdownItems = (): ReactElement[] => {
         let items: ReactElement[] = [];
@@ -169,7 +173,7 @@ const DXMyLinksCard = ( props: LinksCardProps ) => {
     };
 
     return (
-        <div className="dxMyLinksCard">
+        <div {...rest} ref={ref} className={classNames( "dxMyLinksCard", className )}>
             {
                 typeof props.label == "string"
                     ?

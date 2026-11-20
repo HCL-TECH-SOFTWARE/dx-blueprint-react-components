@@ -17,6 +17,8 @@ import React, { FormEventHandler, useEffect, useState } from "react";
 import "./DXInteractiveButton.scss";
 import DXButton from "../DXButton/DXButton";
 import { IconButtonProps } from "../../utilities";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface InteractiveButtonProps {
     active: IconButtonWithMessage;
@@ -34,7 +36,9 @@ export interface PopUpMessageProps {
     inactive: string;
 }
 
-const DXInteractiveButton = ( props: InteractiveButtonProps ) => {
+const DXInteractiveButton = ( props: ExtendableProps<InteractiveButtonProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { active: _active, inactive: _inactive, disabled: _disabled, isActive: _isActive, className, ref, ...rest } = props;
     const [activeStatus, setActiveStatus] = useState( props.isActive ? props.isActive : false );
     const [showMessage, setShowMessage] = useState( false );
 
@@ -99,7 +103,7 @@ const DXInteractiveButton = ( props: InteractiveButtonProps ) => {
     };
 
     return (
-        <div className="dxInteractiveButton">
+        <div {...rest} ref={ref} className={classNames( "dxInteractiveButton", className )}>
             <div className="dxInteractiveButton__messageContainer">
                 <div
                     hidden={props.disabled}

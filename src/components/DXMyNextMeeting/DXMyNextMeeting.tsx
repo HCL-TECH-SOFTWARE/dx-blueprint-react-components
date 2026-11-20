@@ -17,6 +17,8 @@ import React from "react";
 import "./DXMyNextMeeting.scss";
 import { LinksProps, getIcon, getLinkTarget } from "../../utilities";
 import { formatDate, parseISODate } from "../../utilities/dateTime";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface NextMeetingProps {
     title: string,
@@ -29,7 +31,9 @@ export interface NextMeetingProps {
     };
 }
 
-const DXMyNextMeeting = ( props: NextMeetingProps ) => {
+const DXMyNextMeeting = ( props: ExtendableProps<NextMeetingProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { title: _title, startDateTime: _startDateTime, endDateTime: _endDateTime, link: _link, icons: _icons, className, ref, ...rest } = props;
 
     let startDateTimeValidated = true;
     let endDateTimeValidated = true;
@@ -48,7 +52,7 @@ const DXMyNextMeeting = ( props: NextMeetingProps ) => {
     }
 
     return (
-        <div className="dxMyNextMeeting" data-testid="microsite-next-meeting">
+        <div {...rest} ref={ref} className={classNames( "dxMyNextMeeting", className )} data-testid="microsite-next-meeting">
             <i
                 data-testid="myNextMeeting__eventIcon"
                 className={`${getIcon( props.icons, "event", "ci-Calendar_Event" )} dxMyNextMeeting__calendarIcon dxMyNextMeeting__Icon`}

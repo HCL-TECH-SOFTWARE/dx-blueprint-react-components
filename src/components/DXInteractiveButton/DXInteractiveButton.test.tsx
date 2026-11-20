@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React, { act } from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
@@ -167,3 +168,5 @@ test( "message is hidden a second after the button is clicked", async () => {
     } );
     expect( message ).toHaveClass( "dxInteractiveButton__message--hidden" );
 } );
+
+itSupportsExtensionProps( ( extra ) => <InteractiveButton {...DefaultButtonArgs} {...extra} /> );
