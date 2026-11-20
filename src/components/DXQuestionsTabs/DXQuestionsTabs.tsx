@@ -20,6 +20,8 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import "./DXQuestionsTabs.scss";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 export interface DXQuestionsTabsProps {
     title: string;
     seeOtherLink: LinksProps;
@@ -78,7 +80,9 @@ const charLenghtLimitatorRichText = function ( originalString: string, maxLenght
     }
     return newString;
 };
-const DXQuestionsTabs = ( props: DXQuestionsTabsProps ) => {
+const DXQuestionsTabs = ( props: ExtendableProps<DXQuestionsTabsProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { title: _title, seeOtherLink: _seeOtherLink, questionDetailLinkText: _questionDetailLinkText, sections: _sections, icons: _icons, className, ref, ...rest } = props;
     var [selectedSection, setSelectedSection] = useState<DXQuestionsTabsSection>();
     var [selectedQuestion, setSelectedQuestion] = useState<DXQuestionsTabsQuestion>();
     const wrapperRef = useRef( null );
@@ -202,7 +206,7 @@ const DXQuestionsTabs = ( props: DXQuestionsTabsProps ) => {
         }
     };
     return (
-        <div className="dxQuestionsTabs">
+        <div {...rest} ref={ref} className={classNames( "dxQuestionsTabs", className )}>
             <div data-testid="dxQTtitle" className="dxQuestionsTabs__title">{charLenghtLimitator( props.title, 64 )}</div>
             <div className="dxQuestionsTabs__separatorLine"></div>
             <div

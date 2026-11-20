@@ -16,13 +16,17 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import DXChartCard, { ChartCardProps } from "../DXChartCard/DXChartCard";
 import "./DXOrgChartBottomUp.scss";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface OrgChartBottomUpProps {
     users: ChartCardProps;
     dropdownOpen?: boolean;
 }
 
-const DXOrgChartBottomUp = ( props: OrgChartBottomUpProps ) => {
+const DXOrgChartBottomUp = ( props: ExtendableProps<OrgChartBottomUpProps, "ul"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { users: _users, dropdownOpen: _dropdownOpen, className, ref, ...rest } = props;
 
     const [isLoading, setLoading] = useState( true );
 
@@ -57,7 +61,7 @@ const DXOrgChartBottomUp = ( props: OrgChartBottomUpProps ) => {
     };
 
     return (
-        <ul className="dxOrgChartBottomUp" data-testid="dxOrgChartBottomUp" role="list" aria-label="list-org-chart">
+        <ul {...rest} ref={ref} className={classNames( "dxOrgChartBottomUp", className )} data-testid="dxOrgChartBottomUp" role="list" aria-label="list-org-chart">
             {!isLoading && renderCards( props.users ).reverse()}
         </ul>
     );

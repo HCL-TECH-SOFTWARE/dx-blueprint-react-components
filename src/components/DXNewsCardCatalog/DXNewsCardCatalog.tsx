@@ -22,6 +22,8 @@ import { getValuesFromDateFormat, getColNumber } from "../../utilities";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
 import DXTaxonomyFilter, { TaxFilterProps, TaxonomyFilterProps } from "../DXTaxonomyFilter/DXTaxonomyFilter";
 import DXPagination from "../DXPagination/DXPagination";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface NewsCardCatalogProps extends BasicComponent {
     items: NewsCardProps[],
@@ -51,7 +53,9 @@ const hasValidPaginationProps = ( properties: any ) => {
 /*
 ** @deprecated: From @version 1.31.0-alpha use DXGenericCatalog instead
 */
-const DXNewsCardCatalog = ( props: NewsCardCatalogProps ) => {
+const DXNewsCardCatalog = ( props: ExtendableProps<NewsCardCatalogProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { items: _items, totalItems: _totalItems, filterType: _filterType, paginationProps: _paginationProps, searchLabel: _searchLabel, searchPlaceholder: _searchPlaceholder, hideFilters: _hideFilters, dateFormat: _dateFormat, elementsPerRow: _elementsPerRow, _edit, className, ref, ...rest } = props;
     const CATEGORIES = ["contentType", "date"];
     const DEFAULT_DATE_FORMAT = "MM/DD/YY";
     const items: NewsCardProps[] = props.items.map( ( item: NewsCardProps, index: number ) => ( { ...item, index: index } ) );
@@ -188,7 +192,7 @@ const DXNewsCardCatalog = ( props: NewsCardCatalogProps ) => {
 
 
     return (
-        <div className="dxNewsCardCatalog">
+        <div {...rest} ref={ref} className={classNames( "dxNewsCardCatalog", className )}>
             {
                 !props.hideFilters && (
                     hasValidTaxonomyProps( props ) ? (

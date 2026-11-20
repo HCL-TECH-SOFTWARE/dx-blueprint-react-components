@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen, act, fireEvent } from "@testing-library/react";
 import DXOrgChart from "./DXOrgChart";
@@ -311,3 +312,5 @@ describe( "OrgChart component", () => {
         } );
     } );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXOrgChart users={[{ id: "1", displayName: "Susan Taylor", jobTitle: "Project Analyst" }]} {...extra} /> );

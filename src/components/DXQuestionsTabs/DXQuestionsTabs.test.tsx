@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render, screen, act, fireEvent } from "@testing-library/react";
@@ -390,3 +391,5 @@ describe( "DXQuestionsTabs Hardening", () => {
         unmount();
     } );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXQuestionsTabs {...SimpleExampleArgs} {...extra} /> );

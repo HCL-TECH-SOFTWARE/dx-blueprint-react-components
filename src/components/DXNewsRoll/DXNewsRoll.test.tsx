@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { getByTestId, render, screen } from "@testing-library/react";
 import { NewsRollArgs } from "./DXNewsRoll.stories";
@@ -91,3 +92,5 @@ test( "if iconClass parameter makes effect", () => {
         }} /> );
     expect( screen.getAllByTestId( "newsRoll_icon" )[0] ).toHaveClass( "ci-Arrow_Right_SM" );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXNewsRoll {...NewsRollArgs} {...extra} /> );

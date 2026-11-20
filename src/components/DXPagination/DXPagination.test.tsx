@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import "@testing-library/jest-dom";
 import { render, screen, act, fireEvent } from "@testing-library/react";
 import DXPagination, { PaginationProps } from "./DXPagination";
@@ -129,3 +130,5 @@ describe( "DXPagination", () => {
         } );
     } );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXPagination {...baseProps} {...extra} /> );

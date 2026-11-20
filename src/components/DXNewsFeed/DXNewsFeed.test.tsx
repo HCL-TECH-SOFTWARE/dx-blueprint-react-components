@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen } from "@testing-library/react";
 import DXNewsFeed, { NewsFeedProps } from "./DXNewsFeed";
@@ -176,3 +177,5 @@ test( "Component renders the expected amount of cards", () => {
     render( <DXNewsFeed allButtonText={"Show All"} {...NewsFeedArgs} /> );
     expect( screen.getByTestId( 'NF-cardContainer' ).children.length ).toEqual( NewsFeedArgs.items.length );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXNewsFeed {...NewsFeedArgs} {...extra} /> );

@@ -13,11 +13,13 @@
  * limitations under the License.                                           *
  * ======================================================================== */
 
-import React, { ReactElement, useRef, useState } from "react";
+import React, { ReactElement, useRef, useState, useMemo } from "react";
 import "./DXOrgChart.scss";
 import DXChartCard, { ChartCardProps } from "../DXChartCard/DXChartCard";
 import { getIcon } from "../../utilities";
 import DXButton from "../DXButton/DXButton";
+import { ExtendableProps, mergeRefs } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface OrgChartProps {
     users: ChartCardProps[];
@@ -27,10 +29,14 @@ export interface OrgChartProps {
     dropdownOpen?: boolean;
 }
 
-const DXOrgChart = ( props: OrgChartProps ) => {
+const DXOrgChart = ( props: ExtendableProps<OrgChartProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { users: _users, icons: _icons, dropdownOpen: _dropdownOpen, className, ref, ...rest } = props;
     var [selectedCard, setSelectedCard] = useState<ChartCardProps>();
     var renderOrgChart: ReactElement[] = [];
     var refComponent = useRef<HTMLDivElement>( null );
+    // The internal ref and the consumer ref both point at the root
+    const mergedRootRef = useMemo( () => mergeRefs( refComponent, ref ), [ref] );
 
     const toggleCollapsedCard = ( isCollapsed: string, id: string, level: number, item: ChartCardProps ) => {
         let newLevelToshow = level + 1;
@@ -197,7 +203,7 @@ const DXOrgChart = ( props: OrgChartProps ) => {
     } );
 
     return (
-        <div key={1} className="dxOrgChart d-flex flex-wrap justify-content-center" data-testid="dxOrgChart" ref={refComponent}>
+        <div key={1} {...rest} className={classNames( "dxOrgChart d-flex flex-wrap justify-content-center", className )} data-testid="dxOrgChart" ref={mergedRootRef}>
             {renderOrgChart}
         </div >
     );

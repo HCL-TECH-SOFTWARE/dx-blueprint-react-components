@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render, screen, act, fireEvent } from "@testing-library/react";
@@ -1118,4 +1119,20 @@ describe( "Targeted Mutant Killers: Deep Physics and Math Coercions", () => {
         } );
     } );
 
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXProductSlider {...ProductSliderArgs} {...extra} /> );
+
+test( "consumer mouse and scroll handlers on the root are called", () => {
+    const onMouseDown = jest.fn();
+    const onMouseUp = jest.fn();
+    const onScroll = jest.fn();
+    const { container } = render( <DXProductSlider {...ProductSliderArgs} onMouseDown={onMouseDown} onMouseUp={onMouseUp} onScroll={onScroll} /> );
+    const root = container.firstElementChild as HTMLElement;
+    fireEvent.mouseDown( root );
+    fireEvent.mouseUp( root );
+    fireEvent.scroll( root );
+    expect( onMouseDown ).toHaveBeenCalledTimes( 1 );
+    expect( onMouseUp ).toHaveBeenCalledTimes( 1 );
+    expect( onScroll ).toHaveBeenCalledTimes( 1 );
 } );

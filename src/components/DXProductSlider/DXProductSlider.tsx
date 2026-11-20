@@ -13,13 +13,15 @@
  * limitations under the License.                                           *
  * ======================================================================== */
 
-import React, { ReactElement, useEffect, useRef, useState } from "react";
+import React, { ReactElement, useEffect, useRef, useState, useMemo } from "react";
 import "./DXProductSlider.scss";
 import variables from "../../global/_exportVariables.module.scss";
 import { IconButtonProps, ImageProps, getIcon } from "../../utilities";
 import DXButton from "../DXButton";
 import { ButtonProps } from "../DXButton/DXButton";
 import DXEmptyState from "../DXEmptyState";
+import { ExtendableProps, mergeRefs, chainHandlers } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface ProductSliderProps {
     forceMobile?: boolean;
@@ -39,7 +41,10 @@ export interface ProductSliderItem {
     button?: IconButtonProps;
 }
 
-const DXProductSlider = ( props: ProductSliderProps ) => {
+const DXProductSlider = ( props: ExtendableProps<ProductSliderProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { forceMobile: _forceMobile, icons: _icons, items: _items, className, ref, ...rest } = props;
+    const { onMouseDown: consumerOnMouseDown, onMouseUp: consumerOnMouseUp, onScroll: consumerOnScroll, ...domRest } = rest;
     const [isScrollReady, setIsScrollReady] = useState( false );
     const [activeSegment, setActiveSegment] = useState( 0 );
     const [scrollDirection, setScrollDirection] = useState( "foward" );
@@ -49,6 +54,8 @@ const DXProductSlider = ( props: ProductSliderProps ) => {
     const [buttonScrollTarget, setButtonScrollTarget] = useState( 0 );
     const [isMobile, setIsMobile] = useState( false );
     const sliderRef = useRef<HTMLDivElement>( null );
+    // The internal ref and the consumer ref both point at the root
+    const mergedRootRef = useMemo( () => mergeRefs( sliderRef, ref ), [ref] );
     const imageContainerRef = useRef<HTMLDivElement>( null );
     const Z_INDEX_FIRST_LEVEL = parseInt( variables["zindex-firstLevel"] );
 
@@ -427,17 +434,19 @@ const DXProductSlider = ( props: ProductSliderProps ) => {
     };
 
     return (
-        <div className="dxProductSlider"
-            ref={sliderRef}
-            onMouseDown={() => {
+        <div {...domRest}
+            ref={mergedRootRef}
+            className={classNames( "dxProductSlider", className )}
+            // The consumer's handlers run first and can stop the component's own handling with preventDefault
+            onMouseDown={chainHandlers( consumerOnMouseDown, () => {
                 setOnAutoScroll( true );
                 setOnMouseScroll( true );
-            }}
-            onMouseUp={async () => {
+            } )}
+            onMouseUp={chainHandlers( consumerOnMouseUp, async () => {
                 setOnAutoScroll( false );
                 setOnMouseScroll( false );
-            }}
-            onScroll={( e ) => { imageManager(); }}>
+            } )}
+            onScroll={chainHandlers( consumerOnScroll, () => { imageManager(); } )}>
             {
                 props.items.length > 0 ? (
                     <>
