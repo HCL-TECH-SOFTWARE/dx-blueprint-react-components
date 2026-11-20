@@ -37,6 +37,35 @@ function App() {
 }
 ```
 
+## Extending components
+
+Every component accepts `className`, extra HTML attributes and a `ref`, and applies them to its root element:
+
+```tsx
+import { useRef } from "react";
+import { DXCard } from "@hcl-software/dx-blueprint-react-components";
+
+function Example() {
+  const cardRef = useRef<HTMLDivElement>(null);
+  return (
+    <DXCard
+      ref={cardRef}
+      className="my-card"
+      data-analytics="welcome-card"
+      aria-describedby="welcome-help"
+      title={{ url: "#", label: "Welcome" }}
+    />
+  );
+}
+```
+
+- **`className`** is added after the component's own classes; none of the component's classes are removed.
+- **Extra attributes** (`data-*`, `aria-*`, `id`, `role`, `style`, event handlers, ...) are passed to the root element. Attributes the component sets itself (for example a generated `id` that its styles depend on, or a `role`) win over yours. A `style` you pass is merged with the component's own inline styles, and the component's win on a clash.
+- **Event handlers** you put on the root run before the component's own handler for the same event. Call `event.preventDefault()` to stop the component's handler.
+- **`ref`** points at the root DOM element (React 19, no `forwardRef` needed). `DXButton` also keeps its existing `reactRef` prop; when both are given, `ref` wins.
+- Components whose props type accepts arbitrary keys only forward DOM-safe extras (`data-*`, `aria-*`, `id`, `role`, `title`, `style`, `tabIndex`, `lang`, `hidden` and event handlers), so unknown props never reach the DOM.
+- Some components render nothing in a few states, so there is no root to receive `className`, `ref` or attributes: `DXQuickLinks` without links, `DXEventItem` with an unknown `variant`, `CECPagination` with `showPagination={false}`, and `DXHalfParallax` without slides (it renders a message paragraph). Components that open a modal (`DXModalWindows`, `DXCalendar`) apply them to their wrapper, not to the modal, which is rendered in a portal.
+
 ## Styling
 
 ### CSS files

@@ -52,9 +52,32 @@ Both steps are required — skipping step 2 silently breaks the published packag
    export { default as DXComponentName } from "./DXComponentName";
    ```
 
+### Extension props (required)
+
+Every component forwards `className`, extra HTML attributes and `ref` to its root element. Use the shared helpers (internal, not exported from the package entry):
+
+```tsx
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
+
+const DXFoo = ( props: ExtendableProps<FooProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root
+    const { title, items, className, ref, ...rest } = props;
+    return <div {...rest} ref={ref} className={classNames( "dxFoo", className )} data-testid="foo">...</div>;
+};
+```
+
+- `{...rest}` comes first, then `ref` and `className`, then the component's own attributes, so the component's own values win.
+- If the props type has an index signature, use `pickDomProps( rest )` so unknown props do not reach the DOM.
+- A root that sets `style` merges the consumer's (`style={{ ...rest.style, ...ownStyle }}`). A root with its own event handler chains the consumer's with `chainHandlers`. A root that already has an internal ref merges it with `mergeRefs`.
+- A component placed directly inside a carousel (react-slick) must be wrapped in `SlideSink`, because the carousel clones its children with `className`, `style` and `tabIndex`.
+- Document branches that render no root (a fragment or `null`) in the component's JSDoc.
+- No `forwardRef` and no prop renames.
+- The test file must call `itSupportsExtensionProps( ( extra ) => <DXFoo {...props} {...extra} /> )` once (from `src/testUtils/extensionContract`). `src/components/extensionContract.test.ts` fails when an exported component is missing it.
+
 ## Coding Conventions
 
-- **Functional components** with `React.FC<Props>` and TypeScript interfaces
+- **Functional components** with `React.FC<Props>` and TypeScript interfaces (components that forward `ref` use a plain function, as in the example above)
 - **BEM naming** with `dx` prefix and camelCase: `dxHeroBanner__bodyButton--state-active`
 - **SCSS scoped** inside the root class — no global styles, no `!important`
 - **Reuse** existing utilities in `src/utilities/` rather than duplicating logic

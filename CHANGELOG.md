@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - `exports` map in `package.json` (no wildcard; the existing `dist/cjs/index.css` and `dist/umd/*` paths stay reachable) and `sideEffects: ["**/*.css", "**/*.scss"]` (`.scss` is listed so Storybook, which imports component styles from source, keeps them).
 - Typography helper classes `._10-regular`, `._10-semibold`, `._18-semibold` and `._32-regular` are now part of the built CSS.
 - `npm run lint:tokens`, run in CI, fails when a `var(--token)` used in `src` is not defined.
+- Every component accepts `className`, extra HTML attributes (`data-*`, `aria-*`, `id`, event handlers, ...) and `ref` on its root element. `className` is added to the component's own classes, the component's own attributes win over yours, and your event handlers run first. Components with an index-signature props type only forward DOM-safe extras. See "Extending components" in the README.
 
 ### Changed
 
