@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from 'react';
+import { itSupportsExtensionProps } from '../../testUtils/extensionContract';
 import { render, act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
@@ -706,5 +707,26 @@ describe( "CECUpcomingEvents - Hardened Mutation Suite", () => {
       const container = document.querySelector( '.cec-upcoming-events' );
       expect( container ).toBeInTheDocument();
     } );
+  } );
+} );
+
+type UpcomingEventsProps = React.ComponentProps<typeof CECUpcomingEvents>;
+const oneItem = [{ id: "1" }] as unknown as UpcomingEventsProps["items"];
+
+itSupportsExtensionProps( ( extra ) => <CECUpcomingEvents items={oneItem} {...extra} /> );
+
+describe( "CECUpcomingEvents - extension props", () => {
+  it( "does not forward the event-card props to the root, but keeps DOM-safe extras", () => {
+    const props = { items: oneItem, customActions: [], showRecurringIcon: true, "data-extra": "yes" } as unknown as UpcomingEventsProps;
+    const { container } = render( <CECUpcomingEvents {...props} /> );
+    const root = container.firstElementChild as HTMLElement;
+    expect( root ).toHaveAttribute( "data-extra", "yes" );
+    expect( root ).not.toHaveAttribute( "customactions" );
+    expect( root ).not.toHaveAttribute( "showrecurringicon" );
+  } );
+
+  it( "keeps the component's own dir over a consumer-supplied one", () => {
+    const { container } = render( <CECUpcomingEvents items={oneItem} dir="rtl" /> );
+    expect( container.firstElementChild ).toHaveAttribute( "dir", "rtl" );
   } );
 } );
