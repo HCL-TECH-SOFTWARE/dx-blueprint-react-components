@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render } from "@testing-library/react";
 import DXHeroBannerPerson from "./DXHeroBannerPerson";
@@ -169,3 +170,5 @@ test( "If the user does pass the personInfoClass, the element will have that cla
     let content = getByTestId( "hb-person-details-box" );
     expect( content ).toHaveClass( customClass );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXHeroBannerPerson {...HeroBannerPersonArgs} {...extra} /> );

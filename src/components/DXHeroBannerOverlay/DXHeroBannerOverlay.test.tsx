@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { screen, render } from "@testing-library/react";
 import DXHeroBannerOverlay, { HeroBannerOverlayProps } from "./DXHeroBannerOverlay";
@@ -869,4 +870,11 @@ describe( "DXHeroBannerOverlay Hardening", () => {
             backgroundImage: "linear-gradient(var(--primary-primary), transparent)"
         } );
     } );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXHeroBannerOverlay {...HeroBannerOverlayArgs} {...extra} /> );
+
+test( "a consumer style is merged with the component's own styles, which win on a clash", () => {
+    const { container } = render( <DXHeroBannerOverlay {...HeroBannerOverlayArgs} style={{ marginTop: "7px" }} /> );
+    expect( ( container.firstElementChild as HTMLElement ).style.marginTop ).toBe( "7px" );
 } );

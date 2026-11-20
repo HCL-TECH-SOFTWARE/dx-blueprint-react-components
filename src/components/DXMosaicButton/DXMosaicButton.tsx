@@ -16,6 +16,8 @@
 import React, { useEffect, useState } from "react";
 import "./DXMosaicButton.scss";
 import { ButtonLinkProps, ImageProps, getLinkTarget } from "../../utilities";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface MosaicButtonProps {
     index: number;
@@ -26,7 +28,9 @@ export interface MosaicButtonProps {
     image?: ImageProps;
 }
 
-const DXMosaicButton = ( props: MosaicButtonProps ) => {
+const DXMosaicButton = ( props: ExtendableProps<MosaicButtonProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { index: _index, size: _size, title: _title, link: _link, subtitle: _subtitle, image: _image, className, ref, ...rest } = props;
     const [size, setSize] = useState( getValidSize( props.size ) );
 
     useEffect( () => {
@@ -69,7 +73,7 @@ const DXMosaicButton = ( props: MosaicButtonProps ) => {
     };
 
     return (
-        <div className={"dxMosaicButton dxMosaicButton--" + size} id={"dxMosaicButton-" + props.index}>
+        <div {...rest} ref={ref} className={classNames( "dxMosaicButton dxMosaicButton--" + size, className )} id={"dxMosaicButton-" + props.index}>
             <a href={props.link.url} target={getLinkTarget( props.link.target )} aria-roledescription="button">
                 <div className={"dxMosaicButton__container"} style={getContainerStyles()} title={props.image?.altText || "mosaic-button-" + props.index} data-testid="mb-image">
                     <div className={"dxMosaicButton__text"} data-testid="mb-textContainer" style={getTextStyles()}>

@@ -17,6 +17,8 @@ import React, { ReactElement, useEffect, useState } from "react";
 import "./DXHeroBannerCarousel.scss";
 import DXHeroBanner, { HeroBannerProps } from "../DXHeroBanner/DXHeroBanner";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface HeroBannerCarouselProps extends BasicComponent {
     index: number;
@@ -26,7 +28,9 @@ export interface HeroBannerCarouselProps extends BasicComponent {
     bulletsPosition?: "left" | "center" | "right";
 }
 
-const DXHeroBannerCarousel = ( props: HeroBannerCarouselProps ) => {
+const DXHeroBannerCarousel = ( props: ExtendableProps<HeroBannerCarouselProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { index: _index, items: _items, animationTime: _animationTime, autoScrollTime: _autoScrollTime, bulletsPosition: _bulletsPosition, _edit, className, ref, ...rest } = props;
 
     function parseTime( value: number | undefined ): number {
         if ( typeof value != "number" ) {
@@ -187,7 +191,7 @@ const DXHeroBannerCarousel = ( props: HeroBannerCarouselProps ) => {
     };
 
     return (
-        <div className="dxHeroBannerCarousel">
+        <div {...rest} ref={ref} className={classNames( "dxHeroBannerCarousel", className )}>
             <ul data-testid={"HBCarouse-mainContainer"} id="mainContainer">
                 {renderItems()}
             </ul>

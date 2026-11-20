@@ -18,12 +18,16 @@ import "./DXMosaicBanner.scss";
 import DXMosaicButton, { MosaicButtonProps } from "../DXMosaicButton/DXMosaicButton";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { ExtendableProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface MosaicBannerProps {
     items: MosaicButtonProps[];
 }
 
-const DXMosaicBanner = ( props: MosaicBannerProps ) => {
+const DXMosaicBanner = ( props: ExtendableProps<MosaicBannerProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { items: _items, className, ref, ...rest } = props;
     const [viewportWidth, setViewportWidth] = useState( window.innerWidth );
 
     useEffect( () => {
@@ -90,7 +94,7 @@ const DXMosaicBanner = ( props: MosaicBannerProps ) => {
     };
 
     return (
-        <div className="dxMosaicBanner" data-testid="mb-mainContainer">
+        <div {...rest} ref={ref} className={classNames( "dxMosaicBanner", className )} data-testid="mb-mainContainer">
             <Row className="dxMosaicBanner__container">
                 {renderBannerButtons()}
             </Row>

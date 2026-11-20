@@ -14,10 +14,12 @@
  * ======================================================================== */
 
 import "./DXHeroBannerPerson.scss";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import DXSearchSuggestions from "../DXSearchSuggestions";
 import { SSuggestionsProps } from "../DXSearchSuggestions/DXSearchSuggestions";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
+import { ExtendableProps, mergeRefs } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 interface PersonData {
     name?: string,
@@ -37,11 +39,15 @@ export interface HBPersonProps extends BasicComponent {
     personInfoClass?: string;
 }
 
-const DXHeroBannerPerson = ( props: HBPersonProps ) => {
+const DXHeroBannerPerson = ( props: ExtendableProps<HBPersonProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { title: _title, subtitle: _subtitle, searchSuggestion: _searchSuggestion, bannerUrl: _bannerUrl, interval: _interval, persons: _persons, bodyClass: _bodyClass, personInfoClass: _personInfoClass, _edit, className, ref, ...rest } = props;
     const [activePerson, setActivePerson] = useState<PersonData>( { ...props.persons[0] } );
 
     const itemsRefs = useRef<( HTMLDivElement | null )[]>( [] );
     const componentRef = useRef<HTMLDivElement>( null );
+    // The internal ref and the consumer ref both point at the root
+    const mergedRootRef = useMemo( () => mergeRefs( componentRef, ref ), [ref] );
     let componentInterval: any = null;
 
     const showPersonDetails = ( activePerson: PersonData ) => activePerson.location || activePerson.name || activePerson.role;
@@ -112,7 +118,7 @@ const DXHeroBannerPerson = ( props: HBPersonProps ) => {
     }, [props.persons, props.searchSuggestion] );
 
     return (
-        <div className="dxHBPerson" ref={componentRef}>
+        <div {...rest} ref={mergedRootRef} className={classNames( "dxHBPerson", className )}>
             <div className="dxHBPerson__carousel">
                 <div className="dxHBPerson__carousel__inner">
                     {renderImageEl()}
