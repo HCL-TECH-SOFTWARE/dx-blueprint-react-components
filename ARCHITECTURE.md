@@ -125,7 +125,7 @@ DXComponentName/
 ### Common Patterns
 
 - **Functional components** with TypeScript interfaces (`React.FC<Props>`, or a plain function when the component takes `ref`)
-- **Extension props**: every component accepts `className`, extra HTML attributes and `ref` on its root via `ExtendableProps<Props, "el">` (`src/utilities/extendable.ts`) and `classNames` (`src/utilities/classNames.ts`); own attributes win, consumer event handlers run first, internal refs are merged with `mergeRefs`. Index-signature props types forward only DOM-safe extras (`pickDomProps`). These helpers are internal and not exported from the package entry.
+- **Extension props**: every component accepts `className`, `ref` and a fixed set of extension props on its root (`data-*`, `aria-*`, `id`, `style`, event handlers) via `ExtendableProps<Props, "el">` (`src/utilities/extendable.ts`) and `classNames` (`src/utilities/classNames.ts`). Every root spreads `pickDomProps( rest )`, never raw rest props, because props can come from untyped content data; other attributes (`title`, `role`, `tabIndex`, ...) are not forwarded. Own attributes win, consumer event handlers run first, internal refs are merged with `mergeRefs`. These helpers are internal and not exported from the package entry.
 - **Component-local state** via `useState` / `useReducer` — no global state management (no Redux, no Context providers)
 - **Custom hooks** for shared behavior (e.g. `useOutsideAlerter` for click-outside detection)
 - **Typed prop interfaces** with optional fields and discriminated unions for variants
@@ -172,7 +172,7 @@ DXComponentName/
 - **Coverage threshold:** 90% (statements 92%, branches 89%, functions 89%, lines 93%)
 - **Module mocking:** CSS/SCSS → `identity-obj-proxy`; SVG → `jest-svg-transformer`
 - **Setup:** `src/setupTests.js` polyfills `matchMedia`, `ResizeObserver`, `scrollTo`
-- **Extension contract:** each component's test calls `itSupportsExtensionProps` (`src/testUtils/extensionContract.tsx`: merged `className`, DOM attributes, `ref` on the root, no console errors); `src/components/extensionContract.test.ts` fails if an exported component lacks the call
+- **Extension contract:** each component's test calls `itSupportsExtensionProps` (`src/testUtils/extensionContract.tsx`: merged `className`, `data-*` / `aria-*` attributes, `ref` on the root, no undeclared content-style keys (`WCM_STYLE_PROPS`) on the root, no unexpected root attributes, no console errors); `src/components/extensionContract.test.ts` fails if an exported component lacks the call
 - **Console enforcement:** `jest-reporter-log-validator` fails tests with unexpected `console.warn` / `console.error`
 - **Reports:** HTML (`test-report/Nex_Haven.html`), JUnit XML (`test-report/Nex_Haven.xml`)
 

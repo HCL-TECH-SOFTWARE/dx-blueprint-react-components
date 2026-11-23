@@ -54,26 +54,26 @@ Both steps are required — skipping step 2 silently breaks the published packag
 
 ### Extension props (required)
 
-Every component forwards `className`, extra HTML attributes and `ref` to its root element. Use the shared helpers (internal, not exported from the package entry):
+Every component forwards `className`, `ref` and a fixed set of extension props to its root element: `data-*`, `aria-*`, a string or number `id`, an object `style`, and `on[A-Z]*` event handlers that are functions. Nothing else is forwarded (not `title`, `role`, `tabIndex`, `lang` or `hidden`), because component props can come from untyped content data (WCM component configs, catalog items) with keys the component does not declare. Use the shared helpers (internal, not exported from the package entry):
 
 ```tsx
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 const DXFoo = ( props: ExtendableProps<FooProps, "div"> ) => {
-    // Own props are pulled out so only DOM attributes reach the root
+    // Own props are pulled out; pickDomProps keeps only the extension props from the rest
     const { title, items, className, ref, ...rest } = props;
-    return <div {...rest} ref={ref} className={classNames( "dxFoo", className )} data-testid="foo">...</div>;
+    return <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxFoo", className )} data-testid="foo">...</div>;
 };
 ```
 
-- `{...rest}` comes first, then `ref` and `className`, then the component's own attributes, so the component's own values win.
-- If the props type has an index signature, use `pickDomProps( rest )` so unknown props do not reach the DOM.
-- A root that sets `style` merges the consumer's (`style={{ ...rest.style, ...ownStyle }}`). A root with its own event handler chains the consumer's with `chainHandlers`. A root that already has an internal ref merges it with `mergeRefs`.
+- Never spread raw `rest` on a DOM element or a wrapped component: always spread `pickDomProps( rest )`. `ExtendableProps` types exactly the same list.
+- The filtered props come first, then `ref` and `className`, then the component's own attributes, so the component's own values win.
+- A root that sets `style` merges the consumer's (`const domProps = pickDomProps( rest );` then `style={{ ...( domProps.style as React.CSSProperties | undefined ), ...ownStyle }}`). A root with its own event handler chains the consumer's (taken from the filtered props) with `chainHandlers`. A root that already has an internal ref merges it with `mergeRefs`.
 - A component placed directly inside a carousel (react-slick) must be wrapped in `SlideSink`, because the carousel clones its children with `className`, `style` and `tabIndex`.
 - Document branches that render no root (a fragment or `null`) in the component's JSDoc.
 - No `forwardRef` and no prop renames.
-- The test file must call `itSupportsExtensionProps( ( extra ) => <DXFoo {...props} {...extra} /> )` once (from `src/testUtils/extensionContract`). `src/components/extensionContract.test.ts` fails when an exported component is missing it.
+- The test file must call `itSupportsExtensionProps( ( extra ) => <DXFoo {...props} {...extra} /> )` once (from `src/testUtils/extensionContract`). `src/components/extensionContract.test.ts` fails when an exported component is missing it. The helper also renders the component with undeclared, content-style keys (`WCM_STYLE_PROPS`) and fails if any of them reaches the root. When the component declares one of those keys as its own prop, list it in the `ownKeys` option with a comment.
 
 ## Coding Conventions
 

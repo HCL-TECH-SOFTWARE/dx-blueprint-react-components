@@ -39,7 +39,7 @@ function App() {
 
 ## Extending components
 
-Every component accepts `className`, extra HTML attributes and a `ref`, and applies them to its root element:
+Every component accepts a fixed set of extension props and applies them to its root element: `className`, `ref`, `id`, `style`, `data-*` and `aria-*` attributes, and event handlers (`onClick`, `onKeyDown`, ...):
 
 ```tsx
 import { useRef } from "react";
@@ -60,10 +60,12 @@ function Example() {
 ```
 
 - **`className`** is added after the component's own classes; none of the component's classes are removed.
-- **Extra attributes** (`data-*`, `aria-*`, `id`, `role`, `style`, event handlers, ...) are passed to the root element. Attributes the component sets itself (for example a generated `id` that its styles depend on, or a `role`) win over yours. A `style` you pass is merged with the component's own inline styles, and the component's win on a clash.
+- **Attributes**: `data-*`, `aria-*`, `id` (a string or a number) and `style` (an object) are passed to the root element. Attributes the component sets itself (for example a generated `id` that its styles depend on, or a `role`) win over yours. A `style` you pass is merged with the component's own inline styles, and the component's win on a clash.
+- **Nothing else reaches the root.** Other attributes, for example `title`, `role`, `tabIndex`, `lang` or `hidden`, are not forwarded (unless the component declares them as its own props), and TypeScript rejects them. Component props can come from untyped content data, where such keys are content (a `title` text, a person's `role`), so they cannot be told apart from an attribute. If you really need one of them on the root, set it through the `ref`.
+- An `aria-label` on a root that has no `role` (most roots are a plain `div`) is not announced by screen readers. This is standard ARIA behaviour; label an element that has a role instead.
 - **Event handlers** you put on the root run before the component's own handler for the same event. Call `event.preventDefault()` to stop the component's handler.
 - **`ref`** points at the root DOM element (React 19, no `forwardRef` needed). `DXButton` also keeps its existing `reactRef` prop; when both are given, `ref` wins.
-- Components whose props type accepts arbitrary keys only forward DOM-safe extras (`data-*`, `aria-*`, `id`, `role`, `title`, `style`, `tabIndex`, `lang`, `hidden` and event handlers), so unknown props never reach the DOM.
+- The same list applies to every component, including those whose props type accepts arbitrary keys, so unknown props never reach the DOM. An event handler is only forwarded when it is a function, and a `style` only when it is an object.
 - Some components render nothing in a few states, so there is no root to receive `className`, `ref` or attributes: `DXQuickLinks` without links, `DXEventItem` with an unknown `variant`, `CECPagination` with `showPagination={false}`, and `DXHalfParallax` without slides (it renders a message paragraph). Components that open a modal (`DXModalWindows`, `DXCalendar`) apply them to their wrapper, not to the modal, which is rendered in a portal.
 
 ## Styling
