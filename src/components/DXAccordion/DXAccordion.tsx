@@ -14,12 +14,12 @@
  * ======================================================================== */
 
 import "./DXAccordion.scss";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { StateIcons, getIcon, parseContentAndMedia } from "../../utilities";
 import DXDownloadGroup from "../DXDownloadGroup";
 import { DownloadGroupProps } from "../DXDownloadGroup/DXDownloadGroup";
 import { CardComponent } from "../../utilities/CardComponent/CardComponent";
-import { pickDomProps } from "../../utilities/extendable";
+import { mergeRefs, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export const slugify = ( str: string ) => str
@@ -28,6 +28,9 @@ export const slugify = ( str: string ) => str
     .replace( /[^\w\s-]/g, '' )
     .replace( /[\s_-]+/g, '-' )
     .replace( /^-+|-+$/g, '' );
+
+// Sent to the other accordions of a catalog when one opens, so each closes through its own state
+const CLOSE_EVENT = "dxaccordion:close";
 
 export interface AccordionProps extends CardComponent {
     label: string,
@@ -68,25 +71,35 @@ const DXAccordion = ( props: AccordionProps & { className?: string; ref?: React.
 
     const resolvedDir: 'ltr' | 'rtl' = props.dir ?? documentDir;
 
+    // The open state lives in React so the root class survives re-renders (a direct classList toggle was lost when the consumer className changed)
+    const [open, setOpen] = useState( !!props.active );
+    const rootRef = useRef<HTMLDivElement>( null );
+    const mergedRef = useMemo( () => mergeRefs( rootRef, ref ), [ref] );
+
+    // Catalogs drive `active`; follow it when it changes
+    useEffect( () => {
+        setOpen( !!props.active );
+    }, [props.active] );
+
+    useEffect( () => {
+        const node = rootRef.current;
+        if ( !node ) return;
+        const close = () => setOpen( false );
+        node.addEventListener( CLOSE_EVENT, close );
+        return () => node.removeEventListener( CLOSE_EVENT, close );
+    }, [] );
+
     const showContent = ( e: any ) => {
         e.preventDefault();
-        let target: HTMLElement = e.currentTarget;
-        let thisAccordion = target.closest( ".dxAccordion" ) as HTMLElement;
-        let catalog = thisAccordion.closest( ".dxGenericCatalog__cards" ) ? thisAccordion.closest( ".dxGenericCatalog__cards" ) : thisAccordion.closest( ".dxACatalog__items" ) as HTMLElement;
+        const thisAccordion = rootRef.current;
+        const catalog = thisAccordion?.closest( ".dxGenericCatalog__cards" ) ?? thisAccordion?.closest( ".dxACatalog__items" );
 
-        if ( catalog ) {
-            // Get sibling accordions
-            let siblings: Element[] = Array.from( catalog.querySelectorAll( ".dxAccordion" ) ).filter( accordionNode => {
-                if ( accordionNode != thisAccordion ) {
-                    return accordionNode;
-                }
-            } );
-
-            siblings.map( accordion => {
-                accordion.classList.remove( "dxAccordion--display-enabled" );
+        if ( catalog && !open ) {
+            catalog.querySelectorAll( ".dxAccordion" ).forEach( accordion => {
+                if ( accordion !== thisAccordion ) accordion.dispatchEvent( new CustomEvent( CLOSE_EVENT ) );
             } );
         }
-        thisAccordion.classList.toggle( "dxAccordion--display-enabled" );
+        setOpen( !open );
         if ( ( props._catalogIndex || props._catalogIndex === 0 ) && props._catalogHandler ) {
             props._catalogHandler( props._catalogIndex );
         }
@@ -95,9 +108,9 @@ const DXAccordion = ( props: AccordionProps & { className?: string; ref?: React.
     return (
         <div
             {...domAttrs}
-            ref={ref}
+            ref={mergedRef}
             dir={resolvedDir}
-            className={classNames( `dxAccordion${props.active ? ' dxAccordion--display-enabled' : ''}`, className )}
+            className={classNames( "dxAccordion", open && "dxAccordion--display-enabled", className )}
         >
             <div className="dxAccordion__header">
                 <button
