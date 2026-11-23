@@ -14,10 +14,10 @@
  * ======================================================================== */
 
 import "./DXRiverOfContent.scss";
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef } from "react";
 import DXButton from "../DXButton/DXButton";
 import { LinksProps, getIcon, getLinkTarget } from "../../utilities";
-import { ExtendableProps, mergeRefs } from "../../utilities/extendable";
+import { ExtendableProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface RiverOfContentProps {
@@ -36,9 +36,6 @@ const DXRiverOfContent = ( props: ExtendableProps<RiverOfContentProps, "div"> ) 
     // Own props are pulled out so only DOM attributes reach the root.
     const { index: _index, header: _header, links: _links, headerCharLimit: _headerCharLimit, itemCharLimit: _itemCharLimit, collapsible: _collapsible, icons: _icons, className, ref, ...rest } = props;
     const [open, setOpen] = useState( false );
-    const componentRef = useRef<HTMLDivElement>( null );
-    // The internal ref and the consumer ref both point at the root
-    const mergedRootRef = useMemo( () => mergeRefs( componentRef, ref ), [ref] );
     const buttonRef = useRef<HTMLButtonElement>( null );
     const contentRef = useRef<HTMLDivElement>( null );
 
@@ -48,9 +45,8 @@ const DXRiverOfContent = ( props: ExtendableProps<RiverOfContentProps, "div"> ) 
     const showContent = ( e: any ) => {
         e.preventDefault();
         if ( e.type === "click" || ( e.type === "keydown" && e.keyCode === 13 ) || ( e.type === "keydown" && e.keyCode === 32 ) ) {
+            // The root's open class comes from `open` in render (a direct classList toggle would be lost when the consumer className changes)
             setOpen( !open );
-            const component = componentRef.current;
-            component?.classList.toggle( "dxRiverContent--open" );
             const icon = buttonRef.current?.querySelector( "i" );
             if ( icon && icon !== null ) icon?.classList.toggle( "dxRiverContent__icon--open" );
             const content = contentRef.current;
@@ -105,7 +101,7 @@ const DXRiverOfContent = ( props: ExtendableProps<RiverOfContentProps, "div"> ) 
     };
 
     return (
-        <div {...rest} ref={mergedRootRef} className={classNames( "dxRiverContent", className )} id={`dxRiverContent-${props.index}`}>
+        <div {...rest} ref={ref} className={classNames( "dxRiverContent", open && "dxRiverContent--open", className )} id={`dxRiverContent-${props.index}`}>
             <div className={"dxRiverContent__header " + verifyTextOverflow( props.header, true )} >
                 {
                     props.collapsible ? (
