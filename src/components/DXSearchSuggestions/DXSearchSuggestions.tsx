@@ -17,7 +17,7 @@ import "./DXSearchSuggestions.scss";
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Form, InputGroup } from 'react-bootstrap';
 import { LinksProps, getIcon } from "../../utilities";
-import { ExtendableProps, mergeRefs } from "../../utilities/extendable";
+import { ExtendableProps, mergeRefs, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface SSuggestionsProps {
@@ -131,7 +131,7 @@ const DXSearchSuggestions = ( props: ExtendableProps<SSuggestionsProps, "div"> )
     );
 
     return (
-        <div {...rest} ref={mergedRootRef} className={classNames( "dxSSuggestions", className )}>
+        <div {...pickDomProps( rest )} ref={mergedRootRef} className={classNames( "dxSSuggestions", className )}>
             <InputGroup data-testid="ss-input-group">
                 {props.iconPosition === "right" ? (
                     <>

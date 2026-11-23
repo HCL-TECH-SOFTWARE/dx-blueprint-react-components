@@ -19,7 +19,7 @@ import React, { useState, useEffect, useMemo, useRef } from "react";
 import DXButton from "../DXButton/DXButton";
 import { getValuesFromDateFormat, getMonthPrefix, overflowText, DateValues, SliderIcons, getIcon } from "../../utilities";
 import DXEmptyState, { EmptyStateProps } from "../DXEmptyState/DXEmptyState";
-import { ExtendableProps, mergeRefs } from "../../utilities/extendable";
+import { ExtendableProps, mergeRefs, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 interface EventElement {
@@ -370,7 +370,7 @@ const DXEventTabs = ( props: ExtendableProps<EventTabsProps, "div"> ) => {
     };
 
     return (
-        <div {...rest} ref={mergedRootRef} className={classNames( "dxEventTabs", className )}>
+        <div {...pickDomProps( rest )} ref={mergedRootRef} className={classNames( "dxEventTabs", className )}>
             <div className={mobile ? "dxEventTabs__tabsMobile" : "dxEventTabs__tabs"}>
                 <ul>{renderTabs( props.tabs, mobile )}</ul>
             </div>

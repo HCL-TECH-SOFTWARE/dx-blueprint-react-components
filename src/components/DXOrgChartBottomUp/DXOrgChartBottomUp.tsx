@@ -16,7 +16,7 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import DXChartCard, { ChartCardProps } from "../DXChartCard/DXChartCard";
 import "./DXOrgChartBottomUp.scss";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface OrgChartBottomUpProps {
@@ -61,7 +61,7 @@ const DXOrgChartBottomUp = ( props: ExtendableProps<OrgChartBottomUpProps, "ul">
     };
 
     return (
-        <ul {...rest} ref={ref} className={classNames( "dxOrgChartBottomUp", className )} data-testid="dxOrgChartBottomUp" role="list" aria-label="list-org-chart">
+        <ul {...pickDomProps( rest )} ref={ref} className={classNames( "dxOrgChartBottomUp", className )} data-testid="dxOrgChartBottomUp" role="list" aria-label="list-org-chart">
             {!isLoading && renderCards( props.users ).reverse()}
         </ul>
     );

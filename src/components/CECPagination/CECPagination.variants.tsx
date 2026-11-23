@@ -15,7 +15,7 @@
 
 import React from 'react';
 import { DefaultVariantProps, CompactVariantProps, BulletsVariantProps } from './CECPagination.types';
-import { ExtendableProps } from '../../utilities/extendable';
+import { ExtendableProps, pickDomProps } from '../../utilities/extendable';
 // UI Element Components
 const LeftArrowIcon = ( { className = '' } ) => (
     <svg className={className} width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -358,7 +358,7 @@ export const DefaultVariant = ( {
         }
     };
     return (
-        <div {...rest} ref={ref} className={`cec-pagination-container ${className}`} dir={dir} role="navigation">
+        <div {...pickDomProps( rest )} ref={ref} className={`cec-pagination-container ${className}`} dir={dir} role="navigation">
             {}
             {showItemsPerPageDropdown && onItemsPerPageChange && itemsPerPage && (
                 <div className="cec-pagination__left">
@@ -451,7 +451,7 @@ export const CompactVariant = ( {
         }
     };
     return (
-        <div {...rest} ref={ref} className={`cec-pagination-compact ${className}`} dir={dir} role="navigation">
+        <div {...pickDomProps( rest )} ref={ref} className={`cec-pagination-compact ${className}`} dir={dir} role="navigation">
             <PaginationButton
                 onClick={handlePrevious}
                 disabled={currentPage === 1 || disabled}
@@ -487,7 +487,7 @@ export const BulletsVariant = ( {
     ...rest
 }: ExtendableProps<BulletsVariantProps, 'div'> ) => {
     return (
-        <div {...rest} ref={ref} className={`cec-pagination-container ${className}`} dir={dir} role="navigation">
+        <div {...pickDomProps( rest )} ref={ref} className={`cec-pagination-container ${className}`} dir={dir} role="navigation">
             <Bullets
                 currentPage={currentPage}
                 totalPages={totalPages}

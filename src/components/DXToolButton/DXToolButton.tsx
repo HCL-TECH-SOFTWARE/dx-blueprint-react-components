@@ -16,7 +16,7 @@
 import "./DXToolButton.scss";
 import React from "react";
 import { ImageProps } from "../../utilities";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface ToolButtonProps {
@@ -58,7 +58,7 @@ const DXToolButton = ( props: ExtendableProps<ToolButtonProps, "div"> ) => {
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxToolButton", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxToolButton", className )}>
             {props.image && props.image.url ? (
                 <div className="dxToolButton__imageButton">
                     <div className={getClass( "image", props.badge )}

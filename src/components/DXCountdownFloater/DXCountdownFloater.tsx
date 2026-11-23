@@ -16,7 +16,7 @@
 import variables from "../../global/_exportVariables.module.scss";
 import "./DXCountdownFloater.scss";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { ExtendableProps, mergeRefs } from "../../utilities/extendable";
+import { ExtendableProps, mergeRefs, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 interface Time {
@@ -193,7 +193,7 @@ const DXCountdownFloater = ( props: ExtendableProps<CountdownProps, "main"> ) =>
     }, [props.showSeconds, props.date] );
 
     return (
-        <main {...rest} className={classNames( "dxCountdown", className )} role="timer" aria-roledescription={`This is a countdown for ${props.date}`} ref={mergedRootRef}>
+        <main {...pickDomProps( rest )} className={classNames( "dxCountdown", className )} role="timer" aria-roledescription={`This is a countdown for ${props.date}`} ref={mergedRootRef}>
             {!hideCountdown ? (
                 <div className="dxCountdown__holder">
                     {/** Mobile Markup */}

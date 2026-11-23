@@ -16,7 +16,7 @@
 import "./DXAds.scss";
 import React, { useEffect, useState } from "react";
 import DXAd, { AdProps } from "../DXAd/DXAd";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface AdsProps {
@@ -84,7 +84,7 @@ const DXAds = ( props: ExtendableProps<AdsProps, "div"> ) => {
         }
     };
     return (
-        <div {...rest} ref={ref} className={classNames( "dxAds", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxAds", className )}>
             {renderAds()}
         </div>
     );

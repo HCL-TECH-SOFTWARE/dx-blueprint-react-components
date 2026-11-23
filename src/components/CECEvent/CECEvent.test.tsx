@@ -3220,12 +3220,15 @@ describe( 'CECEvent Hardening', () => {
     } );
 } );
 
-itSupportsExtensionProps( ( extra ) => <CECEvent event={mockEvent} {...extra} /> );
+// CECEvent declares style as its own (CSSProperties) prop
+itSupportsExtensionProps( ( extra ) => <CECEvent event={mockEvent} {...extra} />, { ownKeys: ['style'] } );
 
 test( 'extra props that are not DOM attributes are dropped instead of reaching the root element', () => {
-    const { container } = render( <CECEvent event={mockEvent} {...{ notADomProp: 'x', title: 'Tip' } as object} /> );
+    const { container } = render( <CECEvent event={mockEvent} {...{ notADomProp: 'x', title: 'Tip', 'data-tip': 'Tip' } as object} /> );
     expect( container.firstElementChild?.getAttribute( 'notadomprop' ) ).toBeNull();
-    expect( container.firstElementChild?.getAttribute( 'title' ) ).toBe( 'Tip' );
+    // a `title` can be content data, so it is not forwarded either; data-* is
+    expect( container.firstElementChild?.getAttribute( 'title' ) ).toBeNull();
+    expect( container.firstElementChild?.getAttribute( 'data-tip' ) ).toBe( 'Tip' );
 } );
 
 test( 'a consumer onKeyDown on the event root runs first and can stop the component\'s own click handling', () => {

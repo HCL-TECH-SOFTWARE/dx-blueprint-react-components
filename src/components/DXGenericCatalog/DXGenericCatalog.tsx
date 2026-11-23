@@ -25,7 +25,7 @@ import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent
 import DXEmptyState from "../DXEmptyState";
 import { EmptyStateProps } from "../DXEmptyState/DXEmptyState";
 import { CardComponent } from "../../utilities/CardComponent/CardComponent";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface GenericCatalogProps extends BasicComponent {
@@ -272,7 +272,7 @@ const DXGenericCatalog = ( props: ExtendableProps<GenericCatalogProps, "section"
     };
 
     return (
-        <section {...rest} ref={ref} className={classNames( "dxGenericCatalog", className )} data-testid="catalog-section">
+        <section {...pickDomProps( rest )} ref={ref} className={classNames( "dxGenericCatalog", className )} data-testid="catalog-section">
             {
                 props.filter && !props.filter.hide && <DXTaxonomyFilter {...taxonomyProps} />
             }

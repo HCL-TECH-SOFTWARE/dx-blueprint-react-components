@@ -17,7 +17,7 @@ import "./DXExpensesCard.scss";
 import DXButton from "../DXButton/DXButton";
 import { IconButtonProps } from "../../utilities";
 import React from "react";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface ExpensesCardProps {
@@ -49,7 +49,7 @@ const DXExpensesCard = ( props: ExtendableProps<ExpensesCardProps, "div"> ) => {
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( `dxExpensesCard ${getTypeClass()}${props.mobile ? ' dxExpensesCard--mobile' : ''}`, className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( `dxExpensesCard ${getTypeClass()}${props.mobile ? ' dxExpensesCard--mobile' : ''}`, className )}>
             <div className="dxExpensesCard__value">
                 <p>{props.currencySymbol ? props.currencySymbol : "$"}{formatValue( props.value, props.localeSetting )}</p>
             </div>

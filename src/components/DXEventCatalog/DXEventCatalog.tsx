@@ -23,7 +23,7 @@ import DXTaxonomyFilter, { TaxFilterProps, TaxonomyFilterProps } from "../DXTaxo
 import { getColNumber } from "../../utilities";
 import { formatDate, parseDate } from "../../utilities/dateTime";
 import { normalizeLocaleNumerals } from "../../utilities/cec-utils";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 export interface EventCatalogProps {
     items: EventCatalogItem[],
@@ -310,7 +310,7 @@ const DXEventCatalog = ( props: ExtendableProps<EventCatalogProps, "div"> ) => {
         );
     };
     return (
-        <div {...rest} ref={ref} className={classNames( `dxEventCatalog${resolvedDir === 'rtl' ? ' dxEventCatalog--rtl' : ''}`, className )} dir={resolvedDir}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( `dxEventCatalog${resolvedDir === 'rtl' ? ' dxEventCatalog--rtl' : ''}`, className )} dir={resolvedDir}>
             {
                 !props.hideFilters ? (
                     hasValidTaxonomyProps( props ) ? (

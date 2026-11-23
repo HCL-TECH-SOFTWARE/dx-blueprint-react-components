@@ -17,7 +17,7 @@ import React, { useEffect, useState } from "react";
 import DXButton from "../DXButton/DXButton";
 import "./DXPrivacyFilter.scss";
 import { getIcon } from "../../utilities";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface PrivacyFilterProps {
@@ -72,7 +72,7 @@ const DXPrivacyFilter = ( props: ExtendableProps<PrivacyFilterProps, "div"> ) =>
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxPrivacyFilter", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxPrivacyFilter", className )}>
             <DXButton
                 displayType={'secondary'}
                 onClick={handleClick}

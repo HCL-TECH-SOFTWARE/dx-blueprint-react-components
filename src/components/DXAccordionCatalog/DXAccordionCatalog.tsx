@@ -19,7 +19,7 @@ import DXAccordion, { AccordionProps } from "../DXAccordion/DXAccordion";
 import DXPagination from "../DXPagination";
 import DXTaxonomyFilter from "../DXTaxonomyFilter";
 import { TaxFilterProps, TaxonomyFilterProps } from "../DXTaxonomyFilter/DXTaxonomyFilter";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 /*
@@ -231,7 +231,7 @@ const DXAccordionCatalog = ( props: ExtendableProps<AccordionCatalogProps, "div"
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxACatalog", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxACatalog", className )}>
             {
                 !props.hideFilters ? (
                     hasValidTaxonomyProps( props ) ? (

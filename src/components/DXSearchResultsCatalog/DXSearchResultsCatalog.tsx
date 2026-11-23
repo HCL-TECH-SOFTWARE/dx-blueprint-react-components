@@ -20,7 +20,7 @@ import Col from 'react-bootstrap/Col';
 import DXPagination from "../DXPagination/DXPagination";
 import { getColNumber } from "../../utilities";
 import DXStraightCard, { StraightCardProps } from "../DXStraightCard/DXStraightCard";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface SearchResultsCatalogProps {
@@ -88,7 +88,7 @@ const DXSearchResultsCatalog = ( props: ExtendableProps<SearchResultsCatalogProp
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxSRCatalog", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxSRCatalog", className )}>
             <div className="dxSRCatalog__container">
                 {renderCards( props.items )}
             </div>

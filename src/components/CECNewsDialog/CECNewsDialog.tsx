@@ -16,7 +16,7 @@
 import React, { useEffect, useCallback } from "react";
 import "./CECNewsDialog.scss";
 import type { NewsItemProps } from "../../utilities/cec-types";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 import {
   decodeHtmlEntities,
@@ -64,7 +64,7 @@ const CECNewsDialog = ({
   }, [open, onKey]);
   return (
     <div
-      {...rest}
+      {...pickDomProps( rest )}
       ref={ref}
       className={classNames(`newsDialog__overlay${open ? " active" : ""}`, className)}
       role="dialog"

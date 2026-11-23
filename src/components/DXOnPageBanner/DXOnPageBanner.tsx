@@ -17,7 +17,7 @@ import React, { ReactElement } from "react";
 import "./DXOnPageBanner.scss";
 import DXInteractiveButton, { InteractiveButtonProps } from "../DXInteractiveButton/DXInteractiveButton";
 import { LinksProps, parseLinks, generateLinkAnchor, getIcon } from "../../utilities";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface OnPageBannerProps {
@@ -83,7 +83,7 @@ const DXOnPageBanner = ( props: ExtendableProps<OnPageBannerProps, "div"> ) => {
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxOnPageBanner", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxOnPageBanner", className )}>
             <div className="dxOnPageBanner__backgroundContainer"
                 style={getBannerStyle()}
                 data-testid="banner-background">

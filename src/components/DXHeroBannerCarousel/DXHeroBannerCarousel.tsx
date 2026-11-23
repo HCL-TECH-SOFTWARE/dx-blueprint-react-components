@@ -17,7 +17,7 @@ import React, { ReactElement, useEffect, useState } from "react";
 import "./DXHeroBannerCarousel.scss";
 import DXHeroBanner, { HeroBannerProps } from "../DXHeroBanner/DXHeroBanner";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface HeroBannerCarouselProps extends BasicComponent {
@@ -191,7 +191,7 @@ const DXHeroBannerCarousel = ( props: ExtendableProps<HeroBannerCarouselProps, "
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxHeroBannerCarousel", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxHeroBannerCarousel", className )}>
             <ul data-testid={"HBCarouse-mainContainer"} id="mainContainer">
                 {renderItems()}
             </ul>

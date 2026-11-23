@@ -19,7 +19,7 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { LinksProps, ImageProps, getLinkTarget, parseContentAndMedia } from "../../utilities";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface ParallaxContentBlockProps {
@@ -144,7 +144,7 @@ const DXParallaxContentBlock = ( props: ExtendableProps<ParallaxContentBlockProp
     };
 
     return (
-        <div {...rest} ref={ref} className={className}>
+        <div {...pickDomProps( rest )} ref={ref} className={className}>
             {renderParallax()}
         </div>
     );

@@ -16,7 +16,7 @@
 import React, { useMemo, useEffect } from 'react';
 import { PaginationProps, DEFAULT_MESSAGES } from './CECPagination.types';
 import { DefaultVariant, CompactVariant, BulletsVariant } from './CECPagination.variants';
-import { ExtendableProps } from '../../utilities/extendable';
+import { ExtendableProps, pickDomProps } from '../../utilities/extendable';
 import './CECPagination.scss';
 /** When `variant` renders nothing (the default variant with `showPagination={false}`), `className`, `ref` and extra props are not applied. */
 const CECPagination = ( {
@@ -109,7 +109,7 @@ const CECPagination = ( {
         case 'compact':
             return (
                 <CompactVariant
-                    {...rest}
+                    {...pickDomProps( rest )}
                     ref={ref}
                     {...navigationProps}
                     messages={{
@@ -119,12 +119,12 @@ const CECPagination = ( {
                 />
             );
         case 'bullets':
-            return <BulletsVariant {...rest} ref={ref} {...navigationProps} />;
+            return <BulletsVariant {...pickDomProps( rest )} ref={ref} {...navigationProps} />;
         case 'default':
         default:
             return (
                 <DefaultVariant
-                    {...rest}
+                    {...pickDomProps( rest )}
                     ref={ref}
                     {...commonProps}
                     itemsPerPage={itemsPerPage}

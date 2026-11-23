@@ -18,7 +18,7 @@ import React, { useState, useEffect } from "react";
 import DXDirectoryCard, { DirectoryCardProps } from "../DXDirectoryCard/DXDirectoryCard";
 import DXPagination from "../DXPagination/DXPagination";
 import DXTaxonomyFilter, { TaxFilterProps, TaxonomyFilterProps } from "../DXTaxonomyFilter/DXTaxonomyFilter";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface DirectoryProps {
@@ -188,7 +188,7 @@ const DXDirectory = ( props: ExtendableProps<DirectoryProps, "div"> ) => {
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxDirectory", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxDirectory", className )}>
             {
                 !props.hideFilters ? (
                     hasValidTaxonomyProps( props ) ? (

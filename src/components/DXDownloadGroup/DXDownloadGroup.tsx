@@ -16,7 +16,7 @@
 import "./DXDownloadGroup.scss";
 import React from "react";
 import DXDownloadCard, { DownloadCardProps } from "../DXDownloadCard/DXDownloadCard";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface DownloadGroupProps {
@@ -36,7 +36,7 @@ const DXDownloadGroup = ( props: ExtendableProps<DownloadGroupProps, "div"> ) =>
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxDownloadGroup", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxDownloadGroup", className )}>
             {props.title ? (
                 <p className="dxDownloadGroup__title">{props.title}</p>
             ) : null}

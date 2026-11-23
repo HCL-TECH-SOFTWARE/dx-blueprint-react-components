@@ -308,7 +308,8 @@ test( "If the user pass displayType as unstyled, the button will have the class 
     expect( button ).toHaveClass( "btn-unstyled" );
 } );
 
-itSupportsExtensionProps( ( extra ) => <DXButton label="Click me" {...extra} /> );
+// DXButton declares role, hidden, style and tabIndex as its own props, so they are rendered by design
+itSupportsExtensionProps( ( extra ) => <DXButton label="Click me" {...extra} />, { ownKeys: ["role", "hidden", "style", "tabIndex"] } );
 
 test( "a consumer aria-label is kept when the label is visible", () => {
     const { container } = render( <DXButton label="Save" aria-label="Save the document" /> );

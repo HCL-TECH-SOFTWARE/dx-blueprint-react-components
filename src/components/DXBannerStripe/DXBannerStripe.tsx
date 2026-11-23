@@ -20,7 +20,7 @@ import Row from 'react-bootstrap/Row';
 import { IconButtonProps, getVideoFormat } from "../../utilities";
 import DXCountdownFloater, { CountdownProps } from '../DXCountdownFloater/DXCountdownFloater';
 import "./DXBannerStripe.scss";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface BannerStripeProps {
@@ -281,7 +281,7 @@ const DXBannerStripe = ( props: ExtendableProps<BannerStripeProps, "div"> ) => {
     };
 
     return (
-        <div {...rest} ref={ref} id={`dxBannerStripe${props.index}`} className={classNames( `dxBannerStripe ${getMediaVariant()}`, className )} data-testid="banner-stripe">
+        <div {...pickDomProps( rest )} ref={ref} id={`dxBannerStripe${props.index}`} className={classNames( `dxBannerStripe ${getMediaVariant()}`, className )} data-testid="banner-stripe">
             <style>{getBackgroundMediaStyles()}</style>
             <Row className={"dxBannerStripe__opacityFilter"}>
                 {renderContent( props )}

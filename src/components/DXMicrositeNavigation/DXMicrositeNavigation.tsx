@@ -26,7 +26,7 @@ import DXCardButton, { CardButtonProps } from "../DXCardButton/DXCardButton";
 import { ImageProps, LinksProps, NavigationItemProps, StateIcons, getIcon, getLinkTarget } from "../../utilities";
 import DXMyNextMeeting, { NextMeetingProps } from "../DXMyNextMeeting/DXMyNextMeeting";
 import DXVerticalNavigation, { NavigationItem, VerticalNavigationProps } from "../DXVerticalNavigation/DXVerticalNavigation";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface MicrositeProps {
@@ -92,7 +92,7 @@ const DXMicrositeNavigation = ( props: ExtendableProps<MicrositeProps, "div"> ) 
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxMicrosite", className )} data-testid="microsite">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxMicrosite", className )} data-testid="microsite">
             <Container fluid="xl" className="dxSliderMenu" >
                 <Row>
                     <Col xs={7}>

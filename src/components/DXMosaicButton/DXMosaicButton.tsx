@@ -16,7 +16,7 @@
 import React, { useEffect, useState } from "react";
 import "./DXMosaicButton.scss";
 import { ButtonLinkProps, ImageProps, getLinkTarget } from "../../utilities";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface MosaicButtonProps {
@@ -73,7 +73,7 @@ const DXMosaicButton = ( props: ExtendableProps<MosaicButtonProps, "div"> ) => {
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxMosaicButton dxMosaicButton--" + size, className )} id={"dxMosaicButton-" + props.index}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxMosaicButton dxMosaicButton--" + size, className )} id={"dxMosaicButton-" + props.index}>
             <a href={props.link.url} target={getLinkTarget( props.link.target )} aria-roledescription="button">
                 <div className={"dxMosaicButton__container"} style={getContainerStyles()} title={props.image?.altText || "mosaic-button-" + props.index} data-testid="mb-image">
                     <div className={"dxMosaicButton__text"} data-testid="mb-textContainer" style={getTextStyles()}>

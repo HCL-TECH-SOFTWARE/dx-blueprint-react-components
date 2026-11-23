@@ -18,7 +18,7 @@ import React, { useEffect, useRef, useState } from "react";
 import DXToolButton, { ToolButtonProps } from "../DXToolButton/DXToolButton";
 import { createRoot, Root } from 'react-dom/client';
 import { clickOutsideAlerter, renderOverlayElement } from "../../utilities";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 interface UtilityItem extends ToolButtonProps {
@@ -132,7 +132,7 @@ const DXUtilityZone = ( { items, panelsContainerId, showOverlay, enableIconPanel
     } );
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxUtilityZone", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxUtilityZone", className )}>
             <div ref={parentRef}>
                 {renderItems( items )}
             </div>

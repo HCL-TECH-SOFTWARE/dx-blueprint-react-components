@@ -713,7 +713,8 @@ describe( "CECUpcomingEvents - Hardened Mutation Suite", () => {
 type UpcomingEventsProps = React.ComponentProps<typeof CECUpcomingEvents>;
 const oneItem = [{ id: "1" }] as unknown as UpcomingEventsProps["items"];
 
-itSupportsExtensionProps( ( extra ) => <CECUpcomingEvents items={oneItem} {...extra} /> );
+// CECUpcomingEvents declares style as its own (CSSProperties) prop
+itSupportsExtensionProps( ( extra ) => <CECUpcomingEvents items={oneItem} {...extra} />, { ownKeys: ["style"] } );
 
 describe( "CECUpcomingEvents - extension props", () => {
   it( "does not forward the event-card props to the root, but keeps DOM-safe extras", () => {

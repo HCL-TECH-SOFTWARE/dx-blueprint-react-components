@@ -23,7 +23,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { getColNumber } from "../../utilities";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface FullImageCatalogItem {
@@ -217,7 +217,7 @@ const DXFullImageCatalog = ( props: ExtendableProps<FullImageCatalogProps, "div"
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxFullImageCatalog", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxFullImageCatalog", className )}>
             {
                 !props.hideFilters ? (
                     hasValidTaxonomyProps( props ) ? (

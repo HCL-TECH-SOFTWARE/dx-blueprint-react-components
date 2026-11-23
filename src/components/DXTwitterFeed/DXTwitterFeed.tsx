@@ -16,7 +16,7 @@
 import React, { useEffect, useState } from 'react';
 import "./DXTwitterFeed.scss";
 import Spinner from 'react-bootstrap/Spinner';
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface TwitterFeedProps {
@@ -100,7 +100,7 @@ const DXTwitterFeed = ( props: ExtendableProps<TwitterFeedProps, "div"> ) => {
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxTwitterFeed", className )} data-testid="twitter-feed">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxTwitterFeed", className )} data-testid="twitter-feed">
             {props.title && <h3 className='dxTwitterFeed__title' data-testid="twitter-feed-title">{props.title}</h3>}
             {props.description && <p className='dxTwitterFeed__description' data-testid="twitter-feed-description">{props.description}</p>}
             <Spinner animation="border" variant="primary" className={( isFeedLoading ? "dxTwitterFeed__spinner" : "dxTwitterFeed__spinner--hidden" )} data-testid="twitter-feed-spinner" />

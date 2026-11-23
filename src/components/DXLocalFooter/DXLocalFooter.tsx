@@ -17,7 +17,7 @@ import "./DXLocalFooter.scss";
 import { LinksProps, getLinkTarget, getLinkIcon, ImageProps } from "../../utilities";
 import React, { useEffect, useRef } from 'react';
 import DXEmptyState from "../DXEmptyState";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface FooterInfo {
@@ -176,7 +176,7 @@ const DXLocalFooter = ( props: ExtendableProps<LocalFooterProps, "section"> ) =>
         }
     };
     return (
-        <section {...rest} ref={ref} className={classNames( "dxLocalFooter", className )}>
+        <section {...pickDomProps( rest )} ref={ref} className={classNames( "dxLocalFooter", className )}>
             <div className="dxLocalFooter__background" ref={backgroundRef} data-testid="local-footer-dark-layer">
                 <div className="dxLocalFooter__backgroundLeft" id="footer-background-image-left" ref={leftImgRef}></div>
                 <div className="dxLocalFooter__backgroundRight" id="footer-background-image-right" ref={rightImgRef}></div>

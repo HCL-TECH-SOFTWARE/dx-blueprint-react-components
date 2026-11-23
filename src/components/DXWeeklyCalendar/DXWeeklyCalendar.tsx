@@ -25,7 +25,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import SliderButton from "./components/SliderButton";
-import { ExtendableProps, mergeRefs } from "../../utilities/extendable";
+import { ExtendableProps, mergeRefs, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 interface Event {
@@ -218,7 +218,7 @@ const DXWeeklyCalendar = ( props: ExtendableProps<WeeklyCalendarProps, "div"> ) 
     }, [] );
 
     return (
-        <div {...rest} ref={mergedRootRef} className={classNames( "dxWeeklyCalendar", className )}>
+        <div {...pickDomProps( rest )} ref={mergedRootRef} className={classNames( "dxWeeklyCalendar", className )}>
             <div className="dxWeeklyCalendar__top">
                 <h3>My Week</h3>
                 <DXButton

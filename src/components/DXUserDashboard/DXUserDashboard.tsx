@@ -17,7 +17,7 @@ import "./DXUserDashboard.scss";
 import React from "react";
 import { ImageProps, renderAvatarLetters } from "../../utilities";
 import DXUtilityBelt, { UtilityBeltProps } from "../DXUtilityBelt/DXUtilityBelt";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface UserDashboardProps {
@@ -68,7 +68,7 @@ const DXUserDashboard = ( props: ExtendableProps<UserDashboardProps, "div"> ) =>
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( `dxUserDashboard ${getAlignClass()} ${props.vertical ? "dxUserDashboard--vertical" : ""}`, className )} data-testid="user-dashboard">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( `dxUserDashboard ${getAlignClass()} ${props.vertical ? "dxUserDashboard--vertical" : ""}`, className )} data-testid="user-dashboard">
             <div className="dxUserDashboard__info">
                 {renderImage()}
                 <div className="dxUserDashboard__data">

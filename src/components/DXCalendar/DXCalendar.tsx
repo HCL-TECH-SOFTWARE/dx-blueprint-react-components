@@ -20,7 +20,7 @@ import { addDays, addMonths, formatDate, isSameDay, parseDateWithFormat, startOf
 import DXButton from "../DXButton/DXButton";
 import Modal from 'react-bootstrap/Modal';
 import { SliderIcons, getIcon } from "../../utilities";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 interface Event {
     name: string,
@@ -319,7 +319,7 @@ const DXCalendar = ( props: ExtendableProps<CalendarProps, "div"> ) => {
     }, [props.events] );
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxCalendar", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxCalendar", className )}>
             <Modal show={showModal} onHide={handleClose} data-testid="calendar-modal" className="dxCalendar__modal">
                 <Modal.Header>
                     <Modal.Title>

@@ -21,7 +21,7 @@ import React, { ReactElement } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { chainHandlers, ExtendableProps } from "../../utilities/extendable";
+import { chainHandlers, ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface QuickLinksProps {
@@ -53,6 +53,7 @@ const getQuickLinkIcon = ( target: string | undefined ) => {
 const DXQuickLinks = ( props: ExtendableProps<QuickLinksProps, "div"> ) => {
     // Own props are pulled out so only DOM attributes reach the root.
     const { index, title, hideTitle, quickLinksCollection, className, ref, ...rest } = props;
+    const domProps = pickDomProps( rest );
     let quickLinksElements: ReactElement[] = [];
     let quickLinkMaxAmount = 6;
     if ( props.quickLinksCollection && props.quickLinksCollection.length ) {
@@ -84,7 +85,7 @@ const DXQuickLinks = ( props: ExtendableProps<QuickLinksProps, "div"> ) => {
             quickLinkCounter++;
         } );
         return (
-            <Col {...rest} ref={ref} xs={3} className={classNames( "dxQuickLinks", className )} data-testid="quicklink-container" onClick={chainHandlers( rest.onClick, ( e: React.MouseEvent ) => e.stopPropagation() )}>
+            <Col {...domProps} ref={ref} xs={3} className={classNames( "dxQuickLinks", className )} data-testid="quicklink-container" onClick={chainHandlers( domProps.onClick as React.MouseEventHandler | undefined, ( e: React.MouseEvent ) => e.stopPropagation() )}>
                 <Container fluid="xl" className={props.hideTitle ? "container-fluid--no-title" : ""}>
                     <Row>
                         {

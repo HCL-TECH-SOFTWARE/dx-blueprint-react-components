@@ -16,35 +16,70 @@
 import React from "react";
 
 /**
- * Own props win over the HTML attributes of the root element `El`. Includes `ref` (React 19 passes it as a prop).
+ * The extension props a component root accepts, matching what `pickDomProps` forwards at runtime:
+ * `ref` (React 19 passes it as a prop), `className`, `id`, `style`, `data-*` and `aria-*` attributes, and the DOM event handlers of `El`.
+ * Other HTML attributes (for example `title`, `role`, `tabIndex`, `lang`, `hidden`) are deliberately not part of it.
+ */
+type ExtensionAttributes<El extends keyof React.JSX.IntrinsicElements> =
+    Omit<React.DOMAttributes<React.ComponentRef<El>>, "children" | "dangerouslySetInnerHTML"> &
+    React.AriaAttributes & {
+        ref?: React.Ref<React.ComponentRef<El>>;
+        className?: string;
+        id?: string;
+        style?: React.CSSProperties;
+        [dataAttribute: `data-${string}`]: string | number | boolean | undefined;
+    };
+
+/**
+ * A component's own props plus the extension props of its root element `El` (see `ExtensionAttributes`). Own props win.
  *
  * Internal type: it is intentionally not exported from `utilities/index.ts`.
  */
 export type ExtendableProps<Own, El extends keyof React.JSX.IntrinsicElements = "div"> =
-    Own & Omit<React.ComponentPropsWithRef<El>, keyof Own>;
+    Own & Omit<ExtensionAttributes<El>, keyof Own>;
 
-// `data-*`, `aria-*` and the plain DOM attributes a consumer may reasonably set on a component root.
+// Extension keys forwarded to a component root, whatever the component's props type. Component props can come from
+// untyped content data (WCM component configs, catalog items) with keys the component does not declare, so anything
+// that is not on this short list is dropped. `title`, `role`, `lang`, `hidden` and `tabIndex` are deliberately NOT
+// forwarded: content data uses `title` as text and `role` as a job title, so they cannot be told apart from a consumer attribute.
+// `data-*` and `aria-*` keys (any value)
 const PASSTHROUGH_KEY = /^(data-|aria-)/;
-const PASSTHROUGH_ATTRIBUTES = ["id", "role", "title", "style", "tabIndex", "lang", "hidden"];
 // `onClick`, `onKeyDown`, ... (only when the value is a function)
 const EVENT_HANDLER_KEY = /^on[A-Z]/;
 
+const isPlainObject = ( value: unknown ): boolean => {
+    if ( typeof value !== "object" || value === null ) return false;
+    const proto = Object.getPrototypeOf( value );
+    return proto === Object.prototype || proto === null;
+};
+
+const isForwarded = ( key: string, value: unknown ): boolean => {
+    if ( PASSTHROUGH_KEY.test( key ) ) return true;
+    if ( key === "id" ) return typeof value === "string" || typeof value === "number";
+    // a non-object `style` (for example a CSS string from data) would make React throw
+    if ( key === "style" ) return isPlainObject( value );
+    return EVENT_HANDLER_KEY.test( key ) && typeof value === "function";
+};
+
 /**
- * For components whose props type has an index signature: keeps only the keys that are safe to spread on a DOM element
- * (`data-*`, `aria-*`, `id`, `role`, `title`, `style`, `tabIndex`, `lang`, `hidden` and `on[A-Z]*` functions) and drops everything else,
- * so unknown props never reach the DOM. `className` and `ref` are not handled here; components take them out themselves.
+ * Keeps only the extension props that may reach a component root and drops everything else, so undeclared props
+ * (for example WCM config keys such as `_edit`, `textAlign` or a content `title`) never become DOM attributes:
+ * - `data-*` and `aria-*` keys;
+ * - `id` when the value is a string or a number;
+ * - `style` when the value is a plain object;
+ * - `on[A-Z]*` keys when the value is a function.
+ *
+ * `className` and `ref` are not handled here; components take them out themselves. Every component root spreads the result
+ * of this helper instead of its raw rest props.
  *
  * Internal helper: it is intentionally not exported from `utilities/index.ts`.
  */
-export const pickDomProps = ( rest: Record<string, unknown> ): Record<string, unknown> => {
+export const pickDomProps = ( rest: object ): Record<string, unknown> => {
+    const source = rest as Record<string, unknown>;
     const picked: Record<string, unknown> = {};
-    Object.keys( rest ).forEach( ( key ) => {
-        const value = rest[key];
-        if (
-            PASSTHROUGH_KEY.test( key ) ||
-            PASSTHROUGH_ATTRIBUTES.indexOf( key ) !== -1 ||
-            ( EVENT_HANDLER_KEY.test( key ) && typeof value === "function" )
-        ) {
+    Object.keys( source ).forEach( ( key ) => {
+        const value = source[key];
+        if ( isForwarded( key, value ) ) {
             picked[key] = value;
         }
     } );

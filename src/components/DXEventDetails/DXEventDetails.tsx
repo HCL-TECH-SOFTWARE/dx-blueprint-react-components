@@ -23,7 +23,7 @@ import DXButton from "../DXButton/DXButton";
 import { formatDate, parseDate } from "../../utilities/dateTime";
 import DXSocialShare, { SocialShareProps } from "../DXSocialShare/DXSocialShare";
 import variables from "../../global/_exportVariables.module.scss";
-import { ExtendableProps, mergeRefs } from "../../utilities/extendable";
+import { ExtendableProps, mergeRefs, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 interface EventDate {
@@ -435,7 +435,7 @@ const DXEventDetails = ( props: ExtendableProps<EventDetailsProp, "div"> ) => {
     }, [] );
 
     return (
-        <div {...rest} ref={mergedRootRef} className={classNames( "dxEventDetails", className )}>
+        <div {...pickDomProps( rest )} ref={mergedRootRef} className={classNames( "dxEventDetails", className )}>
             {props.mapUrl && props.mapUrl !== "" ? (
                 <div className="dxEventDetails__map" data-testid="event-details-map">
                     <DXMap iframeUrl={props.mapUrl} />

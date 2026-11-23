@@ -21,7 +21,7 @@ import DXCard, { CardProps } from "../DXCard/DXCard";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface SearchInputProps {
@@ -304,7 +304,7 @@ const DXSearchInput = ( props: ExtendableProps<SearchInputProps, "div"> ) => {
     }, [collapsed] );
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxSearchInput", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxSearchInput", className )}>
             <Form id="dxSearchInput__form" role="search" aria-label="search-input" onSubmit={( e ) => { e.preventDefault(); handleSearchSubmit(); }} ref={refForm} onBlur={handleBlur}>
                 <Form.Group className='dxSearchInput__form'>
                     <InputGroup>

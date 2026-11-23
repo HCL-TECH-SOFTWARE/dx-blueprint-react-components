@@ -18,7 +18,7 @@ import "./DXFastAccessMenu.scss";
 import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
 import DXButton from "../DXButton/DXButton";
 import { LinksProps, SliderIcons, getIcon } from "../../utilities";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface FastAccessMenuProps {
@@ -160,7 +160,7 @@ const DXFastAccessMenu = ( props: ExtendableProps<FastAccessMenuProps, "div"> ) 
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxFastAccessMenu", className )} data-testid="fast-access-menu-container">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxFastAccessMenu", className )} data-testid="fast-access-menu-container">
             <div className="dxFastAccessMenu__header" >
                 {props.title ? <h3 className="dxFastAccessMenu__headerTitle" data-testid="header-title"> {props.title} </h3> : null}
                 {props.link ? (

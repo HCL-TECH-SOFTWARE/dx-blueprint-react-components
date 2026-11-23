@@ -16,7 +16,7 @@
 import "./DXCasesCatalog.scss";
 import React from "react";
 import DXCaseCard, { CaseCardProps } from "../DXCaseCard/DXCaseCard";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface CasesCatalogProps {
@@ -34,7 +34,7 @@ const DXCasesCatalog = ( props: ExtendableProps<CasesCatalogProps, "div"> ) => {
         ) );
     };
     return (
-        <div {...rest} ref={ref} className={classNames( "dxCasesCatalog", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxCasesCatalog", className )}>
             <div className="dxCasesCatalog__header">
                 <div className="row">
                     <div className="col-5">

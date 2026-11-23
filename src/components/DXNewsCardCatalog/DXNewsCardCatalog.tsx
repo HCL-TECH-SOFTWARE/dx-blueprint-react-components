@@ -22,7 +22,7 @@ import { getValuesFromDateFormat, getColNumber } from "../../utilities";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
 import DXTaxonomyFilter, { TaxFilterProps, TaxonomyFilterProps } from "../DXTaxonomyFilter/DXTaxonomyFilter";
 import DXPagination from "../DXPagination/DXPagination";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface NewsCardCatalogProps extends BasicComponent {
@@ -192,7 +192,7 @@ const DXNewsCardCatalog = ( props: ExtendableProps<NewsCardCatalogProps, "div"> 
 
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxNewsCardCatalog", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxNewsCardCatalog", className )}>
             {
                 !props.hideFilters && (
                     hasValidTaxonomyProps( props ) ? (

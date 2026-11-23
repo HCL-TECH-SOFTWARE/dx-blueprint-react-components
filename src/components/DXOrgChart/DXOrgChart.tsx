@@ -18,7 +18,7 @@ import "./DXOrgChart.scss";
 import DXChartCard, { ChartCardProps } from "../DXChartCard/DXChartCard";
 import { getIcon } from "../../utilities";
 import DXButton from "../DXButton/DXButton";
-import { ExtendableProps, mergeRefs } from "../../utilities/extendable";
+import { ExtendableProps, mergeRefs, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface OrgChartProps {
@@ -203,7 +203,7 @@ const DXOrgChart = ( props: ExtendableProps<OrgChartProps, "div"> ) => {
     } );
 
     return (
-        <div key={1} {...rest} className={classNames( "dxOrgChart d-flex flex-wrap justify-content-center", className )} data-testid="dxOrgChart" ref={mergedRootRef}>
+        <div key={1} {...pickDomProps( rest )} className={classNames( "dxOrgChart d-flex flex-wrap justify-content-center", className )} data-testid="dxOrgChart" ref={mergedRootRef}>
             {renderOrgChart}
         </div >
     );

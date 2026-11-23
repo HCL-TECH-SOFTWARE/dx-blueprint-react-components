@@ -17,7 +17,7 @@ import "./DXGallery.scss";
 import React, { useMemo, useState } from "react";
 import DXButton from "../DXButton/DXButton";
 import { GalleryImageProps, SliderIcons, getIcon } from "../../utilities";
-import { ExtendableProps, mergeRefs } from "../../utilities/extendable";
+import { ExtendableProps, mergeRefs, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 export interface GalleryProps {
     images: GalleryImageProps[],
@@ -147,7 +147,7 @@ const DXGallery = ( props: ExtendableProps<GalleryProps, "div"> ) => {
         ? Array.from( { length: props.images.length }, ( _, i ) => props.images.length - 1 - i )
         : Array.from( { length: props.images.length }, ( _, i ) => i );
     return (
-        <div {...rest} ref={mergedRootRef} className={classNames( `dxGallery${isRTL ? ' dxGallery--rtl' : ''}`, className )} dir={resolvedDir}>
+        <div {...pickDomProps( rest )} ref={mergedRootRef} className={classNames( `dxGallery${isRTL ? ' dxGallery--rtl' : ''}`, className )} dir={resolvedDir}>
             {!props.hideInfo && !props.innerInfo ? renderInfo( props.title, props.date ) : null}
             {props.images && props.images.length > 0 ? (
                 <div className="dxGallery__container">

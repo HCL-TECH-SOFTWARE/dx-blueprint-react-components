@@ -17,7 +17,7 @@ import React, { FormEventHandler, useEffect, useState } from "react";
 import "./DXInteractiveButton.scss";
 import DXButton from "../DXButton/DXButton";
 import { IconButtonProps } from "../../utilities";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface InteractiveButtonProps {
@@ -103,7 +103,7 @@ const DXInteractiveButton = ( props: ExtendableProps<InteractiveButtonProps, "di
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxInteractiveButton", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxInteractiveButton", className )}>
             <div className="dxInteractiveButton__messageContainer">
                 <div
                     hidden={props.disabled}

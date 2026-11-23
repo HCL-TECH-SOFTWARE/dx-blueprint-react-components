@@ -22,7 +22,7 @@ import Col from 'react-bootstrap/Col';
 
 import { ImageProps, IconButtonProps } from "../../utilities";
 import DXEmptyState from "../DXEmptyState";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface CarouselItem {
@@ -156,7 +156,7 @@ const DXCarousel = ( props: ExtendableProps<CarouselProps, "div"> ) => {
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxCarousel", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxCarousel", className )}>
             {( props.items.length != 0 ) ? renderItems() : <DXEmptyState title={"No items to render"}></DXEmptyState>}
         </div>
     );

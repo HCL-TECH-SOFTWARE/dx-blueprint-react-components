@@ -21,7 +21,7 @@ import Col from 'react-bootstrap/Col';
 import { LinksProps, getIcon } from "../../utilities";
 import DXMyLinksCard from "../DXMyLinksCard";
 import DXEmptyState, { EmptyStateProps } from "../DXEmptyState/DXEmptyState";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface MySavedLinksProps {
@@ -84,7 +84,7 @@ const DXMySavedLinks = ( props: ExtendableProps<MySavedLinksProps, "div"> ) => {
 
     return (
         <Container
-            {...rest}
+            {...pickDomProps( rest )}
             ref={ref}
             className={classNames( "dxMySavedLinks", className )}
             data-testid="msl-parent"

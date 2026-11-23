@@ -15,7 +15,7 @@
 
 import "./DXUtilityBelt.scss";
 import React from "react";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 interface BeltIcon {
@@ -74,7 +74,7 @@ const DXUtilityBelt = ( props: ExtendableProps<UtilityBeltProps, "div"> ) => {
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( `dxUtilityBelt ${getAlignment()}`, className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( `dxUtilityBelt ${getAlignment()}`, className )}>
             {renderItems( props.items )}
         </div>
     );

@@ -63,7 +63,7 @@ const CECNewsOverview = ( rawProps: ExtendableProps<CECNewsOverviewProps, "secti
   // Every own prop is pulled out (under a throwaway name, the real ones are read from `props` below) so none of them reaches the DOM.
   const { viewMode: _viewMode, minItemWidth: _minItemWidth, maxHeight: _maxHeight, reserveGutter: _reserveGutter, displayCount: _displayCount, dir: _dir, items: _items, _edit: __edit, imageMode: _imageMode, imagePosition: _imagePosition, imageSize: _imageSize, imageWidth: _imageWidth, cardStyle: _cardStyle, showSummary: _showSummary, showCategory: _showCategory, showDate: _showDate, summaryMaxChars: _summaryMaxChars, summaryLines: _summaryLines, summaryEllipsis: _summaryEllipsis, highlightFirst: _highlightFirst, openMode: _openMode, className: rawClassName, ref, ...rawRest } = rawProps;
   // DX hands these components loosely typed data, so only DOM-safe extras are forwarded (this also drops the data/config/props wrapper keys)
-  const rest = pickDomProps( rawRest );
+  const domProps = pickDomProps( rawRest );
   const {
     items,
     _edit,
@@ -150,7 +150,7 @@ const CECNewsOverview = ( rawProps: ExtendableProps<CECNewsOverviewProps, "secti
   const rootClassName = classNames( containerClasses, props !== rawProps && ( props as { className?: string; } ).className, rawClassName );
   if ( !hasItems ) {
     return (
-      <section {...rest} ref={ref} className={rootClassName} data-build="news-overview-2.4.0">
+      <section {...domProps} ref={ref} className={rootClassName} data-build="news-overview-2.4.0">
         <div className="cecNewsOverview__empty" role="note" aria-live="polite" data-testid="newsOverview-empty">
           <div className="cecNewsOverview__emptyCard">
             <div className="cecNewsOverview__emptyTitle">No News data found</div>
@@ -170,12 +170,12 @@ const CECNewsOverview = ( rawProps: ExtendableProps<CECNewsOverviewProps, "secti
   }
   return (
     <section
-      {...rest}
+      {...domProps}
       ref={ref}
       className={rootClassName}
       data-testid="cec-news-overview"
       style={{
-        ...( rest.style as React.CSSProperties | undefined ),
+        ...( domProps.style as React.CSSProperties | undefined ),
         ["--nov-min" as any]: minItemWidth,
         ["--nov-max-height" as any]: maxHeight || undefined,
         ["--nov-thumb-w" as any]: thumbW,

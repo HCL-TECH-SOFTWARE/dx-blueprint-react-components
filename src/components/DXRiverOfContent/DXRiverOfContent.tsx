@@ -17,7 +17,7 @@ import "./DXRiverOfContent.scss";
 import React, { useState, useRef } from "react";
 import DXButton from "../DXButton/DXButton";
 import { LinksProps, getIcon, getLinkTarget } from "../../utilities";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface RiverOfContentProps {
@@ -101,7 +101,7 @@ const DXRiverOfContent = ( props: ExtendableProps<RiverOfContentProps, "div"> ) 
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxRiverContent", open && "dxRiverContent--open", className )} id={`dxRiverContent-${props.index}`}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxRiverContent", open && "dxRiverContent--open", className )} id={`dxRiverContent-${props.index}`}>
             <div className={"dxRiverContent__header " + verifyTextOverflow( props.header, true )} >
                 {
                     props.collapsible ? (

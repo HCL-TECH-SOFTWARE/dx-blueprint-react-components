@@ -50,7 +50,7 @@ export interface CECUpcomingEventsProps
 }
 /**
  * `className`, `ref` and extra DOM props go to the root `div`. Props meant for the event cards (`showRecurringIcon`, `customActions`, ...)
- * are not forwarded to the root; only DOM-safe extras (`data-*`, `aria-*`, `id`, `role`, event handlers, ...) are.
+ * are not forwarded to the root; only the extension props (`data-*`, `aria-*`, `id`, `style`, event handlers) are.
  */
 const CECUpcomingEvents = ( {
   items,

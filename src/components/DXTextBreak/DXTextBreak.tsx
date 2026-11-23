@@ -17,7 +17,7 @@ import "./DXTextBreak.scss";
 import React from "react";
 import DXButton from "../DXButton/DXButton";
 import { IconButtonProps } from "../../utilities";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface TextBreakProps {
@@ -120,7 +120,7 @@ const DXTextBreak = ( props: ExtendableProps<TextBreakProps, "div"> ) => {
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxTextBreak", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxTextBreak", className )}>
             <div className="dxTextBreak__background" style={getBackgroundStyles()} data-testid="text-break-background">
                 <div className="dxTextBreak__container row">
                     <div className={getAlignment()} style={getContentStyles()} data-testid="text-break-content">

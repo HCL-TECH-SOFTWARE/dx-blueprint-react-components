@@ -16,7 +16,7 @@
 import React, { useEffect, useState } from "react";
 import "./DXVideo.scss";
 import { LinksProps } from "../../utilities";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 export interface VideoProps {
     playlist: string,
@@ -268,7 +268,7 @@ const DXVideo = ( props: ExtendableProps<VideoProps, "div"> ) => {
             } );
     };
     return (
-        <div {...rest} ref={ref} className={classNames( "dxVideo--loading", className )} data-testid="dx-video" dir={resolvedDir}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxVideo--loading", className )} data-testid="dx-video" dir={resolvedDir}>
             {isLoading ? (
                 <h4 data-testid="loading">Loading...</h4>
             ) : (

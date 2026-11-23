@@ -17,7 +17,7 @@ import React, { ButtonHTMLAttributes, useState } from 'react';
 import "./DXToggleMenu.scss";
 import DXButton from '../DXButton/DXButton';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface ButtonProps {
@@ -105,7 +105,7 @@ const DXToggleMenu = ( props: ExtendableProps<ToggleMenuProps, "div"> ) => {
 
     return (
         <ButtonGroup
-            {...rest}
+            {...pickDomProps( rest )}
             ref={ref}
             data-testid="toggleMenu"
             className={classNames( "dxToggleMenu", className )}

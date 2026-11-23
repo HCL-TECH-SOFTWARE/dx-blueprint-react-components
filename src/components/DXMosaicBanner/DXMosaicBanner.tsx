@@ -18,7 +18,7 @@ import "./DXMosaicBanner.scss";
 import DXMosaicButton, { MosaicButtonProps } from "../DXMosaicButton/DXMosaicButton";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface MosaicBannerProps {
@@ -94,7 +94,7 @@ const DXMosaicBanner = ( props: ExtendableProps<MosaicBannerProps, "div"> ) => {
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxMosaicBanner", className )} data-testid="mb-mainContainer">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxMosaicBanner", className )} data-testid="mb-mainContainer">
             <Row className="dxMosaicBanner__container">
                 {renderBannerButtons()}
             </Row>

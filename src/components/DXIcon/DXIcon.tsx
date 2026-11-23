@@ -14,7 +14,7 @@
  * ======================================================================== */
 
 import React from 'react';
-import { ExtendableProps } from '../../utilities/extendable';
+import { ExtendableProps, pickDomProps } from '../../utilities/extendable';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 export interface DXIconProps {
@@ -150,7 +150,7 @@ const DXIcon = ( {
     }
     return (
         <i
-            {...rest}
+            {...pickDomProps( rest )}
             ref={ref}
             className={iconClasses}
             style={style}

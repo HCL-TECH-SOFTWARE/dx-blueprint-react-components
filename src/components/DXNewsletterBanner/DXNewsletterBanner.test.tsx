@@ -908,7 +908,10 @@ describe( "Email Validation Tooltip", () => {
     } );
 } );
 
-itSupportsExtensionProps( ( extra ) => <DXNewsletterBanner {...( { heading: "Subscribe", type: "link", link: { url: "https://hcl-software.com", label: "Go" } } as React.ComponentProps<typeof DXNewsletterBanner> )} {...extra} /> );
+itSupportsExtensionProps( ( extra ) => <DXNewsletterBanner {...( { heading: "Subscribe", type: "link", link: { url: "https://hcl-software.com", label: "Go" } } as React.ComponentProps<typeof DXNewsletterBanner> )} {...extra} />, {
+    // DXNewsletterBanner declares background as its own prop (rendered as the root background style)
+    ownKeys: ["background"],
+} );
 
 test( "a consumer style is merged with the component's own background style", () => {
     const props = { heading: "Subscribe", type: "link", link: { url: "https://hcl-software.com", label: "Go" } } as React.ComponentProps<typeof DXNewsletterBanner>;

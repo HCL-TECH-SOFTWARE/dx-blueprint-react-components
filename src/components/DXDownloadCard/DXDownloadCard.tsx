@@ -17,7 +17,7 @@ import React, { useState, useEffect } from "react";
 import "./DXDownloadCard.scss";
 import DXIcon from "../DXIcon/DXIcon";
 import { getIcon } from "../../utilities";
-import { ExtendableProps, chainHandlers } from "../../utilities/extendable";
+import { ExtendableProps, chainHandlers, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface DownloadCardProps {
@@ -45,7 +45,7 @@ export interface DownloadCardProps {
 const DXDownloadCard = ( props: ExtendableProps<DownloadCardProps, "button"> ) => {
     // Own props are pulled out so only DOM attributes reach the root.
     const { url: _url, fileName: _fileName, size: _size, _downloadFn, icons: _icons, className, ref, ...rest } = props;
-    const { onClick: consumerOnClick, onKeyDown: consumerOnKeyDown, ...domRest } = rest;
+    const { onClick: consumerOnClick, onKeyDown: consumerOnKeyDown, ...domRest } = pickDomProps( rest ) as Pick<typeof rest, "onClick" | "onKeyDown"> & Record<string, unknown>;
     // STATES
     const [fileName, setFileName] = useState( "" );
     const [extension, setExtension] = useState( "" );

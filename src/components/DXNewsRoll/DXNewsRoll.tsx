@@ -16,7 +16,7 @@
 import React, { ReactElement } from "react";
 import { ImageProps, LinksProps, getIcon } from "../../utilities";
 import "./DXNewsRoll.scss";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface NewsRollProps {
@@ -76,7 +76,7 @@ const DXNewsRoll = ( props: ExtendableProps<NewsRollProps, "div"> ) => {
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxNewsRoll", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxNewsRoll", className )}>
             <div className="dxNewsRoll__gradient"></div>
             <div className="dxNewsRoll__main" data-testid="newsRoll">
                 {renderNews()}

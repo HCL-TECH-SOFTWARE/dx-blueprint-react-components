@@ -17,7 +17,7 @@ import React, { ReactElement, useState, useEffect } from "react";
 import Button from 'react-bootstrap/Button';
 import { LinksProps } from "../../utilities";
 import "./DXParallaxNavigation.scss";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface ParallaxNavigationProps {
@@ -87,7 +87,7 @@ const DXParallaxNavigation = ( props: ExtendableProps<ParallaxNavigationProps, "
     };
 
     return (
-        <div {...rest} ref={ref} data-testid={`${testIdRight}`} className={classNames( "dxParallaxNavigation", className )}>
+        <div {...pickDomProps( rest )} ref={ref} data-testid={`${testIdRight}`} className={classNames( "dxParallaxNavigation", className )}>
             <div data-testid="pnb-wrapper" className={`dxParallaxNavigation__wrapper ${alignmentVariant}`}>
                 {renderParallaxNavigation()}
             </div>

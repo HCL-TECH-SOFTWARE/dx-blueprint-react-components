@@ -18,7 +18,7 @@ import "./DXPagination.scss";
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Pagination from 'react-bootstrap/Pagination';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface PaginationProps {
@@ -150,7 +150,7 @@ const DXPagination = ( props: ExtendableProps<PaginationProps, "div"> ) => {
     const endEntry = Math.min( props.active * props.activeSet, props.totalItems );
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxPagination", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxPagination", className )}>
             <div className='dxPagination__main' data-testid="pagination">
                 <Dropdown className='dxPagination__sets' show={props.dropdownOpen} onToggle={() => {}}>
                     <Dropdown.Toggle className='pagination-items-per-page' variant="unsyled">

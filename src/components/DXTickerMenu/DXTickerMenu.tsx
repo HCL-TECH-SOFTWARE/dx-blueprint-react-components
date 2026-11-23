@@ -18,7 +18,7 @@ import "./DXTickerMenu.scss";
 import { getIcon, getLinkTarget } from "../../utilities";
 import { TickerProps } from "../DXTicker/DXTicker";
 import DXEmptyState, { EmptyStateProps } from "../DXEmptyState/DXEmptyState";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface TickerMenuProps extends TickerProps {
@@ -130,7 +130,7 @@ const DXTickerMenu = ( props: ExtendableProps<TickerMenuProps, "div"> ) => {
     }, [barWidth, props.items.length, timeFraction] );
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxTickerMenu", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxTickerMenu", className )}>
             {
                 props.items.length > 0 ? (
                     <ul className="dxTickerMenu__list">

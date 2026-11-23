@@ -18,7 +18,7 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { Badge, Dropdown } from 'react-bootstrap';
 import { ButtonProps, TagProps } from "../../utilities";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 export interface CaseCardProps {
     title: string,
@@ -38,7 +38,7 @@ const DXCaseCard = ( props: ExtendableProps<CaseCardProps, "div"> ) => {
     // Generates a unique ID once per component mount to pass the accessibility PR review
     const [kebabId] = useState( () => Math.random().toString( 36 ).substring( 2, 9 ) );
     return (
-        <div {...rest} ref={ref} className={classNames( "dxCaseCard", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxCaseCard", className )}>
             <div className="row">
                 <div className="col-5">
                     <p className="dxCaseCard__title">{props.title}</p>

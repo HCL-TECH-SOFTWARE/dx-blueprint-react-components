@@ -16,7 +16,7 @@
 import React from "react";
 import "./CECNewsTile.scss";
 import type { NewsItemProps } from "../../utilities/cec-types";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { decodeHtmlEntities, extractFirstImageFromContent, formatSmartDate, isFalsyImageUrl, safeParseDXDate } from "../../utilities/cec-utils";
 export type NewsTileMode = "card" | "divider";
 export type NewsTileImagePosition = "left" | "right" | "top";
@@ -146,7 +146,7 @@ const NewsTile = ( {
     .join( " " );
   return (
     <article
-      {...rest}
+      {...pickDomProps( rest )}
       ref={ref}
       className={tileClasses}
       data-has-image={hasImage.toString()}

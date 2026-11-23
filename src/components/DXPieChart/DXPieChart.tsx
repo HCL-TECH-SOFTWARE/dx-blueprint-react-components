@@ -16,7 +16,7 @@
 import React, { useEffect } from "react";
 import "./DXPieChart.scss";
 import { ChartItem, PieChart, PieChartItem } from "../../utilities";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface PieProps {
@@ -63,7 +63,7 @@ const DXPieChart = ( props: ExtendableProps<PieProps, "div"> ) => {
     } );
 
     return (
-        <div {...rest} ref={ref} id={`#dxPieChart-${props.index}`} className={classNames( "dxPieChart", className )} data-testid="dxPieChart-parent">
+        <div {...pickDomProps( rest )} ref={ref} id={`#dxPieChart-${props.index}`} className={classNames( "dxPieChart", className )} data-testid="dxPieChart-parent">
         </div>
     );
 };

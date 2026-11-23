@@ -16,7 +16,7 @@
 import React, { ReactElement } from "react";
 import "./DXHeroBannerStacking.scss";
 import DXHeroBanner, { HeroBannerProps } from "../DXHeroBanner/DXHeroBanner";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface HBStackingProps {
@@ -54,7 +54,7 @@ const DXHeroBannerStacking = ( props: ExtendableProps<HBStackingProps, "div"> ) 
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxHeroBannerStacking", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxHeroBannerStacking", className )}>
             <ul className="dxHeroBannerStacking__cardContainer" data-testid="HBStacking--list">
                 {renderBanners()}
             </ul>

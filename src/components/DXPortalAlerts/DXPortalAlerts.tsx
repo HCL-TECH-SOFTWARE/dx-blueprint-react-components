@@ -16,7 +16,7 @@
 import React from "react";
 import { generateLinkAnchor, LinksProps } from "../../utilities";
 import "./DXPortalAlerts.scss";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface PortalAlertsProps {
@@ -56,7 +56,7 @@ const DXPortalAlerts = ( props: ExtendableProps<PortalAlertsProps, "div"> ) => {
 
     return (
         <div
-            {...rest}
+            {...pickDomProps( rest )}
             ref={ref}
             className={classNames( "dxPortalAlerts " + "dxPortalAlerts--" + type, className )}>
             <div className="dxPortalAlerts__iconContainer">

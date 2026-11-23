@@ -25,7 +25,7 @@ import Nav from 'react-bootstrap/Nav';
 import Tab from 'react-bootstrap/Tab';
 import DXButton from "../DXButton/DXButton";
 import DXQuickLinks, { QuickLinksProps } from "../DXQuickLinks/DXQuickLinks";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface NavigationProps {
@@ -355,7 +355,7 @@ const DXNavigationHeader = ( props: ExtendableProps<NavigationProps, "div"> ) =>
     const isOverlayActive = ( currentActive > -1 && activeSecondary && activeSecondary.secondaryNodes.length > 0 ) || overlayActive;
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxNavigationHeader", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxNavigationHeader", className )}>
             <Container fluid="xl" className="container-view" data-testid="containerFluid">
                 <Row className="dxNavigationHeader__topRow justify-content-between">
                     <Col xs={6}>

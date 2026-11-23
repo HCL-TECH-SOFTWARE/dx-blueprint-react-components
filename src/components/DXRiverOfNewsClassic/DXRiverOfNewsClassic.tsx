@@ -20,7 +20,7 @@ import DXNewsCard from "../DXNewsCard";
 import { NewsCardProps } from "../DXNewsCard/DXNewsCard";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
 import DXPagination from "../DXPagination/DXPagination";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface RiverOfNewsProps extends BasicComponent {
@@ -145,7 +145,7 @@ const DXRiverOfNewsClassic = ( props: ExtendableProps<RiverOfNewsProps, "div"> )
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxRiverOfNewsClassic", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxRiverOfNewsClassic", className )}>
             <div className="dxRiverOfNewsClassic__topContainer">
                 <div className="dxRiverOfNewsClassic__title" data-testid="riverOfNewsTitle">
                     {

@@ -15,7 +15,7 @@
 
 import "./DXMap.scss";
 import React from "react";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface MapProps {
@@ -26,7 +26,7 @@ const DXMap = ( props: ExtendableProps<MapProps, "div"> ) => {
     // Own props are pulled out so only DOM attributes reach the root.
     const { iframeUrl: _iframeUrl, className, ref, ...rest } = props;
     return (
-        <div {...rest} ref={ref} data-testid="map-container" className={classNames( "dxMap", className )}>
+        <div {...pickDomProps( rest )} ref={ref} data-testid="map-container" className={classNames( "dxMap", className )}>
             {props.iframeUrl ? (
                 <iframe src={props.iframeUrl} width="100" height="100" loading="lazy"></iframe>
             ) : ( <p>No Map URL received</p> )}

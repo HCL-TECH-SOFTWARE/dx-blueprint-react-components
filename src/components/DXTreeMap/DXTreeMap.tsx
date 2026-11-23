@@ -17,7 +17,7 @@ import React, { useEffect, useState } from "react";
 import "./DXTreeMap.scss";
 import { TreeMapChart, TreeMapChartItem } from "../../utilities/chart";
 import DXToggleMenu from "../DXToggleMenu/DXToggleMenu";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface TreeMapProps {
@@ -120,7 +120,7 @@ const DXTreeMap = ( props: ExtendableProps<TreeMapProps, "div"> ) => {
     }, [chartData] );
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxTreeMap", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxTreeMap", className )}>
             {!props.hideFilters &&
                 <div className="dxTreeMap__filter" data-testid="dxTreeMap-filter">
                     <DXToggleMenu buttons={filters} type="single" />

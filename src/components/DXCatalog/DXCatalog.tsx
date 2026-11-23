@@ -23,7 +23,7 @@ import DXPagination from "../DXPagination/DXPagination";
 import DXCard, { CardProps } from "../DXCard/DXCard";
 import { getColNumber } from "../../utilities";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface CatalogProps extends BasicComponent {
@@ -329,7 +329,7 @@ const DXCatalog = ( props: ExtendableProps<CatalogProps, "section"> ) => {
     };
 
     return (
-        <section {...rest} ref={ref} className={classNames( "dxCatalog", className )}>
+        <section {...pickDomProps( rest )} ref={ref} className={classNames( "dxCatalog", className )}>
             {
                 !props.hideFilters ? (
                     hasValidTaxonomyProps( props ) ? (

@@ -20,7 +20,7 @@ import React from "react";
 import { getLinkTarget } from "../../utilities";
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 interface SocialMedia {
@@ -126,7 +126,7 @@ const DXSocialPresence = ( props: ExtendableProps<SocialPresenceProps, "div"> ) 
     };
                     
     return (
-        <div {...rest} ref={ref} className={classNames( "dxSocialPresence", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxSocialPresence", className )}>
             {props.size !== "small" && props.title ?
                 <p className="dxSocialPresence__title" style={checkLightMode( props.size, props.light )}>
                     {props.title}

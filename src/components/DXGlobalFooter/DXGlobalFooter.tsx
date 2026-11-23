@@ -22,7 +22,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import { LinksProps, getLinkTarget, getLinkIcon } from "../../utilities";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface FooterProps {
@@ -110,7 +110,7 @@ const DXGlobalFooter = ( props: ExtendableProps<FooterProps, "footer"> ) => {
         }
     };
     return (
-        <footer {...rest} ref={ref} className={classNames( "dxGlobalFooter", className )}>
+        <footer {...pickDomProps( rest )} ref={ref} className={classNames( "dxGlobalFooter", className )}>
             <Container>
                 <Row>
                     <Col xs={12} md={3} className="dxGlobalFooter__title">

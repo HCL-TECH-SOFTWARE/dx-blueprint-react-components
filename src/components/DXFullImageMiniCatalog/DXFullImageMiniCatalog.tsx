@@ -25,7 +25,7 @@ import Slider from "react-slick";
 import SliderButton from "./components/SliderButton";
 import { SliderIcons } from "../../utilities";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
-import { ExtendableProps, SlideSink } from "../../utilities/extendable";
+import { ExtendableProps, SlideSink, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface FullImageMiniCatalogProps extends BasicComponent {
@@ -159,7 +159,7 @@ const DXFullImageMiniCatalog = ( props: ExtendableProps<FullImageMiniCatalogProp
     }, [props.items] );
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxFullImgMiniC", className )} id={`dxFullImgMiniC-${props.index}`}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxFullImgMiniC", className )} id={`dxFullImgMiniC-${props.index}`}>
             {items.length === 0 ? (
                 <p>No items received</p>
             ) : items.length > 0 && items.length < 5 ? (

@@ -21,7 +21,7 @@ import "./DXHeroBanner.scss";
 import DXSearchSuggestions, { SSuggestionsProps } from "../DXSearchSuggestions/DXSearchSuggestions";
 import DXButton from "../DXButton/DXButton";
 import { classNames } from "../../utilities/classNames";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 
 export interface HeroBannerProps extends BasicComponent {
     index: number;
@@ -194,7 +194,7 @@ const DXHeroBanner = ( props: ExtendableProps<HeroBannerProps, "div"> ) => {
     }, [props.animatedText] );
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxHeroBanner", className )} id={`dxHeroBanner-${props.index}`} data-testid="hero-banner">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxHeroBanner", className )} id={`dxHeroBanner-${props.index}`} data-testid="hero-banner">
             <style>{getBackgroundMediaStyles()}</style>
             <div className="dxHeroBanner__container" data-testid="hero-banner-container">
                 <div className="dxHeroBanner__opacityFilter">

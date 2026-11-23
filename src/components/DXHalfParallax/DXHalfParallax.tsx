@@ -16,7 +16,7 @@
 import "./DXHalfParallax.scss";
 import React, { ReactElement, useState, useEffect } from 'react';
 import { parseContentAndMedia, ImageProps, LinksProps, getLinkTarget } from "../../utilities";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 export interface ParallaxProps {
     slidesCollection: Fold[];
@@ -268,7 +268,7 @@ const DXHalfParallax = ( props: ExtendableProps<ParallaxProps, "div"> ) => {
                 parallaxSlides.push( renderSlidesMobile( fold, index ) );
             } );
             return (
-                <div {...rest} ref={ref} className={classNames( "dxHalfParallax", className )}>
+                <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxHalfParallax", className )}>
                     {
                         parallaxSlides
                     }
@@ -285,7 +285,7 @@ const DXHalfParallax = ( props: ExtendableProps<ParallaxProps, "div"> ) => {
                 }
             } );
             return (
-                <div {...rest} ref={ref} className={classNames( "dxHalfParallax", className )}>
+                <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxHalfParallax", className )}>
                     {
                         parallaxSlides
                     }

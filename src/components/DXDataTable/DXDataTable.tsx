@@ -17,7 +17,7 @@ import "./DXDataTable.scss";
 import React, { useState, useEffect } from "react";
 import DataTable from 'react-data-table-component';
 import { parseContentAndMedia } from "../../utilities";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface Column {
@@ -103,7 +103,7 @@ const DXDataTable = ( props: ExtendableProps<DataTableProps, "div"> ) => {
         getColumns( props.columns );
     }, [] );
     return (
-        <div {...rest} ref={ref} className={classNames( "dxDataTable", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxDataTable", className )}>
             <DataTable {...dataTablePrps} />
         </div>
     );

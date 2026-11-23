@@ -18,7 +18,7 @@ import "./DXModalWindows.scss";
 import { IconButtonProps, ImageProps, parseContentAndMedia } from "../../utilities";
 import Modal from 'react-bootstrap/Modal';
 import DXButton, { DisplayType } from "../DXButton/DXButton";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface ModalWindowsProps {
@@ -175,7 +175,7 @@ const DXModalWindows = ( props: ExtendableProps<ModalWindowsProps, "div"> ) => {
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxModalWindows", className )} id={"dxModalWindows-" + props.index}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxModalWindows", className )} id={"dxModalWindows-" + props.index}>
             { renderModal( props.type, props.size )}
         </div >
     );

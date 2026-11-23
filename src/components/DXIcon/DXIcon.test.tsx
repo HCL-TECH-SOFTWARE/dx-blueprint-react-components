@@ -159,4 +159,5 @@ describe( "DXIcon", () => {
     } );
 } );
 
-itSupportsExtensionProps( ( extra ) => <DXIcon name="search" {...extra} /> );
+// DXIcon declares role, title and style as its own props (rendered on the icon by design)
+itSupportsExtensionProps( ( extra ) => <DXIcon name="search" {...extra} />, { ownKeys: ["role", "title", "style"] } );

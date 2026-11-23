@@ -20,7 +20,7 @@ import { IconButtonProps, ImageProps, getIcon } from "../../utilities";
 import DXButton from "../DXButton";
 import { ButtonProps } from "../DXButton/DXButton";
 import DXEmptyState from "../DXEmptyState";
-import { ExtendableProps, mergeRefs, chainHandlers } from "../../utilities/extendable";
+import { ExtendableProps, mergeRefs, chainHandlers, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface ProductSliderProps {
@@ -44,7 +44,7 @@ export interface ProductSliderItem {
 const DXProductSlider = ( props: ExtendableProps<ProductSliderProps, "div"> ) => {
     // Own props are pulled out so only DOM attributes reach the root.
     const { forceMobile: _forceMobile, icons: _icons, items: _items, className, ref, ...rest } = props;
-    const { onMouseDown: consumerOnMouseDown, onMouseUp: consumerOnMouseUp, onScroll: consumerOnScroll, ...domRest } = rest;
+    const { onMouseDown: consumerOnMouseDown, onMouseUp: consumerOnMouseUp, onScroll: consumerOnScroll, ...domRest } = pickDomProps( rest ) as Pick<typeof rest, "onMouseDown" | "onMouseUp" | "onScroll"> & Record<string, unknown>;
     const [isScrollReady, setIsScrollReady] = useState( false );
     const [activeSegment, setActiveSegment] = useState( 0 );
     const [scrollDirection, setScrollDirection] = useState( "foward" );

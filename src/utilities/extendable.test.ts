@@ -18,7 +18,7 @@ import { render } from "@testing-library/react";
 import { SlideSink, chainHandlers, mergeRefs, pickDomProps } from "./extendable";
 
 describe( "pickDomProps", () => {
-    test( "keeps data-*, aria-*, id, role, title, style, tabIndex, lang and hidden", () => {
+    test( "keeps data-*, aria-*, a string or number id and an object style", () => {
         const style = { color: "red" };
         const input = {
             "data-testid": "x",
@@ -26,14 +26,42 @@ describe( "pickDomProps", () => {
             "aria-label": "label",
             "aria-describedby": "desc",
             id: "my-id",
-            role: "region",
-            title: "tip",
             style,
-            tabIndex: 0,
-            lang: "en",
-            hidden: true,
         };
         expect( pickDomProps( input ) ).toEqual( input );
+        expect( pickDomProps( { id: 7 } ) ).toEqual( { id: 7 } );
+    } );
+
+    test( "drops title, role, lang, hidden and tabIndex (content data uses some of them as text)", () => {
+        expect( pickDomProps( { title: "tip", role: "Software Developer", lang: "en", hidden: true, tabIndex: 0 } ) ).toEqual( {} );
+    } );
+
+    test( "drops WCM config keys the components do not declare", () => {
+        const result = pickDomProps( {
+            _edit: { button: () => undefined },
+            background: { color: "red" },
+            textAlign: "left",
+            animationTime: 2,
+            navitationImageAlt: "logo",
+            "data-ok": "yes",
+        } );
+        expect( result ).toEqual( { "data-ok": "yes" } );
+    } );
+
+    test( "drops an id that is not a string or a number", () => {
+        expect( pickDomProps( { id: { value: "a" } } ) ).toEqual( {} );
+        expect( pickDomProps( { id: true } ) ).toEqual( {} );
+        expect( pickDomProps( { id: null } ) ).toEqual( {} );
+    } );
+
+    test( "drops a style that is not a plain object", () => {
+        expect( pickDomProps( { style: "color:red" } ) ).toEqual( {} );
+        expect( pickDomProps( { style: ["a"] } ) ).toEqual( {} );
+        expect( pickDomProps( { style: null } ) ).toEqual( {} );
+        expect( pickDomProps( { style: new Date( 0 ) } ) ).toEqual( {} );
+        const bare = Object.create( null ) as Record<string, unknown>;
+        bare.color = "red";
+        expect( pickDomProps( { style: bare } ).style ).toBe( bare );
     } );
 
     test( "keeps on[A-Z] keys whose value is a function", () => {
@@ -45,7 +73,7 @@ describe( "pickDomProps", () => {
     } );
 
     test( "drops on[A-Z] keys whose value is not a function", () => {
-        expect( pickDomProps( { onClick: "alert(1)", onFocus: undefined, onBlur: null, onChange: 1 } ) ).toEqual( {} );
+        expect( pickDomProps( { onClick: "alert(1)", onFocus: undefined, onBlur: null, onChange: 1, onItems: "data" } ) ).toEqual( {} );
     } );
 
     test( "drops keys that are not DOM attributes (including lower-case 'on' lookalikes)", () => {

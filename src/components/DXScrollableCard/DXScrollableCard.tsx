@@ -19,7 +19,7 @@ import { LinksProps, SliderIcons, getIcon, getLinkTarget, renderAvatarLetters } 
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { ExtendableProps, mergeRefs } from "../../utilities/extendable";
+import { ExtendableProps, mergeRefs, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface ScrollableCardProps {
@@ -139,7 +139,7 @@ const DXScrollableCard = ( props: ExtendableProps<ScrollableCardProps, "div"> ) 
     };
 
     return (
-        <div {...rest} ref={mergedRootRef} className={classNames( "dxScrollableCard", className )} data-testid="scrollable-card">
+        <div {...pickDomProps( rest )} ref={mergedRootRef} className={classNames( "dxScrollableCard", className )} data-testid="scrollable-card">
             {
                 props.items.length === 0 ? (
                     <p>No items received</p>

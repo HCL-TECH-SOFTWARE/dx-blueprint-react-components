@@ -20,7 +20,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import { createRoot, Root } from 'react-dom/client';
-import { ExtendableProps, mergeRefs } from "../../utilities/extendable";
+import { ExtendableProps, mergeRefs, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface MegaMenuProps {
@@ -562,7 +562,7 @@ const DXMegaMenu = ( props: ExtendableProps<MegaMenuProps, "div"> ) => {
     };
 
     return (
-        <div {...rest} ref={mergedRootRef} className={classNames( "dxMegaMenu", className )}>
+        <div {...pickDomProps( rest )} ref={mergedRootRef} className={classNames( "dxMegaMenu", className )}>
             <ul className="nav nav-tabs dxMegaMenu__primaryLevel" role="tablist">
                 {renderFirstLevel()}
             </ul>

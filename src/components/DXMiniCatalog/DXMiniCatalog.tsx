@@ -24,7 +24,7 @@ import "slick-carousel/slick/slick-theme.css";
 import SliderButton from "./components/SliderButton";
 import { SliderIcons } from "../../utilities";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
-import { ExtendableProps, SlideSink } from "../../utilities/extendable";
+import { ExtendableProps, SlideSink, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface MiniCatalogProps extends BasicComponent {
@@ -157,7 +157,7 @@ const DXMiniCatalog = ( props: ExtendableProps<MiniCatalogProps, "div"> ) => {
     }, [items] );
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxMiniCatalog", className )} id={`dxMiniCatalog-${props.index}`}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxMiniCatalog", className )} id={`dxMiniCatalog-${props.index}`}>
             {
                 items.length === 0 ? (
                     <p>No items received</p>

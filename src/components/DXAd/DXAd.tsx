@@ -17,7 +17,7 @@ import "./DXAd.scss";
 import { ImageProps } from "../../utilities/image";
 
 import React, { useEffect, useRef } from 'react';
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface AdProps {
@@ -51,7 +51,7 @@ const DXAd = ( props: ExtendableProps<AdProps, "div"> ) => {
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxAd", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxAd", className )}>
             <div className="dxAd__background"
                 ref={backgroundRef}
                 style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${props.img && props.img?.url ? props.img.url : ""}')` }}

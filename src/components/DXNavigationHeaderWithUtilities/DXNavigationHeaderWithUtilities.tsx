@@ -24,7 +24,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import DXMegaMenu, { NavigationItem } from "../DXMegaMenu/DXMegaMenu";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface NavigationProps {
@@ -77,7 +77,7 @@ const DXNavigationHeaderWithUtilities = ( props: ExtendableProps<NavigationProps
     const [searchInputValue, setSearchInputValue] = useState( "" );
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxNavHeaderUtils", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxNavHeaderUtils", className )}>
             <Container fluid="xl" ref={wrapperRef} data-testid="containerFluid" className="dxNavHeaderUtils__mainContainer container-view">
                 <Row justify="between" className="dxNavHeaderUtils__topRow">
                     <Col xs={props.navigationImage.sizeLarge ? 3 : 2}>

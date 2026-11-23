@@ -18,7 +18,7 @@ import path from "path";
 
 /**
  * Meta-test: every component exported from `src/components/index.ts` must call `itSupportsExtensionProps(` in its own
- * test file, which checks className merging, DOM rest props, ref forwarding and no console errors.
+ * test file, which checks className merging, forwarding of data-* and aria-* attributes, ref forwarding, that undeclared content-style keys never reach the root, and no console errors.
  */
 const componentsDir = __dirname;
 const exportRegex = /export\s*\{\s*default\s+as\s+(\w+)\s*\}\s*from\s*["']\.\/(\w+)["']/g;

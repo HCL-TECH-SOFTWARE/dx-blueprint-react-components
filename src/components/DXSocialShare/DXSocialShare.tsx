@@ -19,7 +19,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import "./DXSocialShare.scss";
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface SocialShareProps {
@@ -139,7 +139,7 @@ const DXSocialShare = ( props: ExtendableProps<SocialShareProps, "div"> ) => {
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxSocialShare", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxSocialShare", className )}>
             {props.size !== "small" && props.title ?
                 <p className="dxSocialShare__title" style={checkLightMode( props.size, props.light )}>
                     {props.title}

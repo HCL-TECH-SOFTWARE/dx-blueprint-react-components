@@ -27,7 +27,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import DXButton from "../DXButton/DXButton";
 import DXUtilityZone, { UtilityZoneProps } from "../DXUtilityZone/DXUtilityZone";
 import { getLinkTarget, getLinkIcon, getIcon } from "../../utilities";
-import { ExtendableProps, mergeRefs } from "../../utilities/extendable";
+import { ExtendableProps, mergeRefs, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface MobileNavigationProps extends NavigationProps {
@@ -432,7 +432,7 @@ const DXNavigationHeaderMobile = ( props: ExtendableProps<MobileNavigationProps,
 
     } );
     return (
-        <div {...rest} ref={mergedRef} className={classNames( "dxNavHeaderMobile" + ( menuIsActive ? " active" : "" ) + ( props.utilityZone ? " utility-active" : "" ), className )}>
+        <div {...pickDomProps( rest )} ref={mergedRef} className={classNames( "dxNavHeaderMobile" + ( menuIsActive ? " active" : "" ) + ( props.utilityZone ? " utility-active" : "" ), className )}>
             <Container fluid="xl" data-testid="menu-container" className={menuIsActive ? "active" : "hidden"}>
                 <Row className={"dxNavHeaderMobile__topRow justify-content-between " + ( searchIsActive ? "search-active" : "" )}>
                     {/* Menu button-icon */}

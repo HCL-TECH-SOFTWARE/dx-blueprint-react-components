@@ -23,7 +23,7 @@ import Col from 'react-bootstrap/Col';
 import DXPagination from "../DXPagination/DXPagination";
 import { getColNumber, ImageProps, IconButtonProps } from "../../utilities";
 import DXEmptyState from "../DXEmptyState";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 interface TabContentItem {
@@ -247,7 +247,7 @@ const DXInteractiveTabs = ( props: ExtendableProps<InteractiveTabsProps, "div"> 
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxInteractiveTabs", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxInteractiveTabs", className )}>
             {props.tabs && props.tabs.length ? (
                 <>
                     <div className="dxInteractiveTabs__tabs">

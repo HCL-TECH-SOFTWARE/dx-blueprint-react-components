@@ -18,7 +18,7 @@ import ReactDOM from "react-dom";
 import "./DXChartCard.scss";
 import { Dropdown } from "react-bootstrap";
 import { StateIcons, getIcon, renderAvatarLetters } from "../../utilities";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface DropDownItem {
@@ -242,7 +242,7 @@ const DXChartCard = ( props: ExtendableProps<ChartCardProps, "div"> ) => {
 
     if ( mobile ) {
         return (
-            <div {...rest} className={classNames( `dxChartCard ${position} ${classInfo}`, className )} id={`dxChartCard--${props.id}`} ref={ref} data-testid="dxChartCard" key={props.id}>
+            <div {...pickDomProps( rest )} className={classNames( `dxChartCard ${position} ${classInfo}`, className )} id={`dxChartCard--${props.id}`} ref={ref} data-testid="dxChartCard" key={props.id}>
                 <div className="dxChartCard__info--mobile" data-testid="dxChartCard-info-mobile">
                     {renderCardInfo}
                 </div>
@@ -251,7 +251,7 @@ const DXChartCard = ( props: ExtendableProps<ChartCardProps, "div"> ) => {
         );
     } else {
         return (
-            <div {...rest} className={classNames( `dxChartCard ${position} ${classInfo}`, className )} id={`dxChartCard--${props.id}`} ref={ref} data-testid="dxChartCard" key={props.id}>
+            <div {...pickDomProps( rest )} className={classNames( `dxChartCard ${position} ${classInfo}`, className )} id={`dxChartCard--${props.id}`} ref={ref} data-testid="dxChartCard" key={props.id}>
                 {renderCardInfo}
                 {props.menuOptions && menuOptions()}
             </div >

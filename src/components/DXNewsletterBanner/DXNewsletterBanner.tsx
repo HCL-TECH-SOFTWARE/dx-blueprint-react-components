@@ -25,7 +25,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import DXButton from "../DXButton/DXButton";
 import { LinksProps, getLinkTarget, IconButtonProps } from "../../utilities";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 export interface NewsletterProps {
     heading: string,
@@ -72,6 +72,7 @@ const getCustomBackground = ( background: BackgroundProps | undefined ) => {
 const DXNewsletterBanner = ( props: ExtendableProps<NewsletterProps, "div"> ) => {
     // Own props are pulled out so only DOM attributes reach the root.
     const { heading: _heading, headingColor: _headingColor, type: _type, inputPlaceholder: _inputPlaceholder, maxLength: _maxLength, button: _button, link: _link, background: _background, className, ref, ...rest } = props;
+    const domProps = pickDomProps( rest );
     const [emailError, setEmailError] = useState( "" );
     const validateEmail = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const target = e.currentTarget;
@@ -99,7 +100,7 @@ const DXNewsletterBanner = ( props: ExtendableProps<NewsletterProps, "div"> ) =>
     };
     if ( props.type === "link" ) {
         return (
-            <div {...rest} ref={ref} className={classNames( "dxNewsletter", className )} style={{ ...rest.style, ...getCustomBackground( props.background ) }} data-testid="newsletter-item">
+            <div {...domProps} ref={ref} className={classNames( "dxNewsletter", className )} style={{ ...( domProps.style as React.CSSProperties | undefined ), ...getCustomBackground( props.background ) }} data-testid="newsletter-item">
                 <Container>
                     <Row>
                         <Col xs={12} md={5} className="offset-md-2">
@@ -119,7 +120,7 @@ const DXNewsletterBanner = ( props: ExtendableProps<NewsletterProps, "div"> ) =>
     }
     else {
         return (
-            <div {...rest} ref={ref} className={classNames( "dxNewsletter", className )} style={{ ...rest.style, ...getCustomBackground( props.background ) }} data-testid="newsletter-item">
+            <div {...domProps} ref={ref} className={classNames( "dxNewsletter", className )} style={{ ...( domProps.style as React.CSSProperties | undefined ), ...getCustomBackground( props.background ) }} data-testid="newsletter-item">
                 <Container>
                     <Row>
                         <Col xs={12} md={4}>

@@ -22,7 +22,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { SliderIcons } from "../../utilities";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
-import { ExtendableProps, SlideSink } from "../../utilities/extendable";
+import { ExtendableProps, SlideSink, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface CBCatalogProps extends BasicComponent {
@@ -147,7 +147,7 @@ const DXCardButtonCatalog = ( props: ExtendableProps<CBCatalogProps, "div"> ) =>
         }
     };
     return (
-        <div {...rest} ref={ref} className={classNames( "dxCBCatalog", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxCBCatalog", className )}>
             {props.header && props.variant === "grid" ? (
                 <h3 className="dxCBCatalog__header">{props.header}</h3>
             ) : null}

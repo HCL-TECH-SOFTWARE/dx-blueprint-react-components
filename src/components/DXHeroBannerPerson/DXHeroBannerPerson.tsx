@@ -18,7 +18,7 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import DXSearchSuggestions from "../DXSearchSuggestions";
 import { SSuggestionsProps } from "../DXSearchSuggestions/DXSearchSuggestions";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
-import { ExtendableProps, mergeRefs } from "../../utilities/extendable";
+import { ExtendableProps, mergeRefs, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 interface PersonData {
@@ -118,7 +118,7 @@ const DXHeroBannerPerson = ( props: ExtendableProps<HBPersonProps, "div"> ) => {
     }, [props.persons, props.searchSuggestion] );
 
     return (
-        <div {...rest} ref={mergedRootRef} className={classNames( "dxHBPerson", className )}>
+        <div {...pickDomProps( rest )} ref={mergedRootRef} className={classNames( "dxHBPerson", className )}>
             <div className="dxHBPerson__carousel">
                 <div className="dxHBPerson__carousel__inner">
                     {renderImageEl()}

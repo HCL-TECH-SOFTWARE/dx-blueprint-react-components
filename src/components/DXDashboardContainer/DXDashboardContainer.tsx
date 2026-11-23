@@ -18,7 +18,7 @@ import "./DXDashboardContainer.scss";
 import { IconButtonProps, LinksProps, generateLinkAnchor, getIcon } from "../../utilities";
 import DXButton from "../DXButton/DXButton";
 import * as AllComponents from "./../index";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface DashboardContainerProps {
@@ -126,7 +126,7 @@ const DXDashboardContainer = ( props: ExtendableProps<DashboardContainerProps, "
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxDashboardContainer", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxDashboardContainer", className )}>
             <div className="dxDashboardContainer__header">
                 <div className="dxDashboardContainer__title" data-testid="DC__title">
                     {

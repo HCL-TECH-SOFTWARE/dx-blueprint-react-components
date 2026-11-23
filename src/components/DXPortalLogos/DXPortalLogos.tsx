@@ -16,7 +16,7 @@
 import React from 'react';
 import "./DXPortalLogos.scss";
 import { LinksProps, getLinkTarget } from '../../utilities';
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface PortalLogosProps {
@@ -62,7 +62,7 @@ const DXPortalLogos = ( props: ExtendableProps<PortalLogosProps, "div"> ) => {
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxPortalLogos", className )} data-testid="dx-portal-logos">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxPortalLogos", className )} data-testid="dx-portal-logos">
             {props.main && renderImageLogo( "main" )}
             {props.secondary &&
                 <>

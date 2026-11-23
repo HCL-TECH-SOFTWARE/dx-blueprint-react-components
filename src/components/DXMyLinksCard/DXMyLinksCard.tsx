@@ -19,7 +19,7 @@ import ReactDOM from "react-dom";
 import DXButton from "../DXButton/DXButton";
 import { getIcon, getLinkTarget, LinksProps, IconButtonProps } from "../../utilities";
 import "./DXMyLinksCard.scss";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface LinksCardProps {
@@ -173,7 +173,7 @@ const DXMyLinksCard = ( props: ExtendableProps<LinksCardProps, "div"> ) => {
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxMyLinksCard", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxMyLinksCard", className )}>
             {
                 typeof props.label == "string"
                     ?

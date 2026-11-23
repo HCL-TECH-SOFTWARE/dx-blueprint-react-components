@@ -17,7 +17,7 @@ import "./DXVerticalNavigation.scss";
 import React, { useState, useEffect } from "react";
 import DXButton from "../DXButton";
 import { LinksProps, getLinkTarget, StateIcons, getIcon } from "../../utilities";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface NavigationItem extends LinksProps {
@@ -160,7 +160,7 @@ const DXVerticalNavigation = ( props: ExtendableProps<VerticalNavigationProps, "
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxVerticalNav", className )} data-testid="test">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxVerticalNav", className )} data-testid="test">
             <ul className="nav nav-nested">
                 {renderItems( props.items, 0 )}
             </ul>

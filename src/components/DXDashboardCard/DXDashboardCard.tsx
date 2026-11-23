@@ -15,7 +15,7 @@
 
 import React, { useEffect, useState } from 'react';
 import "./DXDashboardCard.scss";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface DashboardCardProps {
@@ -46,7 +46,7 @@ const DXDashboardCard = ( props: ExtendableProps<DashboardCardProps, "button"> )
     }, [props] );
 
     return (
-        <button {...rest} ref={ref} id={`dxDashboardCard-${props.index}`} className={classNames( `dxDashboardCard${smallCard}`, className )} onClick={() => { props.onClick && props.onClick(); }} data-testid="dx-dashboard-card">
+        <button {...pickDomProps( rest )} ref={ref} id={`dxDashboardCard-${props.index}`} className={classNames( `dxDashboardCard${smallCard}`, className )} onClick={() => { props.onClick && props.onClick(); }} data-testid="dx-dashboard-card">
             <p className={`dxDashboardCard${smallCard}__data`} data-testid="dx-dashboard-card-number"> {dataMax}
                 {props.mainIcon && <i className={props.mainIcon} data-testid="dx-dashboard-card-number-icon"></i>}
             </p>

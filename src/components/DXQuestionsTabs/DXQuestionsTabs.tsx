@@ -20,7 +20,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import "./DXQuestionsTabs.scss";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 export interface DXQuestionsTabsProps {
     title: string;
@@ -206,7 +206,7 @@ const DXQuestionsTabs = ( props: ExtendableProps<DXQuestionsTabsProps, "div"> ) 
         }
     };
     return (
-        <div {...rest} ref={ref} className={classNames( "dxQuestionsTabs", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxQuestionsTabs", className )}>
             <div data-testid="dxQTtitle" className="dxQuestionsTabs__title">{charLenghtLimitator( props.title, 64 )}</div>
             <div className="dxQuestionsTabs__separatorLine"></div>
             <div

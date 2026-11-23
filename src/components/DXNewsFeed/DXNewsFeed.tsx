@@ -18,7 +18,7 @@ import "./DXNewsFeed.scss";
 import DXSocialCard from "../DXSocialCard";
 import { SocialCardProps } from "../DXSocialCard/DXSocialCard";
 import DXFullImageCard, { FullImageCardProps } from "../DXFullImageCard/DXFullImageCard";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface NewsFeedProps {
@@ -110,7 +110,7 @@ const DXNewsFeed = ( props: ExtendableProps<NewsFeedProps, "div"> ) => {
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxNewsFeed", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxNewsFeed", className )}>
             <div className="dxNewsFeed__topContainer">
                 <div data-testid="NF-title" className="dxNewsFeed__title">{props.title}</div>
                 <ul data-testid="NF-filterButtons" className="dxNewsFeed__filterButtons">

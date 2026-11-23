@@ -19,7 +19,7 @@ import DXButton from "../DXButton/DXButton";
 import DXToggleMenu from "../DXToggleMenu";
 import { Form, InputGroup } from 'react-bootstrap';
 import { getIcon } from "../../utilities";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface TaxFilterProps {
@@ -329,7 +329,7 @@ const DXTaxonomyFilter = ( props: ExtendableProps<TaxonomyFilterProps, "div"> ) 
     };
 
     return (
-        <div {...rest} ref={ref} data-testid="taxonomy-filter-component" className={classNames( "dxTaxonomyFilter", className )}>
+        <div {...pickDomProps( rest )} ref={ref} data-testid="taxonomy-filter-component" className={classNames( "dxTaxonomyFilter", className )}>
             <DXButton
                 className="dxTaxonomyFilter__actionButton d-flex d-sm-none"
                 onClick={showFilters}

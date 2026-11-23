@@ -17,7 +17,7 @@ import "./DXLinkList.scss";
 import { LinksProps, getLinkTarget, getLinkIcon, LinkIconProps, generateLinkIcon } from "../../utilities";
 import React, { useState, useEffect } from 'react';
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface LinkListProps extends BasicComponent {
@@ -144,7 +144,7 @@ const DXLinkList = ( props: ExtendableProps<LinkListProps, "div"> ) => {
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxLinkList", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxLinkList", className )}>
             <div className="dxLinkList__title">
                 <h3
                     className={setTitleType( props.title.type )}

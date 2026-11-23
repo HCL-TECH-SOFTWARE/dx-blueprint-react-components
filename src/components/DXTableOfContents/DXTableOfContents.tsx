@@ -15,7 +15,7 @@
 
 import "./DXTableOfContents.scss";
 import React from "react";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface Item {
@@ -73,7 +73,7 @@ const DXTableOfContents = ( props: ExtendableProps<TableProps, "div"> ) => {
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxTableContents", className )} role="doc-toc">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxTableContents", className )} role="doc-toc">
             <style>{getCustomListStyles()}</style>
             <h3 className="dxTableContents__title">{props.title}</h3>
             {props.items && props.items.length <= 0 ? (

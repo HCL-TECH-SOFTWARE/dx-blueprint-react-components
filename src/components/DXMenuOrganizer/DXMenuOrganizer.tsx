@@ -17,7 +17,7 @@ import "./DXMenuOrganizer.scss";
 import React, { ReactElement, useEffect, useState, useRef } from "react";
 import DXMyLinksCard from "../DXMyLinksCard";
 import DXEmptyState, { EmptyStateProps } from "../DXEmptyState/DXEmptyState";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface MenuOrganizerProps {
@@ -159,7 +159,7 @@ const DXMenuOrganizer = ( props: ExtendableProps<MenuOrganizerProps, "div"> ) =>
     };
 
     return (
-        <div {...rest} ref={ref} className={classNames( "dxMenuOrganizer", className )}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxMenuOrganizer", className )}>
             {
                 props.items.length > 0 ?
                     <ul className="dxMenuOrganizer__list" data-testid="menuOrganizer-list" ref={listRef}>

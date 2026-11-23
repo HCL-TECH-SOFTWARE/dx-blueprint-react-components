@@ -19,7 +19,7 @@ import "./DXProfileInfo.scss";
 import DXButton, { DisplayType } from "../DXButton/DXButton";
 import DXSocialPresence, { SocialPresenceProps } from "../DXSocialPresence/DXSocialPresence";
 import DXMap from "../DXMap/DXMap";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import { classNames } from "../../utilities/classNames";
 
 export interface ProfileInfoProps {
@@ -211,7 +211,7 @@ const DXProfileInfo = ( props: ExtendableProps<ProfileInfoProps, "div"> ) => {
     };
 
     return (
-        <div {...rest} ref={ref} data-testid="dxProfileInfo" className={classNames( "dxProfileInfo", className )}>
+        <div {...pickDomProps( rest )} ref={ref} data-testid="dxProfileInfo" className={classNames( "dxProfileInfo", className )}>
             <div data-testid="dxProfileInfoWrapper" className="dxProfileInfo__wrapper">
                 {renderTopInformation()}
                 {props.optionalButtons && renderOptionalButtons()}

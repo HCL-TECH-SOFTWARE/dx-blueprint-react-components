@@ -38,7 +38,41 @@ export interface ExtensionContractOptions {
     getRoot?: ( container: HTMLElement ) => Element | null;
     /** Root classes that are generated per instance (for example a random suffix) and so cannot be compared between two renders. */
     ignoreClasses?: RegExp;
+    /**
+     * Keys of the undeclared-props check (`WCM_STYLE_PROPS`) that this component declares as its own props, so they are
+     * legitimately rendered. Only list a key here when the component's props type really declares it.
+     */
+    ownKeys?: string[];
 }
+
+/**
+ * Props a component does not declare, as they arrive from untyped content data (WCM component configs, catalog items).
+ * None of them may reach the DOM: they are not part of the extension contract.
+ */
+export const WCM_STYLE_PROPS: Record<string, unknown> = {
+    animationTime: 2,
+    textAlign: "left",
+    navitationImageAlt: "x",
+    _edit: { button: () => undefined },
+    background: { color: "red" },
+    title: "Leaked title",
+    role: "Software Developer",
+    lang: "xx",
+    hidden: true,
+    tabIndex: 3,
+    style: "color:red",
+    onItems: "data",
+};
+
+const attributeNames = ( element: Element | null ): string[] =>
+    element ? Array.from( element.attributes ).map( ( attribute ) => attribute.name ) : [];
+
+// every attribute value in the document (portals included) that is a stringified object
+const objectAttributeValues = (): string[] =>
+    Array.from( document.body.querySelectorAll( "*" ) ).flatMap( ( element ) =>
+        Array.from( element.attributes )
+            .filter( ( attribute ) => attribute.value.indexOf( "[object Object]" ) !== -1 )
+            .map( ( attribute ) => `${element.tagName.toLowerCase()}@${attribute.name}` ) );
 
 export const itSupportsExtensionProps = (
     renderComponent: ( extra: ExtensionProps ) => React.ReactElement,
@@ -79,6 +113,31 @@ export const itSupportsExtensionProps = (
             const extra = extraProps();
             const { container } = render( renderComponent( extra ) );
             expect( extra.ref.current ).toBe( getRoot( container ) );
+        } );
+
+        it( "does not put undeclared props (WCM-style config keys) on the root or anywhere as [object Object]", () => {
+            // a bare render: no extension props at all
+            const bare = render( renderComponent( {} as ExtensionProps ) );
+            const bareNames = attributeNames( getRoot( bare.container ) );
+            const bareObjectValues = objectAttributeValues();
+            bare.unmount();
+            const undeclared = Object.keys( WCM_STYLE_PROPS )
+                .filter( ( key ) => !options?.ownKeys?.includes( key ) )
+                .reduce<Record<string, unknown>>( ( acc, key ) => ( { ...acc, [key]: WCM_STYLE_PROPS[key] } ), {} );
+            const leaky = render( renderComponent( undeclared as unknown as ExtensionProps ) );
+            const leaked = attributeNames( getRoot( leaky.container ) ).filter( ( name ) => name !== "class" && !bareNames.includes( name ) );
+            expect( leaked ).toEqual( [] );
+            expect( objectAttributeValues() ).toEqual( bareObjectValues );
+        } );
+
+        it( "adds no root attribute apart from the extension props it was given", () => {
+            const bare = render( renderComponent( {} as ExtensionProps ) );
+            const bareNames = attributeNames( getRoot( bare.container ) );
+            bare.unmount();
+            const given = ["class", "data-contract", "aria-describedby", "id"];
+            const extended = render( renderComponent( { ...extraProps(), id: "bp-contract-id" } as ExtensionProps ) );
+            const extra = attributeNames( getRoot( extended.container ) ).filter( ( name ) => !given.includes( name ) && !bareNames.includes( name ) );
+            expect( extra ).toEqual( [] );
         } );
 
         it( "does not log a console error while rendering with extension props", () => {

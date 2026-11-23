@@ -16,7 +16,7 @@
 import "./DXButton.scss";
 import Button from 'react-bootstrap/Button';
 import React, { FormEventHandler, MouseEventHandler, MutableRefObject } from "react";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 
 export type DisplayType = "primary" | "secondary" | "unstyled" | undefined;
 export type ButtonType = "button" | "submit" | "reset" | undefined;
@@ -55,6 +55,7 @@ export interface HelperAttrs {
 const DXButton = ( props: ExtendableProps<ButtonProps & HelperAttrs, "button"> ) => {
     // Own props are pulled out so only DOM attributes reach the root.
     const { label, hideLabel, id, role, ariaExpanded, type, hidden, disabled, className, value, style, reactRef, onClick, displayType, icon, tabIndex, "data-testid": dataTestId, ref, ...rest } = props;
+    const domProps = pickDomProps( rest );
     const getButtonClass = () => {
         let className = "dxButton";
         if ( props.hideLabel ) {
@@ -79,14 +80,14 @@ const DXButton = ( props: ExtendableProps<ButtonProps & HelperAttrs, "button"> )
     };
 
     return (
-        <Button {...rest} className={getButtonClass()}
+        <Button {...domProps} className={getButtonClass()}
             variant={props.displayType ? props.displayType : "primary"}
             style={props.style ? { ...props.style } : undefined}
             id={props.id ? props.id : undefined}
             ref={ref ?? ( props.reactRef ? props.reactRef : undefined )}
             role={props.role ? props.role : "button"}
-            aria-label={props.hideLabel ? props.label : rest["aria-label"]}
-            aria-expanded={props.ariaExpanded ? props.ariaExpanded : rest["aria-expanded"]}
+            aria-label={props.hideLabel ? props.label : domProps["aria-label"] as string | undefined}
+            aria-expanded={props.ariaExpanded ? props.ariaExpanded : domProps["aria-expanded"] as React.AriaAttributes["aria-expanded"]}
             type={props.type ? props.type : "button"}
             hidden={props.hidden ? props.hidden : undefined}
             value={props.value ? props.value : undefined}
@@ -94,7 +95,7 @@ const DXButton = ( props: ExtendableProps<ButtonProps & HelperAttrs, "button"> )
             onClick={( e ) => handleEvent( e )}
             onKeyDown={( e ) => {
                 // The consumer's handler runs first and can stop the component's own keyboard handling
-                rest.onKeyDown?.( e );
+                ( domProps.onKeyDown as React.KeyboardEventHandler<HTMLButtonElement> | undefined )?.( e );
                 if ( !e.defaultPrevented ) handleEvent( e );
             }}
             tabIndex={props.tabIndex}

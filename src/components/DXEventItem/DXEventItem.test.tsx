@@ -182,9 +182,11 @@ itSupportsExtensionProps( ( extra ) => <DXEventItem {...eventData} {...extra} />
 itSupportsExtensionProps( ( extra ) => <DXEventItem {...formData} {...extra} /> );
 
 test( "props that are not DOM attributes are not forwarded to the root", () => {
-    const { container } = render( <DXEventItem {...eventData} {...{ notADomProp: "x", title: "Tip" } as object} /> );
+    const { container } = render( <DXEventItem {...eventData} {...{ notADomProp: "x", title: "Tip", "data-tip": "Tip" } as object} /> );
     expect( container.firstElementChild?.getAttribute( "notadomprop" ) ).toBeNull();
-    expect( container.firstElementChild?.getAttribute( "title" ) ).toBe( "Tip" );
+    // a `title` can be content data, so it is not forwarded either; data-* is
+    expect( container.firstElementChild?.getAttribute( "title" ) ).toBeNull();
+    expect( container.firstElementChild?.getAttribute( "data-tip" ) ).toBe( "Tip" );
 } );
 
 test( "with an unknown variant nothing is rendered, so className and extra props have nowhere to go", () => {

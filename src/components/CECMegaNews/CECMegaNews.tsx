@@ -29,7 +29,7 @@ import type {
   NewsImagePosition,
 } from "../../utilities/cec-types";
 import CECNewsDialog from "../CECNewsDialog/CECNewsDialog";
-import { ExtendableProps } from "../../utilities/extendable";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 type LayoutKey = "1-2" | "1-2-2" | "1-4" | "1-4-4";
 type HeroFlow = "left" | "top" | "right";
 const SIZE_PRESETS: Record<
@@ -405,7 +405,7 @@ const CECMegaNews = ( {
   };
   if ( !hasItems ) {
     return (
-      <section {...rest} ref={ref} className={wrapClass}>
+      <section {...pickDomProps( rest )} ref={ref} className={wrapClass}>
         <div
           className="megaNews__empty"
           role="note"
@@ -432,7 +432,7 @@ const CECMegaNews = ( {
     );
   }
   return (
-    <section {...rest} ref={ref} className={wrapClass} style={containerStyle}>
+    <section {...pickDomProps( rest )} ref={ref} className={wrapClass} style={containerStyle}>
       <div className="megaNews__grid" role="list">
         {renderItems.map( ( item, i ) => {
           const mode: NewsTileMode = cardStyle === "divider" ? "divider" : "card";

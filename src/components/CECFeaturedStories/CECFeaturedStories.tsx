@@ -45,7 +45,7 @@ const CECFeaturedStories = ( rawProps: ExtendableProps<CECFeaturedStoriesProps, 
   // Every own prop is pulled out (under a throwaway name, the real ones are read from `props` below) so none of them reaches the DOM.
   const { items: _items, heightMobile: _heightMobile, overlay: _overlay, imageLeftLayout: _imageLeftLayout, textColor: _textColor, _edit: __edit, summaryLength: _summaryLength, dateFormat: _dateFormat, animationTime: _animationTime, autoScrollTime: _autoScrollTime, showNavigationArrows: _showNavigationArrows, bulletsPosition: _bulletsPosition, autoPlay: _autoPlay, showPagination: _showPagination, height: _height, displayCount: _displayCount, className: rawClassName, ref, ...rawRest } = rawProps;
   // DX hands these components loosely typed data, so only DOM-safe extras are forwarded (this also drops the data/config/props wrapper keys)
-  const rest = pickDomProps( rawRest );
+  const domProps = pickDomProps( rawRest );
   const [dir, setDir] = useState<'ltr' | 'rtl'>( 'ltr' );
   const rootRef = useRef<HTMLDivElement | null>( null );
   const mergedRootRef = useMemo( () => mergeRefs( rootRef, ref ), [ref] );
@@ -224,7 +224,7 @@ const CECFeaturedStories = ( rawProps: ExtendableProps<CECFeaturedStoriesProps, 
   const resolvedOverlayMode = overlay;
   if ( processedItems.length === 0 ) {
     return (
-      <div {...rest} ref={ref} className={rootClassName} dir={dir}>
+      <div {...domProps} ref={ref} className={rootClassName} dir={dir}>
         <div className="cecFeaturedStories__container">
           <div className="loader__container">
             <div className="loader__spinner"></div>
@@ -257,20 +257,20 @@ const CECFeaturedStories = ( rawProps: ExtendableProps<CECFeaturedStoriesProps, 
   };
   return (
     <div
-      {...rest}
+      {...domProps}
       className={rootClassName}
-      style={{ ...( rest.style as React.CSSProperties | undefined ), border: "none", height: containerHeight }}
+      style={{ ...( domProps.style as React.CSSProperties | undefined ), border: "none", height: containerHeight }}
       role="region"
       aria-roledescription="carousel"
       aria-label="Featured stories slider"
       aria-live="off"
       tabIndex={0}
       ref={mergedRootRef}
-      onKeyDownCapture={chainHandlers( rest.onKeyDownCapture as React.KeyboardEventHandler | undefined, onKeyDownCapture )}
-      onKeyDown={chainHandlers( rest.onKeyDown as React.KeyboardEventHandler | undefined, onRootKeyDown )}
-      onMouseDownCapture={chainHandlers( rest.onMouseDownCapture as React.MouseEventHandler | undefined, onMouseDownCapture )}
-      onTouchStartCapture={chainHandlers( rest.onTouchStartCapture as React.TouchEventHandler | undefined, onPointerDownCapture )}
-      onFocusCapture={chainHandlers( rest.onFocusCapture as React.FocusEventHandler | undefined, onFocusCapture )}
+      onKeyDownCapture={chainHandlers( domProps.onKeyDownCapture as React.KeyboardEventHandler | undefined, onKeyDownCapture )}
+      onKeyDown={chainHandlers( domProps.onKeyDown as React.KeyboardEventHandler | undefined, onRootKeyDown )}
+      onMouseDownCapture={chainHandlers( domProps.onMouseDownCapture as React.MouseEventHandler | undefined, onMouseDownCapture )}
+      onTouchStartCapture={chainHandlers( domProps.onTouchStartCapture as React.TouchEventHandler | undefined, onPointerDownCapture )}
+      onFocusCapture={chainHandlers( domProps.onFocusCapture as React.FocusEventHandler | undefined, onFocusCapture )}
     >
       <div className="cecFeaturedStories__container">
         <div className="cecFeaturedStories__slides">
