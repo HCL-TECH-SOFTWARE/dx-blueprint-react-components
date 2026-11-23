@@ -115,10 +115,11 @@ export default {
 } as Meta<typeof NewsTile>;
 const Template: StoryFn<
   NewsTileProps & { imageSize?: ImageSize; imageWidth?: string; }
-> = ( args ) => (
+> = ( { imageSize, imageWidth, ...tileArgs }: NewsTileProps & { imageSize?: ImageSize; imageWidth?: string; } ) => (
+  // imageSize / imageWidth are story-only controls for the wrapper, so they are kept off the tile (it forwards extra props to its root)
   <div style={{ padding: 16, maxWidth: 720 }}>
-    <TileWithVars imageSize={( args as any ).imageSize} imageWidth={( args as any ).imageWidth}>
-      <NewsTile {...( args as any )} />
+    <TileWithVars imageSize={imageSize} imageWidth={imageWidth}>
+      <NewsTile {...tileArgs} />
     </TileWithVars>
   </div>
 );
