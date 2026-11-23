@@ -14,7 +14,7 @@
  * ======================================================================== */
 
 import React from 'react';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import CECFeaturedStories from './CECFeaturedStories';
 import { itSupportsExtensionProps } from '../../testUtils/extensionContract';
@@ -1616,29 +1616,43 @@ describe( "CECFeaturedStories - Branch Coverage", () => {
   } );
   describe( "Focus Management Edge Cases", () => {
     test( "handles focus management when activeElement is null", () => {
+      // configurable so it can be removed again: the override must not leak into later tests
       Object.defineProperty( document, 'activeElement', {
         value: null,
-        writable: true
+        writable: true,
+        configurable: true
       } );
-      const { container } = renderComponent();
-      const nextButton = container.querySelector( '.cecFeaturedStories__navButton--next' );
-      if ( nextButton ) {
-        fireEvent.click( nextButton );
+      try {
+        const { container } = renderComponent();
+        const nextButton = container.querySelector( '.cecFeaturedStories__navButton--next' );
+        if ( nextButton ) {
+          fireEvent.click( nextButton );
+        }
+        // Should handle null activeElement without errors
+        expect( container ).toBeInTheDocument();
+      } finally {
+        // Removing the own property brings back the real Document.prototype getter
+        delete ( document as { activeElement?: Element | null } ).activeElement;
       }
-      // Should handle null activeElement without errors
-      expect( container ).toBeInTheDocument();
     } );
     test( "handles focus management when document.body.contains returns false", () => {
       const mockElement = document.createElement( 'a' );
       mockElement.setAttribute( 'data-testid', 'read-more-button' );
       // Mock contains to return false
+      // configurable so it can be removed again: the override must not leak into later tests
       Object.defineProperty( document.body, 'contains', {
         value: () => false,
-        writable: true
+        writable: true,
+        configurable: true
       } );
-      const { container } = renderComponent();
-      // Should handle when element is not in body
-      expect( container ).toBeInTheDocument();
+      try {
+        const { container } = renderComponent();
+        // Should handle when element is not in body
+        expect( container ).toBeInTheDocument();
+      } finally {
+        // Removing the own property brings back Node.prototype.contains
+        delete ( document.body as { contains?: unknown } ).contains;
+      }
     } );
     test( "handles focus errors gracefully", () => {
       // Mock console.error to verify error handling
@@ -2025,6 +2039,8 @@ describe( "Zero-Assumption Deep Assertions: Hook Logic and State Boundaries", ()
     const fakePlayPause = document.createElement( 'div' );
     fakePlayPause.className = 'cec-play-pause-button';
     root.appendChild( fakePlayPause );
+    // Keep focus inside the carousel so the play/pause button's global Space shortcut (focus on <body> only) stays out of this check
+    root.focus();
     await act( async () => {
       fireEvent.keyDown( fakePlayPause, { key: ' ', code: 'Space' } );
     } );
@@ -2336,5 +2352,83 @@ describe( 'CECFeaturedStories extension props next to a { data } wrapper', () =>
     const props = { data: { items: makeItems( 2 ), autoPlay: false, className: 'bp-inner' }, className: 'bp-outer', ref } as object;
     const { container } = render( <CECFeaturedStories {...props} /> );
     expect( container.firstElementChild ).toHaveClass( 'cecFeaturedStories', 'bp-inner', 'bp-outer' );
+  } );
+} );
+
+describe( 'CECFeaturedStories consumer root handlers and ref', () => {
+  // Captured when the file is collected, before any test runs: some earlier tests in this file replace these globals
+  // without restoring them, which would make the slide animation below depend on test order
+  const pristineGetComputedStyle = window.getComputedStyle;
+  const pristineMutationObserver = global.MutationObserver;
+  beforeEach( () => {
+    window.getComputedStyle = pristineGetComputedStyle;
+    global.MutationObserver = pristineMutationObserver;
+    document.documentElement.removeAttribute( 'dir' );
+  } );
+  const getRoot = ( container: HTMLElement ) => container.firstElementChild as HTMLElement;
+
+  test( 'a consumer onKeyDown runs before the Space play/pause toggle, which still happens', async () => {
+    const order: string[] = [];
+    const onKeyDown = jest.fn( () => order.push( 'consumer' ) );
+    const { container } = renderComponent( { autoPlay: true, onKeyDown } );
+    const button = container.querySelector( '.cec-play-pause-button' ) as HTMLElement;
+    // Focus inside the carousel, as a keyboard user would have it; Space on <body> is a separate global shortcut of the play/pause button
+    getRoot( container ).focus();
+    await act( async () => {
+      fireEvent.keyDown( getRoot( container ), { key: ' ', code: 'Space' } );
+    } );
+    expect( onKeyDown ).toHaveBeenCalledTimes( 1 );
+    expect( order ).toEqual( ['consumer'] );
+    expect( button ).toHaveAttribute( 'aria-label', 'Play slideshow (Space)' );
+  } );
+
+  test( 'a consumer onKeyDown calling preventDefault stops the Space play/pause toggle', async () => {
+    const onKeyDown = jest.fn( ( e: React.KeyboardEvent ) => e.preventDefault() );
+    const { container } = renderComponent( { autoPlay: true, onKeyDown } );
+    const button = container.querySelector( '.cec-play-pause-button' ) as HTMLElement;
+    // Focus inside the carousel, as a keyboard user would have it; Space on <body> is a separate global shortcut of the play/pause button
+    getRoot( container ).focus();
+    await act( async () => {
+      fireEvent.keyDown( getRoot( container ), { key: ' ', code: 'Space' } );
+    } );
+    expect( onKeyDown ).toHaveBeenCalledTimes( 1 );
+    expect( button ).toHaveAttribute( 'aria-label', 'Pause slideshow (Space)' );
+  } );
+
+  test.each( [
+    ['onKeyDownCapture', ( el: HTMLElement ) => fireEvent.keyDown( el, { key: 'Tab' } )],
+    ['onMouseDownCapture', ( el: HTMLElement ) => fireEvent.mouseDown( el )],
+    ['onTouchStartCapture', ( el: HTMLElement ) => fireEvent.touchStart( el, { touches: [{ clientX: 0, clientY: 0 }] } )],
+    ['onFocusCapture', ( el: HTMLElement ) => fireEvent.focus( el )],
+  ] as Array<[string, ( el: HTMLElement ) => void]> )( 'calls a consumer %s on the root once', ( name, fire ) => {
+    const handler = jest.fn();
+    const { container } = renderComponent( { [name]: handler } );
+    const slide = container.querySelector( '.cecFeaturedStories__slide' ) as HTMLElement;
+    fire( slide );
+    expect( handler ).toHaveBeenCalledTimes( 1 );
+  } );
+
+  test( 'keyboard navigation still works when a consumer ref is passed (internal root ref is merged, not replaced)', async () => {
+    const ref = React.createRef<HTMLDivElement>();
+    render( <CECFeaturedStories items={makeItems( 3 )} autoPlay={false} animationTime={0.1} ref={ref} /> );
+    const slider = screen.getByRole( 'region', { name: 'Featured stories slider' } );
+    expect( ref.current ).toBe( slider );
+    slider.focus();
+    fireEvent.keyDown( slider, { key: 'ArrowRight' } );
+    // Wait for the slide animation to finish rather than a fixed delay
+    await waitFor( () => expect( document.querySelectorAll( '.cecFeaturedStories__slide' )[1] ).toHaveClass( 'active' ) );
+    // Focus restoration after the animation reads the internal root ref; focus must stay inside the carousel
+    expect( slider.contains( document.activeElement ) ).toBe( true );
+  } );
+
+  test( 'a consumer callback ref is attached once across re-renders and cleared on unmount', () => {
+    const callbackRef = jest.fn();
+    const { rerender, unmount, container } = render( <CECFeaturedStories items={makeItems( 2 )} autoPlay={false} ref={callbackRef} /> );
+    const root = getRoot( container );
+    rerender( <CECFeaturedStories items={makeItems( 2 )} autoPlay={false} ref={callbackRef} title="Re-rendered" /> );
+    expect( callbackRef ).toHaveBeenCalledTimes( 1 );
+    expect( callbackRef ).toHaveBeenLastCalledWith( root );
+    unmount();
+    expect( callbackRef ).toHaveBeenLastCalledWith( null );
   } );
 } );

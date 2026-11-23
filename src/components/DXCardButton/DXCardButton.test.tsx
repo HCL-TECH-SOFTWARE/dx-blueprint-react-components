@@ -321,3 +321,24 @@ test( "a consumer onClick that does not prevent the default still lets the redir
     expect( open ).toHaveBeenCalledTimes( 1 );
     open.mockRestore();
 } );
+
+describe( "DXCardButton keyboard activation with consumer handlers", () => {
+    test.each( [
+        ["Enter", "{Enter}"],
+        ["Space", " "],
+    ] )( "%s still redirects once after consumer onKeyDown and onClick handlers that do not prevent the default", async ( _name, key ) => {
+        const open = jest.spyOn( window, "open" ).mockImplementation( () => null );
+        const onKeyDown = jest.fn();
+        const onClick = jest.fn();
+        try {
+            render( <DXCardButton {...cardButtonArgs} {...{ onKeyDown, onClick } as object} /> );
+            await userEvent.tab();
+            await userEvent.keyboard( key );
+            expect( onKeyDown ).toHaveBeenCalledTimes( 1 );
+            expect( onClick ).toHaveBeenCalledTimes( 1 );
+            expect( open ).toHaveBeenCalledTimes( 1 );
+        } finally {
+            open.mockRestore();
+        }
+    } );
+} );

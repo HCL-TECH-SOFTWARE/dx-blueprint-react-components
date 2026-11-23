@@ -157,3 +157,24 @@ test( "a consumer onKeyDown runs before the component's keyboard handling", () =
     expect( consumer ).toHaveBeenCalledTimes( 1 );
     expect( actionFn ).toHaveBeenCalledTimes( 1 );
 } );
+
+describe( "DXAppCard keyboard activation with consumer handlers", () => {
+    // user-event 14 does not set the deprecated keyCode, which this component reads and real browsers still send,
+    // so focus comes from user-event and the key press is dispatched with the browser's key, code and keyCode
+    const browserKeys = [
+        ["Enter", { key: "Enter", code: "Enter", keyCode: 13 }],
+        ["Space", { key: " ", code: "Space", keyCode: 32 }],
+    ] as Array<[string, { key: string; code: string; keyCode: number; }]>;
+
+    test.each( browserKeys )( "%s on the focused card still runs the action after a consumer onKeyDown that does not prevent the default", async ( _name, keyInit ) => {
+        const actionFn = jest.fn();
+        const onKeyDown = jest.fn();
+        render( <DXAppCard media="ci-Home" label="Home" actionFn={actionFn} onKeyDown={onKeyDown} /> );
+        await userEvent.tab();
+        const card = document.activeElement as HTMLElement;
+        expect( card ).toHaveClass( "dxAppCard" );
+        fireEvent.keyDown( card, keyInit );
+        expect( onKeyDown ).toHaveBeenCalledTimes( 1 );
+        expect( actionFn ).toHaveBeenCalledTimes( 1 );
+    } );
+} );

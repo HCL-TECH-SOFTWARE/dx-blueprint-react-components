@@ -16,7 +16,7 @@
 import React from "react";
 import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import DXScrollableCard from "./DXScrollableCard";
 import { scrollableCardsArgs, individualCardArgs } from "./DXScrollableCard.stories";
 import userEvent from "@testing-library/user-event";
@@ -108,3 +108,38 @@ test( " If icon chages if parameter is set", () => {
 } );
 
 itSupportsExtensionProps( ( extra ) => <DXScrollableCard {...scrollableCardsArgs} {...extra} /> );
+
+describe( "DXScrollableCard with a consumer ref", () => {
+    test( "moving to the next card still updates the nav buttons (internal ref queries) while an object ref is passed", async () => {
+        const ref = React.createRef<HTMLDivElement>();
+        const props = {
+            items: [
+                { title: "Luck Correa", subtitle: "Scrum Master" },
+                { title: "Angel Miranda", subtitle: "Developer" }
+            ]
+        };
+        const { container } = render( <DXScrollableCard {...props} ref={ref} /> );
+        expect( ref.current ).toBe( container.firstElementChild );
+        const prevBtn = container.querySelector( ".dxScrollableCard__navBtn--direction-prev" ) as HTMLElement;
+        const nextBtn = container.querySelector( ".dxScrollableCard__navBtn--direction-next" ) as HTMLElement;
+        expect( prevBtn ).toHaveClass( "dxScrollableCard__navBtn--display-hide" );
+        expect( nextBtn ).not.toHaveClass( "dxScrollableCard__navBtn--display-hide" );
+
+        await userEvent.click( screen.getByTestId( "slider-next-button" ) );
+
+        // The slider's afterChange reads the slides and buttons through the internal root ref
+        await waitFor( () => expect( prevBtn ).not.toHaveClass( "dxScrollableCard__navBtn--display-hide" ), { timeout: 2000 } );
+        expect( nextBtn ).toHaveClass( "dxScrollableCard__navBtn--display-hide" );
+    } );
+
+    test( "a callback ref is attached once across re-renders and cleared on unmount", () => {
+        const callbackRef = jest.fn();
+        const { container, rerender, unmount } = render( <DXScrollableCard {...scrollableCardsArgs} ref={callbackRef} /> );
+        const root = container.firstElementChild;
+        rerender( <DXScrollableCard {...scrollableCardsArgs} icons={{ previous: "ci-Chevron_Left" }} ref={callbackRef} /> );
+        expect( callbackRef ).toHaveBeenCalledTimes( 1 );
+        expect( callbackRef ).toHaveBeenLastCalledWith( root );
+        unmount();
+        expect( callbackRef ).toHaveBeenLastCalledWith( null );
+    } );
+} );

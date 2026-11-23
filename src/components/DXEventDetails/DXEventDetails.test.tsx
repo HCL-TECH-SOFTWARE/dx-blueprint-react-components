@@ -1200,3 +1200,53 @@ describe( "DXEventDetails Hardening", () => {
 itSupportsExtensionProps( ( extra ) => (
     <DXEventDetails title="Birthday Party" eventFrom="2021-10-27" eventTo="2021-11-07" beginHour="19:00:00" endHour="21:00:00" location="My Home" addressLines={["Main Avenue #68 pc.75638"]} {...extra} />
 ) );
+
+describe( "DXEventDetails with a consumer ref", () => {
+    const props = {
+        title: "Event",
+        eventFrom: "2021-10-27",
+        eventTo: "2021-11-07",
+        beginHour: "19:00",
+        endHour: "21:00",
+        location: "Here",
+        contact: jest.fn()
+    };
+
+    afterEach( () => {
+        jest.restoreAllMocks();
+    } );
+
+    it( "still measures the root through its internal ref (resize toggles the mobile layout) and sets ref.current to the root", () => {
+        const originalParseInt = global.parseInt;
+        jest.spyOn( global, 'parseInt' ).mockImplementation( ( string, radix ) => {
+            const str = String( string );
+            if ( str === 'md' || str.includes( 'object' ) ) return 768;
+            return originalParseInt( string, radix );
+        } );
+        const ref = React.createRef<HTMLDivElement>();
+        const { container, getByTestId } = render( <DXEventDetails {...props} ref={ref} /> );
+        expect( ref.current ).toBe( container.firstElementChild );
+        const contactBtn = getByTestId( "event-details-contact-btn" );
+        const offsetSpy = jest.spyOn( HTMLElement.prototype, 'offsetWidth', 'get' );
+
+        offsetSpy.mockReturnValue( 1200 );
+        fireEvent( window, new Event( 'resize' ) );
+        expect( contactBtn.textContent ).toContain( "Contact" );
+
+        // Without the internal ref the width reads as null and the layout never switches to mobile
+        offsetSpy.mockReturnValue( 500 );
+        fireEvent( window, new Event( 'resize' ) );
+        expect( contactBtn.textContent ).not.toContain( "Contact" );
+    } );
+
+    it( "calls a callback ref once with the root across re-renders, and with null on unmount", () => {
+        const callbackRef = jest.fn();
+        const { container, rerender, unmount } = render( <DXEventDetails {...props} ref={callbackRef} /> );
+        const root = container.firstElementChild;
+        rerender( <DXEventDetails {...props} title="Renamed event" ref={callbackRef} /> );
+        expect( callbackRef ).toHaveBeenCalledTimes( 1 );
+        expect( callbackRef ).toHaveBeenLastCalledWith( root );
+        unmount();
+        expect( callbackRef ).toHaveBeenLastCalledWith( null );
+    } );
+} );

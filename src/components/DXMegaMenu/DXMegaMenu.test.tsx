@@ -1602,3 +1602,43 @@ describe( "DXMegaMenu Hardening", () => {
 } );
 
 itSupportsExtensionProps( ( extra ) => <DXMegaMenu {...MegaMenuArgs} {...extra} /> );
+
+describe( "DXMegaMenu with a consumer ref", () => {
+    const navItems: NavigationItem[] = [{ index: 0, title: 'Primary', children: [{ index: 0, title: 'Sec' }] }];
+
+    test( "an outside click still closes the menu (internal wrapper ref) while an object ref is passed", async () => {
+        const ref = React.createRef<HTMLDivElement>();
+        render(
+            <div id="outside-element">
+                <DXMegaMenu navigationItems={navItems} secondaryLevelContainerId="container" showOverlay={true} ref={ref} />
+                <div id="container"></div>
+            </div>
+        );
+        expect( ref.current ).toBe( document.querySelector( ".dxMegaMenu" ) );
+
+        await userEvent.click( screen.getByTestId( "megaMenu__primaryIcon" ).parentElement! );
+        await waitFor( () => {
+            expect( screen.getByTestId( "MegaMenu__overlay" ) ).toHaveClass( "dxMegaMenu__overlay--state-active" );
+        } );
+
+        // Inside the root: the internal ref must still be attached, so the menu stays open
+        fireEvent.mouseDown( ref.current! );
+        expect( screen.getByTestId( "MegaMenu__overlay" ) ).toHaveClass( "dxMegaMenu__overlay--state-active" );
+
+        fireEvent.mouseDown( document.getElementById( "outside-element" )! );
+        await waitFor( () => {
+            expect( screen.getByTestId( "MegaMenu__overlay" ) ).not.toHaveClass( "dxMegaMenu__overlay--state-active" );
+        } );
+    } );
+
+    test( "a callback ref is attached once across re-renders and cleared on unmount", () => {
+        const callbackRef = jest.fn();
+        const { rerender, unmount } = render( <DXMegaMenu navigationItems={navItems} secondaryLevelContainerId="" ref={callbackRef} /> );
+        const root = document.querySelector( ".dxMegaMenu" );
+        rerender( <DXMegaMenu navigationItems={navItems} secondaryLevelContainerId="" showOverlay={true} ref={callbackRef} /> );
+        expect( callbackRef ).toHaveBeenCalledTimes( 1 );
+        expect( callbackRef ).toHaveBeenLastCalledWith( root );
+        unmount();
+        expect( callbackRef ).toHaveBeenLastCalledWith( null );
+    } );
+} );

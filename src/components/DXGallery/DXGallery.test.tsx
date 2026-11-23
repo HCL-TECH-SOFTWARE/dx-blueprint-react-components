@@ -857,3 +857,32 @@ describe( "DXGallery Hardening", () => {
 } );
 
 itSupportsExtensionProps( ( extra ) => <DXGallery title="A Beautiful Sky" date="August 15, 2022" images={imagesArgs} {...extra} /> );
+
+describe( "DXGallery with a consumer ref", () => {
+    const props = { title: "A Beautiful Sky", date: "August 15, 2022", images: imagesArgs };
+
+    test( "still reads the parent direction through its internal ref (RTL ancestor) and sets ref.current to the root", () => {
+        const ref = React.createRef<HTMLDivElement>();
+        const { container } = render(
+            <div style={{ direction: "rtl" }}>
+                <DXGallery {...props} ref={ref} />
+            </div>
+        );
+        const galleryRoot = container.querySelector( ".dxGallery" ) as HTMLElement;
+        expect( ref.current ).toBe( galleryRoot );
+        // Without the internal ref there is no parent to read and the page direction (ltr) would be used
+        expect( galleryRoot ).toHaveClass( "dxGallery--rtl" );
+        expect( galleryRoot ).toHaveAttribute( "dir", "rtl" );
+    } );
+
+    test( "calls a callback ref once with the root across re-renders, and with null on unmount", () => {
+        const callbackRef = jest.fn();
+        const { container, rerender, unmount } = render( <DXGallery {...props} ref={callbackRef} /> );
+        const root = container.firstElementChild;
+        rerender( <DXGallery {...props} title="Renamed gallery" ref={callbackRef} /> );
+        expect( callbackRef ).toHaveBeenCalledTimes( 1 );
+        expect( callbackRef ).toHaveBeenLastCalledWith( root );
+        unmount();
+        expect( callbackRef ).toHaveBeenLastCalledWith( null );
+    } );
+} );

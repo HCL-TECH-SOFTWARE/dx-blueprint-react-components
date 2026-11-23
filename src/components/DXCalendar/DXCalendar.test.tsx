@@ -16,7 +16,7 @@
 import React from "react";
 import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
-import { render, fireEvent, screen, act } from "@testing-library/react";
+import { render, fireEvent, screen, act, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import DXCalendar from "./DXCalendar";
 import { CalendarChangedIconsArgs } from "./DXCalendar.stories";
@@ -819,3 +819,22 @@ test( "DOM polyfill traps: innerText fallback branch executes when textContent i
 } );
 
 itSupportsExtensionProps( ( extra ) => <DXCalendar events={events} {...extra} /> );
+
+describe( "DXCalendar event modal with consumer extension props", () => {
+    test( "the see-more modal opens and closes with a consumer ref and className, and is not the root", async () => {
+        const ref = React.createRef<HTMLDivElement>();
+        const { container } = render( <DXCalendar events={events} ref={ref} className="bp-consumer" data-consumer="yes" /> );
+        const root = container.firstElementChild as HTMLElement;
+        expect( ref.current ).toBe( root );
+        expect( root ).toHaveClass( "dxCalendar", "bp-consumer" );
+        await userEvent.click( container.querySelector( ".dxCalendar__detailsEventSeeMore" ) as HTMLElement );
+        const modal = await screen.findByTestId( "calendar-modal" );
+        // The modal is portaled to document.body: not the root, not inside it, and without the consumer's class or attributes
+        expect( root.contains( modal ) ).toBe( false );
+        expect( modal ).not.toHaveClass( "bp-consumer" );
+        expect( modal ).not.toHaveAttribute( "data-consumer" );
+        expect( ref.current ).toBe( root );
+        await userEvent.click( screen.getByTestId( "calendar-modal-close" ) );
+        await waitFor( () => expect( screen.queryByTestId( "calendar-modal" ) ).toBeNull() );
+    } );
+} );

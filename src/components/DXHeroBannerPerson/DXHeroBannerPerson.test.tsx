@@ -16,7 +16,7 @@
 import React from "react";
 import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
-import { render } from "@testing-library/react";
+import { act, render } from "@testing-library/react";
 import DXHeroBannerPerson from "./DXHeroBannerPerson";
 import { HeroBannerPersonArgs } from "./DXHeroBannerPerson.stories";
 
@@ -172,3 +172,44 @@ test( "If the user does pass the personInfoClass, the element will have that cla
 } );
 
 itSupportsExtensionProps( ( extra ) => <DXHeroBannerPerson {...HeroBannerPersonArgs} {...extra} /> );
+
+describe( "DXHeroBannerPerson with a consumer ref", () => {
+    afterEach( () => {
+        jest.useRealTimers();
+    } );
+
+    test( "the autoplay slide still finds the active item (internal ref query) while an object ref is passed", () => {
+        jest.useFakeTimers();
+        const ref = React.createRef<HTMLDivElement>();
+        const { container } = render( <DXHeroBannerPerson {...HeroBannerPersonArgs} interval={1} ref={ref} /> );
+        expect( ref.current ).toBe( container.firstElementChild );
+        const items = container.querySelectorAll( ".dxHBPerson__carousel__item" );
+        expect( items.length ).toBeGreaterThan( 1 );
+        expect( items[0] ).toHaveClass( "dxHBPerson__carousel__item--active" );
+
+        // One interval tick plus the 20 ms class delay. The current item is looked up through the internal root ref:
+        // without it the slide would throw on the missing active item instead of marking it.
+        act( () => {
+            jest.advanceTimersByTime( 1020 );
+        } );
+        expect( items[0] ).toHaveClass( "dxHBPerson__carousel__item__next" );
+        expect( items[1] ).toHaveClass( "dxHBPerson__carousel__item__pos_next", "dxHBPerson__carousel__item__next" );
+
+        act( () => {
+            items[1].dispatchEvent( new Event( "transitionend" ) );
+        } );
+        expect( items[1] ).toHaveClass( "dxHBPerson__carousel__item--active" );
+        expect( items[0] ).not.toHaveClass( "dxHBPerson__carousel__item--active" );
+    } );
+
+    test( "a callback ref is attached once across re-renders and cleared on unmount", () => {
+        const callbackRef = jest.fn();
+        const { container, rerender, unmount } = render( <DXHeroBannerPerson {...HeroBannerPersonArgs} ref={callbackRef} /> );
+        const root = container.firstElementChild;
+        rerender( <DXHeroBannerPerson {...HeroBannerPersonArgs} title="Changed title" ref={callbackRef} /> );
+        expect( callbackRef ).toHaveBeenCalledTimes( 1 );
+        expect( callbackRef ).toHaveBeenLastCalledWith( root );
+        unmount();
+        expect( callbackRef ).toHaveBeenLastCalledWith( null );
+    } );
+} );

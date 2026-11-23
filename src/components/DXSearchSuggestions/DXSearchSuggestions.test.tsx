@@ -281,3 +281,34 @@ test( "If icon changes if params are set", () => {
 } );
 
 itSupportsExtensionProps( ( extra ) => <DXSearchSuggestions {...ssArgs} {...extra} /> );
+
+describe( "DXSearchSuggestions with a consumer ref", () => {
+    test( "opening and closing the list still works (internal ref queries) while an object ref is passed", async () => {
+        const ref = React.createRef<HTMLDivElement>();
+        const { getByTestId, container } = render( <DXSearchSuggestions {...ssArgs} ref={ref} /> );
+        expect( ref.current ).toBe( container.firstElementChild );
+        const input = getByTestId( "ss-input" ) as HTMLInputElement;
+
+        // The list and input styles are set through the internal root ref
+        await userEvent.click( input );
+        expect( getByTestId( "ss-list" ) ).toHaveStyle( "display: block" );
+        expect( getByTestId( "ss-list" ) ).toHaveClass( "dxSSuggestions__list--active" );
+        expect( input ).toHaveStyle( "border-bottom-right-radius: 0" );
+
+        await userEvent.type( input, "hello" );
+        fireEvent.keyUp( input, { key: "Escape", code: "Escape", keyCode: 27, charCode: 27 } );
+        expect( getByTestId( "ss-list" ) ).toHaveStyle( "display: none" );
+        expect( input.value ).toEqual( "" );
+    } );
+
+    test( "a callback ref is attached once across re-renders and cleared on unmount", () => {
+        const callbackRef = jest.fn();
+        const { container, rerender, unmount } = render( <DXSearchSuggestions {...ssArgs} ref={callbackRef} /> );
+        const root = container.firstElementChild;
+        rerender( <DXSearchSuggestions {...ssArgs} searchPlaceholder="Changed placeholder" ref={callbackRef} /> );
+        expect( callbackRef ).toHaveBeenCalledTimes( 1 );
+        expect( callbackRef ).toHaveBeenLastCalledWith( root );
+        unmount();
+        expect( callbackRef ).toHaveBeenLastCalledWith( null );
+    } );
+} );

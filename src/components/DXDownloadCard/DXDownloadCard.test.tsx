@@ -359,3 +359,26 @@ test( "a consumer onKeyDown runs before the component's own handling", () => {
     fireEvent.keyDown( container.querySelector( ".dxDownloadCard" ) as HTMLElement, { key: "Tab" } );
     expect( consumer ).toHaveBeenCalledTimes( 1 );
 } );
+
+describe( "DXDownloadCard keyboard activation with consumer handlers", () => {
+    // user-event 14 does not set the deprecated keyCode, which this component reads and real browsers still send,
+    // so focus comes from user-event and the key press is dispatched with the browser's key, code and keyCode
+    const browserKeys = [
+        ["Enter", { key: "Enter", code: "Enter", keyCode: 13 }],
+        ["Space", { key: " ", code: "Space", keyCode: 32 }],
+    ] as Array<[string, { key: string; code: string; keyCode: number; }]>;
+
+    test.each( browserKeys )( "%s on the focused card still starts the download once after a consumer onKeyDown that does not prevent the default", async ( _name, keyInit ) => {
+        const downloadFn = jest.fn();
+        const onKeyDown = jest.fn();
+        render( <DXDownloadCard {...downloadArgs} _downloadFn={downloadFn} onKeyDown={onKeyDown} /> );
+        await userEvent.tab();
+        const card = document.activeElement as HTMLElement;
+        expect( card ).toHaveClass( "dxDownloadCard" );
+        const notCancelled = fireEvent.keyDown( card, keyInit );
+        expect( onKeyDown ).toHaveBeenCalledTimes( 1 );
+        expect( downloadFn ).toHaveBeenCalledTimes( 1 );
+        // The component prevents the default, so the browser does not also fire a click for the same key press
+        expect( notCancelled ).toBe( false );
+    } );
+} );

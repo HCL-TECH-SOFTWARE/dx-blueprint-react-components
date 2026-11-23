@@ -18,6 +18,7 @@ import { render, screen, fireEvent, act } from '@testing-library/react';
 import CECEvent, { getEventStartDate, getEventEndDate } from './CECEvent';
 import type { CECEventData, CECEventRecurrence, DateFormat } from './CECEvent.types';
 import { itSupportsExtensionProps } from '../../testUtils/extensionContract';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 // Helper function to create mock event with proper typing
 const createMockEvent = ( overrides: Partial<CECEventData> = {} ): CECEventData => ( {
@@ -3234,4 +3235,21 @@ test( 'a consumer onKeyDown on the event root runs first and can stop the compon
     fireEvent.keyDown( container.firstElementChild as Element, { key: 'Enter' } );
     expect( onKeyDown ).toHaveBeenCalledTimes( 1 );
     expect( onEventClick ).not.toHaveBeenCalled();
+} );
+
+describe( 'CECEvent keyboard activation with a consumer onKeyDown', () => {
+    test.each( [
+        ['Enter', '{Enter}'],
+        ['Space', ' '],
+    ] )( '%s still calls onEventClick once after a consumer onKeyDown that does not prevent the default', async ( _name, key ) => {
+        const onEventClick = jest.fn();
+        const onKeyDown = jest.fn();
+        const { container } = render( <CECEvent event={mockEvent} onEventClick={onEventClick} {...{ onKeyDown } as object} /> );
+        ( container.firstElementChild as HTMLElement ).focus();
+        expect( container.firstElementChild ).toHaveFocus();
+        await userEvent.keyboard( key );
+        expect( onKeyDown ).toHaveBeenCalledTimes( 1 );
+        expect( onEventClick ).toHaveBeenCalledTimes( 1 );
+        expect( onEventClick ).toHaveBeenCalledWith( mockEvent );
+    } );
 } );

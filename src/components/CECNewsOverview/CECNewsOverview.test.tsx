@@ -14,7 +14,7 @@
  * ======================================================================== */
 
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import CECNewsOverview from './CECNewsOverview';
 import { itSupportsExtensionProps } from '../../testUtils/extensionContract';
@@ -323,18 +323,20 @@ describe( 'CECNewsOverview', () => {
       const originalGetComputedStyle = global.getComputedStyle;
       let currentDir = 'ltr';
       global.getComputedStyle = () => ( { direction: currentDir } as CSSStyleDeclaration );
-      const { window } = require( '@testing-library/react' );
-      render( <CECNewsOverview items={mockItems} /> );
-      const container = screen.getByTestId( 'cec-news-overview' );
-      expect( container ).toHaveClass( 'cecNewsOverview--ltr' );
-      // Simulate the global attribute mutation
-      currentDir = 'rtl';
-      document.documentElement.setAttribute( 'dir', 'rtl' );
-      // Allow mutation macro-tasks to flush completely
-      await new Promise( resolve => setTimeout( resolve, 50 ) );
-      expect( container ).toHaveClass( 'cecNewsOverview--rtl' );
-      global.getComputedStyle = originalGetComputedStyle;
-      document.documentElement.removeAttribute( 'dir' );
+      try {
+        render( <CECNewsOverview items={mockItems} /> );
+        const container = screen.getByTestId( 'cec-news-overview' );
+        expect( container ).toHaveClass( 'cecNewsOverview--ltr' );
+        // Simulate the global attribute mutation
+        currentDir = 'rtl';
+        document.documentElement.setAttribute( 'dir', 'rtl' );
+        // Wait for the MutationObserver re-render instead of a fixed delay, which is flaky on a loaded machine
+        await waitFor( () => expect( container ).toHaveClass( 'cecNewsOverview--rtl' ) );
+      } finally {
+        // Always restore, so a failure here cannot leave dir="rtl" behind and break the following tests
+        global.getComputedStyle = originalGetComputedStyle;
+        document.documentElement.removeAttribute( 'dir' );
+      }
     } );
     it( 'defaults to window.open with _blank when link target is completely missing or undefined', () => {
       const originalOpen = window.open;

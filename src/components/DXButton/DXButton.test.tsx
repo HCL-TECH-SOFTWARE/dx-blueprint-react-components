@@ -337,3 +337,26 @@ test( "the component's own keyboard handling still runs when the consumer's onKe
     expect( onKeyDown ).toHaveBeenCalledTimes( 1 );
     expect( onClick ).toHaveBeenCalledTimes( 1 );
 } );
+
+describe( "DXButton keyboard activation with a consumer onKeyDown", () => {
+    // user-event 14 does not set the deprecated keyCode, which this component reads and real browsers still send,
+    // so focus comes from user-event and the key press is dispatched with the browser's key, code and keyCode
+    const browserKeys = [
+        ["Enter", { key: "Enter", code: "Enter", keyCode: 13 }],
+        ["Space", { key: " ", code: "Space", keyCode: 32 }],
+    ] as Array<[string, { key: string; code: string; keyCode: number; }]>;
+
+    test.each( browserKeys )( "%s on the focused button still activates it once after a consumer onKeyDown that does not prevent the default", async ( _name, keyInit ) => {
+        const onClick = jest.fn();
+        const onKeyDown = jest.fn();
+        render( <DXButton label="Save" onClick={onClick} onKeyDown={onKeyDown} /> );
+        await userEvent.tab();
+        const button = document.activeElement as HTMLElement;
+        expect( button ).toHaveClass( "dxButton" );
+        const notCancelled = fireEvent.keyDown( button, keyInit );
+        expect( onKeyDown ).toHaveBeenCalledTimes( 1 );
+        expect( onClick ).toHaveBeenCalledTimes( 1 );
+        // The component prevents the default, so the browser does not also fire a click for the same key press
+        expect( notCancelled ).toBe( false );
+    } );
+} );

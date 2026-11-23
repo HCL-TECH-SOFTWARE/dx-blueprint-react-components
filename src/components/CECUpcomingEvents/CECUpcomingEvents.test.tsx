@@ -725,6 +725,28 @@ describe( "CECUpcomingEvents - extension props", () => {
     expect( root ).not.toHaveAttribute( "showrecurringicon" );
   } );
 
+  it( "runs a consumer onClick on the root with the mouse event", async () => {
+    // currentTarget is only set while React dispatches the event, so it is captured inside the handler
+    let target: EventTarget | null = null;
+    const consumerClick = jest.fn( ( e: React.MouseEvent<HTMLDivElement> ) => { target = e.currentTarget; } );
+    const { container } = render( <CECUpcomingEvents items={oneItem} onClick={consumerClick} /> );
+    const root = container.firstElementChild as HTMLElement;
+    await userEvent.click( root );
+    expect( consumerClick ).toHaveBeenCalledTimes( 1 );
+    expect( target ).toBe( root );
+  } );
+
+  it( "keeps the card click handler its own: a card click calls onEventClick and then bubbles to the consumer root onClick", async () => {
+    const order: string[] = [];
+    const onEventClick = jest.fn( () => order.push( "card" ) );
+    const consumerClick = jest.fn( () => order.push( "root" ) );
+    render( <CECUpcomingEvents items={oneItem} onEventClick={onEventClick} onClick={consumerClick} /> );
+    await userEvent.click( screen.getAllByTestId( "cec-event" )[0] );
+    expect( onEventClick ).toHaveBeenCalledTimes( 1 );
+    expect( consumerClick ).toHaveBeenCalledTimes( 1 );
+    expect( order ).toEqual( ["card", "root"] );
+  } );
+
   it( "keeps the component's own dir over a consumer-supplied one", () => {
     const { container } = render( <CECUpcomingEvents items={oneItem} dir="rtl" /> );
     expect( container.firstElementChild ).toHaveAttribute( "dir", "rtl" );

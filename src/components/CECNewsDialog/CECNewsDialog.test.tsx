@@ -687,3 +687,56 @@ describe( "CECNewsDialog", () => {
 } );
 
 itSupportsExtensionProps( ( extra ) => <CECNewsDialog open={true} item={createMockNewsItem()} onClose={mockOnClose} {...extra} /> );
+
+describe( "CECNewsDialog with consumer extension props", () => {
+  const renderExtended = ( extra: Record<string, unknown> = {} ) => {
+    const onClose = jest.fn();
+    const ref = React.createRef<HTMLDivElement>();
+    const utils = render(
+      <CECNewsDialog open={true} item={createMockNewsItem()} onClose={onClose} ref={ref} className="bp-consumer" data-consumer="yes" {...extra} />
+    );
+    return { ...utils, onClose, ref };
+  };
+
+  test( "the consumer ref is the dialog overlay root, which keeps its own role, aria-modal and active class", () => {
+    const { ref, container } = renderExtended( { role: "region", "aria-modal": "false" } as object );
+    const overlay = container.firstElementChild as HTMLElement;
+    expect( ref.current ).toBe( overlay );
+    expect( overlay ).toHaveClass( "newsDialog__overlay", "active", "bp-consumer" );
+    expect( overlay ).toHaveAttribute( "data-consumer", "yes" );
+    expect( overlay ).toHaveAttribute( "role", "dialog" );
+    expect( overlay ).toHaveAttribute( "aria-modal", "true" );
+    expect( screen.getByRole( "dialog" ) ).toBe( overlay );
+  } );
+
+  test( "Escape still calls onClose when the consumer passes ref, className and an onKeyDown", () => {
+    const onKeyDown = jest.fn();
+    const { onClose } = renderExtended( { onKeyDown } );
+    fireEvent.keyDown( document, { key: "Escape" } );
+    expect( onClose ).toHaveBeenCalledTimes( 1 );
+  } );
+
+  test( "a consumer onKeyDown on the overlay runs for keys pressed inside the dialog, and Escape there still closes it", () => {
+    const onKeyDown = jest.fn();
+    const { onClose } = renderExtended( { onKeyDown } );
+    fireEvent.keyDown( screen.getByRole( "button", { name: "Close" } ), { key: "Escape" } );
+    expect( onKeyDown ).toHaveBeenCalledTimes( 1 );
+    expect( onClose ).toHaveBeenCalledTimes( 1 );
+  } );
+
+  test( "the Close button still calls onClose with consumer extension props", () => {
+    const { onClose } = renderExtended();
+    fireEvent.click( screen.getByRole( "button", { name: "Close" } ) );
+    expect( onClose ).toHaveBeenCalledTimes( 1 );
+  } );
+
+  test( "when closed, the consumer class stays on the overlay without the active class, and Escape does nothing", () => {
+    const onClose = jest.fn();
+    const { container } = render( <CECNewsDialog open={false} item={createMockNewsItem()} onClose={onClose} className="bp-consumer" /> );
+    const overlay = container.firstElementChild as HTMLElement;
+    expect( overlay ).toHaveClass( "newsDialog__overlay", "bp-consumer" );
+    expect( overlay ).not.toHaveClass( "active" );
+    fireEvent.keyDown( document, { key: "Escape" } );
+    expect( onClose ).not.toHaveBeenCalled();
+  } );
+} );

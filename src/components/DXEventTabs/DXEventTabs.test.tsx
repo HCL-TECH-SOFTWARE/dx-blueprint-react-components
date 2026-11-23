@@ -1470,3 +1470,36 @@ test( "If event icon changes if parameter is send", () => {
 } );
 
 itSupportsExtensionProps( ( extra ) => <DXEventTabs tabs={tabsArgs} {...extra} /> );
+
+describe( "DXEventTabs with a consumer ref", () => {
+    const originalOffsetWidth = Object.getOwnPropertyDescriptor( window.HTMLElement.prototype, "offsetWidth" );
+
+    afterEach( () => {
+        if ( originalOffsetWidth ) {
+            Object.defineProperty( window.HTMLElement.prototype, "offsetWidth", originalOffsetWidth );
+        }
+    } );
+
+    test( "still measures the root through its internal ref (mobile tabs at 390px or less) and sets ref.current to the root", () => {
+        Object.defineProperty( window.HTMLElement.prototype, "offsetWidth", {
+            get: function () { return 300; },
+            configurable: true
+        } );
+        const ref = React.createRef<HTMLDivElement>();
+        const { container, getAllByTestId } = render( <DXEventTabs tabs={tabsArgs} ref={ref} /> );
+        expect( ref.current ).toBe( container.firstElementChild );
+        // Without the internal ref the width is never read and the desktop tab class stays
+        expect( getAllByTestId( "event-tabs-tab" )[0] ).toHaveClass( "dxEventTabs__tabMobile" );
+    } );
+
+    test( "calls a callback ref once with the root across re-renders, and with null on unmount", () => {
+        const callbackRef = jest.fn();
+        const { container, rerender, unmount } = render( <DXEventTabs tabs={tabsArgs} ref={callbackRef} /> );
+        const root = container.firstElementChild;
+        rerender( <DXEventTabs tabs={tabsArgs} dateFormat="MM/DD/YYYY" ref={callbackRef} /> );
+        expect( callbackRef ).toHaveBeenCalledTimes( 1 );
+        expect( callbackRef ).toHaveBeenLastCalledWith( root );
+        unmount();
+        expect( callbackRef ).toHaveBeenLastCalledWith( null );
+    } );
+} );

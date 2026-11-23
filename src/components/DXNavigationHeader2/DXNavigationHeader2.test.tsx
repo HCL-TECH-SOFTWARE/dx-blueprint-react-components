@@ -15,7 +15,7 @@
 
 import React from "react";
 import '@testing-library/jest-dom';
-import { fireEvent, render } from "@testing-library/react";
+import { act, fireEvent, render } from "@testing-library/react";
 import DXNavigationHeader2 from "./DXNavigationHeader2";
 import { NavigationHeader2Args } from "./DXNavigationHeader2.stories";
 import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
@@ -189,4 +189,81 @@ describe( "DXNavigationHeader2 extension props, mobile layout (passed on to DXNa
     beforeEach( () => { restoreMatchMedia = setupMobileMatchMedia(); } );
     afterEach( () => restoreMatchMedia() );
     itSupportsExtensionProps( ( extra ) => <DXNavigationHeader2 {...NavigationHeader2Args} {...extra} /> );
+} );
+
+describe( "DXNavigationHeader2 with a consumer ref when the viewport crosses the mobile breakpoint", () => {
+    // matchMedia whose result can be switched, with the "change" listeners the component subscribes
+    let matches = false;
+    let listeners: Array<() => void> = [];
+    const originalMatchMedia = window.matchMedia;
+
+    beforeEach( () => {
+        matches = false;
+        listeners = [];
+        Object.defineProperty( window, "matchMedia", {
+            configurable: true,
+            value: jest.fn().mockImplementation( ( media: string ) => ( {
+                get matches() { return matches; },
+                media,
+                onchange: null,
+                addListener: jest.fn(),
+                removeListener: jest.fn(),
+                addEventListener: jest.fn( ( _type: string, cb: () => void ) => { listeners.push( cb ); } ),
+                removeEventListener: jest.fn( ( _type: string, cb: () => void ) => { listeners = listeners.filter( ( l ) => l !== cb ); } ),
+                dispatchEvent: jest.fn(),
+            } ) ),
+        } );
+    } );
+
+    afterEach( () => {
+        Object.defineProperty( window, "matchMedia", { configurable: true, value: originalMatchMedia } );
+    } );
+
+    const setMobile = ( value: boolean ) => {
+        act( () => {
+            matches = value;
+            listeners.forEach( ( l ) => l() );
+        } );
+    };
+
+    test( "ref, className and data-* follow the root from desktop to mobile and back", () => {
+        const ref = React.createRef<HTMLElement>();
+        const { container } = render( <DXNavigationHeader2 {...NavigationHeader2Args} ref={ref} className="bp-consumer" data-contract="yes" /> );
+
+        const desktopRoot = container.firstElementChild as HTMLElement;
+        expect( desktopRoot ).toHaveClass( "dxNavigationHeader2", "bp-consumer" );
+        expect( desktopRoot ).toHaveAttribute( "data-contract", "yes" );
+        expect( ref.current ).toBe( desktopRoot );
+
+        setMobile( true );
+        const mobileRoot = container.firstElementChild as HTMLElement;
+        expect( mobileRoot ).toHaveClass( "dxNavHeaderMobile", "bp-consumer" );
+        expect( mobileRoot ).toHaveAttribute( "data-contract", "yes" );
+        expect( ref.current ).toBe( mobileRoot );
+        expect( container.querySelector( ".dxNavigationHeader2" ) ).toBeNull();
+
+        setMobile( false );
+        const desktopAgain = container.firstElementChild as HTMLElement;
+        expect( desktopAgain ).toHaveClass( "dxNavigationHeader2", "bp-consumer" );
+        expect( desktopAgain ).toHaveAttribute( "data-contract", "yes" );
+        expect( ref.current ).toBe( desktopAgain );
+        expect( container.querySelector( ".dxNavHeaderMobile" ) ).toBeNull();
+    } );
+
+    test( "a callback ref is detached from the old root and attached to the new one on each switch, and cleared on unmount", () => {
+        const callbackRef = jest.fn();
+        const { container, unmount } = render( <DXNavigationHeader2 {...NavigationHeader2Args} ref={callbackRef} /> );
+        const desktopRoot = container.firstElementChild;
+        expect( callbackRef ).toHaveBeenCalledTimes( 1 );
+        expect( callbackRef ).toHaveBeenLastCalledWith( desktopRoot );
+
+        setMobile( true );
+        const mobileRoot = container.firstElementChild;
+        // React may pass extra arguments when it detaches, so only the first argument is compared
+        const firstArgs = callbackRef.mock.calls.map( ( call ) => call[0] );
+        expect( firstArgs ).toEqual( [desktopRoot, null, mobileRoot] );
+
+        unmount();
+        expect( callbackRef.mock.calls[callbackRef.mock.calls.length - 1][0] ).toBeNull();
+    } );
 } );
