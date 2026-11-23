@@ -41,7 +41,8 @@ const renderSocialSection = ( socialPresenceProps: SocialPresenceProps ) => {
 
 const DXProfileCard = ( props: ProfileCardProps & { className?: string; ref?: React.Ref<HTMLDivElement>; } ) => {
     // Own props are pulled out; only DOM-safe extras reach the root (the props type has an index signature).
-    const { name: _name, image: _image, socialMedia: _socialMedia, showSocialMedia: _showSocialMedia, _search, index: _index, className, ref, ...rest } = props;
+    // `role` is pulled out too: in catalog data it is the person's job title (used for filtering), not an ARIA role.
+    const { name: _name, image: _image, socialMedia: _socialMedia, showSocialMedia: _showSocialMedia, role: _role, _search, index: _index, className, ref, ...rest } = props;
     const domAttrs = pickDomProps( rest );
     // States
     const [loaded, setLoaded] = useState( false );

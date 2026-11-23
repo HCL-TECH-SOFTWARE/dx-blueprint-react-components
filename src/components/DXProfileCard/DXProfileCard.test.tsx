@@ -104,3 +104,9 @@ test( "extra props: unknown props do not reach the DOM", () => {
     expect( root ).toHaveAttribute( "data-extra", "yes" );
     expect( root ).not.toHaveAttribute( "unknownprop" );
 } );
+
+test( "a role in the card data is the person's job title, so it is not rendered as an ARIA role on the root", () => {
+    const props = { ...ProfileCardArgs, role: "Software Developer" } as React.ComponentProps<typeof ProfileCard>;
+    const { container } = render( <ProfileCard {...props} /> );
+    expect( container.firstElementChild ).not.toHaveAttribute( "role" );
+} );
