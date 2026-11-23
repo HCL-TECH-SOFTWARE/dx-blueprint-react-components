@@ -1809,4 +1809,15 @@ describe( 'CECPagination extension props per variant', () => {
     itSupportsExtensionProps( ( extra ) => <CECPagination {...base} {...extra} /> );
     itSupportsExtensionProps( ( extra ) => <CECPagination {...base} variant="compact" {...extra} /> );
     itSupportsExtensionProps( ( extra ) => <CECPagination {...base} variant="bullets" {...extra} /> );
+
+    // React warns about an unknown DOM prop only once per name, so the contract's console check can miss a leak that an
+    // earlier test already triggered; the attributes are checked directly instead
+    it.each( ['compact', 'bullets'] as const )( 'keeps the default-variant-only startIndex / endIndex off the %s root', ( variant ) => {
+        const { container } = render( <CECPagination {...base} variant={variant} /> );
+        const root = container.firstElementChild as HTMLElement;
+        expect( root ).not.toHaveAttribute( 'startindex' );
+        expect( root ).not.toHaveAttribute( 'endindex' );
+        expect( root ).not.toHaveAttribute( 'startIndex' );
+        expect( root ).not.toHaveAttribute( 'endIndex' );
+    } );
 } );

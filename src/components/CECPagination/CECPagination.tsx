@@ -102,6 +102,8 @@ const CECPagination = ( {
         startIndex: displayStartIndex,
         endIndex: displayEndIndex,
     };
+    // startIndex / endIndex are only read by the default variant; the compact and bullets variants spread unknown props onto their root
+    const { startIndex: _startIndex, endIndex: _endIndex, ...navigationProps } = commonProps;
     // Render based on variant
     switch ( variant ) {
         case 'compact':
@@ -109,7 +111,7 @@ const CECPagination = ( {
                 <CompactVariant
                     {...rest}
                     ref={ref}
-                    {...commonProps}
+                    {...navigationProps}
                     messages={{
                         previous: DEFAULT_MESSAGES.previous,
                         next: DEFAULT_MESSAGES.next,
@@ -117,7 +119,7 @@ const CECPagination = ( {
                 />
             );
         case 'bullets':
-            return <BulletsVariant {...rest} ref={ref} {...commonProps} />;
+            return <BulletsVariant {...rest} ref={ref} {...navigationProps} />;
         case 'default':
         default:
             return (
