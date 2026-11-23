@@ -308,3 +308,22 @@ test( "If the overlay hides when clicking it", async () => {
 } );
 
 itSupportsExtensionProps( ( extra ) => <DXUtilityZone items={itemsArgs} {...extra} /> );
+
+test( "passes only the tool button's own props: contentId, contentFunction and untyped extra keys stay off its DOM", () => {
+    const spy = jest.spyOn( console, "error" ).mockImplementation( () => undefined );
+    try {
+        const items = itemsArgs.map( ( item ) => ( { ...item, contentFunction: jest.fn(), badges: 3 } ) );
+        const { container } = render( <DXUtilityZone items={items} /> );
+        const buttons = container.querySelectorAll( '[data-testid="utility-zone-item"] > :first-child' );
+        expect( buttons.length ).toBe( items.length );
+        buttons.forEach( ( button ) => {
+            expect( button ).not.toHaveAttribute( "contentid" );
+            expect( button ).not.toHaveAttribute( "contentId" );
+            expect( button ).not.toHaveAttribute( "contentfunction" );
+            expect( button ).not.toHaveAttribute( "badges" );
+        } );
+        expect( spy ).not.toHaveBeenCalled();
+    } finally {
+        spy.mockRestore();
+    }
+} );

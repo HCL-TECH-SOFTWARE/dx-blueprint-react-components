@@ -78,8 +78,11 @@ const DXUtilityZone = ( { items, panelsContainerId, showOverlay, enableIconPanel
     // Render Methods
     const renderItems = ( items: ToolButtonProps[] ) => {
         const adjustedItems = items.map( ( item: ToolButtonProps, index: number ) => {
+            // Only the button's own props are passed: the item also carries the zone's data (contentId, contentFunction) and may
+            // carry other keys from untyped data, and the button forwards extra props to its DOM root
+            const buttonProps: ToolButtonProps = { icon: item.icon, label: item.label, image: item.image, showLabel: item.showLabel, onClick: item.onClick, badge: item.badge };
             return {
-                ...item,
+                ...buttonProps,
                 ...( enableIconPanels ? { onClick: () => handleOpen( index ) } : {} )
             };
         } );
