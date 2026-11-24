@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - `components.css` is minified (the previous single CSS file was not), and the all-in-one `index.css` starts with a single `@charset`.
 - Dependency versions are resolved by the consumer's package manager and are no longer baked into the ESM and CJS output. The UMD build stays fully bundled and keeps the `TRF` global.
 - Importing the package from plain Node without a bundler (plain Node ESM) is not supported; use a bundler.
+- `CECEvent` and `DXIcon` no longer pass every extra prop to their root element; like all other components they forward only `className`, `ref`, `id`, `style`, `data-*`, `aria-*` and event handlers. `DXIcon`'s own `role` and `title` props are unchanged.
 
 ### Fixed
 

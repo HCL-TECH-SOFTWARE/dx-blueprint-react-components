@@ -616,7 +616,7 @@ export const CECEvent = ( {
         );
     }, [event, dateFrom, dateTo, isSameDay] );
     // Only DOM-safe extra props reach the root; anything else a consumer passes is dropped
-    // (a consumer-supplied role, aria-* or tabIndex keeps winning over the component's, as before)
+    // (a consumer aria-* attribute still wins over the component's own; role and tabIndex are not forwarded)
     const { onKeyDown: consumerOnKeyDown, ...domAttrs } = pickDomProps( rest as Record<string, unknown> );
     return (
         <div
