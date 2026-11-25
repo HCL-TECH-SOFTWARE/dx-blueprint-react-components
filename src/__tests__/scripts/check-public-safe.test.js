@@ -13,7 +13,13 @@
  * limitations under the License.                                           *
  * ======================================================================== */
 
-const { findSensitive } = require("../../../scripts/check-public-safe.cjs");
+const zlib = require("node:zlib");
+const {
+    findSensitive,
+    scanFileBuffer,
+    KNOWN_EXCEPTIONS,
+    exceptionWarning,
+} = require("../../../scripts/check-public-safe.cjs");
 
 // The sample addresses are assembled from parts so that this file does not trip the check it tests
 // (`npm run lint:public` scans every tracked file, tests included).
@@ -75,5 +81,93 @@ describe("findSensitive", () => {
 
     it("never returns the matched text", () => {
         expect(JSON.stringify(findSensitive("a.tsx", internal))).not.toContain("cnx");
+    });
+});
+
+// Local-path samples are assembled from parts for the same reason as the addresses above.
+const localPath = (root, name, ...rest) => ["", root, name, ...rest].join("/");
+
+describe("findSensitive: local-path", () => {
+    it.each([
+        ["a macOS home directory", localPath("Users", "jdoe", "project")],
+        ["a Linux home directory", localPath("home", "jdoe", "project")],
+        ["a Windows home directory", ["C:", "Users", "jdoe", "project"].join("\\")],
+    ])("flags %s", (_label, sample) => {
+        expect(findSensitive("a.tsx", `cwd: '${sample}'`)).toEqual([{ line: 1, rule: "local-path" }]);
+    });
+
+    it.each([
+        ["an angle-bracket placeholder", localPath("Users", "<your-name>", "project")],
+        ["the name placeholder", localPath("Users", "name", "project")],
+        ["the user placeholder", localPath("Users", "user", "project")],
+        ["the macOS CI runner", localPath("Users", "runner", "work")],
+        ["the Linux CI runner", localPath("home", "runner", "work")],
+        ["the node image user", localPath("home", "node", "app")],
+        ["the generic Linux user", localPath("home", "user", "app")],
+    ])("allows %s", (_label, sample) => {
+        expect(findSensitive("a.tsx", `cwd: '${sample}'`)).toEqual([]);
+    });
+
+    it("does not read a relative source folder named Users as a home directory", () => {
+        expect(findSensitive("a.tsx", "import List from 'src/Users/List'")).toEqual([]);
+    });
+
+    it("never returns the matched name", () => {
+        expect(JSON.stringify(findSensitive("a.tsx", localPath("Users", "jdoe")))).not.toContain("jdoe");
+    });
+});
+
+describe("scanFileBuffer", () => {
+    const sensitive = `fine\n${address("someone", "gmail", "com")}\n`;
+
+    it("scans a plain text buffer like findSensitive", () => {
+        expect(scanFileBuffer("a.tsx", Buffer.from(sensitive))).toEqual([{ line: 2, rule: "personal-mailbox" }]);
+    });
+
+    it("skips a binary buffer", () => {
+        expect(scanFileBuffer("a.bin", Buffer.concat([Buffer.from([0]), Buffer.from(sensitive)]))).toEqual([]);
+    });
+
+    it("scans the decompressed content of a gz file", () => {
+        const gz = zlib.gzipSync(Buffer.from(sensitive));
+        expect(scanFileBuffer("data/x.json.gz", gz)).toEqual([{ line: 2, rule: "personal-mailbox" }]);
+    });
+
+    it("skips a gz file whose content is binary", () => {
+        const gz = zlib.gzipSync(Buffer.concat([Buffer.from([0]), Buffer.from(sensitive)]));
+        expect(scanFileBuffer("data/x.bin.gz", gz)).toEqual([]);
+    });
+
+    it("fails closed on a corrupt gz file", () => {
+        expect(scanFileBuffer("data/x.json.gz", Buffer.from("not gzip data"))).toEqual([
+            { line: 0, rule: "unreadable-gzip" },
+        ]);
+    });
+
+    describe("known exceptions", () => {
+        const [exempt] = [...KNOWN_EXCEPTIONS.keys()];
+        const gz = zlib.gzipSync(Buffer.from(sensitive));
+
+        it("names the stryker seed with a reason", () => {
+            expect(exempt).toBe("src/__tests__/mutation/stryker-incremental.json.gz");
+            expect(KNOWN_EXCEPTIONS.get(exempt)).toBe("holds personal local paths and mailboxes; owner hard stop, plan Task 8");
+        });
+
+        it("suppresses the findings of the exempt path", () => {
+            expect(scanFileBuffer(exempt, gz)).toEqual([]);
+        });
+
+        it("does not suppress the same content at another path", () => {
+            expect(scanFileBuffer("src/__tests__/mutation/other.json.gz", gz)).toEqual([
+                { line: 2, rule: "personal-mailbox" },
+            ]);
+            expect(scanFileBuffer(`./${exempt}`, gz)).toHaveLength(1);
+        });
+
+        it("words the warning exactly", () => {
+            expect(exceptionWarning(exempt, "why")).toBe(
+                `WARNING: ${exempt} is exempt from lint:public (why). Must be regenerated or removed before the repo goes public.`,
+            );
+        });
     });
 });

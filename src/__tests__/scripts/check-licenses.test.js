@@ -13,7 +13,7 @@
  * limitations under the License.                                           *
  * ======================================================================== */
 
-const { checkLicenses, replaceSection, BEGIN_MARKER, END_MARKER } = require("../../../scripts/check-licenses.cjs");
+const { checkLicenses, replaceSection, LICENSE_FILE, missingLicenseFiles, BEGIN_MARKER, END_MARKER } = require("../../../scripts/check-licenses.cjs");
 
 const allowed = ["MIT", "Apache-2.0"];
 const dep = (license, name = "pkg", version = "1.0.0") => ({ name, version, license });
@@ -115,5 +115,41 @@ describe("replaceSection", () => {
 
     it("refuses a file with only one marker", () => {
         expect(() => replaceSection(`x\n${BEGIN_MARKER}\n`, section)).toThrow("marker");
+    });
+});
+
+describe("replaceSection with duplicate markers", () => {
+    const section = `${BEGIN_MARKER}\nbody\n${END_MARKER}`;
+
+    it("refuses a file with two begin markers", () => {
+        const text = `${BEGIN_MARKER}\na\n${END_MARKER}\n${BEGIN_MARKER}\n`;
+        expect(() => replaceSection(text, section)).toThrow("more than once");
+    });
+
+    it("refuses a file with two end markers", () => {
+        const text = `${BEGIN_MARKER}\na\n${END_MARKER}\n${END_MARKER}\n`;
+        expect(() => replaceSection(text, section)).toThrow("more than once");
+    });
+});
+
+describe("LICENSE_FILE", () => {
+    it.each(["LICENSE", "LICENCE", "license", "LICENSE.md", "LICENSE.txt", "LICENSE-MIT", "LICENSE-APACHE", "COPYING", "NOTICE", "NOTICE.txt", "license.markdown"])(
+        "accepts %s",
+        (name) => expect(LICENSE_FILE.test(name)).toBe(true),
+    );
+
+    it.each(["license.js", "license.json", "license.ts", "license.cjs", "license.d.ts", "licenses", "LICENSE-checker.js"])(
+        "rejects %s",
+        (name) => expect(LICENSE_FILE.test(name)).toBe(false),
+    );
+});
+
+describe("missingLicenseFiles", () => {
+    it("lists name@version of dependencies without licence text", () => {
+        const deps = [
+            { name: "a", version: "1.0.0", text: "MIT text" },
+            { name: "b", version: "2.0.0", text: "" },
+        ];
+        expect(missingLicenseFiles(deps)).toEqual(["b@2.0.0"]);
     });
 });

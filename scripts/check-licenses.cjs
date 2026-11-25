@@ -121,6 +121,9 @@ function checkLicenses(deps, allowed, attributionText) {
 function replaceSection(text, section) {
     const begin = text.indexOf(BEGIN_MARKER);
     const end = text.indexOf(END_MARKER);
+    if (begin !== text.lastIndexOf(BEGIN_MARKER) || end !== text.lastIndexOf(END_MARKER)) {
+        throw new Error("THIRD-PARTY-LICENSES has a begin or end marker more than once");
+    }
     if (begin === -1 && end === -1) return `${text.replace(/\s*$/, "")}\n\n${section}\n`;
     if (begin === -1 || end === -1 || end < begin) {
         throw new Error("THIRD-PARTY-LICENSES has a begin or end marker without the other one");
@@ -132,7 +135,9 @@ function replaceSection(text, section) {
 // Reading the installed production tree
 // ---------------------------------------------------------------------------------------------
 
-const LICENSE_FILE = /^(licen[cs]e|copying|notice)(\..*)?$/i;
+// LICENSE, LICENCE, LICENSE.md/.txt, LICENSE-MIT, LICENSE-APACHE, COPYING, NOTICE. Code files that merely
+// start with the word (license.js, license.json, license.d.ts) are not licence text.
+const LICENSE_FILE = /^(?!.*\.(?:[cm]?[jt]sx?|json|map)$)(licen[cs]e|copying|notice)([-.].*)?$/i;
 const RULE = "-".repeat(80);
 
 function licenseOf(pkg) {
@@ -167,6 +172,11 @@ function readProductionDependencies() {
     return [...byId.values()].sort((a, b) => (a.name === b.name ? (a.version < b.version ? -1 : 1) : a.name < b.name ? -1 : 1));
 }
 
+/** @returns {string[]} name@version of every dependency that ships no licence text */
+function missingLicenseFiles(deps) {
+    return deps.filter(({ text }) => !text).map(({ name, version }) => `${name}@${version}`);
+}
+
 function renderSection(deps) {
     const entries = deps.map(({ name, version, license, text }) => {
         const body = text || `This package does not ship a licence file. Its package.json declares the licence ${license || "(none)"}.`;
@@ -182,6 +192,7 @@ function main() {
     const deps = readProductionDependencies();
 
     if (process.argv.includes("--generate")) {
+        for (const id of missingLicenseFiles(deps)) console.error(`WARNING: no licence file for ${id}`);
         fs.writeFileSync(LICENSES_FILE, replaceSection(fs.readFileSync(LICENSES_FILE, "utf8"), renderSection(deps)));
         console.log(`Wrote ${deps.length} production dependencies to THIRD-PARTY-LICENSES.`);
         return;
@@ -206,4 +217,4 @@ if (require.main === module) {
     }
 }
 
-module.exports = { checkLicenses, replaceSection, BEGIN_MARKER, END_MARKER };
+module.exports = { checkLicenses, replaceSection, LICENSE_FILE, missingLicenseFiles, BEGIN_MARKER, END_MARKER };
