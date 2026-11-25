@@ -105,8 +105,9 @@ function checkLicenses(deps, allowed, attributionText) {
                 problems.push(`${id}: licence "${license}" is not a valid SPDX expression`);
             }
         }
-        // The version must end the match, otherwise tslib@2.8.1 would be satisfied by tslib@2.8.10.
-        if (!new RegExp(`${escapeRegExp(id)}(?![\\w.+-])`).test(attributionText)) {
+        // The generated entry has the id alone on a line. Anchoring to the whole line stops pkg@1.0.0 from
+        // being satisfied by @scope/pkg@1.0.0, foo-pkg@1.0.0, tslib@2.8.10 or a mention in licence text.
+        if (!new RegExp(`^${escapeRegExp(id)}\\r?$`, "m").test(attributionText)) {
             problems.push(`${id}: missing attribution in THIRD-PARTY-LICENSES (run npm run licenses:generate)`);
         }
     }

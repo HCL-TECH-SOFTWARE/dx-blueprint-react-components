@@ -53,6 +53,20 @@ describe("checkLicenses", () => {
         expect(problems.join("\n")).toContain("missing attribution");
     });
 
+    it.each([
+        ["a scoped package of the same name", "@scope/pkg@1.0.0"],
+        ["a package whose name ends with it", "foo-pkg@1.0.0"],
+    ])("does not accept %s as the attribution", (_label, otherEntry) => {
+        const problems = checkLicenses([dep("MIT")], allowed, attribution(otherEntry, "Some licence text"));
+        expect(problems).toHaveLength(1);
+        expect(problems[0]).toContain("missing attribution");
+    });
+
+    it("does not accept a mention inside prose as the attribution", () => {
+        const problems = checkLicenses([dep("MIT")], allowed, "see pkg@1.0.0 for details");
+        expect(problems.join("\n")).toContain("missing attribution");
+    });
+
     it("binds AND tighter than OR", () => {
         expect(checkLicenses([dep("GPL-3.0 OR MIT AND Apache-2.0")], allowed, "pkg@1.0.0")).toEqual([]);
         expect(checkLicenses([dep("MIT OR GPL-3.0 AND GPL-2.0")], allowed, "pkg@1.0.0")).toEqual([]);
