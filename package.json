@@ -21,6 +21,8 @@
     "lint:tokens": "node scripts/check-css-tokens.mjs",
     "lint:public": "node scripts/check-public-safe.cjs",
     "check:pack": "node scripts/check-pack.cjs",
+    "check:licenses": "node scripts/check-licenses.cjs",
+    "licenses:generate": "node scripts/check-licenses.cjs --generate",
     "test:unit": "jest --runInBand",
     "test:mutation": "bash scripts/test-mutation.sh"
   },

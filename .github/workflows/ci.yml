@@ -22,5 +22,6 @@ jobs:
       - run: npm run lint:public
       - run: npm run build:lib
       - run: npm run check:pack
+      - run: npm run check:licenses
       - run: npm run test:unit -- --coverage
       - run: npm run test:mutation
