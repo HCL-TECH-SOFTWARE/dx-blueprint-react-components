@@ -19,6 +19,7 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run lint:tokens
+      - run: npm run lint:public
       - run: npm run build:lib
       - run: npm run test:unit -- --coverage
       - run: npm run test:mutation

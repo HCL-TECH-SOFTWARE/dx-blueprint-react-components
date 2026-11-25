@@ -53,7 +53,7 @@ export const scrollableCardsArgs: ScrollableCardProps = {
             links: [
                 {
                     url: "https://www.google.com",
-                    label: "luisjtorres@gmail.com"
+                    label: "jane.doe@example.com"
                 },
                 {
                     url: "https://hcl-software.com",
@@ -67,7 +67,7 @@ export const scrollableCardsArgs: ScrollableCardProps = {
             links: [
                 {
                     url: "https://mail.yahoo.com",
-                    label: "laila.ort@yahoo.com "
+                    label: "john.smith@example.com "
                 },
                 {
                     url: "https://hcl-software.com",

@@ -899,7 +899,7 @@ describe( "Email Validation Tooltip", () => {
         } );
 
         await userEvent.clear( input );
-        await userEvent.type( input, "valid@email.com" );
+        await userEvent.type( input, "valid@example.com" );
 
         await waitFor( () => {
             expect( input ).toHaveAttribute( 'aria-invalid', 'false' );

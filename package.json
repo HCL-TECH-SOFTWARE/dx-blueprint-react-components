@@ -11,6 +11,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:tokens": "node scripts/check-css-tokens.mjs",
+    "lint:public": "node scripts/check-public-safe.cjs",
     "test:unit": "jest --runInBand",
     "test:mutation": "bash scripts/test-mutation.sh"
   },
