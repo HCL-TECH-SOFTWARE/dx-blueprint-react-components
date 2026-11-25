@@ -3,11 +3,16 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to publish (e.g. 1.0.0, 1.1.0)'
+        description: 'Version to publish (SemVer, no leading v, e.g. 0.1.0-alpha.1 or 1.0.0)'
         required: true
         type: string
+      dist-tag:
+        description: 'npm dist-tag: alpha for prereleases, latest for stable versions'
+        required: false
+        type: string
+        default: 'alpha'
       dry-run:
-        description: 'Dry run (skip actual publish)'
+        description: 'Dry run (skip actual publish and tagging)'
         required: false
         type: boolean
         default: false
@@ -17,11 +22,17 @@ permissions:
 
 jobs:
   release:
+    # Publishing is only allowed from main; the npm-publish environment also restricts branches.
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
     environment: npm-publish
+    # Inputs are passed through env, never interpolated inside run: scripts.
+    env:
+      VERSION: ${{ inputs.version }}
+      DIST_TAG: ${{ inputs.dist-tag }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -29,28 +40,64 @@ jobs:
           node-version: '24'
           cache: 'npm'
           registry-url: 'https://registry.npmjs.org'
+      - name: Validate version and dist-tag
+        run: node scripts/release-guard.cjs "$VERSION" "$DIST_TAG"
       - run: npm ci
       - run: npm run lint
+      - run: npm run lint:tokens
+      - run: npm run lint:public
       - run: npm run build:lib
+      - run: npm run check:pack
+      - run: npm run check:licenses
       - run: npm run test:unit -- --coverage
       - name: Set version
-        run: npm version "${{ inputs.version }}" --no-git-tag-version
+        run: npm version "$VERSION" --no-git-tag-version
+      - name: Job summary
+        run: |
+          {
+            echo "## Release"
+            echo "- Version: \`$VERSION\`"
+            echo "- Dist-tag: \`$DIST_TAG\`"
+            echo "- Dry run: \`$DRY_RUN\`"
+            echo
+            echo "### Tarball contents (first lines of \`npm pack --dry-run\`)"
+            echo '```'
+            npm pack --dry-run 2>&1 | head -n 40
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+        env:
+          DRY_RUN: ${{ inputs.dry-run }}
       - name: Publish (dry run)
         if: ${{ inputs.dry-run }}
-        run: npm publish --provenance --access public --dry-run
+        run: npm publish --provenance --access public --tag "$DIST_TAG" --dry-run
         env:
+          # alpha.1 only: a later task removes the token in favour of trusted publishing.
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Publish
         if: ${{ !inputs.dry-run }}
-        run: npm publish --provenance --access public
+        run: npm publish --provenance --access public --tag "$DIST_TAG"
         env:
+          # alpha.1 only: a later task removes the token in favour of trusted publishing.
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  # Tagging is a separate job so the publish job keeps contents: read.
+  tag:
+    needs: release
+    if: ${{ !inputs.dry-run }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      VERSION: ${{ inputs.version }}
+    steps:
+      - uses: actions/checkout@v4
       - name: Create Git tag
-        if: ${{ !inputs.dry-run }}
         run: |
+          if git ls-remote --tags origin "refs/tags/v$VERSION" | grep -q .; then
+            echo "Tag v$VERSION already exists on origin; skipping."
+            exit 0
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag "v${{ inputs.version }}"
-          git push origin "v${{ inputs.version }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git tag "v$VERSION" "$GITHUB_SHA"
+          git push origin "refs/tags/v$VERSION"
