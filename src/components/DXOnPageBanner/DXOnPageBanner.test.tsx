@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 
 import { render, screen } from "@testing-library/react";
@@ -159,3 +160,5 @@ test( "If the user does pass the bodyClass prop, the body will have that class",
     let body = container.querySelector( ".dxOnPageBanner__body" );
     expect( body ).toHaveClass( props.bodyClass );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXOnPageBanner {...PageBannerArgs} {...extra} /> );

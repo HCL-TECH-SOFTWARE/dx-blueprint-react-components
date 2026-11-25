@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen } from "@testing-library/react";
 import DXLocalFooter from "./DXLocalFooter";
@@ -537,3 +538,5 @@ test( "If the user pass a backgroundImageRight with no size, the content should 
 } );
 
 jest.clearAllMocks();
+
+itSupportsExtensionProps( ( extra ) => <DXLocalFooter {...localFooterPropsArgs} {...extra} /> );

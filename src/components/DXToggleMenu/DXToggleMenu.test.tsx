@@ -18,6 +18,7 @@ import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
 import DXToggleMenu from "./DXToggleMenu";
+import { itSupportsExtensionProps } from '../../testUtils/extensionContract';
 
 const buttons = [
     { label: "CTA Link 1", displayType: "primary" },
@@ -294,3 +295,5 @@ test( "If the user does pass the activeIndexes prop for the multi type, the butt
     if ( buttons[2].classList.contains( "btn-primary" ) ) flag++;
     expect( flag ).toBe( toggleMenuProps.activeIndexes.length );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXToggleMenu buttons={buttons} {...extra} /> );

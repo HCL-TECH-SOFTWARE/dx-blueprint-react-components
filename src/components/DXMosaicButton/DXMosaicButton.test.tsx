@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import MosaicButton, { MosaicButtonProps } from "./DXMosaicButton";
@@ -110,3 +111,5 @@ test( "size is default md when there is an invalid size prop", () => {
     expect( mosaicTextContainer.firstChild ).toHaveClass( "dxMosaicButton__textSubtitle--md" );
     expect( mosaicTextContainer ).toHaveAttribute( "style", "margin: 0px 20px 20px 20px;" );
 } );
+
+itSupportsExtensionProps( ( extra ) => <MosaicButton {...LargeButtonArgs} {...extra} /> );

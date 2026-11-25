@@ -16,8 +16,10 @@
 import React, { useMemo, useEffect } from 'react';
 import { PaginationProps, DEFAULT_MESSAGES } from './CECPagination.types';
 import { DefaultVariant, CompactVariant, BulletsVariant } from './CECPagination.variants';
+import { ExtendableProps, pickDomProps } from '../../utilities/extendable';
 import './CECPagination.scss';
-const CECPagination: React.FC<PaginationProps> = ( {
+/** When `variant` renders nothing (the default variant with `showPagination={false}`), `className`, `ref` and extra props are not applied. */
+const CECPagination = ( {
     currentPage,
     totalPages,
     onPageChange,
@@ -38,7 +40,10 @@ const CECPagination: React.FC<PaginationProps> = ( {
     disabled = false,
     dir = 'ltr',
     messages = {},
-} ) => {
+    locale,
+    ref,
+    ...rest
+}: ExtendableProps<PaginationProps, 'div'> ) => {
     // Calculate totalPages internally when totalItems and itemsPerPage are provided
     const calculatedTotalPages = useMemo( () => {
         if ( totalItems > 0 && itemsPerPage && itemsPerPage > 0 ) {
@@ -97,12 +102,16 @@ const CECPagination: React.FC<PaginationProps> = ( {
         startIndex: displayStartIndex,
         endIndex: displayEndIndex,
     };
+    // startIndex / endIndex are only read by the default variant; the compact and bullets variants spread unknown props onto their root
+    const { startIndex: _startIndex, endIndex: _endIndex, ...navigationProps } = commonProps;
     // Render based on variant
     switch ( variant ) {
         case 'compact':
             return (
                 <CompactVariant
-                    {...commonProps}
+                    {...pickDomProps( rest )}
+                    ref={ref}
+                    {...navigationProps}
                     messages={{
                         previous: DEFAULT_MESSAGES.previous,
                         next: DEFAULT_MESSAGES.next,
@@ -110,11 +119,13 @@ const CECPagination: React.FC<PaginationProps> = ( {
                 />
             );
         case 'bullets':
-            return <BulletsVariant {...commonProps} />;
+            return <BulletsVariant {...pickDomProps( rest )} ref={ref} {...navigationProps} />;
         case 'default':
         default:
             return (
                 <DefaultVariant
+                    {...pickDomProps( rest )}
+                    ref={ref}
                     {...commonProps}
                     itemsPerPage={itemsPerPage}
                     onItemsPerPageChange={onItemsPerPageChange}

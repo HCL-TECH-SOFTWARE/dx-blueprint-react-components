@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render, fireEvent, screen, act } from "@testing-library/react";
@@ -1265,3 +1266,13 @@ describe( "DXEventCatalog Hardening", () => {
         expect( events ).toHaveLength( 1 );
     } );
 } );
+
+itSupportsExtensionProps( ( extra ) => (
+    <DXEventCatalog
+        items={eventsArgs}
+        paginationProps={{ sets: ["3", "6", "12"], active: 1, activeSet: 6 }}
+        totalItems={eventsArgs.length}
+        filterType="select"
+        hideFilters
+        {...extra} />
+) );

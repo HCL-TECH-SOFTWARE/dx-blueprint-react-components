@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -264,4 +265,16 @@ test( "If Next icon is changed if prop is set", () => {
         prev: "ci-Arrow_Left_MD",
         next: "ci-Arrow_Right_MD",
     }} /> );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXCardButtonCatalog elements={arr4Args} variant="grid" {...extra} /> );
+
+test( "In the slider variant, the props react-slick injects into its children do not reach the card buttons", () => {
+    const { container } = render( <DXCardButtonCatalog elements={arr10Args} variant="slider" /> );
+    const buttons = container.querySelectorAll( ".dxCardBtn" );
+    expect( buttons.length ).toBeGreaterThan( 0 );
+    buttons.forEach( ( btn ) => {
+        expect( btn.classList.contains( "slick-slide" ) ).toBe( false );
+        expect( btn.hasAttribute( "data-index" ) ).toBe( false );
+    } );
 } );

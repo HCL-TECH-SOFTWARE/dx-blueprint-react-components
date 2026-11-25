@@ -17,6 +17,8 @@ import "./DXExpensesCard.scss";
 import DXButton from "../DXButton/DXButton";
 import { IconButtonProps } from "../../utilities";
 import React from "react";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface ExpensesCardProps {
     value: number;
@@ -28,7 +30,9 @@ export interface ExpensesCardProps {
     mobile?: boolean;
 }
 
-const DXExpensesCard = ( props: ExpensesCardProps ) => {
+const DXExpensesCard = ( props: ExtendableProps<ExpensesCardProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { value: _value, label: _label, actionButton: _actionButton, localeSetting: _localeSetting, type: _type, currencySymbol: _currencySymbol, mobile: _mobile, className, ref, ...rest } = props;
     // - States
     const DEFAULT_LOCALE = "en-US";
 
@@ -45,7 +49,7 @@ const DXExpensesCard = ( props: ExpensesCardProps ) => {
     };
 
     return (
-        <div className={`dxExpensesCard ${getTypeClass()}${props.mobile ? ' dxExpensesCard--mobile' : ''}`}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( `dxExpensesCard ${getTypeClass()}${props.mobile ? ' dxExpensesCard--mobile' : ''}`, className )}>
             <div className="dxExpensesCard__value">
                 <p>{props.currencySymbol ? props.currencySymbol : "$"}{formatValue( props.value, props.localeSetting )}</p>
             </div>

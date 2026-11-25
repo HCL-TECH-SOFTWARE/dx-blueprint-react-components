@@ -17,6 +17,8 @@ import "./DXMenuOrganizer.scss";
 import React, { ReactElement, useEffect, useState, useRef } from "react";
 import DXMyLinksCard from "../DXMyLinksCard";
 import DXEmptyState, { EmptyStateProps } from "../DXEmptyState/DXEmptyState";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface MenuOrganizerProps {
     items: MenuItem[];
@@ -32,7 +34,9 @@ export interface MenuItem {
 
 export const ANIMATION_TIME = 200;
 
-const DXMenuOrganizer = ( props: MenuOrganizerProps ) => {
+const DXMenuOrganizer = ( props: ExtendableProps<MenuOrganizerProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { items: _items, onChange: _onChange, empty: _empty, className, ref, ...rest } = props;
     const [currentMenu, setCurrentMenu] = useState( props.items );
     const [firstItem, setFirstItem] = useState( -1 );
     const [secondItem, setSecondItem] = useState( -1 );
@@ -155,7 +159,7 @@ const DXMenuOrganizer = ( props: MenuOrganizerProps ) => {
     };
 
     return (
-        <div className="dxMenuOrganizer">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxMenuOrganizer", className )}>
             {
                 props.items.length > 0 ?
                     <ul className="dxMenuOrganizer__list" data-testid="menuOrganizer-list" ref={listRef}>

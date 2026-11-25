@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, fireEvent, act } from "@testing-library/react";
 import DXTreeMap, { TreeMapProps } from "./DXTreeMap";
@@ -266,3 +267,5 @@ describe( "Testing the SVG Rendering", () => {
         expect( container.querySelector( '[data-testid="dxTreeMap-parent"]' ) ).not.toBeNull();
     } );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXTreeMap index={1} data={dataArgs} hideFilters {...extra} /> );

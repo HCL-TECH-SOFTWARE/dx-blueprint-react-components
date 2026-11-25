@@ -17,6 +17,7 @@ import React from "react";
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import DXHalfParallax from "./DXHalfParallax";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 
 test( 'If there is at least 1 empty banner and 1 empty content, it should render 1 fold', async () => {
     let parallaxProps = {
@@ -740,4 +741,12 @@ describe( "DXHalfParallax Hardening", () => {
         expect( container.querySelector( ".dxHalfParallax__bottomImage" ) ).toBeNull();
         expect( container.querySelector( ".dxbanner figure > img" ) ).toBeNull();
     } );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXHalfParallax slidesCollection={[{ banner: {}, content: {} }]} {...extra} /> );
+
+test( "with no slides a message paragraph is rendered and className and extra props are not applied", () => {
+    const { container } = render( <DXHalfParallax slidesCollection={[]} className="bp-contract" data-contract="yes" /> );
+    expect( container.firstElementChild?.tagName ).toBe( "P" );
+    expect( container.firstElementChild?.classList.contains( "bp-contract" ) ).toBe( false );
 } );

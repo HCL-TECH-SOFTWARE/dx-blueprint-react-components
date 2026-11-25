@@ -25,6 +25,8 @@ import Nav from 'react-bootstrap/Nav';
 import Tab from 'react-bootstrap/Tab';
 import DXButton from "../DXButton/DXButton";
 import DXQuickLinks, { QuickLinksProps } from "../DXQuickLinks/DXQuickLinks";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface NavigationProps {
     navigationImage: string;
@@ -314,7 +316,9 @@ var thrdSetActive: React.Dispatch<React.SetStateAction<number>>;
 var overlayActive: boolean;
 var setOverlayActive: React.Dispatch<React.SetStateAction<boolean>>;
 
-const DXNavigationHeader = ( props: NavigationProps ) => {
+const DXNavigationHeader = ( props: ExtendableProps<NavigationProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { navigationImage: _navigationImage, navigationImageAlt: _navigationImageAlt, navigationImageHeight: _navigationImageHeight, navigationImageWidth: _navigationImageWidth, searchSubmit: _searchSubmit, navigationItems: _navigationItems, active: _active, icons: _icons, className, ref, ...rest } = props;
     const [searchLength, setSearchLength] = useState( 3 );
 
     [currentActive, setActive] = useState( props.active || -1 );
@@ -351,7 +355,7 @@ const DXNavigationHeader = ( props: NavigationProps ) => {
     const isOverlayActive = ( currentActive > -1 && activeSecondary && activeSecondary.secondaryNodes.length > 0 ) || overlayActive;
 
     return (
-        <div className='dxNavigationHeader'>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxNavigationHeader", className )}>
             <Container fluid="xl" className="container-view" data-testid="containerFluid">
                 <Row className="dxNavigationHeader__topRow justify-content-between">
                     <Col xs={6}>

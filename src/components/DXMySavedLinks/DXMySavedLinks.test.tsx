@@ -17,6 +17,7 @@ import React from "react";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import MySavedLinks, { MySavedLinksProps } from "./DXMySavedLinks";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import { CustomSavedLinksArgs, EmptyViewArgs, DefaultEmptyViewArgs, DefaultExampleArgs, SavedLinksChangedIconsArgs, } from "./DXMySavedLinks.stories";
 
 // Testing header title
@@ -85,3 +86,4 @@ test( "empty container is rendered when no links are added", () => {
     expect( screen.getByTestId( "dxEmptyState" ).querySelector( "img" ) ).toBeInTheDocument();
 } );
 
+itSupportsExtensionProps( ( extra ) => <MySavedLinks {...DefaultExampleArgs} {...extra} /> );

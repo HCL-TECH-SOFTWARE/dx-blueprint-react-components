@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen } from "@testing-library/react";
 import { SearchAndQuestionsArgs } from "./DXSearchAndQuestions.stories";
@@ -73,4 +74,11 @@ test( "Background color and opacity for middle container sets to default when no
     render( <DXSearchAndQuestions {...noOptionalArgs} /> );
     let middleContainer = screen.getByTestId( "DXSnQMiddleContainer" );
     expect( middleContainer ).toHaveStyle( `background-color: rgba(255,255,255,0.8)` );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXSearchAndQuestions {...SearchAndQuestionsArgs} {...extra} /> );
+
+test( "a consumer style is merged with the component's own background style", () => {
+    const { container } = render( <DXSearchAndQuestions {...SearchAndQuestionsArgs} style={{ marginTop: "7px" }} /> );
+    expect( ( container.firstElementChild as HTMLElement ).style.marginTop ).toBe( "7px" );
 } );

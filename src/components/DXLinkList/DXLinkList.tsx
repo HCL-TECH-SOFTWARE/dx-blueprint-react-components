@@ -17,6 +17,8 @@ import "./DXLinkList.scss";
 import { LinksProps, getLinkTarget, getLinkIcon, LinkIconProps, generateLinkIcon } from "../../utilities";
 import React, { useState, useEffect } from 'react';
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface LinkListProps extends BasicComponent {
     title: {
@@ -30,7 +32,9 @@ export interface LinkListProps extends BasicComponent {
     maxLimitMobile?: number;
 }
 
-const DXLinkList = ( props: LinkListProps ) => {
+const DXLinkList = ( props: ExtendableProps<LinkListProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { title: _title, links: _links, elementsPerRow: _elementsPerRow, maxLimitDesktop: _maxLimitDesktop, maxLimitMobile: _maxLimitMobile, _edit, className, ref, ...rest } = props;
     // - States
     const [mobile, setMobile] = useState( false );
     const DEFAULT_ELEMENTS_PER_ROW = 3;
@@ -140,7 +144,7 @@ const DXLinkList = ( props: LinkListProps ) => {
     };
 
     return (
-        <div className="dxLinkList">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxLinkList", className )}>
             <div className="dxLinkList__title">
                 <h3
                     className={setTitleType( props.title.type )}

@@ -19,6 +19,7 @@ import userEvent from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
 import { HelloWorldArgs } from "./Button.stories";
 import Button from "./Button";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 
 // Testing basic render of prop
 test( "button renders the correct label", () => {
@@ -49,3 +50,5 @@ test( "hello world button renders", () => {
     render( <Button {...HelloWorldArgs} /> );
     expect( screen.getByRole( 'button' ) ).toHaveTextContent( /hello world/i );
 } );
+
+itSupportsExtensionProps( ( extra ) => <Button label="Click me" onClick={jest.fn()} {...extra} /> );

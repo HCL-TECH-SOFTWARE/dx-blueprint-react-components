@@ -20,6 +20,8 @@ import DXNewsCard from "../DXNewsCard";
 import { NewsCardProps } from "../DXNewsCard/DXNewsCard";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
 import DXPagination from "../DXPagination/DXPagination";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface RiverOfNewsProps extends BasicComponent {
     title: string;
@@ -38,7 +40,9 @@ export interface RiverOfNewsProps extends BasicComponent {
 }
 
 
-const DXRiverOfNewsClassic = ( props: RiverOfNewsProps ) => {
+const DXRiverOfNewsClassic = ( props: ExtendableProps<RiverOfNewsProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { title: _title, riverOfNews: _riverOfNews, allDateFormat: _allDateFormat, viewAllLink: _viewAllLink, icons: _icons, paginationProps: _paginationProps, maxVisibleItems: _maxVisibleItems, _edit, className, ref, ...rest } = props;
     const INITIAL_VISIBLE_ITEMS = 6;
     const defaultActiveSet = props.paginationProps?.activeSet || props.maxVisibleItems || 6;
     const [activePage, setActivePage] = useState( props.paginationProps?.active || 1 );
@@ -141,7 +145,7 @@ const DXRiverOfNewsClassic = ( props: RiverOfNewsProps ) => {
     };
 
     return (
-        <div className="dxRiverOfNewsClassic">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxRiverOfNewsClassic", className )}>
             <div className="dxRiverOfNewsClassic__topContainer">
                 <div className="dxRiverOfNewsClassic__title" data-testid="riverOfNewsTitle">
                     {

@@ -24,6 +24,8 @@ import { EmptyStateProps } from "../DXEmptyState/DXEmptyState";
 import { IconButtonProps, SliderIcons } from "../../utilities";
 import SliderButton from "./components/SliderButton";
 import Slider from "react-slick";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface GenericMiniCatalogProps extends BasicComponent {
     body: MiniCatalogBodyProps;
@@ -44,7 +46,9 @@ interface MiniCatalogBodyProps {
     icons?: SliderIcons;
 }
 
-const DXGenericMiniCatalog = ( props: GenericMiniCatalogProps ) => {
+const DXGenericMiniCatalog = ( props: ExtendableProps<GenericMiniCatalogProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { body: _body, header: _header, _edit, className, ref, ...rest } = props;
     let sliderRef = useRef<HTMLDivElement>( null );
 
     /** Constants **/
@@ -197,7 +201,7 @@ const DXGenericMiniCatalog = ( props: GenericMiniCatalogProps ) => {
     };
 
     return (
-        <div className="dxGenericMiniCatalog">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxGenericMiniCatalog", className )}>
             {props.header &&
                 <div className="dxGenericMiniCatalog__header">
                     <h3 className="dxGenericMiniCatalog__headerLabel">{props.header.title}</h3>

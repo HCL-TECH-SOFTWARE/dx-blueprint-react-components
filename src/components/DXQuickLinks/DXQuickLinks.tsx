@@ -21,6 +21,8 @@ import React, { ReactElement } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { chainHandlers, ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface QuickLinksProps {
     index: number;
@@ -44,7 +46,14 @@ const getQuickLinkIcon = ( target: string | undefined ) => {
     ) : ( <i className="ci-Link"></i> );
 };
 
-const DXQuickLinks = ( props: QuickLinksProps ) => {
+/**
+ * `className`, `ref` and extra props go to the root column. When there are no quick links nothing is rendered
+ * (an empty fragment), so `className`, `ref` and extra props are not applied.
+ */
+const DXQuickLinks = ( props: ExtendableProps<QuickLinksProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { index, title, hideTitle, quickLinksCollection, className, ref, ...rest } = props;
+    const domProps = pickDomProps( rest );
     let quickLinksElements: ReactElement[] = [];
     let quickLinkMaxAmount = 6;
     if ( props.quickLinksCollection && props.quickLinksCollection.length ) {
@@ -76,7 +85,7 @@ const DXQuickLinks = ( props: QuickLinksProps ) => {
             quickLinkCounter++;
         } );
         return (
-            <Col xs={3} className="dxQuickLinks" data-testid="quicklink-container" onClick={( e ) => e.stopPropagation()}>
+            <Col {...domProps} ref={ref} xs={3} className={classNames( "dxQuickLinks", className )} data-testid="quicklink-container" onClick={chainHandlers( domProps.onClick as React.MouseEventHandler | undefined, ( e: React.MouseEvent ) => e.stopPropagation() )}>
                 <Container fluid="xl" className={props.hideTitle ? "container-fluid--no-title" : ""}>
                     <Row>
                         {

@@ -16,7 +16,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./DXNavigationHeaderMobile.scss";
 
-import React, { ReactElement, useEffect, useRef, useState } from 'react';
+import React, { ReactElement, useEffect, useMemo, useRef, useState } from 'react';
 import { NavigationProps } from "../DXNavigationHeader/DXNavigationHeader";
 
 import Container from 'react-bootstrap/Container';
@@ -27,6 +27,8 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import DXButton from "../DXButton/DXButton";
 import DXUtilityZone, { UtilityZoneProps } from "../DXUtilityZone/DXUtilityZone";
 import { getLinkTarget, getLinkIcon, getIcon } from "../../utilities";
+import { ExtendableProps, mergeRefs, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface MobileNavigationProps extends NavigationProps {
     utilityZone?: UtilityZoneProps;
@@ -247,8 +249,11 @@ let renderThirdLevel = ( context: NavigationContext ): ReactElement[] => {
     return secondaryLevelItems;
 };
 
-const DXNavigationHeaderMobile = ( props: MobileNavigationProps ) => {
+const DXNavigationHeaderMobile = ( props: ExtendableProps<MobileNavigationProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { utilityZone: _utilityZone, headerHeight: _headerHeight, navigationLevel: _navigationLevel, icons: _icons, navigationImage: _navigationImage, navigationImageAlt: _navigationImageAlt, navigationImageHeight: _navigationImageHeight, navigationImageWidth: _navigationImageWidth, searchSubmit: _searchSubmit, navigationItems: _navigationItems, active: _active, className, ref, ...rest } = props;
     const navigationRef = useRef<HTMLDivElement>( null );
+    const mergedRef = useMemo( () => mergeRefs( navigationRef, ref ), [ref] );
     document.documentElement.style.setProperty( '--headerHeight', props.headerHeight || "80px" );
 
     //Initializing Hooks
@@ -427,7 +432,7 @@ const DXNavigationHeaderMobile = ( props: MobileNavigationProps ) => {
 
     } );
     return (
-        <div ref={navigationRef} className={"dxNavHeaderMobile" + ( menuIsActive ? " active" : "" ) + ( props.utilityZone ? " utility-active" : "" )}>
+        <div {...pickDomProps( rest )} ref={mergedRef} className={classNames( "dxNavHeaderMobile" + ( menuIsActive ? " active" : "" ) + ( props.utilityZone ? " utility-active" : "" ), className )}>
             <Container fluid="xl" data-testid="menu-container" className={menuIsActive ? "active" : "hidden"}>
                 <Row className={"dxNavHeaderMobile__topRow justify-content-between " + ( searchIsActive ? "search-active" : "" )}>
                     {/* Menu button-icon */}

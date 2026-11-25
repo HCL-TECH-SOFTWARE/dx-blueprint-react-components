@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -1152,4 +1153,15 @@ test( "When the image finish its rendering, the element 'loader__container' shou
     fireEvent.load( cover );
     let loaderContainer = container.querySelector( ".loader__container" );
     expect( loaderContainer ).toHaveClass( "d-none" );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXCard title={{ url: "#amazing", label: "Card Title" }} {...extra} /> );
+
+test( "extra props: unknown props do not reach the DOM and the title link is untouched", () => {
+    const props = { title: { url: "#amazing", label: "Card Title" }, unknownProp: "x", "data-extra": "yes" } as React.ComponentProps<typeof DXCard>;
+    const { container } = render( <DXCard {...props} /> );
+    const root = container.firstElementChild as HTMLElement;
+    expect( root ).toHaveAttribute( "data-extra", "yes" );
+    expect( root ).not.toHaveAttribute( "unknownprop" );
+    expect( screen.getByTestId( "card-header-link" ) ).toHaveAttribute( "href", "#amazing" );
 } );

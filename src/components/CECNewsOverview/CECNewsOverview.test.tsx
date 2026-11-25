@@ -14,9 +14,10 @@
  * ======================================================================== */
 
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import CECNewsOverview from './CECNewsOverview';
+import { itSupportsExtensionProps } from '../../testUtils/extensionContract';
 describe( 'CECNewsOverview', () => {
   const mockItems = [
     {
@@ -322,18 +323,20 @@ describe( 'CECNewsOverview', () => {
       const originalGetComputedStyle = global.getComputedStyle;
       let currentDir = 'ltr';
       global.getComputedStyle = () => ( { direction: currentDir } as CSSStyleDeclaration );
-      const { window } = require( '@testing-library/react' );
-      render( <CECNewsOverview items={mockItems} /> );
-      const container = screen.getByTestId( 'cec-news-overview' );
-      expect( container ).toHaveClass( 'cecNewsOverview--ltr' );
-      // Simulate the global attribute mutation
-      currentDir = 'rtl';
-      document.documentElement.setAttribute( 'dir', 'rtl' );
-      // Allow mutation macro-tasks to flush completely
-      await new Promise( resolve => setTimeout( resolve, 50 ) );
-      expect( container ).toHaveClass( 'cecNewsOverview--rtl' );
-      global.getComputedStyle = originalGetComputedStyle;
-      document.documentElement.removeAttribute( 'dir' );
+      try {
+        render( <CECNewsOverview items={mockItems} /> );
+        const container = screen.getByTestId( 'cec-news-overview' );
+        expect( container ).toHaveClass( 'cecNewsOverview--ltr' );
+        // Simulate the global attribute mutation
+        currentDir = 'rtl';
+        document.documentElement.setAttribute( 'dir', 'rtl' );
+        // Wait for the MutationObserver re-render instead of a fixed delay, which is flaky on a loaded machine
+        await waitFor( () => expect( container ).toHaveClass( 'cecNewsOverview--rtl' ) );
+      } finally {
+        // Always restore, so a failure here cannot leave dir="rtl" behind and break the following tests
+        global.getComputedStyle = originalGetComputedStyle;
+        document.documentElement.removeAttribute( 'dir' );
+      }
     } );
     it( 'defaults to window.open with _blank when link target is completely missing or undefined', () => {
       const originalOpen = window.open;
@@ -368,5 +371,36 @@ describe( 'CECNewsOverview', () => {
       const container = screen.getByTestId( 'cec-news-overview' );
       expect( container ).toBeInTheDocument();
     } );
+  } );
+} );
+
+const extensionItems = [
+  { _id: '1', title: 'Test News 1', summary: 'Summary 1', category: 'Announcement', date: '2025-01-01T00:00:00Z', link: { url: 'https://example.com/1', target: '_blank' }, imageUrl: 'https://example.com/image1.jpg' },
+  { _id: '2', title: 'Test News 2', summary: 'Summary 2', category: 'Update', date: '2025-01-02T00:00:00Z', link: { url: 'https://example.com/2', target: '_self' }, imageUrl: 'https://example.com/image2.jpg' },
+];
+
+itSupportsExtensionProps( ( extra ) => <CECNewsOverview items={extensionItems} {...extra} /> );
+
+describe( 'CECNewsOverview extension props next to a { data } wrapper', () => {
+  const renderWrapped = ( extra: Record<string, unknown> ) => {
+    const ref = React.createRef<HTMLElement>();
+    const props = { data: { items: extensionItems, autoPlay: false }, ref, ...extra } as object;
+    const { container } = render( <CECNewsOverview {...props} /> );
+    return { root: container.firstElementChild as HTMLElement, ref };
+  };
+
+  test( 'className, ref and DOM attributes passed next to data reach the root, and the wrapper key does not', () => {
+    const { root, ref } = renderWrapped( { className: 'bp-outer', 'data-contract': 'yes' } );
+    expect( root ).toHaveClass( 'cecNewsOverview', 'bp-outer' );
+    expect( root ).toHaveAttribute( 'data-contract', 'yes' );
+    expect( root ).not.toHaveAttribute( 'data' );
+    expect( ref.current ).toBe( root );
+  } );
+
+  test( 'a className inside the data wrapper and one next to it both apply', () => {
+    const ref = React.createRef<HTMLElement>();
+    const props = { data: { items: extensionItems, autoPlay: false, className: 'bp-inner' }, className: 'bp-outer', ref } as object;
+    const { container } = render( <CECNewsOverview {...props} /> );
+    expect( container.firstElementChild ).toHaveClass( 'cecNewsOverview', 'bp-inner', 'bp-outer' );
   } );
 } );

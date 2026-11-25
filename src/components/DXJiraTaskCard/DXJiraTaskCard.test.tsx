@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React, { act } from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from "@testing-library/react";
 import DXJiraTaskCard, { JiraTaskCardProps } from "./DXJiraTaskCard";
@@ -416,4 +417,14 @@ describe( "DXJiraTaskCard Hardening", () => {
         await act( async () => { fireEvent.click( trigger ); } );
         expect( trigger.querySelector( "i" ) ).toHaveClass( "ci-Custom_Open" );
     } );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXJiraTaskCard {...DefaultArgs} {...extra} /> );
+
+test( "extra props: unknown props do not reach the DOM", () => {
+    const props = { ...DefaultArgs, unknownProp: "x", "data-extra": "yes" } as React.ComponentProps<typeof DXJiraTaskCard>;
+    const { container } = render( <DXJiraTaskCard {...props} /> );
+    const root = container.firstElementChild as HTMLElement;
+    expect( root ).toHaveAttribute( "data-extra", "yes" );
+    expect( root ).not.toHaveAttribute( "unknownprop" );
 } );

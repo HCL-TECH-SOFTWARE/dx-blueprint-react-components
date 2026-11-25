@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from 'react';
+import { ExtendableProps, pickDomProps } from '../../utilities/extendable';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 export interface DXIconProps {
@@ -113,7 +114,7 @@ const SIZE_CLASS_MAP: { [key: string]: string; } = {
  * // With custom styling
  * <DXIcon name="download" className="custom-icon" style={{ color: 'blue' }} />
  */
-const DXIcon: React.FC<DXIconProps> = ( {
+const DXIcon = ( {
     name,
     className = '',
     size = 'sm',
@@ -121,8 +122,9 @@ const DXIcon: React.FC<DXIconProps> = ( {
     role,
     title,
     style,
+    ref,
     ...rest
-} ) => {
+}: ExtendableProps<DXIconProps, 'i'> ) => {
     // Map legacy Clay icon names to Bootstrap icon names
     const bootstrapIconName = ICON_NAME_MAP[name] || name;
     // Build the complete class string
@@ -148,10 +150,11 @@ const DXIcon: React.FC<DXIconProps> = ( {
     }
     return (
         <i
+            {...pickDomProps( rest )}
+            ref={ref}
             className={iconClasses}
             style={style}
             {...a11yProps}
-            {...rest}
         />
     );
 };

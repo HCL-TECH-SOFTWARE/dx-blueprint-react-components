@@ -30,6 +30,8 @@ import {
   formatSmartDate,
 } from "../../utilities/cec-utils";
 import CECNewsDialog from "../CECNewsDialog/CECNewsDialog";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 /* ------------------------------ Unique view props ------------------------------- */
 type ViewMode = "row" | "column";
 /**
@@ -55,8 +57,13 @@ const SIZE_PRESETS: Record<NewsImageSize, { thumbW: number; thumbH: number; rowH
   xl: { thumbW: 200, thumbH: 140, rowH: 320 },
 };
 /* ------------------------------- Main ------------------------------------ */
-const CECNewsOverview: React.FC<CECNewsOverviewProps> = ( rawProps ) => {
+const CECNewsOverview = ( rawProps: ExtendableProps<CECNewsOverviewProps, "section"> ) => {
   const props = unwrapDXProps( rawProps as any ) as CECNewsOverviewProps;
+  // className, ref and extra DOM props come from the RAW props (next to a { data } wrapper); `props` only supplies the component's own props.
+  // Every own prop is pulled out (under a throwaway name, the real ones are read from `props` below) so none of them reaches the DOM.
+  const { viewMode: _viewMode, minItemWidth: _minItemWidth, maxHeight: _maxHeight, reserveGutter: _reserveGutter, displayCount: _displayCount, dir: _dir, items: _items, _edit: __edit, imageMode: _imageMode, imagePosition: _imagePosition, imageSize: _imageSize, imageWidth: _imageWidth, cardStyle: _cardStyle, showSummary: _showSummary, showCategory: _showCategory, showDate: _showDate, summaryMaxChars: _summaryMaxChars, summaryLines: _summaryLines, summaryEllipsis: _summaryEllipsis, highlightFirst: _highlightFirst, openMode: _openMode, className: rawClassName, ref, ...rawRest } = rawProps;
+  // DX hands these components loosely typed data, so only DOM-safe extras are forwarded (this also drops the data/config/props wrapper keys)
+  const domProps = pickDomProps( rawRest );
   const {
     items,
     _edit,
@@ -139,9 +146,11 @@ const CECNewsOverview: React.FC<CECNewsOverviewProps> = ( rawProps ) => {
     reserveGutter ? "cecNewsOverview--reserveGutter" : "",
     resolvedDir === 'rtl' ? 'cecNewsOverview--rtl' : 'cecNewsOverview--ltr'
   ].filter( Boolean ).join( " " );
+  // A className inside the { data } wrapper (props) and one next to it (rawProps) both apply
+  const rootClassName = classNames( containerClasses, props !== rawProps && ( props as { className?: string; } ).className, rawClassName );
   if ( !hasItems ) {
     return (
-      <section className={containerClasses} data-build="news-overview-2.4.0">
+      <section {...domProps} ref={ref} className={rootClassName} data-build="news-overview-2.4.0">
         <div className="cecNewsOverview__empty" role="note" aria-live="polite" data-testid="newsOverview-empty">
           <div className="cecNewsOverview__emptyCard">
             <div className="cecNewsOverview__emptyTitle">No News data found</div>
@@ -161,9 +170,12 @@ const CECNewsOverview: React.FC<CECNewsOverviewProps> = ( rawProps ) => {
   }
   return (
     <section
-      className={containerClasses}
+      {...domProps}
+      ref={ref}
+      className={rootClassName}
       data-testid="cec-news-overview"
       style={{
+        ...( domProps.style as React.CSSProperties | undefined ),
         ["--nov-min" as any]: minItemWidth,
         ["--nov-max-height" as any]: maxHeight || undefined,
         ["--nov-thumb-w" as any]: thumbW,

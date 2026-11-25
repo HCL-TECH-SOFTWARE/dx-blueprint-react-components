@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, fireEvent, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -250,4 +251,81 @@ test( "if the user clicks on the accordion within a generic catalog, only one ac
     const openedAccordion = container.querySelectorAll( '.dxAccordion--display-enabled' );
     expect( accordions.length ).toBe( props.body.items.length );
     expect( openedAccordion.length ).toBe( 1 );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXAccordion label="Question" body="Answer" {...extra} /> );
+
+test( "extra props do not replace the component's own dir, and unknown props do not reach the DOM", () => {
+    const props = { label: "Question", body: "Answer", dir: "rtl", unknownProp: "x", "data-extra": "yes" } as React.ComponentProps<typeof DXAccordion>;
+    const { container } = render( <DXAccordion {...props} /> );
+    const root = container.querySelector( ".dxAccordion" ) as HTMLElement;
+    expect( root ).toHaveAttribute( "dir", "rtl" );
+    expect( root ).toHaveAttribute( "data-extra", "yes" );
+    expect( root ).not.toHaveAttribute( "unknownprop" );
+} );
+
+describe( "DXAccordion open state", () => {
+    const isOpen = ( el: Element ) => el.classList.contains( "dxAccordion--display-enabled" );
+
+    test( "stays open when the consumer className changes, and the next click closes it", async () => {
+        const { container, getByTestId, rerender } = render( <DXAccordion label="Question" body="Answer" className="bp-a" /> );
+        await userEvent.click( getByTestId( "accordion-button" ) );
+        rerender( <DXAccordion label="Question" body="Answer" className="bp-b" /> );
+        const root = container.querySelector( ".dxAccordion" ) as HTMLElement;
+        expect( root ).toHaveClass( "bp-b" );
+        expect( isOpen( root ) ).toBe( true );
+        await userEvent.click( getByTestId( "accordion-button" ) );
+        expect( isOpen( root ) ).toBe( false );
+    } );
+
+    test( "starts open when active is set and follows later changes of active", () => {
+        const { container, rerender } = render( <DXAccordion label="Question" body="Answer" active /> );
+        const root = container.querySelector( ".dxAccordion" ) as HTMLElement;
+        expect( isOpen( root ) ).toBe( true );
+        rerender( <DXAccordion label="Question" body="Answer" active={false} /> );
+        expect( isOpen( root ) ).toBe( false );
+        rerender( <DXAccordion label="Question" body="Answer" active /> );
+        expect( isOpen( root ) ).toBe( true );
+    } );
+
+    test( "forwards a consumer object ref to the root while keeping its own", async () => {
+        const ref = React.createRef<HTMLDivElement>();
+        const { container, getByTestId } = render( <DXAccordion label="Question" body="Answer" ref={ref} /> );
+        expect( ref.current ).toBe( container.querySelector( ".dxAccordion" ) );
+        await userEvent.click( getByTestId( "accordion-button" ) );
+        expect( isOpen( ref.current as HTMLElement ) ).toBe( true );
+    } );
+
+    test( "in a generic catalog, a sibling closed by another accordion reopens with a single click", async () => {
+        const props = JSON.parse( JSON.stringify( accordionCardCatalogArgs ) );
+        props.pagination = { sets: ["8", "10", "16"], active: 1, activeSet: 16 };
+        const { container, getAllByTestId } = render( <DXGenericCatalog {...props} /> );
+        const buttons = getAllByTestId( "accordion-button" );
+        const roots = () => Array.from( container.querySelectorAll( ".dxAccordion" ) );
+
+        await userEvent.click( buttons[0] );
+        await userEvent.click( buttons[1] );
+        expect( roots().filter( isOpen ) ).toEqual( [roots()[1]] );
+
+        await userEvent.click( buttons[0] );
+        expect( roots().filter( isOpen ) ).toEqual( [roots()[0]] );
+    } );
+
+    test( "in an accordion catalog, clicking the open accordion closes it and leaves none open", async () => {
+        const props = JSON.parse( JSON.stringify( AccordionCatalogArgs ) );
+        const { container, getAllByTestId } = render( <DXAccordionCatalog {...props} /> );
+        const buttons = getAllByTestId( "accordion-button" );
+        await userEvent.click( buttons[1] );
+        expect( container.querySelectorAll( ".dxAccordion--display-enabled" ) ).toHaveLength( 1 );
+        await userEvent.click( buttons[1] );
+        expect( container.querySelectorAll( ".dxAccordion--display-enabled" ) ).toHaveLength( 0 );
+    } );
+
+    test( "removes its close listener on unmount", () => {
+        const { container, unmount } = render( <DXAccordion label="Question" body="Answer" active /> );
+        const root = container.querySelector( ".dxAccordion" ) as HTMLElement;
+        const spy = jest.spyOn( root, "removeEventListener" );
+        unmount();
+        expect( spy ).toHaveBeenCalledWith( "dxaccordion:close", expect.any( Function ) );
+    } );
 } );

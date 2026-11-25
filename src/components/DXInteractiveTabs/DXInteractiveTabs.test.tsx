@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import { act, render, screen } from "@testing-library/react";
@@ -1117,3 +1118,5 @@ test( "If the user clicks on the second accordion twice, none of the components 
     } );
     expect( activeIndex ).toBe( 0 );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXInteractiveTabs tabs={[]} {...extra} /> );

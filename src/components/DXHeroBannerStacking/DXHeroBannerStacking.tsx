@@ -16,6 +16,8 @@
 import React, { ReactElement } from "react";
 import "./DXHeroBannerStacking.scss";
 import DXHeroBanner, { HeroBannerProps } from "../DXHeroBanner/DXHeroBanner";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface HBStackingProps {
     items: HeroBannerProps[];
@@ -23,7 +25,9 @@ export interface HBStackingProps {
     stackTopOffset?: string;
 }
 
-const DXHeroBannerStacking = ( props: HBStackingProps ) => {
+const DXHeroBannerStacking = ( props: ExtendableProps<HBStackingProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { items: _items, cardMargin: _cardMargin, stackTopOffset: _stackTopOffset, className, ref, ...rest } = props;
     const root = document.documentElement;
     root.style.setProperty( "--HBStacking-cardMargin", props.cardMargin || "0.5rem" );
     root.style.setProperty( "--HBStacking-stackTopOffset", props.stackTopOffset || "0.75rem" );
@@ -50,7 +54,7 @@ const DXHeroBannerStacking = ( props: HBStackingProps ) => {
     };
 
     return (
-        <div className="dxHeroBannerStacking">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxHeroBannerStacking", className )}>
             <ul className="dxHeroBannerStacking__cardContainer" data-testid="HBStacking--list">
                 {renderBanners()}
             </ul>

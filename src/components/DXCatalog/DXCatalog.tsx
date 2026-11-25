@@ -23,6 +23,8 @@ import DXPagination from "../DXPagination/DXPagination";
 import DXCard, { CardProps } from "../DXCard/DXCard";
 import { getColNumber } from "../../utilities";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface CatalogProps extends BasicComponent {
     items: CardProps[],
@@ -55,7 +57,9 @@ const hasValidPaginationProps = ( properties: any ) => {
 /*
 ** @deprecated: From @version 1.31.0-alpha use DXGenericCatalog instead
 */
-const DXCatalog = ( props: CatalogProps ) => {
+const DXCatalog = ( props: ExtendableProps<CatalogProps, "section"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { items: _items, totalItems: _totalItems, filterType: _filterType, paginationProps: _paginationProps, categories: _categories, searchLabel: _searchLabel, searchPlaceholder: _searchPlaceholder, hideFilters: _hideFilters, elementsPerRow: _elementsPerRow, masonryLayout: _masonryLayout, maxCardHeight: _maxCardHeight, _edit, className, ref, ...rest } = props;
 
     document.documentElement.style.setProperty( '--cardMaxHeight', props.maxCardHeight ? props.maxCardHeight.toString() : "350px" );
 
@@ -325,7 +329,7 @@ const DXCatalog = ( props: CatalogProps ) => {
     };
 
     return (
-        <section className="dxCatalog">
+        <section {...pickDomProps( rest )} ref={ref} className={classNames( "dxCatalog", className )}>
             {
                 !props.hideFilters ? (
                     hasValidTaxonomyProps( props ) ? (

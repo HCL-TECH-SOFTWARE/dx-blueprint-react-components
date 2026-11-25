@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from 'react';
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
@@ -323,3 +324,5 @@ test( "If the user pass true on the light prop, the component should have the co
     const socialShareRender = screen.getByTestId( 'dxSocialShare' );
     expect( socialShareRender ).toHaveStyle( { color: "var(--light-white)" } );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXSocialShare socialMediaActions={{ facebook: { display: true } }} pageDetails={pageDetails} {...extra} /> );

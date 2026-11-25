@@ -17,6 +17,8 @@ import "./DXUserDashboard.scss";
 import React from "react";
 import { ImageProps, renderAvatarLetters } from "../../utilities";
 import DXUtilityBelt, { UtilityBeltProps } from "../DXUtilityBelt/DXUtilityBelt";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface UserDashboardProps {
     image?: ImageProps,
@@ -29,7 +31,9 @@ export interface UserDashboardProps {
     align?: ( "left" | "center" | "right" );
 }
 
-const DXUserDashboard = ( props: UserDashboardProps ) => {
+const DXUserDashboard = ( props: ExtendableProps<UserDashboardProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { image: _image, title: _title, subtitle: _subtitle, metadata: _metadata, utilityBelt: _utilityBelt, vertical: _vertical, hideImage: _hideImage, align: _align, className, ref, ...rest } = props;
 
     const renderImage = () => {
         if ( !props.hideImage ) {
@@ -64,7 +68,7 @@ const DXUserDashboard = ( props: UserDashboardProps ) => {
     };
 
     return (
-        <div className={`dxUserDashboard ${getAlignClass()} ${props.vertical ? "dxUserDashboard--vertical" : ""}`} data-testid="user-dashboard">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( `dxUserDashboard ${getAlignClass()} ${props.vertical ? "dxUserDashboard--vertical" : ""}`, className )} data-testid="user-dashboard">
             <div className="dxUserDashboard__info">
                 {renderImage()}
                 <div className="dxUserDashboard__data">

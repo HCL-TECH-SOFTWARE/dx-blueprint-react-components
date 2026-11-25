@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen } from "@testing-library/react";
 import DXGlobalFooter from "./DXGlobalFooter";
@@ -308,3 +309,7 @@ test( "if alt text for the mobile logo passed, it should assign it", () => {
     const expectedAlt = testProps.altMobile;
     expect( altLogo ).toEqual( expectedAlt );
 } );
+
+itSupportsExtensionProps( ( extra ) => (
+    <DXGlobalFooter {...( { copyright: "Copyright 2024", primaryLinks: [{ url: "https://hcl-software.com", label: "Terms of use" }] } as React.ComponentProps<typeof DXGlobalFooter> )} {...extra} />
+) );

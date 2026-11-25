@@ -17,6 +17,8 @@ import React, { ButtonHTMLAttributes, useState } from 'react';
 import "./DXToggleMenu.scss";
 import DXButton from '../DXButton/DXButton';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface ButtonProps {
     label: string,
@@ -32,7 +34,9 @@ export interface ToggleMenuProps {
     activeIndexes?: number[];
 }
 
-const DXToggleMenu = ( props: ToggleMenuProps ) => {
+const DXToggleMenu = ( props: ExtendableProps<ToggleMenuProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { buttons, vertical, type, activeIndexes, className, ref, ...rest } = props;
     const [selectedButton, setSelectedButton] = useState( props.activeIndexes ? [...props.activeIndexes] : [] );
 
     const getButtonClassName = ( index: number ) => {
@@ -101,8 +105,10 @@ const DXToggleMenu = ( props: ToggleMenuProps ) => {
 
     return (
         <ButtonGroup
+            {...pickDomProps( rest )}
+            ref={ref}
             data-testid="toggleMenu"
-            className="dxToggleMenu"
+            className={classNames( "dxToggleMenu", className )}
             vertical={props.vertical ? props.vertical : false}>
             {renderButtons( props.buttons, props.type )}
         </ButtonGroup>

@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render, fireEvent, screen, act } from "@testing-library/react";
@@ -531,3 +532,5 @@ test('should exclude empty or whitespace-only values from filter dropdowns in Ne
     expect(options).not.toContain('');
   });
 });
+
+itSupportsExtensionProps( ( extra ) => <DXNewsCardCatalog items={itemsArgs} paginationProps={{ sets: ["2", "4", "8"], active: 1, activeSet: 4 }} totalItems={itemsArgs.length} filterType="select" {...extra} /> );

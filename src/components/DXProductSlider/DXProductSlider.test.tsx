@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render, screen, act, fireEvent } from "@testing-library/react";
@@ -1118,4 +1119,53 @@ describe( "Targeted Mutant Killers: Deep Physics and Math Coercions", () => {
         } );
     } );
 
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXProductSlider {...ProductSliderArgs} {...extra} /> );
+
+test( "consumer mouse and scroll handlers on the root are called", () => {
+    const onMouseDown = jest.fn();
+    const onMouseUp = jest.fn();
+    const onScroll = jest.fn();
+    const { container } = render( <DXProductSlider {...ProductSliderArgs} onMouseDown={onMouseDown} onMouseUp={onMouseUp} onScroll={onScroll} /> );
+    const root = container.firstElementChild as HTMLElement;
+    fireEvent.mouseDown( root );
+    fireEvent.mouseUp( root );
+    fireEvent.scroll( root );
+    expect( onMouseDown ).toHaveBeenCalledTimes( 1 );
+    expect( onMouseUp ).toHaveBeenCalledTimes( 1 );
+    expect( onScroll ).toHaveBeenCalledTimes( 1 );
+} );
+
+describe( "DXProductSlider with a consumer ref", () => {
+    test( "a nav dot click still scrolls the slider itself (internal ref) while an object ref is passed", async () => {
+        global.innerWidth = 1440;
+        const ref = React.createRef<HTMLDivElement>();
+        const { container } = render( <DXProductSlider items={[itemProps, itemProps, itemProps]} ref={ref} /> );
+        const slider = container.querySelector( ".dxProductSlider" ) as HTMLElement;
+        expect( ref.current ).toBe( slider );
+        mockDimensions( slider, { scrollHeight: 3000, clientHeight: 1000 } ); // segmentSize of 1000
+
+        const scrollTo = HTMLElement.prototype.scrollTo as jest.Mock;
+        scrollTo.mockClear();
+        const secondDot = container.querySelector( ".dxProductSlider__navDots" )?.children[1]?.firstChild as HTMLElement;
+        await userEvent.click( secondDot );
+
+        // scrollTo is called on the element held by the internal ref; it is not called at all if that ref is not attached
+        expect( scrollTo ).toHaveBeenCalled();
+        expect( scrollTo.mock.contexts[scrollTo.mock.contexts.length - 1] ).toBe( slider );
+        expect( scrollTo.mock.calls[scrollTo.mock.calls.length - 1][0] ).toEqual( { top: 1001, behavior: "smooth" } );
+    } );
+
+    test( "a callback ref is attached once across re-renders and cleared on unmount", () => {
+        global.innerWidth = 1440;
+        const callbackRef = jest.fn();
+        const { container, rerender, unmount } = render( <DXProductSlider items={[itemProps, itemProps]} ref={callbackRef} /> );
+        const root = container.querySelector( ".dxProductSlider" );
+        rerender( <DXProductSlider items={[itemProps, itemProps]} icons={{ scroll: "ci-Arrow_Down_MD" }} ref={callbackRef} /> );
+        expect( callbackRef ).toHaveBeenCalledTimes( 1 );
+        expect( callbackRef ).toHaveBeenLastCalledWith( root );
+        unmount();
+        expect( callbackRef ).toHaveBeenLastCalledWith( null );
+    } );
 } );

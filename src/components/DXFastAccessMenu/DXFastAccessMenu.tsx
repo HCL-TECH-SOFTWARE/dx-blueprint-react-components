@@ -18,6 +18,8 @@ import "./DXFastAccessMenu.scss";
 import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
 import DXButton from "../DXButton/DXButton";
 import { LinksProps, SliderIcons, getIcon } from "../../utilities";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface FastAccessMenuProps {
     title?: string,
@@ -32,7 +34,9 @@ interface ExtendedSliderIcons extends SliderIcons {
     header?: string;
 }
 
-const DXFastAccessMenu = ( props: FastAccessMenuProps ) => {
+const DXFastAccessMenu = ( props: ExtendableProps<FastAccessMenuProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { title: _title, link: _link, items: _items, children: _children, buttonCustom: _buttonCustom, icons: _icons, className, ref, ...rest } = props;
 
     const [focusedIndex, setFocusedIndex] = useState( Number );
     const [items, setItems] = useState( props.items );
@@ -156,7 +160,7 @@ const DXFastAccessMenu = ( props: FastAccessMenuProps ) => {
     };
 
     return (
-        <div className="dxFastAccessMenu" data-testid="fast-access-menu-container">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxFastAccessMenu", className )} data-testid="fast-access-menu-container">
             <div className="dxFastAccessMenu__header" >
                 {props.title ? <h3 className="dxFastAccessMenu__headerTitle" data-testid="header-title"> {props.title} </h3> : null}
                 {props.link ? (

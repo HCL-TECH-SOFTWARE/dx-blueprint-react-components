@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import "@testing-library/jest-dom";
 import { render, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -516,4 +517,52 @@ describe( "Mobile behavior", () => {
         expect( icon ).toHaveClass( props.icons.open );
     } );
 
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXProjectCard {...projectArgs} {...extra} /> );
+
+test( "extra props: unknown props do not reach the DOM", () => {
+    const props = { ...projectArgs, unknownProp: "x", "data-extra": "yes" } as React.ComponentProps<typeof DXProjectCard>;
+    const { container } = render( <DXProjectCard {...props} /> );
+    const root = container.firstElementChild as HTMLElement;
+    expect( root ).toHaveAttribute( "data-extra", "yes" );
+    expect( root ).not.toHaveAttribute( "unknownprop" );
+} );
+
+describe( "DXProjectCard with a consumer ref", () => {
+    const originalOffsetWidth = Object.getOwnPropertyDescriptor( window.HTMLElement.prototype, "offsetWidth" );
+
+    beforeEach( () => {
+        // Mobile width: the collapsed layout only applies when the internal root ref measures the card
+        Object.defineProperty( window.HTMLElement.prototype, "offsetWidth", {
+            get: function () { return 500; },
+            configurable: true
+        } );
+    } );
+
+    afterEach( () => {
+        if ( originalOffsetWidth ) {
+            Object.defineProperty( window.HTMLElement.prototype, "offsetWidth", originalOffsetWidth );
+        }
+    } );
+
+    test( "still measures the root through its internal ref (mobile layout) and sets ref.current to the root", () => {
+        const ref = React.createRef<HTMLDivElement>();
+        const { container } = render( <DXProjectCard {...projectArgs} ref={ref} /> );
+        expect( ref.current ).toBe( container.firstElementChild );
+        let parent = container.querySelector( ".dxProjectCard__manager" )?.parentElement;
+        expect( parent ).toHaveClass( "col-12 col-md d-none" );
+        expect( container.querySelector( ".dxProjectCard__trigger" ) ).toBeInTheDocument();
+    } );
+
+    test( "calls a callback ref once with the root across re-renders, and with null on unmount", () => {
+        const callbackRef = jest.fn();
+        const { container, rerender, unmount } = render( <DXProjectCard {...projectArgs} ref={callbackRef} /> );
+        const root = container.firstElementChild;
+        rerender( <DXProjectCard {...projectArgs} name="Renamed project" ref={callbackRef} /> );
+        expect( callbackRef ).toHaveBeenCalledTimes( 1 );
+        expect( callbackRef ).toHaveBeenLastCalledWith( root );
+        unmount();
+        expect( callbackRef ).toHaveBeenLastCalledWith( null );
+    } );
 } );

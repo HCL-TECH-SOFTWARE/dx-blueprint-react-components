@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, act } from "@testing-library/react";
 import DXCountdownFloater from "./DXCountdownFloater";
@@ -183,5 +184,54 @@ describe( "DXCountdownFloater - Hardened Mutation Suite", () => {
             expect( flippingTops.length ).toBeGreaterThan( 0 );
             expect( flippingTopBacks.length ).toBeGreaterThan( 0 );
         } );
+    } );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXCountdownFloater date="2099-01-01T00:00:00.000Z" {...extra} /> );
+
+describe( "DXCountdownFloater with a consumer ref", () => {
+    const originalOffsetWidth = Object.getOwnPropertyDescriptor( window.HTMLElement.prototype, 'offsetWidth' );
+
+    beforeEach( () => {
+        jest.useFakeTimers();
+        jest.setSystemTime( new Date( '2026-01-01T00:00:00.000Z' ) );
+        // Desktop width: the flip animation only runs when the internal root ref measures a width above the mobile limit
+        Object.defineProperty( window.HTMLElement.prototype, 'offsetWidth', {
+            get: () => 560,
+            configurable: true
+        } );
+    } );
+
+    afterEach( () => {
+        jest.useRealTimers();
+        if ( originalOffsetWidth ) {
+            Object.defineProperty( window.HTMLElement.prototype, 'offsetWidth', originalOffsetWidth );
+        }
+    } );
+
+    it( "still measures the root through its internal ref (desktop flip animation) and sets ref.current to the root", () => {
+        const ref = React.createRef<HTMLElement>();
+        const futureDate = new Date( Date.now() + 5000 ).toISOString();
+        const { container } = render( <DXCountdownFloater date={futureDate} showSeconds={true} ref={ref} /> );
+
+        act( () => {
+            jest.advanceTimersByTime( 1000 );
+        } );
+
+        expect( ref.current ).toBe( container.firstElementChild );
+        // Without the internal ref the width reads as 0 and only the mobile digits would update
+        expect( container.querySelectorAll( '.dxCountdown__top--flipping' ).length ).toBeGreaterThan( 0 );
+    } );
+
+    it( "calls a callback ref once with the root across re-renders, and with null on unmount", () => {
+        const callbackRef = jest.fn();
+        const { container, rerender, unmount } = render( <DXCountdownFloater date="2099-01-01T00:00:00.000Z" ref={callbackRef} /> );
+        const root = container.firstElementChild;
+        rerender( <DXCountdownFloater date="2099-01-01T00:00:00.000Z" textColor="#FF0000" ref={callbackRef} /> );
+
+        expect( callbackRef ).toHaveBeenCalledTimes( 1 );
+        expect( callbackRef ).toHaveBeenLastCalledWith( root );
+        unmount();
+        expect( callbackRef ).toHaveBeenLastCalledWith( null );
     } );
 } );

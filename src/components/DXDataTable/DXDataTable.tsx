@@ -17,6 +17,8 @@ import "./DXDataTable.scss";
 import React, { useState, useEffect } from "react";
 import DataTable from 'react-data-table-component';
 import { parseContentAndMedia } from "../../utilities";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface Column {
     id: string,
@@ -51,7 +53,9 @@ export interface DataTableProps {
     noExpandContentMsg?: string;
 }
 
-const DXDataTable = ( props: DataTableProps ) => {
+const DXDataTable = ( props: ExtendableProps<DataTableProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root; the table gets its own props explicitly below.
+    const { columns: _columns, data: _data, responsive, striped, noTableHead, pagination, paginationPerPage, paginationRowsPerPageOptions, expandableRows, noExpandContentMsg: _noExpandContentMsg, className, ref, ...rest } = props;
     // States
     const [columns, setColumns] = useState<any>( [] );
     const getColumns = ( cols: Column[] ) => {
@@ -82,7 +86,12 @@ const DXDataTable = ( props: DataTableProps ) => {
         );
     };
     const dataTablePrps = {
-        ...props,
+        responsive,
+        striped,
+        noTableHead,
+        pagination,
+        paginationPerPage,
+        paginationRowsPerPageOptions,
         ...( props.expandableRows && {
             expandableRows: true,
             expandableRowsComponent: ExpandableComponent
@@ -94,7 +103,7 @@ const DXDataTable = ( props: DataTableProps ) => {
         getColumns( props.columns );
     }, [] );
     return (
-        <div className="dxDataTable">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxDataTable", className )}>
             <DataTable {...dataTablePrps} />
         </div>
     );

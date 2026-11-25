@@ -14,9 +14,10 @@
  * ======================================================================== */
 
 import React from 'react';
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen, fireEvent, act, waitFor } from "@testing-library/react";
 import DXWeeklyCalendar from './DXWeeklyCalendar';
 let today = new Date();
 
@@ -711,5 +712,47 @@ describe( "DXWeeklyCalendar Hardening", () => {
         expect( typeof resizeCalls[0][1] ).toBe( "function" );
 
         removeSpy.mockRestore();
+    } );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXWeeklyCalendar fullCalendarLink="/test" events={singleEvent} {...extra} /> );
+
+describe( "DXWeeklyCalendar with a consumer ref", () => {
+    const originalOffsetWidth = Object.getOwnPropertyDescriptor( window.HTMLElement.prototype, "offsetWidth" );
+
+    beforeEach( () => {
+        Object.defineProperty( window.HTMLElement.prototype, "offsetWidth", {
+            get: function () { return 390; },
+            configurable: true
+        } );
+    } );
+
+    afterEach( () => {
+        if ( originalOffsetWidth ) {
+            Object.defineProperty( window.HTMLElement.prototype, "offsetWidth", originalOffsetWidth );
+        }
+    } );
+
+    test( "still updates the slider buttons through its internal ref after a slide change and sets ref.current to the root", async () => {
+        const ref = React.createRef<HTMLDivElement>();
+        const { container, getByTestId } = render( <DXWeeklyCalendar fullCalendarLink="/test" events={singleEvent} ref={ref} /> );
+        expect( ref.current ).toBe( container.firstElementChild );
+        await act( async () => {
+            await userEvent.click( getByTestId( "slider-next-button" ) );
+        } );
+        // afterChange finds the buttons through the internal ref; without it the next button would never be hidden
+        await waitFor( () => expect( getByTestId( "slider-next-button" ) ).toHaveClass( "dxWeeklyCalendar__navBtn--display-hide" ), { timeout: 3000 } );
+        expect( getByTestId( "slider-prev-button" ) ).not.toHaveClass( "dxWeeklyCalendar__navBtn--display-hide" );
+    } );
+
+    test( "calls a callback ref once with the root across re-renders, and with null on unmount", () => {
+        const callbackRef = jest.fn();
+        const { container, rerender, unmount } = render( <DXWeeklyCalendar fullCalendarLink="/test" events={singleEvent} ref={callbackRef} /> );
+        const root = container.firstElementChild;
+        rerender( <DXWeeklyCalendar fullCalendarLink="/other" events={singleEvent} ref={callbackRef} /> );
+        expect( callbackRef ).toHaveBeenCalledTimes( 1 );
+        expect( callbackRef ).toHaveBeenLastCalledWith( root );
+        unmount();
+        expect( callbackRef ).toHaveBeenLastCalledWith( null );
     } );
 } );

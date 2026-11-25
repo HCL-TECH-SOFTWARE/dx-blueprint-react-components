@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent } from "@testing-library/react";
 import { BasicExampleArgs, AllParamsArgs, NoThumbsArgs } from "./DXRiverOfNewsClassic.stories";
@@ -275,3 +276,5 @@ test( "renders correct number of items per page based on activeSet", () => {
     expect( screen.getByTestId( "riverOfNewsListContainer" ).children.length ).toBe( 4 );
     expect( screen.queryByTestId( "riverOfNewsDropdownButton" ) ).not.toBeInTheDocument();
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXRiverOfNewsClassic {...BasicExampleArgs} {...extra} /> );

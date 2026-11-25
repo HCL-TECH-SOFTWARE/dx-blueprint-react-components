@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React, { act } from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
@@ -125,3 +126,5 @@ test( "on empty array, if the component renders the empty view's given title", a
     expect( screen.getByTestId( "dxEmptyState" ).querySelector( "h5" ) ).toHaveTextContent( emptyItemsArgs.empty?.title! );
     expect( screen.getByTestId( "dxEmptyState" ).querySelector( "p" ) ).toHaveTextContent( emptyItemsArgs.empty?.text! );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXMenuOrganizer items={menuItems} onChange={() => {}} {...extra} /> );

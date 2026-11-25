@@ -15,7 +15,7 @@
 
 import "./DXWeeklyCalendar.scss";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { addDays, formatDate, isSameDay, isSameMonth, parseDateWithFormat, startOfWeek } from "../../utilities/dateTime";
 import Modal from 'react-bootstrap/Modal';
 import DXButton from "../DXButton/DXButton";
@@ -25,6 +25,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import SliderButton from "./components/SliderButton";
+import { ExtendableProps, mergeRefs, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 interface Event {
     info: LinksProps,
@@ -36,7 +38,9 @@ export interface WeeklyCalendarProps {
     icons?: SliderIcons;
 }
 
-const DXWeeklyCalendar = ( props: WeeklyCalendarProps ) => {
+const DXWeeklyCalendar = ( props: ExtendableProps<WeeklyCalendarProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { fullCalendarLink: _fullCalendarLink, events: _events, icons: _icons, className, ref, ...rest } = props;
     // STATES & VARIABLES
     const [mobile, setMobile] = useState( false );
     const [isResizing, setIsResizing] = useState( false );
@@ -48,6 +52,8 @@ const DXWeeklyCalendar = ( props: WeeklyCalendarProps ) => {
     let componentSize = 0;
     const MAX_WIDTH_MOBILE = 390;
     const refComponent = useRef<HTMLDivElement>( null );
+    // The internal ref and the consumer ref both point at the root
+    const mergedRootRef = useMemo( () => mergeRefs( refComponent, ref ), [ref] );
     // MODAL LOGIC
     const [ showModal, setShowModal ] = useState<boolean>( false );
     const handleClose = () => setShowModal(false);
@@ -212,7 +218,7 @@ const DXWeeklyCalendar = ( props: WeeklyCalendarProps ) => {
     }, [] );
 
     return (
-        <div className="dxWeeklyCalendar" ref={refComponent}>
+        <div {...pickDomProps( rest )} ref={mergedRootRef} className={classNames( "dxWeeklyCalendar", className )}>
             <div className="dxWeeklyCalendar__top">
                 <h3>My Week</h3>
                 <DXButton

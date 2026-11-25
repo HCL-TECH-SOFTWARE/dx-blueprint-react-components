@@ -20,6 +20,8 @@ import DXButton from "../DXButton/DXButton";
 import { LinksProps, getIcon, getLinkTarget } from "../../utilities";
 import { formatDate, parseISODate } from "../../utilities/dateTime";
 import DXEmptyState, { EmptyStateProps } from "../DXEmptyState/DXEmptyState";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface TickerProps {
     items: TickerItem[];
@@ -41,7 +43,9 @@ interface TickerItem {
     link: LinksProps;
 }
 
-const DXTicker = ( props: TickerProps ) => {
+const DXTicker = ( props: ExtendableProps<TickerProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { items: _items, currencySymbol: _currencySymbol, empty: _empty, icons: _icons, className, ref, ...rest } = props;
     const [selectedItem, setSelectedItem] = useState( 0 );
     let percentageClass = "";
     let iconClass = "";
@@ -102,7 +106,7 @@ const DXTicker = ( props: TickerProps ) => {
     };
 
     return (
-        <div className="dxTicker">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxTicker", className )}>
             <div className="dxTicker__card">
                 {
                     props.items.length > 0

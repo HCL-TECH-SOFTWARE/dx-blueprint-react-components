@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render } from "@testing-library/react";
@@ -316,3 +317,5 @@ test( "If the value has more than two decimal places, it rounds to two decimal p
     let expectedValue = "$" + ( 0.005 ).toLocaleString( "en-US", { 'minimumFractionDigits': 2, 'maximumFractionDigits': 2 } );
     expect( value?.textContent ).toEqual( expectedValue );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXExpensesCard value={999999} label="Uncategorized and incomplete expenses" {...extra} /> );

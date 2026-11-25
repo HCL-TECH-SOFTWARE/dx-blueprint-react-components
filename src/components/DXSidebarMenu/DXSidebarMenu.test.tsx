@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render } from "@testing-library/react";
 import DXSidebarMenu, { SidebarMenuProps } from "./DXSidebarMenu";
@@ -92,3 +93,5 @@ describe( "SidebarMenu component", () => {
     } );
 
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXSidebarMenu {...SidebarMenuArgs} {...extra} /> );

@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import DXSearchInput from "./DXSearchInput";
@@ -621,3 +622,5 @@ describe( "Search Input component", () => {
         } );
     } );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXSearchInput {...searchVisibleArgs} {...extra} /> );

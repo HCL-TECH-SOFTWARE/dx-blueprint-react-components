@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import DXChartCard from "./DXChartCard";
@@ -471,5 +472,36 @@ describe( "ChartCard component", () => {
             expect( rootCard.className ).not.toContain( "danger" );
             expect( rootCard.className ).not.toContain( "clicked" );
         } );
+    } );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXChartCard {...onlyNameArgs} {...extra} /> );
+
+describe( "DXChartCard dropdown with consumer extension props", () => {
+    test( "the portaled menu opens and its items work while ref, className and attributes stay on the card root", async () => {
+        const ref = React.createRef<HTMLDivElement>();
+        const onOption = jest.fn( ( e: React.MouseEvent ) => e.preventDefault() );
+        const options = [{ href: "#one", label: "View my profile", onClick: onOption }];
+        render( <DXChartCard {...onlyNameArgs} menuOptions={options} dropdownOpen ref={ref} className="bp-consumer" data-consumer="yes" /> );
+        // Let the dropdown's positioning (Popper) finish its async update inside act
+        await act( async () => {} );
+        const root = screen.getByTestId( "dxChartCard" );
+        const menu = document.body.querySelector( `.dxChartCard__dropdownMenu.dropdow--${onlyNameArgs.id}` ) as HTMLElement;
+        expect( ref.current ).toBe( root );
+        expect( root ).toHaveClass( "dxChartCard", "bp-consumer" );
+        expect( menu ).toBeInTheDocument();
+        expect( menu ).toHaveClass( "show" );
+        expect( root.contains( menu ) ).toBe( false );
+        expect( menu ).not.toHaveClass( "bp-consumer" );
+        expect( menu ).not.toHaveAttribute( "data-consumer" );
+        fireEvent.click( screen.getByText( "View my profile" ) );
+        expect( onOption ).toHaveBeenCalledTimes( 1 );
+    } );
+
+    test( "the menu is hidden when dropdownOpen is false, with consumer extension props", () => {
+        const ref = React.createRef<HTMLDivElement>();
+        render( <DXChartCard {...onlyNameArgs} dropdownOpen={false} ref={ref} className="bp-consumer" /> );
+        expect( document.body.querySelector( ".dxChartCard__dropdownMenu.show" ) ).toBeNull();
+        expect( ref.current ).toBe( screen.getByTestId( "dxChartCard" ) );
     } );
 } );

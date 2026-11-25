@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen } from "@testing-library/react";
 import { MyNextMeetingArgs, MyNextMeetingChangedIconsArgs } from "./DXMyNextMeeting.stories";
@@ -92,3 +93,5 @@ test( "Icon changes que icons property is set", () => {
     expect( screen.getByTestId( "myNextMeeting__eventIcon" ) ).toHaveClass( MyNextMeetingChangedIconsArgs.icons!.event! );
     expect( screen.getByTestId( "myNextMeeting__linkIcon" ) ).toHaveClass( MyNextMeetingChangedIconsArgs.icons!.link! );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXMyNextMeeting {...MyNextMeetingArgs} {...extra} /> );

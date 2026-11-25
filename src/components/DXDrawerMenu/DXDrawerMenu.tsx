@@ -17,6 +17,8 @@ import "./DXDrawerMenu.scss";
 import React, { useRef, useState } from "react";
 import DXButton from "../DXButton/DXButton";
 import { clickOutsideAlerter, renderOverlayElement } from "../../utilities";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface DrawerMenuProps {
     direction: "left" | "right",
@@ -26,7 +28,9 @@ export interface DrawerMenuProps {
     showOverlay?: boolean;
     iconClass?: string;
 }
-const DXDrawerMenu = ( props: DrawerMenuProps ) => {
+const DXDrawerMenu = ( props: ExtendableProps<DrawerMenuProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { direction: _direction, contentId: _contentId, contentFunction: _contentFunction, dark: _dark, showOverlay: _showOverlay, iconClass: _iconClass, className, ref, ...rest } = props;
     // Refs
     const parentRef = useRef( null );
     const buttonRef = useRef( null );
@@ -93,7 +97,7 @@ const DXDrawerMenu = ( props: DrawerMenuProps ) => {
     };
 
     return (
-        <div className="dxDrawerMenu" >
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxDrawerMenu", className )}>
             <style>{checkDarkMode( props.dark )}</style>
             <DXButton
                 displayType="unstyled"

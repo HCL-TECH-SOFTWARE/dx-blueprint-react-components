@@ -18,12 +18,16 @@ import "./DXTickerMenu.scss";
 import { getIcon, getLinkTarget } from "../../utilities";
 import { TickerProps } from "../DXTicker/DXTicker";
 import DXEmptyState, { EmptyStateProps } from "../DXEmptyState/DXEmptyState";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface TickerMenuProps extends TickerProps {
     animationTime?: number;
 }
 
-const DXTickerMenu = ( props: TickerMenuProps ) => {
+const DXTickerMenu = ( props: ExtendableProps<TickerMenuProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { animationTime: _animationTime, items: _items, currencySymbol: _currencySymbol, empty: _empty, icons: _icons, className, ref, ...rest } = props;
     const [barWidth, setBarWidth] = useState( 0 );
     const [currentActive, setCurrentActive] = useState( 0 );
     //Dividing the animation in skips of 10%, combining this with the CSS transition creates the effect that the sections are smaller
@@ -126,7 +130,7 @@ const DXTickerMenu = ( props: TickerMenuProps ) => {
     }, [barWidth, props.items.length, timeFraction] );
 
     return (
-        <div className="dxTickerMenu">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxTickerMenu", className )}>
             {
                 props.items.length > 0 ? (
                     <ul className="dxTickerMenu__list">

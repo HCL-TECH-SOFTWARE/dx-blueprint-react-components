@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { act, render, screen } from "@testing-library/react";
@@ -324,3 +325,5 @@ test( "if the Sports, Mexico, and Local filters are selected the empty view shou
     expect( cards ).toHaveLength( 0 );
     expect( empty ).not.toBeNull();
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXGenericCatalog {...JSON.parse( JSON.stringify( basicCardCatalogArgs ) )} {...extra} /> );

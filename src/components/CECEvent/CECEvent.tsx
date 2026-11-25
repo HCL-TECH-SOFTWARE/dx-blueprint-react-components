@@ -22,6 +22,7 @@ import React, {
 } from 'react';
 import './CECEvent.scss';
 import { renderEditButton } from '../../utilities/BasicComponent/BasicComponent';
+import { pickDomProps } from '../../utilities/extendable';
 import {
     CECEventProps, CECEventRecurrence,
     EventDate,
@@ -105,7 +106,7 @@ export const getEventEndDate = ( item: CECEventData | null | undefined ): string
  * Accessible and responsive event card component that displays event information
  * with support for multiple layout variants and interactive states.
  */
-export const CECEvent: React.FC<CECEventProps> = ( {
+export const CECEvent = ( {
     event,
     variant = 'featured',
     dir,
@@ -130,8 +131,9 @@ export const CECEvent: React.FC<CECEventProps> = ( {
     _edit,
     icons = {},
     showRecurringIcon,
+    ref,
     ...rest
-} ) => {
+}: CECEventProps & { ref?: React.Ref<HTMLDivElement>; } ) => {
     const [dateFrom, setDateFrom] = useState<EventDate | null>( null );
     const [dateTo, setDateTo] = useState<EventDate | null>( null );
     const [showAllTags, setShowAllTags] = useState<boolean>( false );
@@ -613,17 +615,24 @@ export const CECEvent: React.FC<CECEventProps> = ( {
             </>
         );
     }, [event, dateFrom, dateTo, isSameDay] );
+    // Only DOM-safe extra props reach the root; anything else a consumer passes is dropped
+    // (a consumer aria-* attribute still wins over the component's own; role and tabIndex are not forwarded)
+    const { onKeyDown: consumerOnKeyDown, ...domAttrs } = pickDomProps( rest as Record<string, unknown> );
     return (
         <div
             className={`cec-event ${variantClass}${dir === 'rtl' ? ' cec-event--rtl' : ''} ${className}`}
             style={style}
             dir={dir}
-            ref={eventRef}
+            ref={ref ?? eventRef}
             onClick={onEventClick ? handleClick : undefined}
-            onKeyDown={onEventClick ? handleKeyDown : undefined}
+            onKeyDown={( e ) => {
+                // The consumer's handler runs first and can stop the component's own keyboard handling
+                if ( typeof consumerOnKeyDown === 'function' ) consumerOnKeyDown( e );
+                if ( onEventClick && !e.defaultPrevented ) handleKeyDown( e );
+            }}
             tabIndex={onEventClick ? 0 : undefined}
             {...ariaProps}
-            {...rest}
+            {...domAttrs}
             data-testid="cec-event"
         >
             <div ref={containerRef} className="cec-event__container">

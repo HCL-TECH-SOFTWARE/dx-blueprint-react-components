@@ -24,6 +24,8 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import DXMegaMenu, { NavigationItem } from "../DXMegaMenu/DXMegaMenu";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface NavigationProps {
     navigationImage: NavigationImageProps;
@@ -63,7 +65,9 @@ export interface ItemProps {
     onClick: () => void;
 }
 
-const DXNavigationHeaderWithUtilities = ( props: NavigationProps ) => {
+const DXNavigationHeaderWithUtilities = ( props: ExtendableProps<NavigationProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { navigationImage: _navigationImage, navigationItems: _navigationItems, active: _active, globalLinks: _globalLinks, menuImage: _menuImage, utilities: _utilities, icons: _icons, className, ref, ...rest } = props;
     //CODE TO HIDE THE NAVIGATION HEADER WITHOUT THE OVERLAY
     const wrapperRef = useRef( null );
 
@@ -73,7 +77,7 @@ const DXNavigationHeaderWithUtilities = ( props: NavigationProps ) => {
     const [searchInputValue, setSearchInputValue] = useState( "" );
 
     return (
-        <div className='dxNavHeaderUtils'>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxNavHeaderUtils", className )}>
             <Container fluid="xl" ref={wrapperRef} data-testid="containerFluid" className="dxNavHeaderUtils__mainContainer container-view">
                 <Row justify="between" className="dxNavHeaderUtils__topRow">
                     <Col xs={props.navigationImage.sizeLarge ? 3 : 2}>

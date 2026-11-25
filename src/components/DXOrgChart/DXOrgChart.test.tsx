@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen, act, fireEvent } from "@testing-library/react";
 import DXOrgChart from "./DXOrgChart";
@@ -309,5 +310,36 @@ describe( "OrgChart component", () => {
             const lineHeaders = container.querySelectorAll( ".dxOrgChart__lineLevel" );
             expect( lineHeaders ).toHaveLength( 1 );
         } );
+    } );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXOrgChart users={[{ id: "1", displayName: "Susan Taylor", jobTitle: "Project Analyst" }]} {...extra} /> );
+
+describe( "DXOrgChart with a consumer ref", () => {
+    test( "expanding a card still updates the next level (internal ref queries) while an object ref is passed", async () => {
+        const ref = React.createRef<HTMLDivElement>();
+        const { container } = render( <DXOrgChart {...DefaultVersionArgs} ref={ref} /> );
+        expect( ref.current ).toBe( container.firstElementChild );
+
+        const mainCard = document.querySelector( '.card--1' );
+        const buttonMainCard = mainCard?.querySelector( ".dxChartCard" )?.querySelector( "button" ) as HTMLButtonElement;
+        await userEvent.click( buttonMainCard );
+
+        // These classes are set through the internal root ref; they stay unset if that ref is not attached
+        expect( document.querySelector( '.line-level--2' ) ).toHaveClass( "active" );
+        expect( document.querySelector( '.dxOrgChart__card--level-2' ) ).toHaveClass( "active" );
+        expect( mainCard ).toHaveClass( "selected" );
+    } );
+
+    test( "a callback ref is attached once across re-renders and cleared on unmount", () => {
+        const callbackRef = jest.fn();
+        const users = [{ id: "1", displayName: "Susan Taylor", jobTitle: "Project Analyst" }];
+        const { container, rerender, unmount } = render( <DXOrgChart users={users} ref={callbackRef} /> );
+        const root = container.firstElementChild;
+        rerender( <DXOrgChart users={[{ ...users[0], jobTitle: "Lead Analyst" }]} ref={callbackRef} /> );
+        expect( callbackRef ).toHaveBeenCalledTimes( 1 );
+        expect( callbackRef ).toHaveBeenLastCalledWith( root );
+        unmount();
+        expect( callbackRef ).toHaveBeenLastCalledWith( null );
     } );
 } );

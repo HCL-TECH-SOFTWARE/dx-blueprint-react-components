@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
@@ -108,3 +109,5 @@ test( "If the user clicks in the button the scrollIntoView method is executed", 
     expect( mockScrollIntoView ).toHaveBeenCalled();
     mockScrollIntoView.mockReset();
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXParallaxNavigation {...DefaultImplementationArgs} {...extra} /> );

@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import DXPieChart from "./DXPieChart";
@@ -33,3 +34,5 @@ test( "If svg re-renders inside the same given container", () => {
     expect( screen.getByTestId( "dxPieChart-parent" ).querySelector( "svg" ) ).not.toBeNull();
     expect( screen.getByTestId( "dxPieChart-parent" ).querySelectorAll( "svg" ).length ).toBe( 1 );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXPieChart {...PieChartArgs} {...extra} /> );

@@ -16,6 +16,8 @@
 import React from 'react';
 import "./DXPortalLogos.scss";
 import { LinksProps, getLinkTarget } from '../../utilities';
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface PortalLogosProps {
     main: LinkImage,
@@ -26,7 +28,9 @@ export interface LinkImage extends LinksProps {
     imageSrc: string;
 }
 
-const DXPortalLogos = ( props: PortalLogosProps ) => {
+const DXPortalLogos = ( props: ExtendableProps<PortalLogosProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { main: _main, secondary: _secondary, className, ref, ...rest } = props;
 
     const renderImageLogo = ( type: any ) => {
         let typeLogo = {} as LinkImage;
@@ -58,7 +62,7 @@ const DXPortalLogos = ( props: PortalLogosProps ) => {
     };
 
     return (
-        <div className={"dxPortalLogos"} data-testid="dx-portal-logos">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxPortalLogos", className )} data-testid="dx-portal-logos">
             {props.main && renderImageLogo( "main" )}
             {props.secondary &&
                 <>

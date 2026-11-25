@@ -20,6 +20,8 @@ import { addDays, addMonths, formatDate, isSameDay, parseDateWithFormat, startOf
 import DXButton from "../DXButton/DXButton";
 import Modal from 'react-bootstrap/Modal';
 import { SliderIcons, getIcon } from "../../utilities";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 interface Event {
     name: string,
     date: string,
@@ -34,7 +36,9 @@ export interface CalendarProps {
     icons?: SliderIcons;
 }
 
-const DXCalendar = ( props: CalendarProps ) => {
+const DXCalendar = ( props: ExtendableProps<CalendarProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { events: _events, small: _small, seeMoreText: _seeMoreText, _selectEvent, icons: _icons, className, ref, ...rest } = props;
     const [change, setChange] = useState( false );
     const [monthPointer, setMonthPointer] = useState<Date>( startOfMonth( new Date() ) );
     const [activeWeek, setActiveWeek] = useState( -1 );
@@ -315,7 +319,7 @@ const DXCalendar = ( props: CalendarProps ) => {
     }, [props.events] );
 
     return (
-        <div className="dxCalendar">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxCalendar", className )}>
             <Modal show={showModal} onHide={handleClose} data-testid="calendar-modal" className="dxCalendar__modal">
                 <Modal.Header>
                     <Modal.Title>

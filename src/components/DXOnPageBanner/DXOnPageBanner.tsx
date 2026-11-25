@@ -17,6 +17,8 @@ import React, { ReactElement } from "react";
 import "./DXOnPageBanner.scss";
 import DXInteractiveButton, { InteractiveButtonProps } from "../DXInteractiveButton/DXInteractiveButton";
 import { LinksProps, parseLinks, generateLinkAnchor, getIcon } from "../../utilities";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface OnPageBannerProps {
     title: string;
@@ -37,7 +39,9 @@ export interface PageBannerImagePops {
     gradientSize?: string;
 }
 
-const DXOnPageBanner = ( props: OnPageBannerProps ) => {
+const DXOnPageBanner = ( props: ExtendableProps<OnPageBannerProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { title: _title, subtitle: _subtitle, height: _height, imageProps: _imageProps, breadcrumb: _breadcrumb, icons: _icons, button: _button, bodyClass: _bodyClass, className, ref, ...rest } = props;
 
     const getGradientSize = ( imageUrl: string, size?: string ) => {
         if ( size === "small" ) return `radial-gradient(ellipse 60% 45% at bottom left, var(--dark-dark-d2), rgba(255, 255, 255, 0)), url("${imageUrl}")`;
@@ -79,7 +83,7 @@ const DXOnPageBanner = ( props: OnPageBannerProps ) => {
     };
 
     return (
-        <div className="dxOnPageBanner">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxOnPageBanner", className )}>
             <div className="dxOnPageBanner__backgroundContainer"
                 style={getBannerStyle()}
                 data-testid="banner-background">

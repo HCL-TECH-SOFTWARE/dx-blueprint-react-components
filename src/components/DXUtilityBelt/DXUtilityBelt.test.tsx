@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { screen, render, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -250,3 +251,5 @@ test( "If the user does pass a title and textVariant true, it will show the titl
     let item = container.querySelector( ".dxUtilityBelt__itemBottom span" ) as HTMLSpanElement;
     expect( item ).toHaveTextContent( props.items[0].title );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXUtilityBelt items={itemsArgs} {...extra} /> );

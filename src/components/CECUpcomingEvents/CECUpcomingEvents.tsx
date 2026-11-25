@@ -21,6 +21,8 @@ import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent
 import CECEvent, { getEventStartDate, getEventEndDate } from '../CECEvent/CECEvent';
 import { CECEventVariant, CECEventData } from '../CECEvent/CECEvent.types';
 import { detectInputLocale } from '../../utilities/cec-utils';
+import { ExtendableProps, pickDomProps } from '../../utilities/extendable';
+import { classNames } from '../../utilities/classNames';
 import {
   CECUpcomingEventsProps as ExternalCECUpcomingEventsProps,
   UseEventFiltersReturn
@@ -46,7 +48,11 @@ export interface CECUpcomingEventsProps
     activeSet: number;
   };
 }
-const CECUpcomingEvents: React.FC<CECUpcomingEventsProps> = ( {
+/**
+ * `className`, `ref` and extra DOM props go to the root `div`. Props meant for the event cards (`showRecurringIcon`, `customActions`, ...)
+ * are not forwarded to the root; only the extension props (`data-*`, `aria-*`, `id`, `style`, event handlers) are.
+ */
+const CECUpcomingEvents = ( {
   items,
   onEventClick,
   variant = 'featured',
@@ -67,7 +73,8 @@ const CECUpcomingEvents: React.FC<CECUpcomingEventsProps> = ( {
   descriptionMaxLines: descriptionMaxLinesProp,
   dateFormat: dateFormatProp,
   showTimeZone = false,
-  className = '',
+  className,
+  ref,
   itemsPerPage,
   showPagination = true,
   onPageChange,
@@ -80,7 +87,9 @@ const CECUpcomingEvents: React.FC<CECUpcomingEventsProps> = ( {
   style,
   dir,
   ...rest
-} ) => {
+}: ExtendableProps<CECUpcomingEventsProps, 'div'> ) => {
+  // Only DOM-safe extras reach the root; the CECEvent pass-through props in `rest` are not DOM attributes
+  const domAttrs = pickDomProps( rest as Record<string, unknown> );
   // Detect the display locale from the first event's raw date string so that
   // month filter labels are rendered in the same language as the source data.
   const displayLocale = useMemo( () => {
@@ -444,7 +453,9 @@ const CECUpcomingEvents: React.FC<CECUpcomingEventsProps> = ( {
   };
   return (
     <div
-      className={`cec-upcoming-events ${variantClass}${resolvedDir === 'rtl' ? ' cec-upcoming-events--rtl' : ''} ${className}`}
+      {...domAttrs}
+      ref={ref}
+      className={classNames( `cec-upcoming-events ${variantClass}${resolvedDir === 'rtl' ? ' cec-upcoming-events--rtl' : ''}`, className )}
       dir={resolvedDir}
       style={style}
     >

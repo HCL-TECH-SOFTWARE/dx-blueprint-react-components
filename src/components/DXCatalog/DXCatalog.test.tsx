@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render, fireEvent, screen, act } from "@testing-library/react";
@@ -1101,3 +1102,13 @@ describe( "DXCatalog Hardening", () => {
     expect( cards.length ).toStrictEqual( 1 ); // Item 2 should now match
   } );
 } );
+
+itSupportsExtensionProps( ( extra ) => (
+    <DXCatalog
+        items={itemsArgs}
+        paginationProps={{ sets: ["2", "4", "8"], active: 1, activeSet: 4 }}
+        totalItems={itemsArgs.length}
+        categories={["subject"]}
+        filterType="select"
+        {...extra} />
+) );

@@ -18,6 +18,7 @@ import '@testing-library/jest-dom';
 import { screen, render } from "@testing-library/react";
 import DXHeroBanner, { HeroBannerProps } from "./DXHeroBanner";
 import userEvent from "@testing-library/user-event";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import { HeroBannerChangedIconsArgs, HeroBannerVideoArgs, HeroBannerAnimatedTitleArgs } from "./DXHeroBanner.stories";
 
 test( "hero banner renders with minimum required arguments", () => {
@@ -810,4 +811,12 @@ test( "hero banner renders <picture> wrapper with WebP source and lazy loads for
     // 3. Verify the lazy-loading strategy for off-screen foreground images
     const fgImage = getByTestId( 'hero-banner-foreground-img' );
     expect( fgImage ).toHaveAttribute( 'loading', 'lazy' );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXHeroBanner index={1} header="Hero Banner Header" {...extra} /> );
+
+test( "hero banner keeps its own id, which its scoped styles depend on, even if the consumer passes one", () => {
+    // The component's <style> targets #dxHeroBanner-<index>, so a consumer id must not replace it
+    const { container } = render( <DXHeroBanner index={7} header="Hero Banner Header" {...{ id: "consumer-id" } as object} /> );
+    expect( container.firstElementChild?.id ).toBe( "dxHeroBanner-7" );
 } );

@@ -18,6 +18,8 @@ import React, { useEffect, useRef, useState } from "react";
 import DXToolButton, { ToolButtonProps } from "../DXToolButton/DXToolButton";
 import { createRoot, Root } from 'react-dom/client';
 import { clickOutsideAlerter, renderOverlayElement } from "../../utilities";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 interface UtilityItem extends ToolButtonProps {
     contentId: string,
@@ -30,7 +32,7 @@ export interface UtilityZoneProps {
     showOverlay?: boolean;
     enableIconPanels?: boolean;
 }
-const DXUtilityZone = ( { items, panelsContainerId, showOverlay, enableIconPanels = true }: UtilityZoneProps ) => {
+const DXUtilityZone = ( { items, panelsContainerId, showOverlay, enableIconPanels = true, className, ref, ...rest }: ExtendableProps<UtilityZoneProps, "div"> ) => {
 
     // Refs
     const parentRef = useRef( null );
@@ -76,8 +78,11 @@ const DXUtilityZone = ( { items, panelsContainerId, showOverlay, enableIconPanel
     // Render Methods
     const renderItems = ( items: ToolButtonProps[] ) => {
         const adjustedItems = items.map( ( item: ToolButtonProps, index: number ) => {
+            // Only the button's own props are passed: the item also carries the zone's data (contentId, contentFunction) and may
+            // carry other keys from untyped data, and the button forwards extra props to its DOM root
+            const buttonProps: ToolButtonProps = { icon: item.icon, label: item.label, image: item.image, showLabel: item.showLabel, onClick: item.onClick, badge: item.badge };
             return {
-                ...item,
+                ...buttonProps,
                 ...( enableIconPanels ? { onClick: () => handleOpen( index ) } : {} )
             };
         } );
@@ -127,7 +132,7 @@ const DXUtilityZone = ( { items, panelsContainerId, showOverlay, enableIconPanel
     } );
 
     return (
-        <div className="dxUtilityZone">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxUtilityZone", className )}>
             <div ref={parentRef}>
                 {renderItems( items )}
             </div>

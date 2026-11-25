@@ -16,6 +16,8 @@
 import React, { ReactElement } from "react";
 import { ImageProps, LinksProps, getIcon } from "../../utilities";
 import "./DXNewsRoll.scss";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface NewsRollProps {
     newsRollItems: NewsRollItem[];
@@ -29,7 +31,9 @@ export interface NewsRollItem extends LinksProps {
     secondaryImage?: ImageProps;
 }
 
-const DXNewsRoll = ( props: NewsRollProps ) => {
+const DXNewsRoll = ( props: ExtendableProps<NewsRollProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { newsRollItems: _newsRollItems, icons: _icons, className, ref, ...rest } = props;
 
     const renderNews = function (): ReactElement[] {
         const children: ReactElement[] = [];
@@ -72,7 +76,7 @@ const DXNewsRoll = ( props: NewsRollProps ) => {
     };
 
     return (
-        <div className="dxNewsRoll">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxNewsRoll", className )}>
             <div className="dxNewsRoll__gradient"></div>
             <div className="dxNewsRoll__main" data-testid="newsRoll">
                 {renderNews()}

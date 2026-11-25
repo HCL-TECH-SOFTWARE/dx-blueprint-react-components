@@ -19,6 +19,8 @@ import { getFullMonth, getLinkTarget, getValuesFromDateFormat, ImageProps, Links
 import "./DXNewsCard.scss";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
 import { CardComponent } from "../../utilities/CardComponent/CardComponent";
+import { pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface NewsCardProps extends BasicComponent, CardComponent {
     link: LinksProps;
@@ -30,7 +32,10 @@ export interface NewsCardProps extends BasicComponent, CardComponent {
     layout?: "top" | "left";
 }
 
-const DXNewsCard = ( props: NewsCardProps ) => {
+const DXNewsCard = ( props: NewsCardProps & { className?: string; ref?: React.Ref<HTMLDivElement>; } ) => {
+    // Own props are pulled out; only DOM-safe extras reach the root (the props type has an index signature).
+    const { link: _link, date: _date, image: _image, dateFormat: _dateFormat, contentType: _contentType, contentPosition: _contentPosition, layout: _layout, _edit, _search, index: _index, className, ref, ...rest } = props;
+    const domAttrs = pickDomProps( rest );
     // States
     const [loaded, setLoaded] = useState( false );
     const DEFAULT_DATE_FORMAT = "MM/DD/YY";
@@ -41,7 +46,7 @@ const DXNewsCard = ( props: NewsCardProps ) => {
     };
 
     return (
-        <div className={"dxNewsCard"} data-testid="newsCardItem" >
+        <div {...domAttrs} ref={ref} className={classNames( "dxNewsCard", className )} data-testid="newsCardItem">
             <div className="dxNewsCard__main" style={( props.layout == "top" ) ? { display: "block" } : {}}>
                 {
                     props.image &&

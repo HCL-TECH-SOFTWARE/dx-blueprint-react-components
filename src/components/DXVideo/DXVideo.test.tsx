@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React, { act } from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import DXVideo from "./DXVideo";
 import { listVideosYoutubeArgs, listFolderVimeoArgs, showCasesVideosVimeoArgs } from "./DXVideo.stories";
@@ -944,4 +945,16 @@ describe( "Video component", () => {
             expect( iframe ).toHaveAttribute( 'loading', 'lazy' );
         } );
     } );
+} );
+
+describe( "DXVideo - extension props", () => {
+    const originalFetch = global.fetch;
+    beforeEach( () => {
+        // a request that never settles keeps the component in its loading state, so no state update happens after the test
+        global.fetch = jest.fn( () => new Promise( () => {} ) ) as unknown as typeof fetch;
+    } );
+    afterEach( () => {
+        global.fetch = originalFetch;
+    } );
+    itSupportsExtensionProps( ( extra ) => <DXVideo {...listVideosYoutubeArgs} {...extra} /> );
 } );

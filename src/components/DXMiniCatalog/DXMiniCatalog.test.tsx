@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
@@ -337,4 +338,16 @@ test( "If we have the same two components, if the user clicks on the next nav bu
 test( "If icon changes on values set", () => {
     render( <DXMiniCatalog {...MCChangedIconsArgs} /> );
     expect( screen.getByTestId( "slider-next-button" ).querySelector( "i" ) ).toHaveClass( MCChangedIconsArgs.icons!.next! );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXMiniCatalog index={1} items={itemsArgs.slice( 0, 3 )} {...extra} /> );
+
+test( "In the slider layout, the props react-slick injects into its children do not reach the cards", () => {
+    const { container } = render( <DXMiniCatalog index={1} items={itemsArgs} /> );
+    const cards = container.querySelectorAll( ".dxCard" );
+    expect( cards.length ).toBeGreaterThan( 0 );
+    cards.forEach( ( card ) => {
+        expect( card.classList.contains( "slick-slide" ) ).toBe( false );
+        expect( card.hasAttribute( "data-index" ) ).toBe( false );
+    } );
 } );

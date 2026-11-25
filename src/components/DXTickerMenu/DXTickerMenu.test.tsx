@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React, { act } from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen } from "@testing-library/react";
 import { CustomCurrencySymbolArgs, NoItemExampleArgs, TickerMenuArgs, customEmptyArgs } from "./DXTickerMenu.stories";
@@ -168,3 +169,5 @@ test( "If icons change", () => {
     expect( screen.getAllByTestId( "tickerMenu__moreLink" )[0].querySelector( "i" ) ).toHaveClass( icons.link );
     expect( screen.getAllByTestId( "tickerMenu__percentage" )[0].querySelector( "i" ) ).toHaveClass( icons.up );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXTickerMenu {...TickerMenuArgs} {...extra} /> );

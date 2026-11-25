@@ -19,6 +19,8 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { ImageProps, getIcon, purifyAndParseHTML } from "../../utilities";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface QuoteProps {
     index: number;
@@ -54,10 +56,12 @@ const getCustomPadding = ( quoteId: number, paddingDesktop: string | undefined, 
       }`;
 };
 
-const DXQuote = ( props: QuoteProps ) => {
+const DXQuote = ( props: ExtendableProps<QuoteProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { index: _index, body: _body, thumbnail: _thumbnail, authorName: _authorName, hideQuotes: _hideQuotes, paddingDesktop: _paddingDesktop, paddingMobile: _paddingMobile, icons: _icons, className, ref, ...rest } = props;
 
     return (
-        <div className="dxQuote" id={`dxquote-${props.index}`} data-testid="quote-item">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxQuote", className )} id={`dxquote-${props.index}`} data-testid="quote-item">
             <style>{getCustomPadding( props.index, props.paddingDesktop, props.paddingMobile )}</style>
             <Container fluid>
                 <Row>

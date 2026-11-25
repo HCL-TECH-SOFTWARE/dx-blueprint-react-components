@@ -14,9 +14,11 @@
  * ======================================================================== */
 
 import "./DXGallery.scss";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import DXButton from "../DXButton/DXButton";
 import { GalleryImageProps, SliderIcons, getIcon } from "../../utilities";
+import { ExtendableProps, mergeRefs, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 export interface GalleryProps {
     images: GalleryImageProps[],
     title: string,
@@ -44,11 +46,15 @@ const getPageDir = (): 'ltr' | 'rtl' => {
     }
     return 'ltr';
 };
-const DXGallery = ( props: GalleryProps ) => {
+const DXGallery = ( props: ExtendableProps<GalleryProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { images: _images, title: _title, date: _date, innerInfo: _innerInfo, hideInfo: _hideInfo, icons: _icons, dir: _dir, className, ref, ...rest } = props;
     // Ref used to read computed direction from the component's parent element.
     // This catches RTL set on ANY ancestor (html, body, or portal wrapper divs)
     // via CSS inheritance, without requiring an explicit dir prop.
     const containerRef = React.useRef<HTMLDivElement>(null);
+    // The internal ref (used to find the parent) and the consumer ref both point at the root
+    const mergedRootRef = useMemo( () => mergeRefs( containerRef, ref ), [ref] );
     const [documentDir, setDocumentDir] = React.useState<'ltr' | 'rtl'>(() => {
         if (props.dir) return props.dir;
         return getPageDir();
@@ -141,7 +147,7 @@ const DXGallery = ( props: GalleryProps ) => {
         ? Array.from( { length: props.images.length }, ( _, i ) => props.images.length - 1 - i )
         : Array.from( { length: props.images.length }, ( _, i ) => i );
     return (
-        <div ref={containerRef} className={`dxGallery${isRTL ? ' dxGallery--rtl' : ''}`} dir={resolvedDir}>
+        <div {...pickDomProps( rest )} ref={mergedRootRef} className={classNames( `dxGallery${isRTL ? ' dxGallery--rtl' : ''}`, className )} dir={resolvedDir}>
             {!props.hideInfo && !props.innerInfo ? renderInfo( props.title, props.date ) : null}
             {props.images && props.images.length > 0 ? (
                 <div className="dxGallery__container">

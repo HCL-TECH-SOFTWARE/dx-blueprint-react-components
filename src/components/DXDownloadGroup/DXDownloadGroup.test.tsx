@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render } from "@testing-library/react";
 import DXDownloadGroup from "./DXDownloadGroup";
@@ -62,3 +63,5 @@ test( "If the user does pass the title, it will be in the document", () => {
     const title = container.querySelector( ".dxDownloadGroup__title" );
     expect( title ).toBeInTheDocument();
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXDownloadGroup title="Click to download" downloads={[]} {...extra} /> );

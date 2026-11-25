@@ -18,6 +18,7 @@ import '@testing-library/jest-dom';
 import { render, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import DXButton, { ButtonProps } from "./DXButton";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 
 // Testing that the attributes, will be assign
 test( "If the user pass the label prop, that will be the textContent of the button", () => {
@@ -305,4 +306,58 @@ test( "If the user pass displayType as unstyled, the button will have the class 
     const { container } = render( <DXButton {...props} /> );
     let button = container.querySelector( ".dxButton" );
     expect( button ).toHaveClass( "btn-unstyled" );
+} );
+
+// DXButton declares role, hidden, style and tabIndex as its own props, so they are rendered by design
+itSupportsExtensionProps( ( extra ) => <DXButton label="Click me" {...extra} />, { ownKeys: ["role", "hidden", "style", "tabIndex"] } );
+
+test( "a consumer aria-label is kept when the label is visible", () => {
+    const { container } = render( <DXButton label="Save" aria-label="Save the document" /> );
+    expect( container.querySelector( ".dxButton" )?.getAttribute( "aria-label" ) ).toBe( "Save the document" );
+} );
+
+test( "the label wins as aria-label when it is hidden", () => {
+    const { container } = render( <DXButton label="Save" hideLabel aria-label="ignored" /> );
+    expect( container.querySelector( ".dxButton" )?.getAttribute( "aria-label" ) ).toBe( "Save" );
+} );
+
+test( "a consumer onKeyDown runs first and can stop the component's own keyboard handling", () => {
+    const onClick = jest.fn();
+    const onKeyDown = jest.fn( ( e: React.KeyboardEvent ) => e.preventDefault() );
+    const { container } = render( <DXButton label="Save" onClick={onClick} onKeyDown={onKeyDown} /> );
+    fireEvent.keyDown( container.querySelector( ".dxButton" ) as Element, { key: "Enter", keyCode: 13 } );
+    expect( onKeyDown ).toHaveBeenCalledTimes( 1 );
+    expect( onClick ).not.toHaveBeenCalled();
+} );
+
+test( "the component's own keyboard handling still runs when the consumer's onKeyDown does not prevent it", () => {
+    const onClick = jest.fn();
+    const onKeyDown = jest.fn();
+    const { container } = render( <DXButton label="Save" onClick={onClick} onKeyDown={onKeyDown} /> );
+    fireEvent.keyDown( container.querySelector( ".dxButton" ) as Element, { key: "Enter", keyCode: 13 } );
+    expect( onKeyDown ).toHaveBeenCalledTimes( 1 );
+    expect( onClick ).toHaveBeenCalledTimes( 1 );
+} );
+
+describe( "DXButton keyboard activation with a consumer onKeyDown", () => {
+    // user-event 14 does not set the deprecated keyCode, which this component reads and real browsers still send,
+    // so focus comes from user-event and the key press is dispatched with the browser's key, code and keyCode
+    const browserKeys = [
+        ["Enter", { key: "Enter", code: "Enter", keyCode: 13 }],
+        ["Space", { key: " ", code: "Space", keyCode: 32 }],
+    ] as Array<[string, { key: string; code: string; keyCode: number; }]>;
+
+    test.each( browserKeys )( "%s on the focused button still activates it once after a consumer onKeyDown that does not prevent the default", async ( _name, keyInit ) => {
+        const onClick = jest.fn();
+        const onKeyDown = jest.fn();
+        render( <DXButton label="Save" onClick={onClick} onKeyDown={onKeyDown} /> );
+        await userEvent.tab();
+        const button = document.activeElement as HTMLElement;
+        expect( button ).toHaveClass( "dxButton" );
+        const notCancelled = fireEvent.keyDown( button, keyInit );
+        expect( onKeyDown ).toHaveBeenCalledTimes( 1 );
+        expect( onClick ).toHaveBeenCalledTimes( 1 );
+        // The component prevents the default, so the browser does not also fire a click for the same key press
+        expect( notCancelled ).toBe( false );
+    } );
 } );

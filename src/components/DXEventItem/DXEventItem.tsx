@@ -18,6 +18,8 @@ import React from 'react';
 import { LinksProps, getLinkTarget, getValuesFromDateFormat, DateValues, overflowText } from "../../utilities";
 import { dateFromParts, formatDate, parseDateWithFormat } from "../../utilities/dateTime";
 import { CardComponent } from "../../utilities/CardComponent/CardComponent";
+import { pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface EventItemProps extends CardComponent {
     variant: "event" | "form",
@@ -32,7 +34,14 @@ export interface EventItemProps extends CardComponent {
     link: LinksProps,
 }
 
-const DXEventItem = ( props: EventItemProps ) => {
+/**
+ * `className`, `ref` and extra DOM props go to the root. When `variant` is neither "event" nor "form" nothing is rendered
+ * (`null`), so `className`, `ref` and extra props are not applied.
+ */
+const DXEventItem = ( props: EventItemProps & { className?: string; ref?: React.Ref<HTMLDivElement>; } ) => {
+    // Own props are pulled out; only DOM-safe extras reach the root (the props type has an index signature).
+    const { variant: _variant, eventName: _eventName, eventDate: _eventDate, dateFormat: _dateFormat, eventStartTime: _eventStartTime, eventEndTime: _eventEndTime, formName: _formName, formNumber: _formNumber, formPrice: _formPrice, link: _link, _search, index: _index, className, ref, ...rest } = props;
+    const domProps = pickDomProps( rest );
     const DEFAULT_DATE_FORMAT = "MM/DD/YY";
 
     const getDay = ( eventDate: string | undefined, format?: string ) => {
@@ -80,7 +89,7 @@ const DXEventItem = ( props: EventItemProps ) => {
     };
 
     return ( ( props.variant === "event" || props.variant === "form" ) ?
-        <div data-testid="event-item" role="listitem" className={`dxEventItem ${props.variant === "form" ? "dxEventItem--form" : "dxEventItem--event"}`}>
+        <div {...domProps} ref={ref} data-testid="event-item" role="listitem" className={classNames( `dxEventItem ${props.variant === "form" ? "dxEventItem--form" : "dxEventItem--event"}`, className )}>
             <a className="dxEventItem__link"
                 href={props.link.url !== '' ? props.link.url : '#'}
                 target={getLinkTarget( props.link.target )}

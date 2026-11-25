@@ -16,13 +16,15 @@
 import "./DXEventDetails.scss";
 import "../icons/DXIcons.scss";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { LinksProps, getLinkTarget, getLinkIcon, getIcon } from "../../utilities";
 import DXMap from "../DXMap";
 import DXButton from "../DXButton/DXButton";
 import { formatDate, parseDate } from "../../utilities/dateTime";
 import DXSocialShare, { SocialShareProps } from "../DXSocialShare/DXSocialShare";
 import variables from "../../global/_exportVariables.module.scss";
+import { ExtendableProps, mergeRefs, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 interface EventDate {
     shortMonth: string,
@@ -74,7 +76,9 @@ export interface EventDetailsProp {
     };
 }
 
-const DXEventDetails = ( props: EventDetailsProp ) => {
+const DXEventDetails = ( props: ExtendableProps<EventDetailsProp, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { title: _title, eventFrom: _eventFrom, eventTo: _eventTo, beginHour: _beginHour, endHour: _endHour, location: _location, addressLines: _addressLines, eventUrl: _eventUrl, mapUrl: _mapUrl, addToMyCalendar: _addToMyCalendar, contact: _contact, getDirections: _getDirections, share: _share, register: _register, calendarButtons: _calendarButtons, icons: _icons, className, ref, ...rest } = props;
 
     const MAX_ADDRESSES = 2;
 
@@ -87,6 +91,8 @@ const DXEventDetails = ( props: EventDetailsProp ) => {
     const [overlayAddCalendar, setOverlayAddCalendar] = useState( false );
     const [isMobile, setIsMobile] = useState( false );
     let componentRef = useRef<HTMLDivElement>( null );
+    // The internal ref (used to measure the width) and the consumer ref both point at the root
+    const mergedRootRef = useMemo( () => mergeRefs( componentRef, ref ), [ref] );
     const MAX_WIDTH_MOBILE = parseInt( variables.md.split( "px" ) );
     const adrEl = useRef<HTMLParagraphElement>( null );
     const eventUrl = useRef<HTMLAnchorElement>( null );
@@ -429,7 +435,7 @@ const DXEventDetails = ( props: EventDetailsProp ) => {
     }, [] );
 
     return (
-        <div className="dxEventDetails" ref={componentRef}>
+        <div {...pickDomProps( rest )} ref={mergedRootRef} className={classNames( "dxEventDetails", className )}>
             {props.mapUrl && props.mapUrl !== "" ? (
                 <div className="dxEventDetails__map" data-testid="event-details-map">
                     <DXMap iframeUrl={props.mapUrl} />

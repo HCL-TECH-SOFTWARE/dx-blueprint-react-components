@@ -15,6 +15,8 @@
 
 import React, { useEffect, useState } from 'react';
 import "./DXDashboardCard.scss";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface DashboardCardProps {
     index: number,
@@ -25,7 +27,9 @@ export interface DashboardCardProps {
     secondaryIcon?: string;
 }
 
-const DXDashboardCard = ( props: DashboardCardProps ) => {
+const DXDashboardCard = ( props: ExtendableProps<DashboardCardProps, "button"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { index: _index, data: _data, label: _label, onClick: _onClick, mainIcon: _mainIcon, secondaryIcon: _secondaryIcon, className, ref, ...rest } = props;
     const MAX_DATA_CHARS = 5;
 
     const [smallCard, setSmallCard] = useState( '' );
@@ -42,7 +46,7 @@ const DXDashboardCard = ( props: DashboardCardProps ) => {
     }, [props] );
 
     return (
-        <button id={`dxDashboardCard-${props.index}`} className={`dxDashboardCard${smallCard}`} onClick={() => { props.onClick && props.onClick(); }} data-testid="dx-dashboard-card">
+        <button {...pickDomProps( rest )} ref={ref} id={`dxDashboardCard-${props.index}`} className={classNames( `dxDashboardCard${smallCard}`, className )} onClick={() => { props.onClick && props.onClick(); }} data-testid="dx-dashboard-card">
             <p className={`dxDashboardCard${smallCard}__data`} data-testid="dx-dashboard-card-number"> {dataMax}
                 {props.mainIcon && <i className={props.mainIcon} data-testid="dx-dashboard-card-number-icon"></i>}
             </p>

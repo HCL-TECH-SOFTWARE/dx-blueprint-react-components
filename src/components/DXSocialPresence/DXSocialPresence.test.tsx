@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from 'react';
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render } from "@testing-library/react";
@@ -447,3 +448,5 @@ test( "If the user pass 'true' on the light prop, the component should have the 
     const component = getByTestId( "social-presence" );
     expect( component ).toHaveStyle( { color: "var(--light-white)" } );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXSocialPresence size="small" socialMediaLinks={{ facebook: { display: true, url: "https://www.facebook.com/HCLSW", target: "_blank" } }} {...extra} /> );

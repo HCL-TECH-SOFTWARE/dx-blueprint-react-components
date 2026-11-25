@@ -17,6 +17,8 @@ import React, { useEffect, useState } from "react";
 import "./DXTreeMap.scss";
 import { TreeMapChart, TreeMapChartItem } from "../../utilities/chart";
 import DXToggleMenu from "../DXToggleMenu/DXToggleMenu";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface TreeMapProps {
     index: number;
@@ -24,7 +26,9 @@ export interface TreeMapProps {
     hideFilters?: boolean;
 }
 
-const DXTreeMap = ( props: TreeMapProps ) => {
+const DXTreeMap = ( props: ExtendableProps<TreeMapProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { index: _index, data: _data, hideFilters: _hideFilters, className, ref, ...rest } = props;
     // States
     const [chartData, setChartData] = useState<any>( props.data );
     const [filters, setFilters] = useState<any>( [] );
@@ -116,7 +120,7 @@ const DXTreeMap = ( props: TreeMapProps ) => {
     }, [chartData] );
 
     return (
-        <div className="dxTreeMap">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxTreeMap", className )}>
             {!props.hideFilters &&
                 <div className="dxTreeMap__filter" data-testid="dxTreeMap-filter">
                     <DXToggleMenu buttons={filters} type="single" />

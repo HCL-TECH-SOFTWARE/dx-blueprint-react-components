@@ -13,11 +13,13 @@
  * limitations under the License.                                           *
  * ======================================================================== */
 
-import React, { ReactElement, useEffect, useRef, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import "./DXChartCard.scss";
 import { Dropdown } from "react-bootstrap";
 import { StateIcons, getIcon, renderAvatarLetters } from "../../utilities";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface DropDownItem {
     label: string;
@@ -69,7 +71,9 @@ const CustomToggle = React.forwardRef<HTMLDivElement, any>( ( { children, onClic
 ) );
 CustomToggle.displayName = 'CustomToggle';
 
-const DXChartCard = ( props: ChartCardProps ) => {
+const DXChartCard = ( props: ExtendableProps<ChartCardProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { id: _id, displayName: _displayName, jobTitle: _jobTitle, hideImage: _hideImage, profileImage: _profileImage, reportersNumbers: _reportersNumbers, menuOptions: _menuOptions, onCollapsedChange: _onCollapsedChange, reporterUsers: _reporterUsers, manager: _manager, icons: _icons, dropdownOpen: _dropdownOpen, className, ref, ...rest } = props;
     const [collapsedClass, setCollapsedClass] = useState( '' );
     const [arrowPosition, setArrowPosition] = useState( getIcon( props.icons, "close", 'ci-Caret_Down_MD' ) );
     const [collapsed, setCollapsed] = useState( false );
@@ -81,7 +85,6 @@ const DXChartCard = ( props: ChartCardProps ) => {
     const MAX_WIDTH_CONTAINER = 576;
     const [mobile, setMobile] = useState( false );
     const renderCardInfo: ReactElement[] = [];
-    const chartCard = useRef( null );
 
     const validateMobile = function () {
         window.innerWidth <= MAX_WIDTH_CONTAINER ? setMobile( true ) : setMobile( false );
@@ -239,7 +242,7 @@ const DXChartCard = ( props: ChartCardProps ) => {
 
     if ( mobile ) {
         return (
-            <div className={`dxChartCard ${position} ${classInfo}`} id={`dxChartCard--${props.id}`} ref={chartCard} data-testid="dxChartCard" key={props.id}>
+            <div {...pickDomProps( rest )} className={classNames( `dxChartCard ${position} ${classInfo}`, className )} id={`dxChartCard--${props.id}`} ref={ref} data-testid="dxChartCard" key={props.id}>
                 <div className="dxChartCard__info--mobile" data-testid="dxChartCard-info-mobile">
                     {renderCardInfo}
                 </div>
@@ -248,7 +251,7 @@ const DXChartCard = ( props: ChartCardProps ) => {
         );
     } else {
         return (
-            <div className={`dxChartCard ${position} ${classInfo}`} id={`dxChartCard--${props.id}`} ref={chartCard} data-testid="dxChartCard" key={props.id}>
+            <div {...pickDomProps( rest )} className={classNames( `dxChartCard ${position} ${classInfo}`, className )} id={`dxChartCard--${props.id}`} ref={ref} data-testid="dxChartCard" key={props.id}>
                 {renderCardInfo}
                 {props.menuOptions && menuOptions()}
             </div >

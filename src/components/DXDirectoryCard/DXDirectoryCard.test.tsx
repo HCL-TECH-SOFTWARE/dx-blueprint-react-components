@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen, act } from "@testing-library/react";
 import DXDirectoryCard, { DirectoryCardProps } from "./DXDirectoryCard";
@@ -420,4 +421,15 @@ describe( "DirectoryCard component", () => {
             expect( screen.getByTestId( "dx-directory-card-buttons-container" ) ).not.toHaveClass( "dxDirectoryCard__containerButtons--center" );
         } );
     } );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXDirectoryCard {...directoryCardWithLabelArgs} {...extra} /> );
+
+test( "extra props: unknown props do not reach the DOM and the generated id stays", () => {
+    const props = { ...directoryCardWithLabelArgs, id: "other", unknownProp: "x", "data-extra": "yes" } as React.ComponentProps<typeof DXDirectoryCard>;
+    const { container } = render( <DXDirectoryCard {...props} /> );
+    const root = container.firstElementChild as HTMLElement;
+    expect( root ).toHaveAttribute( "data-extra", "yes" );
+    expect( root ).not.toHaveAttribute( "unknownprop" );
+    expect( root.id ).toBe( `dxDirectoryCard-${directoryCardWithLabelArgs.index}` );
 } );

@@ -23,6 +23,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { getColNumber } from "../../utilities";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface FullImageCatalogItem {
     data: {};
@@ -57,7 +59,9 @@ const hasValidPaginationProps = ( properties: any ) => {
 /*
 ** @deprecated: From @version 1.31.0-alpha use DXGenericCatalog instead
 */
-const DXFullImageCatalog = ( props: FullImageCatalogProps ) => {
+const DXFullImageCatalog = ( props: ExtendableProps<FullImageCatalogProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { items: _items, paginationProps: _paginationProps, totalItems: _totalItems, filterType: _filterType, categories: _categories, hideFilters: _hideFilters, searchLabel: _searchLabel, searchPlaceholder: _searchPlaceholder, elementsPerRow: _elementsPerRow, _edit, className, ref, ...rest } = props;
     const items: FullImageCatalogItem[] = props.items.map( ( item: FullImageCatalogItem, index: number ) => ( { ...item, index: index } ) );
     /** STATES */
     // TaxonomyFilter
@@ -213,7 +217,7 @@ const DXFullImageCatalog = ( props: FullImageCatalogProps ) => {
     };
 
     return (
-        <div className="dxFullImageCatalog">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxFullImageCatalog", className )}>
             {
                 !props.hideFilters ? (
                     hasValidTaxonomyProps( props ) ? (

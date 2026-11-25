@@ -22,6 +22,8 @@ import Col from 'react-bootstrap/Col';
 
 import { ImageProps, IconButtonProps } from "../../utilities";
 import DXEmptyState from "../DXEmptyState";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface CarouselItem {
     image: ImageProps,
@@ -36,7 +38,9 @@ export interface CarouselProps {
     size: ( "small" | "medium" | "big" );
 }
 
-const DXCarousel = ( props: CarouselProps ) => {
+const DXCarousel = ( props: ExtendableProps<CarouselProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { items: _items, size: _size, className, ref, ...rest } = props;
     const rowRef = useRef<HTMLDivElement>( null );
     const imageRef = useRef<HTMLDivElement>( null );
     const textRef = useRef<HTMLParagraphElement>( null );
@@ -152,7 +156,7 @@ const DXCarousel = ( props: CarouselProps ) => {
     };
 
     return (
-        <div className="dxCarousel">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxCarousel", className )}>
             {( props.items.length != 0 ) ? renderItems() : <DXEmptyState title={"No items to render"}></DXEmptyState>}
         </div>
     );

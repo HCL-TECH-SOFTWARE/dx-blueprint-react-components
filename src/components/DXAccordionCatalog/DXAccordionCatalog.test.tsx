@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, fireEvent, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -602,3 +603,13 @@ test("should exclude empty or whitespace-only values from filter dropdown", () =
     expect(getByText(/site use/i)).toBeInTheDocument();
   });
   
+
+itSupportsExtensionProps( ( extra ) => (
+    <DXAccordionCatalog
+        items={itemsArgs}
+        paginationProps={{ sets: ["8", "10", "16"], active: 1, activeSet: 16 }}
+        totalItems={itemsArgs.length}
+        categories={["subject"]}
+        filterType="select"
+        {...extra} />
+) );

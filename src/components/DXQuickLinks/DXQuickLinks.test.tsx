@@ -15,8 +15,10 @@
 
 import React from "react";
 import '@testing-library/jest-dom';
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, within, fireEvent } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import DXQuickLinks, { QuickLinksProps } from "./DXQuickLinks";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 
 test( "Quicklinks Full Rendering", () => {
     const quickLinks: QuickLinksProps = {
@@ -452,5 +454,42 @@ test( "If hideTitle is marked as true, it won't show the title, regardless of a 
     quickLinkItems.forEach( item => {
         let nonExistentHeader = within( item ).queryByTestId( "quicklink-header" );
         expect( item ).not.toContainElement( nonExistentHeader );
+    } );
+} );
+
+const extensionQuickLinks: QuickLinksProps = {
+    index: 1,
+    title: "Important Links",
+    quickLinksCollection: [{ firstHeader: "1st line", url: "https://www.hcl-software.com", target: "_blank" }],
+};
+
+itSupportsExtensionProps( ( extra ) => <DXQuickLinks {...extensionQuickLinks} {...extra} /> );
+
+test( "a consumer onClick runs first on the root column, and the component still stops the click from bubbling", () => {
+    const onClick = jest.fn();
+    const outer = jest.fn();
+    const { container } = render( <div onClick={outer}><DXQuickLinks {...extensionQuickLinks} {...{ onClick } as object} /></div> );
+    fireEvent.click( container.querySelector( ".dxQuickLinks" ) as Element );
+    expect( onClick ).toHaveBeenCalledTimes( 1 );
+    expect( outer ).not.toHaveBeenCalled();
+} );
+
+test( "with no quick links nothing is rendered, so className and extra props have nowhere to go", () => {
+    const { container } = render( <DXQuickLinks {...extensionQuickLinks} quickLinksCollection={[]} className="bp-contract" data-contract="yes" /> );
+    expect( container ).toBeEmptyDOMElement();
+} );
+
+describe( "DXQuickLinks keyboard activation with a consumer onClick", () => {
+    test( "Enter on a quick link reaches the consumer onClick on the root, and the component still stops the click from bubbling", async () => {
+        const onClick = jest.fn();
+        const outer = jest.fn();
+        // A same-page link: jsdom only implements hash navigation
+        const props = { ...extensionQuickLinks, quickLinksCollection: [{ firstHeader: "1st line", url: "#quick-link", target: "_self" }] };
+        render( <div onClick={outer}><DXQuickLinks {...props} {...{ onClick } as object} /></div> );
+        await userEvent.tab();
+        expect( screen.getByTestId( "quicklink-item" ) ).toHaveFocus();
+        await userEvent.keyboard( "{Enter}" );
+        expect( onClick ).toHaveBeenCalledTimes( 1 );
+        expect( outer ).not.toHaveBeenCalled();
     } );
 } );

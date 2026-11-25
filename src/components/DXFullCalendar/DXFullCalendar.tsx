@@ -21,6 +21,8 @@ import { Form } from 'react-bootstrap';
 import { addDays, addMonths, formatDate, isSameDay, isSameMonth, parseDateWithFormat, startOfMonth, startOfWeek } from "../../utilities/dateTime";
 import DXToggleMenu, { ToggleMenuProps } from "../DXToggleMenu/DXToggleMenu";
 import { LinksProps, SliderIcons, getIcon, getLinkTarget } from "../../utilities";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 interface Event {
     info: LinksProps,
@@ -39,7 +41,9 @@ export interface ExtendedSliderIcons extends SliderIcons {
     alert?: string;
 }
 
-const DXFullCalendar = ( props: FullCalendarProps ) => {
+const DXFullCalendar = ( props: ExtendableProps<FullCalendarProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { events: _events, isMobile: _isMobile, icons: _icons, className, ref, ...rest } = props;
     // STATES AND VARIABLES
     // Calendar
     const today = new Date();
@@ -519,7 +523,7 @@ const DXFullCalendar = ( props: FullCalendarProps ) => {
     };
 
     return (
-        <div className="dxFullCalendar">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxFullCalendar", className )}>
             <div className={isLandscape ? "dxFullCalendar__calendar" : "dxFullCalendar__calendar dxFullCalendar__calendar--blur"}>
                 <div className="dxFullCalendar__title">
                     <div data-testid="full-calendar-current-month">{

@@ -17,6 +17,8 @@ import "./DXAppCard.scss";
 import React from "react";
 import { ImageProps } from "../../utilities";
 import { CardComponent } from "../../utilities/CardComponent/CardComponent";
+import { pickDomProps, chainHandlers } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface AppCardProps extends CardComponent {
     media: ImageProps | string,
@@ -24,7 +26,10 @@ export interface AppCardProps extends CardComponent {
     label: string,
 }
 
-const DXAppCard = ( props: AppCardProps ) => {
+const DXAppCard = ( props: AppCardProps & { className?: string; ref?: React.Ref<HTMLButtonElement>; } ) => {
+    // Own props are pulled out; only DOM-safe extras reach the root (the props type has an index signature).
+    const { media: _media, actionFn: _actionFn, label: _label, _search, index: _index, className, ref, ...rest } = props;
+    const { onClick: consumerOnClick, onKeyDown: consumerOnKeyDown, ...domAttrs } = pickDomProps( rest );
 
     function isAnImage( obj: any ): obj is ImageProps {
         return 'url' in obj;
@@ -50,7 +55,13 @@ const DXAppCard = ( props: AppCardProps ) => {
     };
 
     return (
-        <button className="dxAppCard" onClick={( e ) => handleTrigger( e )} onKeyDown={( e ) => handleTrigger( e )}>
+        <button
+            {...domAttrs}
+            ref={ref}
+            className={classNames( "dxAppCard", className )}
+            // The consumer's handlers run first and can stop the action with preventDefault
+            onClick={chainHandlers( consumerOnClick as React.MouseEventHandler<HTMLButtonElement> | undefined, ( e ) => handleTrigger( e ) )}
+            onKeyDown={chainHandlers( consumerOnKeyDown as React.KeyboardEventHandler<HTMLButtonElement> | undefined, ( e ) => handleTrigger( e ) )}>
             <div className="dxAppCard__container">
                 {getMedia()}
             </div>

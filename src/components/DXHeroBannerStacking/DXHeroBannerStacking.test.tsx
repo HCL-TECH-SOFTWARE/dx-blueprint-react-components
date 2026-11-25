@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen } from "@testing-library/react";
 import DXHeroBannerStacking from "./DXHeroBannerStacking";
@@ -28,3 +29,5 @@ test( "If the card has the expected style index value", () => {
     render( <DXHeroBannerStacking {...HeroBannerStackingArgs} /> );
     expect( screen.getByTestId( "HBStacking--list" ).firstChild ).toHaveStyle( "--index: 1" );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXHeroBannerStacking {...HeroBannerStackingArgs} {...extra} /> );

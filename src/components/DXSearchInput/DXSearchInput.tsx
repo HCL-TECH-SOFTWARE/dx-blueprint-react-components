@@ -21,6 +21,8 @@ import DXCard, { CardProps } from "../DXCard/DXCard";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface SearchInputProps {
     searchOptions: LinksProps[],
@@ -42,7 +44,9 @@ export interface TypeSection {
     cards: CardProps[];
 }
 
-const DXSearchInput = ( props: SearchInputProps ) => {
+const DXSearchInput = ( props: ExtendableProps<SearchInputProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { searchOptions: _searchOptions, searchCards: _searchCards, searchFn: _searchFn, buttonLabel: _buttonLabel, placeholder: _placeholder, collapsed: _collapsed, suggestedInfo: _suggestedInfo, showOverlay: _showOverlay, icons: _icons, className, ref, ...rest } = props;
     const [filteredOptions, setFilteredOptions] = useState<any>( props.searchOptions );
     const [filteredCards, setFilteredCards] = useState<any>( [] );
     const [listActive, setListActive] = useState( false );
@@ -300,7 +304,7 @@ const DXSearchInput = ( props: SearchInputProps ) => {
     }, [collapsed] );
 
     return (
-        <div className="dxSearchInput" >
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxSearchInput", className )}>
             <Form id="dxSearchInput__form" role="search" aria-label="search-input" onSubmit={( e ) => { e.preventDefault(); handleSearchSubmit(); }} ref={refForm} onBlur={handleBlur}>
                 <Form.Group className='dxSearchInput__form'>
                     <InputGroup>

@@ -18,6 +18,8 @@ import "./DXDashboardContainer.scss";
 import { IconButtonProps, LinksProps, generateLinkAnchor, getIcon } from "../../utilities";
 import DXButton from "../DXButton/DXButton";
 import * as AllComponents from "./../index";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface DashboardContainerProps {
     title?: string;
@@ -45,7 +47,9 @@ interface CustomElementType {
     props: any;
 }
 
-const DXDashboardContainer = ( props: DashboardContainerProps ) => {
+const DXDashboardContainer = ( props: ExtendableProps<DashboardContainerProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { title: _title, icons: _icons, link: _link, elements: _elements, primaryButton: _primaryButton, secondaryButton: _secondaryButton, borderlessButton: _borderlessButton, badge: _badge, className, ref, ...rest } = props;
     const [elementsActive, setElementsActive] = useState<any>( {} );
 
     const renderChildren = () => {
@@ -122,7 +126,7 @@ const DXDashboardContainer = ( props: DashboardContainerProps ) => {
     };
 
     return (
-        <div className="dxDashboardContainer">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxDashboardContainer", className )}>
             <div className="dxDashboardContainer__header">
                 <div className="dxDashboardContainer__title" data-testid="DC__title">
                     {

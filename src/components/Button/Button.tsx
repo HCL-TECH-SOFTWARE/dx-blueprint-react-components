@@ -16,8 +16,12 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
 import { ButtonMouseHandler } from "../../utilities";
+import { classNames } from "../../utilities/classNames";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
 import "./Button.scss";
-const ButtonComponent = ( props: ButtonMouseHandler ) => {
-    return <Button onClick={props.onClick} className="myButton" variant="primary"><b>{props.label || "Default button label"}</b></Button>;
+const ButtonComponent = ( props: ExtendableProps<ButtonMouseHandler, "button"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { label, onClick, className, ref, ...rest } = props;
+    return <Button {...pickDomProps( rest )} ref={ref} onClick={props.onClick} className={classNames( "myButton", className )} variant="primary"><b>{props.label || "Default button label"}</b></Button>;
 };
 export default ButtonComponent;

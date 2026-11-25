@@ -18,6 +18,8 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { Badge, Dropdown } from 'react-bootstrap';
 import { ButtonProps, TagProps } from "../../utilities";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 export interface CaseCardProps {
     title: string,
     subtitle: string,
@@ -30,11 +32,13 @@ const PortalDropdownMenu = React.forwardRef<HTMLDivElement, any>( ( { show, clos
     return ReactDOM.createPortal( <div ref={ref} {...props} />, document.body ) as any;
 } );
 PortalDropdownMenu.displayName = 'PortalDropdownMenu';
-const DXCaseCard = ( props: CaseCardProps ) => {
+const DXCaseCard = ( props: ExtendableProps<CaseCardProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { title: _title, subtitle: _subtitle, label: _label, options: _options, dropdownOpen: _dropdownOpen, className, ref, ...rest } = props;
     // Generates a unique ID once per component mount to pass the accessibility PR review
     const [kebabId] = useState( () => Math.random().toString( 36 ).substring( 2, 9 ) );
     return (
-        <div className="dxCaseCard">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxCaseCard", className )}>
             <div className="row">
                 <div className="col-5">
                     <p className="dxCaseCard__title">{props.title}</p>

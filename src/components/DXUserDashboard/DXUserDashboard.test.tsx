@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render } from "@testing-library/react";
 import DXUserDashboard from "./DXUserDashboard";
@@ -321,3 +322,5 @@ test( "If the user does pass the align prop as center for the vertical component
     let component = getByTestId( "user-dashboard" );
     expect( component ).toHaveClass( "dxUserDashboard--vertical center" );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXUserDashboard title="Hello Employee" subtitle="Quality Assurance Manager" metadata="Engineering - Part Time" {...extra} /> );

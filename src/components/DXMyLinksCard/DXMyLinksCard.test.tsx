@@ -14,9 +14,10 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
-import { render } from "@testing-library/react";
+import { render, act } from "@testing-library/react";
 import DXMyLinksCard from "./DXMyLinksCard";
 import { LinksCardAllButtonsArgs, LinksCardChangedIconsArgs, LinksCardCompleteArgs, LinksCardLinkArgs, LinksCardLinkWithButtonArgs } from "./DXMyLinksCard.stories";
 
@@ -152,4 +153,32 @@ test( "If clicking the kebab toggle invokes the Dropdown's onToggle handler with
     await userEvent.click( toggle );
 
     expect( toggle ).toBeInTheDocument();
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXMyLinksCard {...LinksCardLinkArgs} {...extra} /> );
+
+describe( "DXMyLinksCard dropdown with consumer extension props", () => {
+    test( "the portaled menu opens and its items work while ref, className and attributes stay on the card root", async () => {
+        const ref = React.createRef<HTMLDivElement>();
+        const { container } = render( <DXMyLinksCard {...LinksCardLinkWithButtonArgs} dropdownOpen ref={ref} className="bp-consumer" data-consumer="yes" /> );
+        // Let the dropdown's positioning (Popper) finish its async update inside act
+        await act( async () => {} );
+        const root = container.firstElementChild as HTMLElement;
+        const menu = document.body.querySelector( ".dxMyLinksCard__dropdownMenu.dropdown-menu" ) as HTMLElement;
+        expect( ref.current ).toBe( root );
+        expect( root ).toHaveClass( "dxMyLinksCard", "bp-consumer" );
+        expect( menu ).toBeInTheDocument();
+        expect( menu ).toHaveClass( "show" );
+        expect( root.contains( menu ) ).toBe( false );
+        expect( menu ).not.toHaveClass( "bp-consumer" );
+        expect( menu ).not.toHaveAttribute( "data-consumer" );
+        expect( menu.querySelectorAll( ".dxMyLinksCard__dropdownItem" ).length ).toBe( LinksCardLinkWithButtonArgs.dropdown?.length );
+    } );
+
+    test( "the menu is hidden when dropdownOpen is false, with consumer extension props", () => {
+        const ref = React.createRef<HTMLDivElement>();
+        render( <DXMyLinksCard {...LinksCardLinkWithButtonArgs} dropdownOpen={false} ref={ref} className="bp-consumer" /> );
+        expect( document.body.querySelector( ".dxMyLinksCard__dropdownMenu.show" ) ).toBeNull();
+        expect( ref.current ).toHaveClass( "dxMyLinksCard" );
+    } );
 } );

@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import { BannerArgs } from "./DXMosaicBanner.stories";
@@ -127,4 +128,4 @@ test( "Banner buttons have the expected sizes in tablet layout", () => {
     expect( mosaicButtonsSm.length ).toBe( 4 );
 } );
 
-
+itSupportsExtensionProps( ( extra ) => <MosaicBanner {...BannerArgs} {...extra} /> );

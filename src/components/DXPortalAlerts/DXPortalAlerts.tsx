@@ -16,6 +16,8 @@
 import React from "react";
 import { generateLinkAnchor, LinksProps } from "../../utilities";
 import "./DXPortalAlerts.scss";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface PortalAlertsProps {
     type: ( "success" | "warning" | "error" | "general" );
@@ -25,7 +27,9 @@ export interface PortalAlertsProps {
     hideLink?: boolean;
 }
 
-const DXPortalAlerts = ( props: PortalAlertsProps ) => {
+const DXPortalAlerts = ( props: ExtendableProps<PortalAlertsProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { type: _type, iconClass: _iconClass, title: _title, link: _link, hideLink: _hideLink, className, ref, ...rest } = props;
 
     let type = props.type;
     let iconName = "";
@@ -52,10 +56,9 @@ const DXPortalAlerts = ( props: PortalAlertsProps ) => {
 
     return (
         <div
-            className={
-                "dxPortalAlerts " +
-                "dxPortalAlerts--" + type
-            }>
+            {...pickDomProps( rest )}
+            ref={ref}
+            className={classNames( "dxPortalAlerts " + "dxPortalAlerts--" + type, className )}>
             <div className="dxPortalAlerts__iconContainer">
                 <i className={props.iconClass || iconName} data-testid="portalAlert-icon"></i>
             </div>

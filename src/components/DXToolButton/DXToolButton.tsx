@@ -16,6 +16,8 @@
 import "./DXToolButton.scss";
 import React from "react";
 import { ImageProps } from "../../utilities";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface ToolButtonProps {
     icon: string,
@@ -26,7 +28,9 @@ export interface ToolButtonProps {
     badge?: number;
 }
 
-const DXToolButton = ( props: ToolButtonProps ) => {
+const DXToolButton = ( props: ExtendableProps<ToolButtonProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { icon: _icon, label: _label, image: _image, showLabel: _showLabel, onClick: _onClick, badge: _badge, className, ref, ...rest } = props;
     // GET - Style and classes
     const getClass = ( type: "button" | "image", badgesAmnt: number | undefined ) => {
         let finalClass = "";
@@ -54,7 +58,7 @@ const DXToolButton = ( props: ToolButtonProps ) => {
     };
 
     return (
-        <div className="dxToolButton">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxToolButton", className )}>
             {props.image && props.image.url ? (
                 <div className="dxToolButton__imageButton">
                     <div className={getClass( "image", props.badge )}

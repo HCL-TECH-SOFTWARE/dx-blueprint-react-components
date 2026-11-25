@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, fireEvent, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -234,3 +235,5 @@ test( "If icon changes when value is set", () => {
     render( <DXDrawerMenu iconClass="ci-Hamburger_LG" contentId="#my-content" direction="left" showOverlay={true} /> );
     expect( screen.getByTestId( "drawer-menu-button" ).querySelector( "i" ) ).toHaveClass( "ci-Hamburger_LG" );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXDrawerMenu contentId="#my-content" direction="left" {...extra} /> );

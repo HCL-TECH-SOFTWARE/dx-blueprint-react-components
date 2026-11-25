@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render } from "@testing-library/react";
 import DXMap from "./DXMap";
@@ -44,3 +45,4 @@ test( "If an url is passed to the props it will render an iframe with a src attr
     expect( src ).toEqual( props.iframeUrl );
 } );
 
+itSupportsExtensionProps( ( extra ) => <DXMap iframeUrl="https://www.google.com/maps/embed?pb=test" {...extra} /> );

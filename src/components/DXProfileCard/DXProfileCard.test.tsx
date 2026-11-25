@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { ProfileCardArgs, NoPicProfileCardArgs } from "./DXProfileCard.stories";
@@ -92,4 +93,20 @@ test( "When the image finish its rendering, the element 'loader__container' shou
     fireEvent.load( cover );
     let loaderContainer = container.querySelector( ".loader__container" );
     expect( loaderContainer ).toHaveClass( "d-none" );
+} );
+
+itSupportsExtensionProps( ( extra ) => <ProfileCard {...ProfileCardArgs} {...extra} /> );
+
+test( "extra props: unknown props do not reach the DOM", () => {
+    const props = { ...ProfileCardArgs, unknownProp: "x", "data-extra": "yes" } as React.ComponentProps<typeof ProfileCard>;
+    const { container } = render( <ProfileCard {...props} /> );
+    const root = container.firstElementChild as HTMLElement;
+    expect( root ).toHaveAttribute( "data-extra", "yes" );
+    expect( root ).not.toHaveAttribute( "unknownprop" );
+} );
+
+test( "a role in the card data is the person's job title, so it is not rendered as an ARIA role on the root", () => {
+    const props = { ...ProfileCardArgs, role: "Software Developer" } as React.ComponentProps<typeof ProfileCard>;
+    const { container } = render( <ProfileCard {...props} /> );
+    expect( container.firstElementChild ).not.toHaveAttribute( "role" );
 } );

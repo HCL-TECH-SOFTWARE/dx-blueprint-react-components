@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import "@testing-library/jest-dom";
 import { act, render, screen } from "@testing-library/react";
 import { ParallaxContentBlockDemoArgs } from "./DXParallaxContentBlock.stories";
@@ -84,3 +85,5 @@ test( "If the component's width is larger than 768px after being equal to said v
     const event = getAllByTestId( "pcb-blockInfo" )[0];
     expect( event ).not.toHaveClass( "row dxParallaxContenBlock__eventInfoMobile" );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXParallaxContentBlock {...ParallaxContentBlockDemoArgs} {...extra} /> );

@@ -18,6 +18,8 @@ import { LinksProps, getLinkTarget, getLinkIcon, IconButtonProps, getVideoFormat
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
 import DXButton, { DisplayType } from "../DXButton/DXButton";
 import "./DXHeroBannerOverlay.scss";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface HeroBannerOverlayProps extends BasicComponent {
     index: number;
@@ -59,7 +61,10 @@ export interface ShapeProps {
     alignment?: string;
 }
 
-const DXHeroBannerOverlay = ( props: HeroBannerOverlayProps ) => {
+const DXHeroBannerOverlay = ( props: ExtendableProps<HeroBannerOverlayProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { index: _index, header: _header, subheader: _subheader, body: _body, textAlign: _textAlign, textColor: _textColor, background: _background, media: _media, overlayImage: _overlayImage, foreground: _foreground, buttons: _buttons, link: _link, icons: _icons, _edit, className, ref, ...rest } = props;
+    const domProps = pickDomProps( rest );
     const DEFAULT_DESKTOP_HEIGHT = "450px";
     const DEFAULT_MOBILE_HEIGHT = "520px";
     const spacingRegex = /^((\d+(\.\d)?(px|em|rem|%|ch|cm|in|pc|pt|mm|ex))|(inherit|initial|revert|revert-layer|unset))$/i;
@@ -246,7 +251,7 @@ const DXHeroBannerOverlay = ( props: HeroBannerOverlayProps ) => {
     };
 
     return (
-        <div className="dxHBOverlay" id={`dxHBOverlay-${props.index}`} data-testid="hb-overlay" style={getComponentStyles()}>
+        <div {...domProps} ref={ref} className={classNames( "dxHBOverlay", className )} id={`dxHBOverlay-${props.index}`} data-testid="hb-overlay" style={{ ...( domProps.style as React.CSSProperties | undefined ), ...getComponentStyles() }}>
             <style>{getBackgroundMediaStyles()}</style>
             {props.overlayImage &&
                 <img className="dxHBOverlay__overlayImage" role="presentation" data-testid="hb-overlay-img-overlay" src={props.overlayImage}></img>

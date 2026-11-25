@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React, { FormEventHandler } from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
@@ -210,3 +211,5 @@ test( "Utilites icon changes on giving iconName prop", () => {
 
     expect( screen.getByTestId( "utilities-icon" ).firstChild ).toHaveClass( "ci-Info" );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXNavigationHeader {...NavigationArgs} {...extra} /> );

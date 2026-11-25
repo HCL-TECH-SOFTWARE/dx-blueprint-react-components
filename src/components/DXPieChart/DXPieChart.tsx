@@ -16,6 +16,8 @@
 import React, { useEffect } from "react";
 import "./DXPieChart.scss";
 import { ChartItem, PieChart, PieChartItem } from "../../utilities";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface PieProps {
     index: number;
@@ -26,7 +28,9 @@ export interface PieProps {
     suffix?: string;
 }
 
-const DXPieChart = ( props: PieProps ) => {
+const DXPieChart = ( props: ExtendableProps<PieProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { index: _index, data: _data, valueDecimals: _valueDecimals, showNominal: _showNominal, prefix: _prefix, suffix: _suffix, className, ref, ...rest } = props;
 
     //Calculating the percentage value of the pie chart
     let total = 0;
@@ -59,7 +63,7 @@ const DXPieChart = ( props: PieProps ) => {
     } );
 
     return (
-        <div id={`#dxPieChart-${props.index}`} className="dxPieChart" data-testid="dxPieChart-parent">
+        <div {...pickDomProps( rest )} ref={ref} id={`#dxPieChart-${props.index}`} className={classNames( "dxPieChart", className )} data-testid="dxPieChart-parent">
         </div>
     );
 };

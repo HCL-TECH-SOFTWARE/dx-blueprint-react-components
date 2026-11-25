@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from 'react';
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import DXMicrositeNavigation, { MicrositeProps } from "./DXMicrositeNavigation";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
@@ -442,3 +443,5 @@ test( "If icons change if parameters are set", () => {
     const container = getByTestId( "microsite-slider-more-link" ) as HTMLAnchorElement;
     expect( container.querySelector( "i" ) ).toHaveClass( icons.more );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXMicrositeNavigation {...MicrositeNavigationArgs} {...extra} /> );

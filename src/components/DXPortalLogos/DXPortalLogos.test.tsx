@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen } from "@testing-library/react";
 import DXPortalLogos from "./DXPortalLogos";
@@ -39,3 +40,5 @@ describe( "DirectoryCard component", () => {
         expect( document.querySelector( ".dxPortalLogos__secondary" ) ).not.toBeInTheDocument();
     } );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXPortalLogos {...portalLogosDefaultArgs} {...extra} /> );

@@ -18,6 +18,8 @@ import "./DXNewsFeed.scss";
 import DXSocialCard from "../DXSocialCard";
 import { SocialCardProps } from "../DXSocialCard/DXSocialCard";
 import DXFullImageCard, { FullImageCardProps } from "../DXFullImageCard/DXFullImageCard";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface NewsFeedProps {
     title: string;
@@ -37,7 +39,9 @@ export interface NFFullImageCard extends FullImageCardProps {
     height?: "regular" | "small";
 }
 
-const DXNewsFeed = ( props: NewsFeedProps ) => {
+const DXNewsFeed = ( props: ExtendableProps<NewsFeedProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { title: _title, filterCategories: _filterCategories, items: _items, allButtonText: _allButtonText, className, ref, ...rest } = props;
     const containerRef = useRef<HTMLUListElement | null>( null );
     const [filterKey, setFilterKey] = React.useState( "*" );
     const [activeFilter, setActiveFilter] = useState( "*" );
@@ -106,7 +110,7 @@ const DXNewsFeed = ( props: NewsFeedProps ) => {
     };
 
     return (
-        <div className="dxNewsFeed">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxNewsFeed", className )}>
             <div className="dxNewsFeed__topContainer">
                 <div data-testid="NF-title" className="dxNewsFeed__title">{props.title}</div>
                 <ul data-testid="NF-filterButtons" className="dxNewsFeed__filterButtons">

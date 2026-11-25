@@ -19,6 +19,8 @@ import DXAccordion, { AccordionProps } from "../DXAccordion/DXAccordion";
 import DXPagination from "../DXPagination";
 import DXTaxonomyFilter from "../DXTaxonomyFilter";
 import { TaxFilterProps, TaxonomyFilterProps } from "../DXTaxonomyFilter/DXTaxonomyFilter";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 /*
 ** @deprecated: From @version 1.31.0-alpha use DXGenericCatalog instead
@@ -52,7 +54,9 @@ const hasValidPaginationProps = ( properties: any ) => {
         'active' in properties.paginationProps && 'activeSet' in properties.paginationProps;
 };
 
-const DXAccordionCatalog = ( props: AccordionCatalogProps ) => {
+const DXAccordionCatalog = ( props: ExtendableProps<AccordionCatalogProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { items: _items, paginationProps: _paginationProps, totalItems: _totalItems, filterType: _filterType, categories: _categories, hideFilters: _hideFilters, searchLabel: _searchLabel, searchPlaceholder: _searchPlaceholder, activeIndex: _activeIndex, className, ref, ...rest } = props;
     /** STATES */
     // TaxonomyFilter
     const [filteredItems, setFilteredItems] = useState( props.items );
@@ -227,7 +231,7 @@ const DXAccordionCatalog = ( props: AccordionCatalogProps ) => {
     };
 
     return (
-        <div className="dxACatalog">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxACatalog", className )}>
             {
                 !props.hideFilters ? (
                     hasValidTaxonomyProps( props ) ? (

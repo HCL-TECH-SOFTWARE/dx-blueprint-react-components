@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React, { act } from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
@@ -203,3 +204,5 @@ test( "If component renders edit button when _edit prop is supplied", () => {
     render( <DXHeroBannerCarousel _edit={editMock as any} {...HeroBannerCarouselArgs}></DXHeroBannerCarousel> );
     expect( screen.getByTestId( "edit-button" ) ).toBeInTheDocument();
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXHeroBannerCarousel {...HeroBannerCarouselArgs} {...extra} /> );

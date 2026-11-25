@@ -14,9 +14,11 @@
  * ======================================================================== */
 
 import "./DXSearchSuggestions.scss";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Form, InputGroup } from 'react-bootstrap';
 import { LinksProps, getIcon } from "../../utilities";
+import { ExtendableProps, mergeRefs, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface SSuggestionsProps {
     searchItems: LinksProps[],
@@ -29,11 +31,15 @@ export interface SSuggestionsProps {
     };
 }
 
-const DXSearchSuggestions = ( props: SSuggestionsProps ) => {
+const DXSearchSuggestions = ( props: ExtendableProps<SSuggestionsProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { searchItems: _searchItems, searchFn: _searchFn, searchPlaceholder: _searchPlaceholder, iconPosition: _iconPosition, icons: _icons, className, ref, ...rest } = props;
     const [filteredItems, setFilteredItems] = useState<any>( props.searchItems );
     const [search, setSearch] = useState( "" );
 
     const componentRef = useRef<HTMLDivElement>( null );
+    // The internal ref and the consumer ref both point at the root
+    const mergedRootRef = useMemo( () => mergeRefs( componentRef, ref ), [ref] );
 
     const handleSearch = ( e: any ) => {
         let filter = e.target.value;
@@ -125,7 +131,7 @@ const DXSearchSuggestions = ( props: SSuggestionsProps ) => {
     );
 
     return (
-        <div className="dxSSuggestions" ref={componentRef}>
+        <div {...pickDomProps( rest )} ref={mergedRootRef} className={classNames( "dxSSuggestions", className )}>
             <InputGroup data-testid="ss-input-group">
                 {props.iconPosition === "right" ? (
                     <>

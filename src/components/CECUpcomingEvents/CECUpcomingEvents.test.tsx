@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from 'react';
+import { itSupportsExtensionProps } from '../../testUtils/extensionContract';
 import { render, act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
@@ -706,5 +707,49 @@ describe( "CECUpcomingEvents - Hardened Mutation Suite", () => {
       const container = document.querySelector( '.cec-upcoming-events' );
       expect( container ).toBeInTheDocument();
     } );
+  } );
+} );
+
+type UpcomingEventsProps = React.ComponentProps<typeof CECUpcomingEvents>;
+const oneItem = [{ id: "1" }] as unknown as UpcomingEventsProps["items"];
+
+// CECUpcomingEvents declares style as its own (CSSProperties) prop
+itSupportsExtensionProps( ( extra ) => <CECUpcomingEvents items={oneItem} {...extra} />, { ownKeys: ["style"] } );
+
+describe( "CECUpcomingEvents - extension props", () => {
+  it( "does not forward the event-card props to the root, but keeps DOM-safe extras", () => {
+    const props = { items: oneItem, customActions: [], showRecurringIcon: true, "data-extra": "yes" } as unknown as UpcomingEventsProps;
+    const { container } = render( <CECUpcomingEvents {...props} /> );
+    const root = container.firstElementChild as HTMLElement;
+    expect( root ).toHaveAttribute( "data-extra", "yes" );
+    expect( root ).not.toHaveAttribute( "customactions" );
+    expect( root ).not.toHaveAttribute( "showrecurringicon" );
+  } );
+
+  it( "runs a consumer onClick on the root with the mouse event", async () => {
+    // currentTarget is only set while React dispatches the event, so it is captured inside the handler
+    let target: EventTarget | null = null;
+    const consumerClick = jest.fn( ( e: React.MouseEvent<HTMLDivElement> ) => { target = e.currentTarget; } );
+    const { container } = render( <CECUpcomingEvents items={oneItem} onClick={consumerClick} /> );
+    const root = container.firstElementChild as HTMLElement;
+    await userEvent.click( root );
+    expect( consumerClick ).toHaveBeenCalledTimes( 1 );
+    expect( target ).toBe( root );
+  } );
+
+  it( "keeps the card click handler its own: a card click calls onEventClick and then bubbles to the consumer root onClick", async () => {
+    const order: string[] = [];
+    const onEventClick = jest.fn( () => order.push( "card" ) );
+    const consumerClick = jest.fn( () => order.push( "root" ) );
+    render( <CECUpcomingEvents items={oneItem} onEventClick={onEventClick} onClick={consumerClick} /> );
+    await userEvent.click( screen.getAllByTestId( "cec-event" )[0] );
+    expect( onEventClick ).toHaveBeenCalledTimes( 1 );
+    expect( consumerClick ).toHaveBeenCalledTimes( 1 );
+    expect( order ).toEqual( ["card", "root"] );
+  } );
+
+  it( "keeps the component's own dir over a consumer-supplied one", () => {
+    const { container } = render( <CECUpcomingEvents items={oneItem} dir="rtl" /> );
+    expect( container.firstElementChild ).toHaveAttribute( "dir", "rtl" );
   } );
 } );

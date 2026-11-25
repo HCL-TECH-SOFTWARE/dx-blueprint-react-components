@@ -16,12 +16,16 @@
 import "./DXCasesCatalog.scss";
 import React from "react";
 import DXCaseCard, { CaseCardProps } from "../DXCaseCard/DXCaseCard";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface CasesCatalogProps {
     items: CaseCardProps[];
 }
 
-const DXCasesCatalog = ( props: CasesCatalogProps ) => {
+const DXCasesCatalog = ( props: ExtendableProps<CasesCatalogProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { items: _items, className, ref, ...rest } = props;
     const renderItems = ( items: CaseCardProps[] ) => {
         return items.map( ( item: CaseCardProps, index: number ) => (
             <li key={index}>
@@ -30,7 +34,7 @@ const DXCasesCatalog = ( props: CasesCatalogProps ) => {
         ) );
     };
     return (
-        <div className="dxCasesCatalog">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxCasesCatalog", className )}>
             <div className="dxCasesCatalog__header">
                 <div className="row">
                     <div className="col-5">

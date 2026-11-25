@@ -17,6 +17,8 @@ import "./DXSidebarMenu.scss";
 import React from "react";
 import DXCardButton, { CardButtonProps } from "../DXCardButton/DXCardButton";
 import DXCard, { CardProps } from "../DXCard/DXCard";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface SidebarMenuProps {
     title: string,
@@ -24,10 +26,12 @@ export interface SidebarMenuProps {
     card?: CardProps;
 }
 
-const DXSidebarMenu = ( props: SidebarMenuProps ) => {
+const DXSidebarMenu = ( props: ExtendableProps<SidebarMenuProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { title: _title, cardButtons: _cardButtons, card: _card, className, ref, ...rest } = props;
     let MAX_CARDS = 8;
     return (
-        <div className="dxSidebarMenu" data-testid="dxSidebarMenu">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxSidebarMenu", className )} data-testid="dxSidebarMenu">
             {props.title && <p className="dxSidebarMenu__title" data-testid="dxSidebarMenu-title" >{props.title}</p>}
             {
                 props.cardButtons && props.cardButtons.length > 0 ?

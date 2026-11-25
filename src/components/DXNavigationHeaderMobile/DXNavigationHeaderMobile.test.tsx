@@ -18,6 +18,7 @@ import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render, screen, act, fireEvent, within } from "@testing-library/react";
 import DXNavigationHeaderMobile, { NavigationItem } from "./DXNavigationHeaderMobile";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 
 
 // Mobile Header navigation image tests
@@ -778,4 +779,35 @@ describe( "DXNavigationHeaderMobile Mutation Score Hardening", () => {
         } );
     } );
 
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXNavigationHeaderMobile navigationItems={[]} navigationImage="test-logo.png" searchSubmit={() => {}} {...extra} /> );
+
+describe( "DXNavigationHeaderMobile with a consumer ref", () => {
+    it( "keeps an open menu open on an inside click and closes it on an outside click while an object ref is passed", async () => {
+        const ref = React.createRef<HTMLDivElement>();
+        const { container } = render( <DXNavigationHeaderMobile navigationItems={[]} navigationImage="test-logo.png" searchSubmit={jest.fn()} ref={ref} /> );
+        expect( ref.current ).toBe( container.firstElementChild );
+
+        await userEvent.click( screen.getByTestId( 'menu-button' ) );
+        expect( screen.getByTestId( "menu-container" ) ).toHaveClass( "active" );
+
+        // Inside the root: the internal navigation ref must still be attached, so the menu stays open
+        fireEvent.mouseDown( ref.current! );
+        expect( screen.getByTestId( "menu-container" ) ).toHaveClass( "active" );
+
+        fireEvent.mouseDown( document.body );
+        expect( screen.getByTestId( "menu-container" ) ).toHaveClass( "hidden" );
+    } );
+
+    it( "attaches a callback ref once across re-renders and clears it on unmount", () => {
+        const callbackRef = jest.fn();
+        const { container, rerender, unmount } = render( <DXNavigationHeaderMobile navigationItems={[]} navigationImage="test-logo.png" searchSubmit={() => {}} ref={callbackRef} /> );
+        const root = container.firstElementChild;
+        rerender( <DXNavigationHeaderMobile navigationItems={[]} navigationImage="other-logo.png" searchSubmit={() => {}} ref={callbackRef} /> );
+        expect( callbackRef ).toHaveBeenCalledTimes( 1 );
+        expect( callbackRef ).toHaveBeenLastCalledWith( root );
+        unmount();
+        expect( callbackRef ).toHaveBeenLastCalledWith( null );
+    } );
 } );

@@ -15,9 +15,10 @@
 
 import React, { act } from "react";
 import '@testing-library/jest-dom';
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import DXModalWindows from "./DXModalWindows";
 import { ModalWindowsArgs, DefaultExampleArgs, ModalWindowsIFrameArgs, ModalWindowsRichTextArgs } from "./DXModalWindows.stories";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import userEvent from "@testing-library/user-event";
 
 describe( "ModalWindows component", () => {
@@ -232,4 +233,58 @@ describe( "ModalWindows component", () => {
         expect( modal ).toBeNull();
     } );
 
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXModalWindows {...ModalWindowsArgs} {...extra} /> );
+
+describe( "DXModalWindows with consumer extension props", () => {
+    // Earlier tests in this file mock window.addEventListener without restoring it, which would stop the open-modal listener
+    beforeEach( () => {
+        jest.restoreAllMocks();
+    } );
+
+    // A local fixture: earlier tests mutate the shared story args, and closing modals of earlier tests can still be portaled on document.body
+    const extensionModalProps = ( index: number ) => ( {
+        index,
+        title: `Extension modal ${index}`,
+        text: "Extension modal text",
+        secondaryButton: { label: "Cancel", onClick: () => {} },
+    } );
+    const findModal = async ( index: number ) =>
+        ( await screen.findByText( `Extension modal ${index}` ) ).closest( '[data-testid="modal-windows"]' ) as HTMLElement;
+
+    test( "opens with openModal, keeps className and ref on the wrapper and off the portaled modal, and Cancel closes it", async () => {
+        const ref = React.createRef<HTMLDivElement>();
+        const { container } = render( <DXModalWindows {...extensionModalProps( 91 )} openModal={true} ref={ref} className="bp-consumer" data-consumer="yes" /> );
+        const modal = await findModal( 91 );
+        const wrapper = container.firstElementChild as HTMLElement;
+        expect( ref.current ).toBe( wrapper );
+        expect( wrapper ).toHaveClass( "dxModalWindows", "bp-consumer" );
+        expect( wrapper ).toHaveAttribute( "data-consumer", "yes" );
+        // react-bootstrap renders the modal in a portal on document.body, outside the wrapper
+        expect( wrapper.contains( modal ) ).toBe( false );
+        expect( modal.closest( ".bp-consumer, [data-consumer]" ) ).toBeNull();
+        await userEvent.click( modal.querySelector( '[data-testid="cancel-button"]' ) as HTMLElement );
+        await waitFor( () => expect( modal ).not.toBeInTheDocument() );
+        expect( ref.current ).toBe( wrapper );
+    } );
+
+    test( "Escape still closes the modal when the consumer passes ref and className", async () => {
+        const ref = React.createRef<HTMLDivElement>();
+        render( <DXModalWindows {...extensionModalProps( 92 )} openModal={true} ref={ref} className="bp-consumer" /> );
+        const modal = await findModal( 92 );
+        await userEvent.keyboard( "{Escape}" );
+        await waitFor( () => expect( modal ).not.toBeInTheDocument() );
+    } );
+
+    test( "the open-modal window event still opens the modal when a consumer ref is passed", async () => {
+        const ref = React.createRef<HTMLDivElement>();
+        render( <DXModalWindows {...extensionModalProps( 93 )} openModal={false} ref={ref} /> );
+        expect( screen.queryByText( "Extension modal 93" ) ).toBeNull();
+        act( () => {
+            window.dispatchEvent( new window.Event( "open-modal-93" ) );
+        } );
+        expect( await findModal( 93 ) ).toBeInTheDocument();
+        expect( ref.current ).toHaveClass( "dxModalWindows" );
+    } );
 } );

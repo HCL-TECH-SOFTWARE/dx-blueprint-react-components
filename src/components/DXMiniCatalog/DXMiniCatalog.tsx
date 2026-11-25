@@ -24,6 +24,8 @@ import "slick-carousel/slick/slick-theme.css";
 import SliderButton from "./components/SliderButton";
 import { SliderIcons } from "../../utilities";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
+import { ExtendableProps, SlideSink, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface MiniCatalogProps extends BasicComponent {
     index: number,
@@ -34,7 +36,9 @@ export interface MiniCatalogProps extends BasicComponent {
 /*
 ** @deprecated: From @version 1.32.0-alpha use DXGenericMiniCatalog instead
 */
-const DXMiniCatalog = ( props: MiniCatalogProps ) => {
+const DXMiniCatalog = ( props: ExtendableProps<MiniCatalogProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { index: _index, items: _items, icons: _icons, _edit, className, ref, ...rest } = props;
     const MAX_WIDTH_MOBILE = 390;
     let componentSize = 0;
     const items: CardProps[] = props.items.map( ( item: CardProps, index: number ) => ( { ...item, index: index } ) );
@@ -96,7 +100,8 @@ const DXMiniCatalog = ( props: MiniCatalogProps ) => {
                 <Slider {...settings} className="dxMiniCatalog__slider">
                     {
                         items.map( ( item, index ) => (
-                            <DXCard {...item} key={index} />
+                            // react-slick clones its direct children with className/style/tabIndex/onClick; the sink keeps them off the card
+                            <SlideSink key={index}><DXCard {...item} /></SlideSink>
                         ) )
                     }
                 </Slider>
@@ -152,7 +157,7 @@ const DXMiniCatalog = ( props: MiniCatalogProps ) => {
     }, [items] );
 
     return (
-        <div className="dxMiniCatalog" id={`dxMiniCatalog-${props.index}`}>
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxMiniCatalog", className )} id={`dxMiniCatalog-${props.index}`}>
             {
                 items.length === 0 ? (
                     <p>No items received</p>
@@ -162,7 +167,8 @@ const DXMiniCatalog = ( props: MiniCatalogProps ) => {
                     <Slider {...settings} className="dxMiniCatalog__slider">
                         {
                             items.map( ( item: CardProps ) => (
-                                <DXCard {...item} key={item.index} />
+                                // react-slick clones its direct children with className/style/tabIndex/onClick; the sink keeps them off the card
+                                <SlideSink key={item.index}><DXCard {...item} /></SlideSink>
                             ) )
                         }
                     </Slider>

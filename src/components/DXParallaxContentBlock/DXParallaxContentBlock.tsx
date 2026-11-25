@@ -19,6 +19,8 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { LinksProps, ImageProps, getLinkTarget, parseContentAndMedia } from "../../utilities";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface ParallaxContentBlockProps {
     items: ContentBlock[];
@@ -33,7 +35,9 @@ export interface ContentBlock {
     link?: LinksProps;
 }
 
-const DXParallaxContentBlock = ( props: ParallaxContentBlockProps ) => {
+const DXParallaxContentBlock = ( props: ExtendableProps<ParallaxContentBlockProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { items: _items, className, ref, ...rest } = props;
     const [isMobile, setIsMobile] = useState<boolean>( false );
     const widthMobile = 768;
     let componentSize = 0;
@@ -140,7 +144,7 @@ const DXParallaxContentBlock = ( props: ParallaxContentBlockProps ) => {
     };
 
     return (
-        <div>
+        <div {...pickDomProps( rest )} ref={ref} className={className}>
             {renderParallax()}
         </div>
     );

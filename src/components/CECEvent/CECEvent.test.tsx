@@ -17,6 +17,8 @@ import React from 'react';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import CECEvent, { getEventStartDate, getEventEndDate } from './CECEvent';
 import type { CECEventData, CECEventRecurrence, DateFormat } from './CECEvent.types';
+import { itSupportsExtensionProps } from '../../testUtils/extensionContract';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 // Helper function to create mock event with proper typing
 const createMockEvent = ( overrides: Partial<CECEventData> = {} ): CECEventData => ( {
@@ -3215,5 +3217,42 @@ describe( 'CECEvent Hardening', () => {
             // "Remove Me" and the tag itself should be gone, leaving "Start End"
             expect( desc?.textContent?.trim() ).toBe( 'Start End' );
         } );
+    } );
+} );
+
+// CECEvent declares style as its own (CSSProperties) prop
+itSupportsExtensionProps( ( extra ) => <CECEvent event={mockEvent} {...extra} />, { ownKeys: ['style'] } );
+
+test( 'extra props that are not DOM attributes are dropped instead of reaching the root element', () => {
+    const { container } = render( <CECEvent event={mockEvent} {...{ notADomProp: 'x', title: 'Tip', 'data-tip': 'Tip' } as object} /> );
+    expect( container.firstElementChild?.getAttribute( 'notadomprop' ) ).toBeNull();
+    // a `title` can be content data, so it is not forwarded either; data-* is
+    expect( container.firstElementChild?.getAttribute( 'title' ) ).toBeNull();
+    expect( container.firstElementChild?.getAttribute( 'data-tip' ) ).toBe( 'Tip' );
+} );
+
+test( 'a consumer onKeyDown on the event root runs first and can stop the component\'s own click handling', () => {
+    const onEventClick = jest.fn();
+    const onKeyDown = jest.fn( ( e: React.KeyboardEvent ) => e.preventDefault() );
+    const { container } = render( <CECEvent event={mockEvent} onEventClick={onEventClick} {...{ onKeyDown } as object} /> );
+    fireEvent.keyDown( container.firstElementChild as Element, { key: 'Enter' } );
+    expect( onKeyDown ).toHaveBeenCalledTimes( 1 );
+    expect( onEventClick ).not.toHaveBeenCalled();
+} );
+
+describe( 'CECEvent keyboard activation with a consumer onKeyDown', () => {
+    test.each( [
+        ['Enter', '{Enter}'],
+        ['Space', ' '],
+    ] )( '%s still calls onEventClick once after a consumer onKeyDown that does not prevent the default', async ( _name, key ) => {
+        const onEventClick = jest.fn();
+        const onKeyDown = jest.fn();
+        const { container } = render( <CECEvent event={mockEvent} onEventClick={onEventClick} {...{ onKeyDown } as object} /> );
+        ( container.firstElementChild as HTMLElement ).focus();
+        expect( container.firstElementChild ).toHaveFocus();
+        await userEvent.keyboard( key );
+        expect( onKeyDown ).toHaveBeenCalledTimes( 1 );
+        expect( onEventClick ).toHaveBeenCalledTimes( 1 );
+        expect( onEventClick ).toHaveBeenCalledWith( mockEvent );
     } );
 } );

@@ -22,6 +22,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { SliderIcons } from "../../utilities";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
+import { ExtendableProps, SlideSink, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface CBCatalogProps extends BasicComponent {
     elements: CardButtonProps[],
@@ -34,7 +36,9 @@ export interface CBCatalogProps extends BasicComponent {
 /*
 ** @deprecated: From @version 1.32.0-alpha use DXGenericMiniCatalog instead
 */
-const DXCardButtonCatalog = ( props: CBCatalogProps ) => {
+const DXCardButtonCatalog = ( props: ExtendableProps<CBCatalogProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { elements: _elements, header: _header, variant: _variant, elementsPerRow: _elementsPerRow, icons: _icons, _edit, className, ref, ...rest } = props;
     const items: CardButtonProps[] = props.elements && props.elements.length > 0 ?
         props.elements.map( ( item: CardButtonProps, index: number ) => ( { ...item, index: index } ) ) : [];
 
@@ -63,7 +67,8 @@ const DXCardButtonCatalog = ( props: CBCatalogProps ) => {
                 <Slider {...sliderSettings} className="dxCBCatalog__sliderMain">
                     {
                         items.slice( 0, 10 ).map( ( btn: CardButtonProps ) => (
-                            <DXCardButton {...btn} key={`slider-item-${btn.index}`} />
+                            // react-slick clones its direct children with className/style/tabIndex/onClick; the sink keeps them off the button
+                            <SlideSink key={`slider-item-${btn.index}`}><DXCardButton {...btn} /></SlideSink>
                         ) )
                     }
                 </Slider>
@@ -142,7 +147,7 @@ const DXCardButtonCatalog = ( props: CBCatalogProps ) => {
         }
     };
     return (
-        <div className="dxCBCatalog">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxCBCatalog", className )}>
             {props.header && props.variant === "grid" ? (
                 <h3 className="dxCBCatalog__header">{props.header}</h3>
             ) : null}

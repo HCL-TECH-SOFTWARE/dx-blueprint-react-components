@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 import { render, fireEvent, screen } from "@testing-library/react";
@@ -384,4 +385,45 @@ test( "If icon changes when iconClass property is configured", () => {
     }}
         /> );
     expect( screen.getByTestId( "river-header-icon" ) ).toHaveClass( "ci-Arrow_Down_SM" );
+} );
+
+itSupportsExtensionProps( ( extra ) => <DXRiverOfContent {...riverOfContentTestArgs} {...extra} /> );
+
+describe( "DXRiverOfContent with a consumer ref", () => {
+    test( "still toggles the open class on the root and sets ref.current to the root", async () => {
+        const ref = React.createRef<HTMLDivElement>();
+        const { container } = render( <DXRiverOfContent {...riverOfContentTestArgs} ref={ref} /> );
+        const componentEl = container.querySelector( ".dxRiverContent" ) as Element;
+        expect( ref.current ).toBe( componentEl );
+        const headerEl = container.querySelector( ".dxRiverContent__header" )?.childNodes[0] as Element;
+        await userEvent.click( headerEl );
+        expect( componentEl ).toHaveClass( "dxRiverContent--open" );
+    } );
+
+    test( "keeps the open state on the root when the consumer className changes while open", async () => {
+        const { container, rerender } = render( <DXRiverOfContent {...riverOfContentTestArgs} className="bp-a" /> );
+        const root = container.firstElementChild as Element;
+        const headerEl = container.querySelector( ".dxRiverContent__header" )?.childNodes[0] as Element;
+        await userEvent.click( headerEl );
+        expect( root ).toHaveClass( "dxRiverContent", "dxRiverContent--open", "bp-a" );
+        rerender( <DXRiverOfContent {...riverOfContentTestArgs} className="bp-b" /> );
+        expect( root ).toHaveClass( "dxRiverContent", "dxRiverContent--open", "bp-b" );
+        expect( root ).not.toHaveClass( "bp-a" );
+        // The next click closes it (state and class stay in step)
+        await userEvent.click( headerEl );
+        expect( root ).not.toHaveClass( "dxRiverContent--open" );
+        expect( root ).toHaveClass( "bp-b" );
+    } );
+
+    test( "calls a callback ref once with the root across re-renders, and with null on unmount", () => {
+        const callbackRef = jest.fn();
+        const { container, rerender, unmount } = render( <DXRiverOfContent {...riverOfContentTestArgs} ref={callbackRef} /> );
+        const root = container.firstElementChild;
+        rerender( <DXRiverOfContent {...riverOfContentTestArgs} header="Renamed header" ref={callbackRef} /> );
+        expect( callbackRef ).toHaveBeenCalledTimes( 1 );
+        expect( callbackRef ).toHaveBeenLastCalledWith( root );
+        unmount();
+        // React 19 may call a plain callback ref's detach with extra arguments, so only the first one is compared
+        expect( callbackRef.mock.calls[callbackRef.mock.calls.length - 1][0] ).toBeNull();
+    } );
 } );

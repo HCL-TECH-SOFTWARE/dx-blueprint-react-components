@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render } from "@testing-library/react";
 import DXLinkList from "./DXLinkList";
@@ -550,3 +551,5 @@ describe( "Tests for the limits with Columns", () => {
         expect( elements ).toHaveLength( props.links.length );
     } );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXLinkList title={{ value: "Popular Academic Links", type: "bold" }} links={manyLinksArgs} {...extra} /> );

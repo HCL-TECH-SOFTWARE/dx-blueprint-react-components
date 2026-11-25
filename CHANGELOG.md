@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - `exports` map in `package.json` (no wildcard; the existing `dist/cjs/index.css` and `dist/umd/*` paths stay reachable) and `sideEffects: ["**/*.css", "**/*.scss"]` (`.scss` is listed so Storybook, which imports component styles from source, keeps them).
 - Typography helper classes `._10-regular`, `._10-semibold`, `._18-semibold` and `._32-regular` are now part of the built CSS.
 - `npm run lint:tokens`, run in CI, fails when a `var(--token)` used in `src` is not defined.
+- Every component accepts `className`, `ref`, `id`, `style`, `data-*` and `aria-*` attributes and event handlers on its root element. `className` is added to the component's own classes, the component's own attributes win over yours, and your event handlers run first. Other attributes (for example `title`, `role`, `tabIndex`) are not forwarded, so keys from content data never reach the DOM. See "Extending components" in the README.
 
 ### Changed
 
@@ -30,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - `components.css` is minified (the previous single CSS file was not), and the all-in-one `index.css` starts with a single `@charset`.
 - Dependency versions are resolved by the consumer's package manager and are no longer baked into the ESM and CJS output. The UMD build stays fully bundled and keeps the `TRF` global.
 - Importing the package from plain Node without a bundler (plain Node ESM) is not supported; use a bundler.
+- `CECEvent` and `DXIcon` no longer pass every extra prop to their root element; like all other components they forward only `className`, `ref`, `id`, `style`, `data-*`, `aria-*` and event handlers. `DXIcon`'s own `role` and `title` props are unchanged.
 
 ### Fixed
 

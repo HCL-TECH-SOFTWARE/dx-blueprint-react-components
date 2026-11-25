@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render } from "@testing-library/react";
 import DXCasesCatalog from "./DXCasesCatalog";
@@ -24,3 +25,5 @@ test( "The component should render the same amount of items passed", () => {
     let renderedItems = container.querySelectorAll( ".dxCaseCard" );
     expect( renderedItems ).toHaveLength( itemsArgs.length );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXCasesCatalog items={itemsArgs} {...extra} /> );

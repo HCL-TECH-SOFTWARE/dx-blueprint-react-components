@@ -18,6 +18,8 @@ import "./DXPagination.scss";
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Pagination from 'react-bootstrap/Pagination';
 import Dropdown from 'react-bootstrap/Dropdown';
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface PaginationProps {
     sets: string[],
@@ -55,7 +57,9 @@ const createEllipsisButton = ( options: number[], onChangeActive: Function, key:
     );
 };
 
-const DXPagination = ( props: PaginationProps ) => {
+const DXPagination = ( props: ExtendableProps<PaginationProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { sets: _sets, onChangeSet: _onChangeSet, onChangeActive: _onChangeActive, totalPages: _totalPages, totalItems: _totalItems, active: _active, activeSet: _activeSet, dropdownOpen: _dropdownOpen, className, ref, ...rest } = props;
     /** States */
     const [paginationSets, setPaginationSets] = useState<any>( [] );
     const [paginationItems, setPaginationItems] = useState<ReactElement[]>( [] );
@@ -146,7 +150,7 @@ const DXPagination = ( props: PaginationProps ) => {
     const endEntry = Math.min( props.active * props.activeSet, props.totalItems );
 
     return (
-        <div className="dxPagination">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxPagination", className )}>
             <div className='dxPagination__main' data-testid="pagination">
                 <Dropdown className='dxPagination__sets' show={props.dropdownOpen} onToggle={() => {}}>
                     <Dropdown.Toggle className='pagination-items-per-page' variant="unsyled">

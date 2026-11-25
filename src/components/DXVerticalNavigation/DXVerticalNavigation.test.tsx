@@ -14,6 +14,7 @@
  * ======================================================================== */
 
 import React from "react";
+import { itSupportsExtensionProps } from "../../testUtils/extensionContract";
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -576,3 +577,5 @@ describe( "Multi level behavior", () => {
         expect( div ).toHaveClass( "sublevel" );
     } );
 } );
+
+itSupportsExtensionProps( ( extra ) => <DXVerticalNavigation items={[{ url: "/one", label: "one" }, { url: "/two", label: "two" }]} {...extra} /> );

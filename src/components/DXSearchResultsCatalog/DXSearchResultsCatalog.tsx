@@ -20,6 +20,8 @@ import Col from 'react-bootstrap/Col';
 import DXPagination from "../DXPagination/DXPagination";
 import { getColNumber } from "../../utilities";
 import DXStraightCard, { StraightCardProps } from "../DXStraightCard/DXStraightCard";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface SearchResultsCatalogProps {
     items: StraightCardProps[],
@@ -39,7 +41,9 @@ const hasValidPaginationProps = ( properties: any ) => {
 /*
 ** @deprecated: From @version 1.31.0-alpha use DXGenericCatalog instead
 */
-const DXSearchResultsCatalog = ( props: SearchResultsCatalogProps ) => {
+const DXSearchResultsCatalog = ( props: ExtendableProps<SearchResultsCatalogProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { items: _items, paginationProps: _paginationProps, elementsPerRow: _elementsPerRow, className, ref, ...rest } = props;
     // Pagination
     const [active, setActive] = useState( props.paginationProps?.active ? props.paginationProps.active : 0 );
     const [activeSet, setActiveSet] = useState( props.paginationProps?.activeSet ? props.paginationProps.activeSet : 0 );
@@ -84,7 +88,7 @@ const DXSearchResultsCatalog = ( props: SearchResultsCatalogProps ) => {
     };
 
     return (
-        <div className="dxSRCatalog">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxSRCatalog", className )}>
             <div className="dxSRCatalog__container">
                 {renderCards( props.items )}
             </div>

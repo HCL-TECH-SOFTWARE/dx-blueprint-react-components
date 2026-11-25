@@ -17,6 +17,8 @@ import React, { useEffect, useState } from "react";
 import DXButton from "../DXButton/DXButton";
 import "./DXPrivacyFilter.scss";
 import { getIcon } from "../../utilities";
+import { ExtendableProps, pickDomProps } from "../../utilities/extendable";
+import { classNames } from "../../utilities/classNames";
 
 export interface PrivacyFilterProps {
     selectors: string[];
@@ -29,7 +31,9 @@ export interface PrivacyFilterProps {
     };
 }
 
-const DXPrivacyFilter = ( props: PrivacyFilterProps ) => {
+const DXPrivacyFilter = ( props: ExtendableProps<PrivacyFilterProps, "div"> ) => {
+    // Own props are pulled out so only DOM attributes reach the root.
+    const { selectors: _selectors, isActive: _isActive, activeLabel: _activeLabel, inactiveLabel: _inactiveLabel, icons: _icons, className, ref, ...rest } = props;
     const [isActive, setIsActive] = useState( props.isActive );
 
     // if privacy filter comes on by default
@@ -68,7 +72,7 @@ const DXPrivacyFilter = ( props: PrivacyFilterProps ) => {
     };
 
     return (
-        <div className="dxPrivacyFilter">
+        <div {...pickDomProps( rest )} ref={ref} className={classNames( "dxPrivacyFilter", className )}>
             <DXButton
                 displayType={'secondary'}
                 onClick={handleClick}
