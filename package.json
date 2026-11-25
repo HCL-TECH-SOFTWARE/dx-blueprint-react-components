@@ -3,6 +3,14 @@
   "version": "1.0.0",
   "description": "HCL DX Blueprint React component library",
   "homepage": "https://hcl-tech-software.github.io/dx-blueprint-react-components/",
+  "keywords": [
+    "react",
+    "component-library",
+    "design-system",
+    "hcl",
+    "hcl-dx",
+    "blueprint"
+  ],
   "scripts": {
     "build": "npm run build:lib",
     "build:lib": "rollup -c",
@@ -11,6 +19,10 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:tokens": "node scripts/check-css-tokens.mjs",
+    "lint:public": "node scripts/check-public-safe.cjs",
+    "check:pack": "node scripts/check-pack.cjs",
+    "check:licenses": "node scripts/check-licenses.cjs",
+    "licenses:generate": "node scripts/check-licenses.cjs --generate",
     "test:unit": "jest --runInBand",
     "test:mutation": "bash scripts/test-mutation.sh"
   },

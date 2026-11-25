@@ -32,7 +32,7 @@ const sampleEvent: CECEventData = {
     "author": {
         "id": "63c81a60-8409-103f-875e-e32f1ecc3eb0",
         "name": "Joe Jones1",
-        "email": "jjones1@cnx.pnp-hcl.com"
+        "email": "joe.jones@example.com"
     },
     "recurrence": {
         "startDate": "Feb 4, 2026, 7:45:00 AM GMT",
