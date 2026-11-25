@@ -14,6 +14,11 @@
  * ======================================================================== */
 
 .dxDataTable {
+    // The table draws a thin divider between header cells by default; this component never has them
+    --rdt-col-sep-color: transparent;
+    // Keep the 16px cell padding on small screens (the table defaults to 12px there)
+    --rdt-cell-padding-x-mobile: 16px;
+
     & .rdt_Table {
         border-radius: 4px;
     }
@@ -42,11 +47,6 @@
                 border-radius: 0 0 4px 4px;
             }
         }
-    }
-
-    // This changes the color of the Striped variant
-    & .rdt_Table .rdt_TableBody .krEPjR {
-        background-color: var(--light-light);
     }
 
     // This changes the color of the Expander div

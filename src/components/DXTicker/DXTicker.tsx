@@ -18,7 +18,7 @@ import "./DXTicker.scss";
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import DXButton from "../DXButton/DXButton";
 import { LinksProps, getIcon, getLinkTarget } from "../../utilities";
-import moment from "moment";
+import { formatDate, parseISODate } from "../../utilities/dateTime";
 import DXEmptyState, { EmptyStateProps } from "../DXEmptyState/DXEmptyState";
 
 export interface TickerProps {
@@ -57,10 +57,11 @@ const DXTicker = ( props: TickerProps ) => {
             iconClass = getIcon( props.icons, "down", "ci-Arrow_Down_LG" );
         }
 
-        if ( ( !moment( props.items[selectedItem].dateTime, moment.ISO_8601 ).isValid() ) ) {
+        const tickerDate = parseISODate( props.items[selectedItem].dateTime );
+        if ( !tickerDate ) {
             console.warn( "Invalid value for DXTicker: Ticker dateTime doesn't comply with the ISO 8601 format" );
         } else {
-            parsedDateTime = moment( props.items[selectedItem].dateTime, moment.ISO_8601 ).format( "MMMM Do YYYY HH:mm" );
+            parsedDateTime = formatDate( tickerDate, "MMMM Do YYYY HH:mm" );
         }
     }
 

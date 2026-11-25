@@ -15,7 +15,6 @@
 
 import React from "react";
 import { StoryFn, Meta } from "@storybook/react-webpack5";
-import moment from "moment";
 import { searchVisibleArgs } from "../DXSearchInput/DXSearchInput.stories";
 import { portalLogosDefaultArgs } from "../DXPortalLogos/DXPortalLogos.stories";
 import DXNavigationHeader2, { NavigationProps } from "./DXNavigationHeader2";
@@ -291,8 +290,9 @@ const Template: StoryFn<NavigationProps> = ( args ) =>
 export const NavigationHeader2 = Template.bind( {} );
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 
-let startTime = moment().add( 1, "hours" ).toISOString();
-let endTime = moment().add( 2, "hours" ).toISOString();
+const HOUR_IN_MS = 60 * 60 * 1000;
+let startTime = new Date( Date.now() + HOUR_IN_MS ).toISOString();
+let endTime = new Date( Date.now() + 2 * HOUR_IN_MS ).toISOString();
 
 const navigationHeader2UtilityItems = [
     {

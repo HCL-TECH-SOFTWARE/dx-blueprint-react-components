@@ -16,7 +16,7 @@
 import "./DXWeeklyCalendar.scss";
 
 import React, { useState, useEffect, useRef } from "react";
-import moment from "moment";
+import { addDays, formatDate, isSameDay, isSameMonth, parseDateWithFormat, startOfWeek } from "../../utilities/dateTime";
 import Modal from 'react-bootstrap/Modal';
 import DXButton from "../DXButton/DXButton";
 import { LinksProps, SliderIcons, getLinkTarget } from "../../utilities";
@@ -44,7 +44,7 @@ const DXWeeklyCalendar = ( props: WeeklyCalendarProps ) => {
     const [events, setEvents] = useState<any>( [...props.events] );
     const [modalDay, setModalDay] = useState<any>( null );
     const [modalEvents, setModalEvents] = useState<any>( [] );
-    const today = moment();
+    const today = new Date();
     let componentSize = 0;
     const MAX_WIDTH_MOBILE = 390;
     const refComponent = useRef<HTMLDivElement>( null );
@@ -62,21 +62,20 @@ const DXWeeklyCalendar = ( props: WeeklyCalendarProps ) => {
 
     // CALENDAR LOGIC
     const getCurrentWeek = () => {
-        let weekStart = today.clone().startOf( "week" );
+        let weekStart = startOfWeek( today );
         let weekDays = [];
         for ( let i = 0; i <= 6; i++ ) { // Get the following 7 days
-            weekDays.push( moment( weekStart ).add( i, "day" ) );
+            weekDays.push( addDays( weekStart, i ) );
         }
         setDays( [...weekDays] );
     };
 
-    const momentizeEvents = ( evs: Event[] ) => {
-        let momentEvents = evs.map( ( ev: Event ) => {
-            let momentDate = moment( ev.date, 'YYYY-MM-DD' );
-            let editedData = { ...ev, date: momentDate };
+    const parseEvents = ( evs: Event[] ) => {
+        let parsedEvents = evs.map( ( ev: Event ) => {
+            let editedData = { ...ev, date: parseDateWithFormat( ev.date, 'YYYY-MM-DD' ) };
             return editedData;
         } );
-        setEvents( [...momentEvents] );
+        setEvents( [...parsedEvents] );
     };
 
     // Render, Style and Behavior methods
@@ -86,13 +85,13 @@ const DXWeeklyCalendar = ( props: WeeklyCalendarProps ) => {
         }
     };
 
-    const isItOnTheMonth = ( day: any ) => {
-        return day.month() === today.month() ? "dxWeeklyCalendar__day" : "dxWeeklyCalendar__day--other";
+    const isItOnTheMonth = ( day: Date ) => {
+        return day.getMonth() === today.getMonth() ? "dxWeeklyCalendar__day" : "dxWeeklyCalendar__day--other";
     };
 
-    const renderEvents = ( day: any, evs: any[] ) => {
+    const renderEvents = ( day: Date, evs: any[] ) => {
         let todaysEvents = evs.filter( ( ev: any ) => {
-            if ( ev.date.isSame( day, 'month' ) && ev.date.isSame( day, 'day' ) ) {
+            if ( isSameMonth( ev.date, day ) && isSameDay( ev.date, day ) ) {
                 return ev;
             }
         } );
@@ -116,10 +115,10 @@ const DXWeeklyCalendar = ( props: WeeklyCalendarProps ) => {
     };
 
     const renderDays = ( days: any[] ) => {
-        return days.map( ( day: any, key: number ) => (
+        return days.map( ( day: Date, key: number ) => (
             <div className={isItOnTheMonth( day )} key={key}>
-                <p className="dxWeeklyCalendar__header">{day.format( "ddd" )}</p>
-                <p className="dxWeeklyCalendar__number">{day.format( "DD" )}</p>
+                <p className="dxWeeklyCalendar__header">{formatDate( day, "ddd" )}</p>
+                <p className="dxWeeklyCalendar__number">{formatDate( day, "DD" )}</p>
                 {renderEvents( day, events )}
             </div>
         ) );
@@ -198,7 +197,7 @@ const DXWeeklyCalendar = ( props: WeeklyCalendarProps ) => {
         function init() {
             getCurrentWeek();
             if ( props.events && props.events.length > 0 ) {
-                momentizeEvents( props.events );
+                parseEvents( props.events );
             }
         }
         init();
@@ -229,10 +228,10 @@ const DXWeeklyCalendar = ( props: WeeklyCalendarProps ) => {
             ) : (
                 <Slider {...settings} className="dxWeeklyCalendar__slider">
                     {
-                        days.map( ( day: any, key: number ) => (
+                        days.map( ( day: Date, key: number ) => (
                             <div className={isItOnTheMonth( day )} key={key}>
-                                <p className="dxWeeklyCalendar__header">{day.format( "ddd" )}</p>
-                                <p className="dxWeeklyCalendar__number">{day.format( "DD" )}</p>
+                                <p className="dxWeeklyCalendar__header">{formatDate( day, "ddd" )}</p>
+                                <p className="dxWeeklyCalendar__number">{formatDate( day, "DD" )}</p>
                                 {renderEvents( day, events )}
                             </div>
                         ) )
@@ -243,7 +242,7 @@ const DXWeeklyCalendar = ( props: WeeklyCalendarProps ) => {
                 <Modal show={showModal} onHide={handleClose} data-testid="calendar-modal" className="dxWeeklyCalendar__modal">
                     <Modal.Header>
                         <Modal.Title>
-                            <span>{modalDay.format( "MMMM DD, YYYY" )}</span>
+                            <span>{formatDate( modalDay, "MMMM DD, YYYY" )}</span>
                             <i tabIndex={0} className="ci-Close_MD" onClick={ handleClose }></i> 
                         </Modal.Title>
                     </Modal.Header>

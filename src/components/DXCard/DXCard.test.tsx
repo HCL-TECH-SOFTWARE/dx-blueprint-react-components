@@ -18,18 +18,15 @@ import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { getValuesFromDateFormat, DateValues, getMomentDayShort } from "../../utilities";
-import moment from "moment";
 import DXCard from "./DXCard";
 
 const today = new Date( Date.now() );
 
 function getAbbreviation( event: any ) {
     const dateFormatted: DateValues = getValuesFromDateFormat( event.date, event.dateFormat );
-    let month = parseInt( dateFormatted.month ) < 10 ? ( "0" + dateFormatted.month ) : dateFormatted.month;
-    let dateDay = parseInt( dateFormatted.day ) < 10 ? ( "0" + dateFormatted.day ) : dateFormatted.day;
-    let date = moment( `${dateFormatted.year}-${month}-${dateDay}` );
-    let day = date.day();
-    let abbreviation = getMomentDayShort( day );
+    // Built from its parts, independently of how the component parses the date
+    const date = new Date( Number( dateFormatted.year ), Number( dateFormatted.month ) - 1, Number( dateFormatted.day ) );
+    let abbreviation = getMomentDayShort( date.getDay() );
     return abbreviation;
 }
 

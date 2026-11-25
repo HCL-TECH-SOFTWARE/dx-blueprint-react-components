@@ -20,7 +20,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { LinksProps, getLinkTarget, getLinkIcon, getIcon } from "../../utilities";
 import DXMap from "../DXMap";
 import DXButton from "../DXButton/DXButton";
-import moment from "moment";
+import { formatDate, parseDate } from "../../utilities/dateTime";
 import DXSocialShare, { SocialShareProps } from "../DXSocialShare/DXSocialShare";
 import variables from "../../global/_exportVariables.module.scss";
 
@@ -109,19 +109,21 @@ const DXEventDetails = ( props: EventDetailsProp ) => {
 
     // DATE LOGIC
     const setDates = ( from: string, to: string ) => {
+        const parsedFrom = parseDate( from );
+        const parsedTo = parseDate( to );
         let fromDate: EventDate = {
-            shortMonth: moment( from ).format( "MMM" ).toUpperCase(),
-            month: moment( from ).format( "MMMM" ),
-            day: moment( from ).format( "DD" ),
-            dayOfWeek: moment( from ).format( "dddd" ),
-            year: moment( from ).format( "YYYY" ),
+            shortMonth: formatDate( parsedFrom, "MMM" ).toUpperCase(),
+            month: formatDate( parsedFrom, "MMMM" ),
+            day: formatDate( parsedFrom, "DD" ),
+            dayOfWeek: formatDate( parsedFrom, "dddd" ),
+            year: formatDate( parsedFrom, "YYYY" ),
         };
         let toDate: EventDate = {
-            shortMonth: moment( to ).format( "MMM" ).toUpperCase(),
-            month: moment( to ).format( "MMMM" ),
-            day: moment( to ).format( "DD" ),
-            dayOfWeek: moment( to ).format( "dddd" ),
-            year: moment( to ).format( "YYYY" ),
+            shortMonth: formatDate( parsedTo, "MMM" ).toUpperCase(),
+            month: formatDate( parsedTo, "MMMM" ),
+            day: formatDate( parsedTo, "DD" ),
+            dayOfWeek: formatDate( parsedTo, "dddd" ),
+            year: formatDate( parsedTo, "YYYY" ),
         };
         setDateFrom( { ...fromDate } );
         setDateTo( { ...toDate } );

@@ -18,7 +18,6 @@ import '@testing-library/jest-dom';
 import { render, screen } from "@testing-library/react";
 import { MyNextMeetingArgs, MyNextMeetingChangedIconsArgs } from "./DXMyNextMeeting.stories";
 import DXMyNextMeeting from "./DXMyNextMeeting";
-import moment from "moment";
 
 // Testing basic renders of prop
 test( "Component renders the correct label", () => {
@@ -45,8 +44,21 @@ test( "Component renders the correct link target", () => {
 } );
 
 test( "Component renders the time correctly", () => {
-    render( <DXMyNextMeeting {...MyNextMeetingArgs}></DXMyNextMeeting> );
-    expect( screen.getByTestId( "MNM__time" ) ).toHaveTextContent( ( moment( MyNextMeetingArgs.startDateTime ).format( "HH:mm" ) + " - " + moment( MyNextMeetingArgs.endDateTime ).format( "HH:mm" ) ) );
+    // ISO date-times without an offset are local time, so the rendered hours do not depend on the time zone
+    const props = { ...MyNextMeetingArgs, startDateTime: "2026-03-05T09:05:00", endDateTime: "2026-03-05T17:45:30" };
+    render( <DXMyNextMeeting {...props}></DXMyNextMeeting> );
+    expect( screen.getByTestId( "MNM__time" ) ).toHaveTextContent( "09:05 - 17:45" );
+} );
+
+test( "Component renders the time of ISO values that carry a UTC offset in local time", () => {
+    const start = "2026-03-05T09:05:00Z";
+    const end = "2026-03-05T10:30:00Z";
+    const local = ( iso: string ) => {
+        const d = new Date( iso );
+        return `${String( d.getHours() ).padStart( 2, "0" )}:${String( d.getMinutes() ).padStart( 2, "0" )}`;
+    };
+    render( <DXMyNextMeeting {...MyNextMeetingArgs} startDateTime={start} endDateTime={end}></DXMyNextMeeting> );
+    expect( screen.getByTestId( "MNM__time" ) ).toHaveTextContent( `${local( start )} - ${local( end )}` );
 } );
 
 test( "Invalid dates format rendering", () => {

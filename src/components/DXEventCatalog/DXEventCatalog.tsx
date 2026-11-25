@@ -21,7 +21,7 @@ import DXPagination from "../DXPagination/DXPagination";
 import DXEvent, { EventProps } from "../DXEvent/DXEvent";
 import DXTaxonomyFilter, { TaxFilterProps, TaxonomyFilterProps } from "../DXTaxonomyFilter/DXTaxonomyFilter";
 import { getColNumber } from "../../utilities";
-import moment from "moment";
+import { formatDate, parseDate } from "../../utilities/dateTime";
 import { normalizeLocaleNumerals } from "../../utilities/cec-utils";
 export interface EventCatalogProps {
     items: EventCatalogItem[],
@@ -158,14 +158,14 @@ const DXEventCatalog = ( props: EventCatalogProps ) => {
         eventsFrom.forEach( from => {
             const normFrom = from ? normalizeLocaleNumerals( from ) : from;
             if ( ISORegex.test( normFrom ) ) {
-                let month = moment( normFrom ).format( "MMMM" );
+                let month = formatDate( parseDate( normFrom ), "MMMM" );
                 if ( !allMonths.has( month ) ) allMonths.add( month );
             }
         } );
         eventsTo.forEach( to => {
             const normTo = to ? normalizeLocaleNumerals( to ) : to;
             if ( ISORegex.test( normTo ) ) {
-                let month = moment( normTo ).format( "MMMM" );
+                let month = formatDate( parseDate( normTo ), "MMMM" );
                 if ( !allMonths.has( month ) ) allMonths.add( month );
             }
         } );
@@ -189,8 +189,8 @@ const DXEventCatalog = ( props: EventCatalogProps ) => {
                 let value = filter.split( /:(.*)/s )[1];
                 for ( let item of itemsToSearch ) {
                     // Check the months
-                    let monthFrom = moment( normalizeLocaleNumerals( item.event.eventFrom || '' ) ).format( "MMMM" ).toLowerCase();
-                    let monthTo = moment( normalizeLocaleNumerals( item.event.eventTo || '' ) ).format( "MMMM" ).toLowerCase();
+                    let monthFrom = formatDate( parseDate( normalizeLocaleNumerals( item.event.eventFrom || '' ) ), "MMMM" ).toLowerCase();
+                    let monthTo = formatDate( parseDate( normalizeLocaleNumerals( item.event.eventTo || '' ) ), "MMMM" ).toLowerCase();
                     if ( value === monthFrom || value === monthTo ) {
                         matches.push( item );
                         continue;
@@ -225,8 +225,8 @@ const DXEventCatalog = ( props: EventCatalogProps ) => {
                 for ( let i = 0, length = selectedFilters.length; i < length; i++ ) {
                     let value = selectedFilters[i].split( /:(.*)/s )[1];
                     for ( let item of itemsToSearch ) {
-                        let monthFrom = moment( normalizeLocaleNumerals( item.event.eventFrom || '' ) ).format( "MMMM" ).toLowerCase();
-                        let monthTo = moment( normalizeLocaleNumerals( item.event.eventTo || '' ) ).format( "MMMM" ).toLowerCase();
+                        let monthFrom = formatDate( parseDate( normalizeLocaleNumerals( item.event.eventFrom || '' ) ), "MMMM" ).toLowerCase();
+                        let monthTo = formatDate( parseDate( normalizeLocaleNumerals( item.event.eventTo || '' ) ), "MMMM" ).toLowerCase();
                         // Check the months
                         if ( value.toLowerCase() === monthFrom || value.toLowerCase() === monthTo ) {
                             matchedItems.push( item );

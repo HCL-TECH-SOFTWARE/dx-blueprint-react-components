@@ -21,7 +21,7 @@ import Badge from 'react-bootstrap/Badge';
 import { Dropdown } from 'react-bootstrap';
 import { LinksProps, getLinkTarget, ImageProps, IconButtonProps, ButtonProps, getValuesFromDateFormat, DateValues, getMomentDayShort } from "../../utilities";
 import { BasicComponent, renderEditButton } from "../../utilities/BasicComponent/BasicComponent";
-import moment from "moment";
+import { parseDate } from "../../utilities/dateTime";
 import { CardComponent } from "../../utilities/CardComponent/CardComponent";
 export interface Event {
     date: string,
@@ -105,8 +105,8 @@ const DXCard = ( props: CardProps ) => {
         if ( dateFormatted.day !== "Invalid" && dateFormatted.month !== "Invalid" && dateFormatted.year !== "Invalid" ) {
             let month = parseInt( dateFormatted.month ) < 10 ? ( "0" + dateFormatted.month ) : dateFormatted.month;
             let dateDay = parseInt( dateFormatted.day ) < 10 ? ( "0" + dateFormatted.day ) : dateFormatted.day;
-            let date = moment( `${dateFormatted.year}-${month}-${dateDay}` );
-            let day = date.day();
+            let date = parseDate( `${dateFormatted.year}-${month}-${dateDay}` );
+            let day = date ? date.getDay() : NaN;
             let abbreviation = getMomentDayShort( day );
             return (
                 <p className="dxCard__event" data-testid="card-body-event">

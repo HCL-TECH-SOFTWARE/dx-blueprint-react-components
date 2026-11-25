@@ -21,6 +21,7 @@
     height: 167px;
 
     &__container {
+        // keep !important: react-slick clones this element and sets an inline `display: inline-block` on it
         display: flex !important;
         padding: 8px;
         height: 167px;

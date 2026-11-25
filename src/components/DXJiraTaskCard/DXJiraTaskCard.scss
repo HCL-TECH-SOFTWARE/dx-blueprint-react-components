@@ -212,13 +212,17 @@
             line-height: var(--_16-primary-regular-150-line-height);
             font-weight: var(--_16-primary-regular-150-font-weight);
             border: 1px solid var(--secondary-secondary-l3);
-            color: var(--dark-dark) !important;
             @include mobile {
                 width: inherit;
             }
             @include xs {
                 width: inherit;
             }
+        }
+        // Only the colour needs to beat DXButton's `.dxButton.btn.btn-unstyled` rules (0,3,0 / 0,4,0 on hover);
+        // the rest of the `button` block above is outranked by DXButton today and is left as it was
+        button.dxButton.btn.btn-unstyled {
+            color: var(--dark-dark);
         }
     }
     &__filter {

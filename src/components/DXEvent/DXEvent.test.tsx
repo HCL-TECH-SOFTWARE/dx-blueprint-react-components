@@ -733,7 +733,7 @@ describe( "DXEvent Hardening", () => {
     } );
 
     describe( "Math Boundaries & Date Engine Bailouts", () => {
-        it( "strictly bails out of chronological logic if eventFrom evaluates to an invalid moment date", () => {
+        it( "strictly bails out of chronological logic if eventFrom evaluates to an invalid date", () => {
             const { container } = render( <DXEvent variant="featured" {...strictEventData} eventFrom="invalid-garbage-string" /> );
 
             // Because the date is invalid, the useEffect returns immediately. 

@@ -352,7 +352,14 @@
         // i want to apply this style only to a tag element
         &--primary {
             background: var(--cec-event-bg-button-primary);
-            color: white !important;
+            color: white;
+            // Bootstrap's `a:hover` / `a:visited` (0,1,1) would otherwise turn the label blue
+            &:hover,
+            &:focus,
+            &:active,
+            &:visited {
+                color: white;
+            }
             &:hover {
                 background-color: var(--cec-event-accent-hover);
                 text-decoration: none;

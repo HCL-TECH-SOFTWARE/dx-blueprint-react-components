@@ -19,7 +19,6 @@ import userEvent from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
 import { CustomCurrencySignArgs, TickerArgs, customEmptyArgs, emptyTickerArgs } from "./DXTicker.stories";
 import DXTicker from "./DXTicker";
-import moment from "moment";
 
 test( "If the componet renders a ticker borker correctly", () => {
     render( <DXTicker {...TickerArgs} /> );
@@ -37,8 +36,16 @@ test( "If the componet renders a custom currency symbol correctly", () => {
 } );
 
 test( "If the componet renders a ticker DateTime correctly", () => {
-    render( <DXTicker {...TickerArgs} /> );
-    expect( screen.getByTestId( "ticker__date" ) ).toHaveTextContent( moment( TickerArgs.items[0].dateTime, moment.ISO_8601 ).format( "MMMM Do YYYY HH:mm" ) );
+    // An ISO date-time without an offset is local time, so the rendered text does not depend on the time zone
+    const props = { ...TickerArgs, items: [{ ...TickerArgs.items[0], dateTime: "2026-03-05T14:07:00" }, ...TickerArgs.items.slice( 1 )] };
+    render( <DXTicker {...props} /> );
+    expect( screen.getByTestId( "ticker__date" ) ).toHaveTextContent( "March 5th 2026 14:07" );
+} );
+
+test( "If the DateTime is a date without time, it renders midnight of that day", () => {
+    const props = { ...TickerArgs, items: [{ ...TickerArgs.items[0], dateTime: "2026-11-22" }, ...TickerArgs.items.slice( 1 )] };
+    render( <DXTicker {...props} /> );
+    expect( screen.getByTestId( "ticker__date" ) ).toHaveTextContent( "November 22nd 2026 00:00" );
 } );
 
 test( "If the time has an invalid format the component does not render the DateTime and logs a warning", () => {
@@ -118,7 +125,7 @@ test( "If percentage color class matches (POSITIVE)", () => {
         broker: "MGM",
         price: 1,
         percentage: 1, //POSITIVE VALUE
-        dateTime: moment().toISOString(),
+        dateTime: new Date().toISOString(),
         link: {
             url: "www.hcl-software.com",
             label: "Link"
@@ -134,7 +141,7 @@ test( "If percentage icon matches percentage value (POSITIVE) ", () => {
         broker: "MGM",
         price: 1,
         percentage: 1, //POSITIVE VALUE
-        dateTime: moment().toISOString(),
+        dateTime: new Date().toISOString(),
         link: {
             url: "www.hcl-software.com",
             label: "Link"
@@ -150,7 +157,7 @@ test( "If percentage color class matches (NEGATIVE)", () => {
         broker: "MGM",
         price: 1,
         percentage: -1, //NEGATIVE VALUE
-        dateTime: moment().toISOString(),
+        dateTime: new Date().toISOString(),
         link: {
             url: "www.hcl-software.com",
             label: "Link"
@@ -166,7 +173,7 @@ test( "If percentage icon matches percentage value (NEGATIVE) ", () => {
         broker: "MGM",
         price: 1,
         percentage: -1, //NEGATIVE VALUE
-        dateTime: moment().toISOString(),
+        dateTime: new Date().toISOString(),
         link: {
             url: "www.hcl-software.com",
             label: "Link"
@@ -182,7 +189,7 @@ test( "If percentage color class matches (ZERO)", () => {
         broker: "MGM",
         price: 1,
         percentage: 0,
-        dateTime: moment().toISOString(),
+        dateTime: new Date().toISOString(),
         link: {
             url: "www.hcl-software.com",
             label: "Link"

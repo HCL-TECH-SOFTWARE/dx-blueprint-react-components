@@ -16,7 +16,6 @@
 import React from "react";
 import { StoryFn, Meta } from "@storybook/react-webpack5";
 import DXMyNextMeeting, { NextMeetingProps } from "./DXMyNextMeeting";
-import moment from "moment";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -32,8 +31,9 @@ export const MyNextMeeting = Template.bind( {} );
 export const MyNextMeetingChangedIcons = Template.bind( {} );
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 
-let startTime = moment().add( 1, "hours" ).toISOString();
-let endTime = moment().add( 2, "hours" ).toISOString();
+const HOUR_IN_MS = 60 * 60 * 1000;
+let startTime = new Date( Date.now() + HOUR_IN_MS ).toISOString();
+let endTime = new Date( Date.now() + 2 * HOUR_IN_MS ).toISOString();
 
 export const MyNextMeetingArgs: NextMeetingProps = {
     title: "Meeting title",

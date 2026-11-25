@@ -16,7 +16,6 @@
 import React from "react";
 import { StoryFn, Meta } from "@storybook/react-webpack5";
 import DXTicker, { TickerProps } from "./DXTicker";
-import moment from "moment";
 
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
@@ -36,7 +35,7 @@ export const CustomEmptyTicker = Template.bind( {} );
 export const CustomCurrencySymbol = Template.bind( {} );
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 
-let time = moment().toISOString();
+let time = new Date().toISOString();
 
 export const emptyTickerArgs: TickerProps = {
     items: [],
