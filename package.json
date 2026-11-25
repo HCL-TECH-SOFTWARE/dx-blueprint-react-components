@@ -68,7 +68,7 @@
     "jest": "29.7.0",
     "jest-environment-jsdom": "29.7.0",
     "jest-html-reporters": "2.1.6",
-    "jest-junit": "16.0.0",
+    "jest-junit": "17.0.0",
     "jest-reporter-log-validator": "0.1.6",
     "jest-svg-transformer": "1.0.0",
     "postcss": "8.5.28",
