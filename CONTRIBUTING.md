@@ -2,6 +2,17 @@
 
 Thank you for your interest in contributing! This guide covers everything you need to get started.
 
+## How to contribute
+
+1. **Fork** [HCL-TECH-SOFTWARE/dx-blueprint-react-components](https://github.com/HCL-TECH-SOFTWARE/dx-blueprint-react-components) on GitHub and clone your fork.
+2. **Create a branch** for one focused change. Do not commit to `main`.
+3. **Make the change** following the conventions below, and run the tests and lint (see Testing and Linting). Add an entry under `Unreleased` in `CHANGELOG.md` when the change is visible to users.
+4. **Open a pull request** against `main` of this repository and fill in the pull request template. Describe what changed and why.
+5. **Sign the CLA** if the CLA Assistant bot (cla-assistant) asks you to; see "Contributor License Agreement" below.
+6. **Respond to review.** Maintainers review the pull request; address their comments on the same branch.
+
+Maintainers cut releases with the Release workflow (GitHub Actions). Contributors do not change the version in `package.json` or publish packages.
+
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/) 24.x

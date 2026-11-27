@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+## 0.1.0-alpha.1
+
 ### Added
 
 - Default design tokens in `src/styles/tokens.css` (declared under `:where(:root)`, so consumer overrides always win), published as `tokens.css`.
@@ -38,7 +40,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Undefined CSS custom property references across component styles (see `npm run lint:tokens`).
 - The bootstrap-icons font URL in the built CSS pointed at a file that was never shipped; it now points at a hashed file in `dist/_assets`.
 - Two components hard-coded a font family that is not shipped with the package; they now use the typography tokens.
-
-## 1.0.0
-
-Initial public release of the HCL DX Blueprint React component library.

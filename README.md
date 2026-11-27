@@ -5,8 +5,10 @@ A React 19 + TypeScript component library for [HCL Digital Experience](https://w
 ## Installation
 
 ```bash
-npm install @hcl-software/dx-blueprint-react-components
+npm install @hcl-software/dx-blueprint-react-components@alpha
 ```
+
+The `0.1.0-alpha.N` releases are alphas and are not stable: their API and styling can still change between releases. Alpha releases are intended to be installed with the `alpha` dist-tag. A plain `npm install @hcl-software/dx-blueprint-react-components` (no tag) installs whatever the `latest` dist-tag points to, which is not necessarily an alpha.
 
 React and React-DOM 19 are peer dependencies — the library does not bundle them. The other runtime dependencies (`react-bootstrap`, `d3`, ...) are installed with the package and imported by your bundler, so unused components can be tree-shaken.
 
@@ -152,6 +154,10 @@ The library also exports helpers for links, buttons, icons, dates, HTML sanitiza
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, coding conventions, testing, and build instructions. All contributions require a signed [Contributor License Agreement (CLA)](https://cla-assistant.io/HCL-TECH-SOFTWARE/dx-blueprint-react-components).
+
+## Feedback
+
+Questions, bugs and suggestions for the alpha releases are welcome as [GitHub issues](https://github.com/HCL-TECH-SOFTWARE/dx-blueprint-react-components/issues). Do not report security vulnerabilities there; see [SECURITY.md](SECURITY.md).
 
 ## Accessibility
 
